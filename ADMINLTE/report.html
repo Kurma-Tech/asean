@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Report Data</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.css">
+  <style>
+    .warning,.danger,.info{
+      background-color: #dfdfdf;
+    }
+    .warning.active{
+      background-color: #ffc107;
+      color: antiquewhite!important;
+    }
+    .danger.active{
+      background-color: #dc3545;
+      color: antiquewhite!important;
+    }
+    .info.active{
+      background-color: #17a2b8;
+      color: antiquewhite!important;
+    }
+  </style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+  <!-- Preloader -->
+  <div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+  </div>
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="#" class="nav-link">Home</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="#" class="nav-link">Contact</a>
+      </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="login.html">
+          Login/SignUp
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-light-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="index.html" class="brand-link">
+      <img src="dist/img/aseana-favicon.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">Aseana</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+      <!-- SidebarSearch Form -->
+      <div class="form-inline my-2">
+        <div class="input-group" data-widget="sidebar-search">
+          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-sidebar">
+              <i class="fas fa-search fa-fw"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="search-result-text d-flex justify-content-between">
+        <p>Search Result for Car - All</p>
+        <p> <a class="" href="#"><i class="far fa-chart-bar"></i> 533,872 results</a></p>
+      </div>
+
+      <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+        <li class="nav-item mr-2 mb-2">
+          <a class="btn btn-sm warning active" id="business-tab" data-toggle="pill" href="#business" role="tab" aria-controls="business" aria-selected="true">Business</a>
+        </li>
+        <li class="nav-item mr-2 mb-2">
+          <a class="btn btn-sm info" id="patient-tab" data-toggle="pill" href="#patient" role="tab" aria-controls="patient" aria-selected="false">Patient</a>
+        </li>
+        <li class="nav-item mr-2 mb-2">
+          <a class="btn btn-sm danger" id="journals-tab" data-toggle="pill" href="#journals" role="tab" aria-controls="journals" aria-selected="false">Journals</a>
+        </li>
+      </ul>
+
+      <div class="search-results mt-2">
+        <div class="card">
+          <div class="card-body py-2">
+            <h4 class="title mb-0">Car Pvt. Ltd.</h4>
+            <p class="mb-0">Location, Address</p>
+            <p class="mb-0">Automobile Industry</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body py-2">
+            <h4 class="title mb-0">Car Pvt. Ltd.</h4>
+            <p class="mb-0">Location, Address</p>
+            <p class="mb-0">Automobile Industry</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body py-2">
+            <h4 class="title mb-0">Car Pvt. Ltd.</h4>
+            <p class="mb-0">Location, Address</p>
+            <p class="mb-0">Automobile Industry</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body py-2">
+            <h4 class="title mb-0">Car Pvt. Ltd.</h4>
+            <p class="mb-0">Location, Address</p>
+            <p class="mb-0">Automobile Industry</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body py-2">
+            <h4 class="title mb-0">Car Pvt. Ltd.</h4>
+            <p class="mb-0">Location, Address</p>
+            <p class="mb-0">Automobile Industry</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body py-2">
+            <h4 class="title mb-0">Car Pvt. Ltd.</h4>
+            <p class="mb-0">Location, Address</p>
+            <p class="mb-0">Automobile Industry</p>
+          </div>
+        </div>
+      </div>
+
+      
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 mt-2">
+                <!-- AREA CHART -->
+                <div class="card card-primary" style="display: none;">
+                    <div class="card-header">
+                        <h3 class="card-title">Area Chart</h3>
+
+                        <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart">
+                        <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+
+                <!-- BAR CHART -->
+                <div class="card card-success">
+                    <div class="card-header">
+                    <h3 class="card-title">Bar Chart</h3>
+    
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    </div>
+                    <div class="card-body">
+                    <div class="chart">
+                        <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Countries List</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Numbers</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <td>Brunei</td>
+                            <td>1000</td>
+                            </tr>
+                            <tr>
+                                <td>Brunei</td>
+                                <td>1000</td>
+                            </tr>
+                            <tr>
+                                <td>Cambodia</td>
+                                <td>1860</td>
+                            </tr>
+                            <tr>
+                                <td>Indonesia</td>
+                                <td>3333</td>
+                            </tr>   
+                            <tr>
+                                <td>Laos</td>
+                                <td>56392</td>
+                            </tr>
+                            <tr>
+                                <td>Malaysia</td>
+                                <td>632</td>
+                            </tr>
+                            <tr>
+                                <td>Myanmar</td>
+                                <td>98563.2</td>
+                            </tr>
+                            <tr>
+                                <td>Philippines</td>
+                                <td>321452</td>
+                            </tr>
+                            <tr>
+                                <td>Singapore</td>
+                                <td>5231</td>
+                            </tr>
+                            <tr>
+                                <td>Thailand</td>
+                                <td>13546</td>
+                            </tr>
+                            <tr>
+                                <td>Vietnam</td>
+                                <td>200</td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Date</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                            <th>Year</th>
+                            <th>Numbers of Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2012</td>
+                                <td>32356</td>
+                            </tr>
+                            <tr>
+                                <td>2013</td>
+                                <td>234234</td>
+                            </tr>
+                            <tr>
+                                <td>2014</td>
+                                <td>123432</td>
+                            </tr>
+                            <tr>
+                                <td>2015</td>
+                                <td>543576</td>
+                            </tr>
+                            <tr>
+                                <td>2016</td>
+                                <td>873223</td>
+                            </tr>
+                            <tr>
+                                <td>2017</td>
+                                <td>987463</td>
+                            </tr>
+                            <tr>
+                                <td>2018</td>
+                                <td>9732</td>
+                            </tr>
+                            <tr>
+                                <td>2019</td>
+                                <td>325</td>
+                            </tr>
+                            <tr>
+                                <td>2020</td>
+                                <td>2345476</td>
+                            </tr>
+                            <tr>
+                                <td>2021</td>
+                                <td>57689</td>
+                            </tr>
+                            <tr>
+                                <td>2022</td>
+                                <td>23452</td>
+                            </tr>
+                            <tr>
+                                <td>2023</td>
+                                <td>76843</td>
+                            </tr>
+                            <tr>
+                                <td>2024</td>
+                                <td>786789</td>
+                            </tr>
+                            <tr>
+                                <td>2025</td>
+                                <td>456547</td>
+                            </tr>
+                            <tr>
+                                <td>2026</td>
+                                <td>453246</td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+
+  </div>
+  <!-- /.content-wrapper -->
+
+  <footer class="main-footer ">
+    <strong>Copyright &copy; 2022.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+    </div>
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Add Content Here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- ChartJS -->
+<script src="plugins/chart.js/Chart.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+<!-- Page specific script -->
+<script>
+  $(function () {
+    /* ChartJS
+     * -------
+     * Here we will create a few charts using ChartJS
+     */
+
+    //--------------
+    //- AREA CHART -
+    //--------------
+
+    // Get context with jQuery - using jQuery's .get() method.
+    var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
+
+    var areaChartData = {
+      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      datasets: [
+        {
+          label               : 'Business',
+          backgroundColor     : '#ffd046',
+          borderColor         : '#ffd046',
+          pointRadius          : false,
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : '#ffd046',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : [28, 48, 40, 19, 86, 27, 90]
+        },
+        {
+          label               : 'Patent',
+          backgroundColor     : '#0561ac',
+          borderColor         : '#0561ac',
+          pointRadius         : false,
+          pointColor          : '#0561ac',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(220,220,220,1)',
+          data                : [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+            label               : 'Journals',
+            backgroundColor     : '#d73449',
+            borderColor         : '#d73449',
+            pointRadius         : false,
+            pointColor          : '#d73449',
+            pointStrokeColor    : '#c1c7d1',
+            pointHighlightFill  : '#fff',
+            pointHighlightStroke: 'rgba(220,220,220,1)',
+            data                : [65, 59, 80, 81, 56, 55, 40]
+          },
+      ]
+    }
+
+    var areaChartOptions = {
+      maintainAspectRatio : false,
+      responsive : true,
+      legend: {
+        display: false
+      },
+      scales: {
+        xAxes: [{
+          gridLines : {
+            display : false,
+          }
+        }],
+        yAxes: [{
+          gridLines : {
+            display : false,
+          }
+        }]
+      }
+    }
+
+    // This will get the first returned node in the jQuery collection.
+    new Chart(areaChartCanvas, {
+      type: 'line',
+      data: areaChartData,
+      options: areaChartOptions
+    })
+
+    //-------------
+    //- BAR CHART -
+    //-------------
+    var barChartCanvas = $('#barChart').get(0).getContext('2d')
+    var barChartData = $.extend(true, {}, areaChartData)
+    var temp0 = areaChartData.datasets[0]
+    var temp1 = areaChartData.datasets[1]
+    barChartData.datasets[0] = temp1
+    barChartData.datasets[1] = temp0
+
+    var barChartOptions = {
+      responsive              : true,
+      maintainAspectRatio     : false,
+      datasetFill             : false
+    }
+
+    new Chart(barChartCanvas, {
+      type: 'bar',
+      data: barChartData,
+      options: barChartOptions
+    })
+  })
+</script>
+</body>
+</html>
