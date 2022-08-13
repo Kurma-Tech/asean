@@ -14,14 +14,8 @@
         <!-- Navbar -->
         @include('client/includes/_navigation')
         <!-- /.navbar -->
-
-        <!-- Main Sidebar Container -->
-        @include('client/includes/_sidebar')
-
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper p-3">
-            {{$slot}}
-        </div>
+        
+        {{$slot}}
         <!-- /.content-wrapper -->
 
         @include('client/includes/_footer')
