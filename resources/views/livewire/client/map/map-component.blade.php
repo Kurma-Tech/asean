@@ -14,10 +14,6 @@
     <div class="card">
         <div class="card-header bg-dark text-white py-1">
             <h2 class="text-md m-0 p-0">ASEAN MAP</h2>
-            <p>
-                Long: <input type="text" wire:model='long'>
-                Lat: <input type="text" wire:model='lat'>
-            </p>
         </div>
         <div class="card-body p-1">
             <div wire:ignore id="map"></div>

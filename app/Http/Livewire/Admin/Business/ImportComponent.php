@@ -21,11 +21,6 @@ class ImportComponent extends Component
 
     public $file;
 
-    public $importing = false;
-    public $filePath;
-    public $importFinished = false;
-    public $failed = false;
-
     public $error;
     public $success;
 
@@ -44,7 +39,7 @@ class ImportComponent extends Component
 
         try {
 
-            Excel::import(new BusinessImport, $this->filePath);
+            Excel::import(new BusinessImport, $this->file);
 
             DB::commit();
             
