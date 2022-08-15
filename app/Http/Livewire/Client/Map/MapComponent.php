@@ -12,11 +12,11 @@ class MapComponent extends Component
     private function loadBusinesses()
     {
         $businesses = Business::filter($this->filter)
-                              ->orderBy('created_at', 'DESC')->paginate(2000);
+                              ->orderBy('created_at', 'DESC')->get();
 
         $renderBusinesses = [];
 
-        foreach($businesses->chunk(50) as $row)
+        foreach($businesses->chunk(100) as $row)
         {
             foreach($row as $business)
             {
