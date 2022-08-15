@@ -7,20 +7,39 @@ use Livewire\Component;
 
 class MapComponent extends Component
 {
-    public $long, $lat, $geoJson, $filter;
+    public $long, $lat, $geoJson, $type;
+    protected $filters = [];
 
-    private function loadBusinesses()
+    protected $listeners = ['updateMap' => 'updateMapModel'];
+ 
+    public function updateMapModel($searchString)
     {
-        $businesses = Business::filter($this->filter)
-                              ->orderBy('created_at', 'DESC')->get();
+        $this->filters = Business::filter($searchString)->get();
+        error_log($this->filters->count());
+        $this->loadJsonData();
+        
+    }
 
-        $renderBusinesses = [];
+    public function mount($type)
+    {
+        $this->filters = Business::get();
+        $this->type = $type;
+        $this->loadJsonData();
+    }
 
-        foreach($businesses->chunk(100) as $row)
-        {
-            foreach($row as $business)
+    private function loadJsonData()
+    {
+        $data = [];
+        $data = $this->filters;
+
+        $renderData = [];
+
+        // foreach($data->chunk(100) as $row)
+        // {
+            // Business
+            foreach($data as $business)
             {
-                $renderBusinesses[] = [
+                $renderData[] = [
                     'type' => 'Feature',
                     'geometry' => [
                         'coordinates' => [$business->long, $business->lat],
@@ -38,20 +57,21 @@ class MapComponent extends Component
                     ]
                 ];
             }
-        }
+        // }
 
         $geoLocations = [
             'type' => 'FeatureCollection',
-            'features' => $renderBusinesses
+            'features' => $renderData
         ];
 
         $geoJson = collect($geoLocations)->toJson();
         $this->geoJson = $geoJson;
+
+        $this->emit("mapUpdated", $geoLocations);
     }
 
     public function render()
     {
-        $this->loadBusinesses();
         return view('livewire.client.map.map-component');
     }
 }

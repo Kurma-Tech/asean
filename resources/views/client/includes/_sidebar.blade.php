@@ -1,7 +1,7 @@
         <aside class="main-sidebar sidebar-light-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link">
-                <img src="{{asset('client/dist/img/asean-favicon.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <img src="{{asset('client/dist/img/asean-favicon.png')}}" alt="Asean Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">Aseana</span>
             </a>
 
@@ -11,13 +11,13 @@
                 <!-- SidebarSearch Form -->
                 <div class="form-inline my-2">
                     <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search" wire:model.debounce.300ms='search'>
+                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search" wire:model.debounce.1000ms='search'>
                     </div>
                 </div>
 
                 <div class="search-result-text d-flex justify-content-between">
                     <p>Search Result for Car - All</p>
-                    <!--<p> <a class="" href="report.html"><i class="far fa-chart-bar"></i> 533,872 results</a></p>-->
+                    <p> <a class="" href="javascript::void(0);"><i class="far fa-chart-bar"></i> {{ count($filters_all) }} results</a></p>
                 </div>
 
                 <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
@@ -43,6 +43,10 @@
                             </div>
                         </div>
                         @endforeach
+
+                        <div class="card-footer clearfix">
+                            {{$filters->links('client.render.client-pagination-links')}}
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="patient" role="tabpanel" aria-labelledby="patient-tab">
                         <div class="card">
