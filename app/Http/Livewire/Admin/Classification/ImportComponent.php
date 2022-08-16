@@ -1,16 +1,9 @@
 <?php
 
-namespace App\Http\Livewire\Admin\Business;
+namespace App\Http\Livewire\Admin\Classification;
 
-// use App\Imports\BusinessImport;
-
-use App\Imports\BusinessImport;
-// use App\Jobs\ProcessImport;
-// use App\Models\JobBatch;
-// use Illuminate\Support\Facades\Bus;
-// use App\Jobs\ProcessImport;
+use App\Imports\ClassificationImport;
 use Illuminate\Support\Facades\DB;
-// use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
@@ -31,20 +24,19 @@ class ImportComponent extends Component
         ];
     }
 
-    public function businessImport()
+    public function dataImport()
     {
         $this->validate();
 
         DB::beginTransaction();
-
         try {
 
-            Excel::import(new BusinessImport, $this->file);
+            Excel::import(new ClassificationImport, $this->file);
 
             DB::commit();
             
             $this->reset();
-            $this->success = 'Business Data Imported Successfully';
+            $this->success = 'Classification Data Imported Successfully';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
 
         } catch (\Throwable $th) {
@@ -58,7 +50,7 @@ class ImportComponent extends Component
     public function downloadSample()
     {
         try{
-            return response()->download(storage_path("app\public\business-import-sample.csv"));
+            return response()->download(storage_path("app\public\classification-import-sample.csv"));
             $this->success = 'Sample Downloaded';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
         } catch (\Throwable $th) {
@@ -71,6 +63,6 @@ class ImportComponent extends Component
 
     public function render()
     {
-        return view('livewire.admin.business.import-component');
+        return view('livewire.admin.classification.import-component');
     }
 }

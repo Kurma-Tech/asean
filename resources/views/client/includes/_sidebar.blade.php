@@ -8,15 +8,30 @@
             <!-- Sidebar -->
             <div class="sidebar">
 
-                <!-- SidebarSearch Form -->
-                <div class="form-inline my-2">
-                    <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search" wire:model.debounce.1000ms='search'>
+                <div class="row">
+                    <div class="col-8 col-sm-8">
+                        <!-- SidebarSearch Form -->
+                        <div class="form-inline my-2">
+                            <div class="input-group" data-widget="sidebar-search">
+                                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search" wire:model.debounce.1000ms='search'>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8 col-sm-8">
+                        <div class="form-group">
+                            <label>Filter By:</label>
+                            <select class="form-control" style="width: 100%;" wire:model="sortBy">
+                                <option hidden>Choose Sort By</option>
+                                <option value="1">ASC</option>
+                                <option value="0">DESC</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
+                
 
                 <div class="search-result-text d-flex justify-content-between">
-                    <p>Search Result for Car - All</p>
+                    <p>Search Result for - All</p>
                     <p> <a class="" href="javascript::void(0);"><i class="far fa-chart-bar"></i> {{ count($filters_all) }} results</a></p>
                 </div>
 

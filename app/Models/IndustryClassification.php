@@ -19,14 +19,26 @@ class IndustryClassification extends Model
     {
         return [
             'slug' => [
-                'source'   => 'classifications',
+                'source'   => ['classifications'],
                 'onUpdate' => true,
+                'unique'   => true,
             ]
         ];
+    }
+
+    public static function search($search){
+        return empty($search) ? static::query()
+            : static::query()->where('id', 'like', '%'.$search.'%')
+                ->orWhere('classifications', 'like', '%'.$search.'%')
+                ->orWhere('psic_code', 'like', '%'.$search.'%');
     }
 
     public function businesses()
     {
         return $this->hasMany(Business::class);
+    }
+
+    public function parent(){
+        return $this->hasOne(IndustryClassification::class, "id", "parent_id");
     }
 }
