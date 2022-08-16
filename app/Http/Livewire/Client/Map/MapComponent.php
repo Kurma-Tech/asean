@@ -15,7 +15,6 @@ class MapComponent extends Component
     public function updateMapModel($searchString)
     {
         $this->filters = Business::filter($searchString)->get();
-        error_log($this->filters->count());
         $this->loadJsonData();
         
     }
