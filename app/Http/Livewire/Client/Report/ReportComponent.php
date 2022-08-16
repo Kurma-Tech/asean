@@ -39,12 +39,14 @@ class ReportComponent extends Component
 
     private function getGraph()
     {
-        foreach($this->reportData as $key => $value)
-        {
-            $data['label'][] = $key;
-            $data['data'][] = $value;
+        if(!empty($this->reportData)){
+            foreach($this->reportData as $key => $value)
+            {
+                $data['label'][] = $key;
+                $data['data'][] = $value;
+            }
+            $this->records = $data;
         }
-        $this->records = $data;
     }
 
     public function render()
