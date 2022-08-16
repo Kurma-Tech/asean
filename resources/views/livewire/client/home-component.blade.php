@@ -5,7 +5,7 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12 col-sm-12">
+                    <div class="col-12 col-sm-12" wire:ignore>
                         <div class="card card-primary card-outline card-outline-tabs">
                             <div class="card-header p-0 border-bottom-0">
                                 <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
@@ -23,7 +23,7 @@
                                         @livewire('client.map.map-component', ['type' => $type])
                                     </div>
                                     <div class="tab-pane fade" id="reports-display" role="tabpanel" aria-labelledby="reports-display-tab">
-                                        Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam.
+                                        @livewire('client.report.report-component', ['filters_data' => $filter, 'type' => $type])
                                     </div>
                                 </div>
                             </div>

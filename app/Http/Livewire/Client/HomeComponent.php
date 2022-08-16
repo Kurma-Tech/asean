@@ -22,12 +22,13 @@ class HomeComponent extends Component
         $this->filters_all = $filter->get();
         $this->filters = $filter->paginate($this->per_page);
 
-
         $this->emit('updateMap', $this->search);
+        $this->emit('updateReport');
 
         return view('livewire.client.home-component', [
             'filters' => $this->filters,
             'filters_all' => $this->filters_all,
+            'filter' => $filter,
             'type' => $this->type
         ])->layout('layouts.client');
     }
