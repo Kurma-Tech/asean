@@ -17,13 +17,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-8 col-sm-8">
+                    <div class="col-4 col-sm-4">
                         <div class="form-group">
-                            <label>Filter By:</label>
-                            <select class="form-control" style="width: 100%;" wire:model="sortBy">
-                                <option hidden>Choose Sort By</option>
-                                <option value="1">ASC</option>
-                                <option value="0">DESC</option>
+                            <select class="form-control" style="width: 100%;" wire:model="psic_code">
+                                <option hidden>Choose Psic Code</option>
+                                @foreach($industryClass as $code_list)
+                                <option value="{{ $code_list->psic_code }}">{{ $code_list->psic_code }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
