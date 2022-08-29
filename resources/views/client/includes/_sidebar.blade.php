@@ -19,10 +19,10 @@
                     </div>
                     <div class="col-4 col-sm-4">
                         <div class="form-group">
-                            <select class="form-control" style="width: 100%;" wire:model="psic_code">
-                                <option hidden>Choose Psic Code</option>
-                                @foreach($industryClass as $code_list)
-                                <option value="{{ $code_list->psic_code }}">{{ $code_list->psic_code }}</option>
+                            <select class="form-control" style="width: 100%;" wire:model="parent_id">
+                                <option hidden>Filter Categoiry</option>
+                                @foreach($industryClass as $category)
+                                <option value="{{ $category->id }}">{{ $category->classifications }}</option>
                                 @endforeach
                             </select>
                         </div>

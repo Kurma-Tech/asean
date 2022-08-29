@@ -12,7 +12,7 @@ class HomeComponent extends Component
     use WithPagination;
     
     public $search = '';
-    public $psic_code;
+    public $parent_id;
     public $industryClass;
     public $type;
     public $per_page = 10;
@@ -21,11 +21,11 @@ class HomeComponent extends Component
     
     public function render()
     {
-        if($this->psic_code != '')
+        if($this->parent_id != '')
         {
             $filter = Business::whereHas('industryClassification', function($q)
             {
-                $q->where('psic_code', '=', $this->psic_code);
+                $q->where('parent_id', '=', $this->parent_id);
             });
         } else {
             $filter = Business::filter($this->search);
@@ -34,7 +34,7 @@ class HomeComponent extends Component
         $this->filters_all = $filter->get();
         $this->filters = $filter->paginate($this->per_page);
 
-        $this->industryClass = IndustryClassification::distinct()->whereNotNull('psic_code')->get(['psic_code']);
+        $this->industryClass = IndustryClassification::where('parent_id', Null)->select('id', 'classifications')->get();
 
         $this->emit('updateMap', $this->search);
         $this->emit('updateReport');

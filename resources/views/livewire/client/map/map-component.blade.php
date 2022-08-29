@@ -1,6 +1,6 @@
 @push('extra-styles')
     <!-- mapbox -->
-    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css">
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css">
     <!-- geocoder -->
     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
         type="text/css">
@@ -41,7 +41,7 @@
 
 @push('extra-scripts')
     <!-- mapbox -->
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
     <!-- geocoder -->
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
 
@@ -63,9 +63,14 @@
                 container: "map", // container ID
                 style: "{{ env('MAPBOX_STYLE') }}", // style URL
                 center: [111.09841688936865, 2.37304225637002], // starting position [lng, lat]
-                zoom: 3.69, // starting zoom
-                projection: "equirectangular" // display the map as a 3D globe
+                zoom: 5, // starting zoom
+                projection: "equirectangular", // display the map as a 3D globe
+                maxBounds: [[91.56216158463567, -10.491532410391958], [141.79211516906793, 27.60302090835848]] // Set the map's geographical boundaries.
             });
+
+
+
+            console.log("here")
 
             map.on('moveend', () => {
                 // console.log(currentMarkers);
@@ -86,6 +91,8 @@
                 }).load(geoJson.features);
 
                 const bounds = map.getBounds();
+
+                console.log(bounds);
 
                 var clusters = index.getClusters([bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds
                     .getNorth()
@@ -185,13 +192,14 @@
 
             loadLocations(geoLocations)
 
-            map.on('click', (e) => {
-                const longtitude = e.lngLat.lng
-                const lattitude = e.lngLat.lat
+            // map.on('click', (e) => {
+            //     const longtitude = e.lngLat.lng
+            //     const lattitude = e.lngLat.lat
 
-                @this.long = longtitude
-                @this.lat = lattitude
-            })
+            //     @this.long = longtitude
+            //     @this.lat = lattitude
+            // })
+
         })
 
         Livewire.on('mapUpdated', (data) => {
