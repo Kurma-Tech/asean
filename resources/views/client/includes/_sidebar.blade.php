@@ -1,4 +1,4 @@
-        <aside class="main-sidebar sidebar-light-primary elevation-4">
+        <aside class="main-sidebar sidebar-light-primary elevation-4" style="display: none;">
             <!-- Brand Logo -->
             <a href="#" class="brand-link">
                 <img src="{{asset('client/dist/img/asean-favicon.png')}}" alt="Asean Logo" class="brand-image img-circle elevation-3" style="opacity: .8">

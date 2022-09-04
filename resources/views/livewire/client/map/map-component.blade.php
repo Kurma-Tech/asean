@@ -6,7 +6,7 @@
         type="text/css">
     <style>
         #map {
-            height: 75vh;
+            height: 90vh;
             width: 100%;
         }
 
@@ -25,18 +25,14 @@
             align-items: center;
             justify-content: center;
         }
+        .position-relative {
+            position: relative;
+        }
     </style>
 @endpush
 
 <div>
-    <div class="card">
-        {{-- <div class="card-header bg-dark text-white py-1">
-            <h2 class="text-md m-0 p-0">ASEAN MAP</h2>
-        </div> --}}
-        <div class="card-body p-1">
-            <div wire:ignore id="map"></div>
-        </div>
-    </div>
+    <div wire:ignore id="map"></div>
 </div>
 
 @push('extra-scripts')
@@ -68,17 +64,14 @@
                 maxBounds: [[91.56216158463567, -10.491532410391958], [141.79211516906793, 27.60302090835848]] // Set the map's geographical boundaries.
             });
 
-
-
-            console.log("here")
-
             map.on('moveend', () => {
                 // console.log(currentMarkers);
                 currentMarkers.forEach((marker) => marker.remove())
                 loadLocations(geoLocations);
             });
 
-            
+            // disable map zoom when using scroll
+            // map.scrollZoom.disable();
 
             loadLocations = (geoJson) => {
 
@@ -92,7 +85,7 @@
 
                 const bounds = map.getBounds();
 
-                console.log(bounds);
+                // console.log(bounds);
 
                 var clusters = index.getClusters([bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds
                     .getNorth()

@@ -3,7 +3,7 @@
 <head>
   @include('client/includes/_head')
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition layout-footer-fixed dark-mode layout-navbar-fixed layout-fixed">
     <div class="wrapper">
 
         <!-- Preloader -->

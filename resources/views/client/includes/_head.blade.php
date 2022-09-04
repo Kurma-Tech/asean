@@ -16,6 +16,10 @@
 .warning.active { background-color: #ffc107; color: antiquewhite !important; }
 .danger.active { background-color: #dc3545; color: antiquewhite !important; }
 .info.active { background-color: #17a2b8; color: antiquewhite !important; }
+body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-wrapper, body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-footer, body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-header {
+    transition: margin-left 0.3s ease-in-out;
+    margin-left: 0px;
+}
 </style>
 
 @livewireStyles
