@@ -17,6 +17,7 @@
                 .elevation-2 {box-shadow: 0 0px 6px rgba(0,0,0,0.16),0 3px 3px rgba(0,0,0,.23)!important;}
                 .pull-right{float: right;}
                 .clear-fix{content: '';display: table;clear: both;}
+                .error{color: #bd2130;}
         </style>
 
         @livewireStyles

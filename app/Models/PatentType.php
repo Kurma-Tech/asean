@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class BusinessType extends Model
+class PatentType extends Model
 {
-    use HasFactory, SoftDeletes, sluggable, SluggableScopeHelpers;
-
-    protected $table = "business_types";
+    use HasFactory, SoftDeletes, Sluggable, SluggableScopeHelpers;
+    
+    protected $table = "patent_types";
     protected $guarded = ['id'];
     protected $dates = ['deleted_at'];
 
@@ -30,10 +30,5 @@ class BusinessType extends Model
         return empty($search) ? static::query()
             : static::query()->where('id', 'like', '%'.$search.'%')
                 ->orWhere('type', 'like', '%'.$search.'%');
-    }
-
-    public function businesses()
-    {
-        return $this->hasMany(Business::class);
     }
 }

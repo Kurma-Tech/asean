@@ -1,3 +1,5 @@
+@section('title', 'Patent List')
+
 <div>
     <!-- Main content -->
     <div class="content">
@@ -69,27 +71,32 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>ID</th>
                                         <th>Title</th>
-                                        <th>App Number</th>
-                                        <th>Applicant</th>
+                                        <th>Kind</th>
+                                        <th>Type</th>
                                         <th>Date</th>
-                                        <th>Status</th>
+                                        <th>Lat-Lon</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr data-widget="expandable-table" aria-expanded="false">
                                         <td>1</td>
-                                        <td>Integrated fully-integrated elevator car and work method thereof</td>
-                                        <td>567FGUJKHG</td>
+                                        <td>7473386</td>
+                                        <td>Mold for tire</td>
                                         <td>
-                                            Honda Motors llc
+                                            B2
                                         </td>
                                         <td>
-                                            2019/08/22
+                                            utility
                                         </td>
                                         <td>
-                                            <span class="badge badge-success">Active</span>
+                                            2009-01-06
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-info">6.40308</span>
+                                            <span class="badge badge-primary">101.707</span>
                                         </td>
                                         <td>
                                             <a href="#" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i></a>
@@ -107,12 +114,9 @@
                                                         <p>The invention provides an integrated fully-integrated elevator car and a work method thereof. The integrated fully-integrated elevator ca comprises a car top plate, a car bottom plate, a car left wallplate and a car right car plate, and the car left wall plate and the car right wall plate are arranged between the car top plate and the car bottom plate. The front side of the car left wall plate and the front side of the car right wall plate are fixedly connected with a front wall, and the car top plate comprises a fixed car top plate body and a movable car top plate body hinged to the rear side of the fixed car top plate body. The car bottom plate comprises a fixed car bottom plate body and a movable car bottom plate body hinged to the rear side of the fixed car bottom plate body. The carright wall plate comprises a fixed right car wall and a movable right car wall hinged to the fixed right car wall. The car left wall plate comprises a fixed left car wall and a movable left car wall hinged to the rear side of the fixed left car wall. The movable car top plate body, the fixed car bottom plate body, the fixed right car wall and the fixed left car wall are integrated, and an openingfor allowing personnel to get in and out is reserved in the middle of the front wall. According to the integrated fully-integrated elevator car and the work method thereof, the foldable structure is utilized, the elevator car can conveniently enter a built door of a villa and enter a room, the elevator mounting workload is reduced, and the labor charges are reduced.</p>
                                                     </div>
                                                 </li>
-
                                             </ul>
                                         </td>
                                     </tr>
-
-
                                 </tbody>
                             </table>
                         </div>

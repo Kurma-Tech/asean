@@ -1,4 +1,4 @@
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-success elevation-4">
             <!-- Brand Logo -->
             <a href="index3.html" class="brand-link">
                 <img src="{{asset('admin/dist/img/asean-favicon.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -31,6 +31,25 @@
                                     Dashboard
                                 </p>
                             </a>
+                        </li>
+                        <li class="nav-header">ASEAN COUNTRIES</li>
+                        <li class="nav-item {{ (request()->routeIs('admin.countries*')) ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ (request()->routeIs('admin.countries*')) ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-copy"></i>
+                                <p>
+                                    Countries
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route('admin.countries.list')}}" class="nav-link {{ (request()->routeIs('admin.countries.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-info"></i>
+                                        <p>View All</p>
+                                        <span class="badge badge-danger right">New</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-header">DATA</li>
                         <li class="nav-item {{ (request()->routeIs('admin.business*')) ? 'menu-open' : '' }}">
@@ -154,62 +173,53 @@
                                 </li> --}}
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link {{ (request()->routeIs('admin.journals*')) ? 'active' : '' }}">
+                        <li class="nav-item {{ (request()->routeIs('admin.typeBusiness*')) ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ (request()->routeIs('admin.typeBusiness*')) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>
-                                    Services
+                                    Business Type
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{route('admin.journals.list')}}" class="nav-link {{ (request()->routeIs('admin.journals.list')) ? 'active' : '' }}">
+                                    <a href="{{route('admin.typeBusiness.list')}}" class="nav-link {{ (request()->routeIs('admin.typeBusiness.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-info"></i>
                                         <p>View All</p>
-                                        <span class="badge badge-danger right">New</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{route('admin.journals.add')}}" class="nav-link {{ (request()->routeIs('admin.journals.add')) ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-circle text-success"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{route('admin.journals.trashed')}}" class="nav-link {{ (request()->routeIs('admin.journals.trashed')) ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-circle text-danger"></i>
-                                        <p>Trashed Data</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link {{ (request()->routeIs('admin.journals*')) ? 'active' : '' }}">
+                        <li class="nav-item {{ (request()->routeIs('admin.typePatent*')) ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ (request()->routeIs('admin.typePatent*')) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>
-                                    Products
+                                    Patent Types
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{route('admin.journals.list')}}" class="nav-link {{ (request()->routeIs('admin.journals.list')) ? 'active' : '' }}">
+                                    <a href="{{route('admin.typePatent.list')}}" class="nav-link {{ (request()->routeIs('admin.typePatent.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-info"></i>
                                         <p>View All</p>
-                                        <span class="badge badge-danger right">New</span>
                                     </a>
                                 </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item {{ (request()->routeIs('admin.kindPatent*')) ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ (request()->routeIs('admin.kindPatent*')) ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-copy"></i>
+                                <p>
+                                    Patent Kinds
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{route('admin.journals.add')}}" class="nav-link {{ (request()->routeIs('admin.journals.add')) ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-circle text-success"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{route('admin.journals.trashed')}}" class="nav-link {{ (request()->routeIs('admin.journals.trashed')) ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-circle text-danger"></i>
-                                        <p>Trashed Data</p>
+                                    <a href="{{route('admin.kindPatent.list')}}" class="nav-link {{ (request()->routeIs('admin.kindPatent.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-info"></i>
+                                        <p>View All</p>
                                     </a>
                                 </li>
                             </ul>
