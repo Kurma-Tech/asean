@@ -139,7 +139,7 @@
         <section class="content p-0">
             <div class="container-fluid p-0">
                 <div class="row m-0">
-                    <div class="col-12 col-sm-12 position-relative overflow-control p-0" wire:ignore>
+                    <div class="col-12 col-sm-12 position-relative overflow-control p-0">
                         @livewire('client.map.map-component', ['type' => $type])
                         <div class="map-overlay-box" id="map-overlay-scroll">
                             <h1 class="overlay-title">Asean</h1>
@@ -149,14 +149,14 @@
                             <div id="chart"></div>
                         </div>
                         <a id="filter-toggle" href="#" class="toggle square"><i class="fas fa-filter fa-lg" aria-hidden="true"></i></a>
-                        <div id="filter-wrapper">
+                        <div id="filter-wrapper" wire:ignore.self>
                             <a id="close-filter" href="#" class="toggle square"><i class="fa fa-times fa-lg"></i></a>
                             <h5>Filter Options</h5>
                             <hr class="mb-2">
                             <div class="filter-inputs">
                                 <div class="form-group">
-                                    <label>Sort by Countries:</label>
-                                    <select class="form-control" style="width: 100%;">
+                                    <label>Sort by Countries: {{$type}}</label>
+                                    <select class="form-control" style="width: 100%;" wire:model="type">
                                         <option hidden>Choose Countries</option>
                                         <option value="Brunei">Brunei</option>
                                         <option value="Cambodia">Cambodia</option>
