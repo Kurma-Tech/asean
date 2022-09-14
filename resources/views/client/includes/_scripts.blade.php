@@ -29,7 +29,7 @@ $.widget.bridge('uibutton', $.ui.button)
         enableScroll(); // enable scroll
         $('html, body').animate({
             scrollTop: $("#reportSection").offset().top
-        }, 2000);
+        }, 1000);
         disableScroll(); // disable scroll
     });
 
@@ -37,7 +37,7 @@ $.widget.bridge('uibutton', $.ui.button)
         enableScroll(); // enable scroll
         $('html, body').animate({
             scrollTop: $("#mapSection").offset().top-45
-        }, 2000);
+        }, 1000);
         disableScroll(); // disable scroll
     });
 

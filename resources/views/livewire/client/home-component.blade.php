@@ -8,7 +8,7 @@
         <section class="content p-0">
             <div class="container-fluid p-0">
                 <div class="row m-0">
-                    <div class="col-12 col-sm-12 position-relative overflow-control p-0">
+                    <div class="col-12 col-sm-12 position-relative overflow-control p-0" id="mapSection">
                         @livewire('client.map.map-component', ['type' => $type])
                         <div class="map-overlay-box" id="map-overlay-scroll">
                             <h1 class="overlay-title">Asean</h1>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-12 p-3" id="reportSection" wire:ignore>
+                    <div class="col-12 col-sm-12 p-3 scroll-element" id="reportSection" wire:ignore>
                         @livewire('client.report.report-component', ['type' => $type])
                     </div>
                 </div>

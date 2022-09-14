@@ -29,6 +29,10 @@
         .position-relative {
             position: relative;
         }
+        .mapboxgl-popup-content {
+            width: max-content;
+            padding-top: 18px;
+        }
     </style>
 @endpush
 

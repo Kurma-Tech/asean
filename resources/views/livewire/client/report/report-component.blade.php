@@ -2,10 +2,9 @@
     <div class="row">
         <div class="col-12 col-sm-12 p-3">
             <h3>Current Report</h3>
-            <div class="pull-right btn btn-success btn-sm" id="view-map-element">
+            <div class="btn btn-success btn-sm" id="view-map-element">
                 View Map
             </div>
-            <div class="clearfix"></div>
         </div>
     </div>
     <div class="row">
@@ -25,9 +24,59 @@
         </div>
         <div class="col-md-12 col-sm-12" wire:ignore>
             <div class="card">
-                  <div class="card-body">
-                      <div id="country-wise-chart"></div>
-                  </div>
+                <div class="card-body">
+                    <div id="country-wise-chart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12" wire:ignore>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Business Statistics</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Year</th>
+                                <th>No. Business Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-widget="expandable-table" aria-expanded="false">
+                                <td>1</td>
+                                <td>2011</td>
+                                <td>11033</td>
+                            </tr>
+                            <tr class="expandable-body d-none">
+                                <td colspan="8">
+                                    <ul class="products-list product-list-in-card pl-2 pr-2">
+                                        <li class="item">
+                                            <div class="product-info">
+                                                <div class="product-title">
+                                                    Professional Manpower
+                                                </div>
+                                                <span class="badge badge-info badge-xs">40 Software Engineer</span>
+                                                <span class="badge badge-info badge-xs">3 Quality Assurance</span>
+                                                <span class="badge badge-info badge-xs">6 Human Resources</span>
+                                            </div>
+                                        </li>
+                                        <li class="item">
+                                            <div class="product-info">
+                                                <div class="product-title">
+                                                    Skill Manpower
+                                                </div>
+                                                <span class="badge badge-primary badge-xs">2 Cook</span>
+                                                <span class="badge badge-primary badge-xs">2 Cleaner</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -183,53 +232,55 @@
 
         // Country Wise
         var CountryWiseChartOptions = {
-          series: [{
-          name: 'Net Profit',
-          data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-        }, {
-          name: 'Revenue',
-          data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-        }, {
-          name: 'Free Cash Flow',
-          data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-        }],
-          chart: {
-          type: 'bar',
-          height: 350
-        },
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            columnWidth: '55%',
-            endingShape: 'rounded'
-          },
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          show: true,
-          width: 2,
-          colors: ['transparent']
-        },
-        xaxis: {
-          categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-        },
-        yaxis: {
-          title: {
-            text: '$ (thousands)'
-          }
-        },
-        fill: {
-          opacity: 1
-        },
-        tooltip: {
-          y: {
-            formatter: function (val) {
-              return "$ " + val + " thousands"
+            series: [{
+                name: 'Business',
+                data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+            }, {
+                name: 'Patent',
+                data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+            }, {
+                name: 'Journal',
+                data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+            }],
+            chart: {
+                type: 'bar',
+                foreColor: '#fff',
+                height: 350
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                    endingShape: 'rounded'
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                show: true,
+                width: 2,
+                colors: ['transparent']
+            },
+            xaxis: {
+                categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+            },
+            yaxis: {
+                title: {
+                    text: 'Yearly Growth',
+                    color: '#fff'
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                y: {
+                    formatter: function(val) {
+                        return "$ " + val + " thousands"
+                    }
+                }
             }
-          }
-        }
         };
 
         var CountryWiseChart = new ApexCharts(document.querySelector("#country-wise-chart"), CountryWiseChartOptions);

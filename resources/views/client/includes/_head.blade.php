@@ -120,7 +120,25 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
     }
     #reportSection {
         height: 90vh;
+        overflow-y: scroll;
     }
+    #reportSection::-webkit-scrollbar-track
+    {
+        background-color: hsl(0deg 0% 2%);
+    }
+
+    #reportSection::-webkit-scrollbar
+    {
+        width: 6px;
+        background-color: #F5F5F5;
+    }
+
+    #reportSection::-webkit-scrollbar-thumb
+    {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+        background-color: hsl(18deg 3% 6%);
+    }
+
     .remove-scrolling { 
         height: 100%; 
         overflow: hidden; 
