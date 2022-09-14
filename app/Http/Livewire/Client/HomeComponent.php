@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Client;
 
 use App\Models\Business;
 use App\Models\IndustryClassification;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -14,10 +15,19 @@ class HomeComponent extends Component
     public $search = '';
     public $parent_id;
     public $industryClass;
-    public $type;
+    public $type = 'Brunei';
     public $per_page = 10;
     private $filters = [];
     private $filters_all = [];
+
+
+    public function updatedType($type)
+    {
+        $this->type = $type;
+        Log::info($type);
+        $this->emit('type_updated', $type);
+        
+    }
     
     public function render()
     {
@@ -43,7 +53,7 @@ class HomeComponent extends Component
             'filters' => $this->filters,
             'filters_all' => $this->filters_all,
             'filter' => $filter,
-            'type' => $this->type,
+            // 'type' => $this->type,
             'industryClass' => $this->industryClass
         ])->layout('layouts.client');
     }
