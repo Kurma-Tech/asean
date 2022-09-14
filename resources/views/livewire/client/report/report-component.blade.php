@@ -3,179 +3,236 @@
         <div class="col-12 col-sm-12 p-3">
             <h3>Current Report</h3>
             <div class="pull-right btn btn-success btn-sm" id="view-map-element">
-              View Map
+                View Map
             </div>
             <div class="clearfix"></div>
         </div>
     </div>
     <div class="row">
-        <div class="col-6 col-sm-6" wire:ignore>
-            <div id="scatter-datetime-chart"></div>
+        <div class="col-md-6 col-sm-12" wire:ignore>
+            <div class="card">
+                <div class="card-body">
+                    <div id="forcast-chart"></div>
+                </div>
+            </div>
         </div>
-        <div class="col-6 col-sm-6" wire:ignore>
-            <div id="line-chart"></div>
+        <div class="col-md-6 col-sm-12" wire:ignore>
+            <div class="card">
+                <div class="card-body">
+                    <div id="line-chart"></div>
+                </div>
+            </div>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12">
-
+        <div class="col-md-12 col-sm-12" wire:ignore>
+            <div class="card">
+                  <div class="card-body">
+                      <div id="country-wise-chart"></div>
+                  </div>
+            </div>
         </div>
     </div>
 </div>
 
 @push('extra-scripts')
     <script>
-        function generateDayWiseTimeSeries(baseval, count, yrange) {
-            var i = 0;
-            var series = [];
-            while (i < count) {
-            var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-        
-            series.push([baseval, y]);
-            baseval += 86400000;
-            i++;
-            }
-            return series;
-        }
         // var record = @json($records);
-        var scatterDateTimeChartOption = {
-          series: [{
-            name: 'Business',
-            data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-              min: 10,
-              max: 60
-            })
-          },
-          {
-            name: 'Patent',
-            data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-              min: 10,
-              max: 60
-            })
-          },
-          {
-            name: 'Journals',
-            data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 30, {
-              min: 10,
-              max: 60
-            })
-          },
-        ],
-          chart: {
-          height: 350,
-          type: 'scatter',
-          zoom: {
-            type: 'xy'
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        grid: {
-          xaxis: {
-            lines: {
-              show: true
+
+        // Forcast
+        var forcastChartOptions = {
+            series: [{
+                name: 'Data Forcast',
+                data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 9, 17, 2, 7, 5]
+            }],
+            chart: {
+                height: 350,
+                type: 'line',
+                foreColor: '#fff',
+            },
+            forecastDataPoints: {
+                count: 7
+            },
+            stroke: {
+                width: 5,
+                curve: 'smooth'
+            },
+            xaxis: {
+                type: 'datetime',
+                categories: ['1/11/2000', '2/11/2000', '3/11/2000', '4/11/2000', '5/11/2000', '6/11/2000', '7/11/2000',
+                    '8/11/2000', '9/11/2000', '10/11/2000', '11/11/2000', '12/11/2000', '1/11/2001', '2/11/2001',
+                    '3/11/2001', '4/11/2001', '5/11/2001', '6/11/2001'
+                ],
+                tickAmount: 10,
+                labels: {
+                    formatter: function(value, timestamp, opts) {
+                        return opts.dateFormatter(new Date(timestamp), 'dd MMM')
+                    }
+                }
+            },
+            title: {
+                text: 'Forecast',
+                align: 'left',
+                style: {
+                    fontSize: "16px",
+                    color: '#fff'
+                }
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shade: 'dark',
+                    gradientToColors: ['#FDD835'],
+                    shadeIntensity: 1,
+                    type: 'horizontal',
+                    opacityFrom: 1,
+                    opacityTo: 1,
+                    stops: [0, 100, 100, 100]
+                },
+            },
+            yaxis: {
+                min: -10,
+                max: 40
             }
-          },
-          yaxis: {
-            lines: {
-              show: true
-            }
-          },
-        },
-        xaxis: {
-          type: 'datetime',
-        },
-        yaxis: {
-          max: 70
-        }
         };
 
-        var scatterDateTimeChart = new ApexCharts(document.querySelector("#scatter-datetime-chart"), scatterDateTimeChartOption);
-        scatterDateTimeChart.render();
+        var forcastChart = new ApexCharts(document.querySelector("#forcast-chart"), forcastChartOptions);
+        forcastChart.render();
 
         // Line Draw
         var lineChartOptions = {
+            series: [{
+                    name: "Business",
+                    data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
+                },
+                {
+                    name: "Patent",
+                    data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35]
+                },
+                {
+                    name: 'Journal',
+                    data: [87, 57, 74, 99, 75, 38, 62, 47, 82, 56, 45, 47]
+                }
+            ],
+            chart: {
+                height: 350,
+                type: 'line',
+                foreColor: '#fff',
+                zoom: {
+                    enabled: false
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                width: [3, 3, 3],
+                curve: 'straight',
+                dashArray: [0, 0, 0]
+            },
+            title: {
+                text: 'Page Statistics',
+                align: 'left'
+            },
+            legend: {
+                tooltipHoverFormatter: function(val, opts) {
+                    return val + ' - ' + opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] + ''
+                }
+            },
+            markers: {
+                size: 0,
+                hover: {
+                    sizeOffset: 6
+                }
+            },
+            xaxis: {
+                categories: ['01 Jan', '02 Jan', '03 Jan', '04 Jan', '05 Jan', '06 Jan', '07 Jan', '08 Jan', '09 Jan',
+                    '10 Jan', '11 Jan', '12 Jan'
+                ],
+            },
+            colors: ['#ffd600', '#b71c1c', '#01579b'],
+            tooltip: {
+                y: [{
+                        title: {
+                            formatter: function(val) {
+                                return val + " (mins)"
+                            }
+                        }
+                    },
+                    {
+                        title: {
+                            formatter: function(val) {
+                                return val + " per session"
+                            }
+                        }
+                    },
+                    {
+                        title: {
+                            formatter: function(val) {
+                                return val;
+                            }
+                        }
+                    }
+                ]
+            },
+            grid: {
+                borderColor: '#f1f1f1',
+            }
+        };
+
+        var lineChart = new ApexCharts(document.querySelector("#line-chart"), lineChartOptions);
+        lineChart.render();
+
+        // Country Wise
+        var CountryWiseChartOptions = {
           series: [{
-            name: "Session Duration",
-            data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
-          },
-          {
-            name: "Page Views",
-            data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35]
-          },
-          {
-            name: 'Total Visits',
-            data: [87, 57, 74, 99, 75, 38, 62, 47, 82, 56, 45, 47]
-          }
-        ],
+          name: 'Net Profit',
+          data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+        }, {
+          name: 'Revenue',
+          data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+        }, {
+          name: 'Free Cash Flow',
+          data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+        }],
           chart: {
-          height: 350,
-          type: 'line',
-          zoom: {
-            enabled: false
+          type: 'bar',
+          height: 350
+        },
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            columnWidth: '55%',
+            endingShape: 'rounded'
           },
         },
         dataLabels: {
           enabled: false
         },
         stroke: {
-          width: [5, 7, 5],
-          curve: 'straight',
-          dashArray: [0, 8, 5]
-        },
-        title: {
-          text: 'Page Statistics',
-          align: 'left'
-        },
-        legend: {
-          tooltipHoverFormatter: function(val, opts) {
-            return val + ' - ' + opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] + ''
-          }
-        },
-        markers: {
-          size: 0,
-          hover: {
-            sizeOffset: 6
-          }
+          show: true,
+          width: 2,
+          colors: ['transparent']
         },
         xaxis: {
-          categories: ['01 Jan', '02 Jan', '03 Jan', '04 Jan', '05 Jan', '06 Jan', '07 Jan', '08 Jan', '09 Jan',
-            '10 Jan', '11 Jan', '12 Jan'
-          ],
+          categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+        },
+        yaxis: {
+          title: {
+            text: '$ (thousands)'
+          }
+        },
+        fill: {
+          opacity: 1
         },
         tooltip: {
-          y: [
-            {
-              title: {
-                formatter: function (val) {
-                  return val + " (mins)"
-                }
-              }
-            },
-            {
-              title: {
-                formatter: function (val) {
-                  return val + " per session"
-                }
-              }
-            },
-            {
-              title: {
-                formatter: function (val) {
-                  return val;
-                }
-              }
+          y: {
+            formatter: function (val) {
+              return "$ " + val + " thousands"
             }
-          ]
-        },
-        grid: {
-          borderColor: '#f1f1f1',
+          }
         }
         };
 
-        var lineChart = new ApexCharts(document.querySelector("#line-chart"), lineChartOptions);
-        lineChart.render();
+        var CountryWiseChart = new ApexCharts(document.querySelector("#country-wise-chart"), CountryWiseChartOptions);
+        CountryWiseChart.render();
     </script>
 @endpush

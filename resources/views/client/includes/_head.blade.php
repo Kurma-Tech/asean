@@ -125,6 +125,14 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
         height: 100%; 
         overflow: hidden; 
     }
+    .view-report {
+        cursor: pointer;
+        border-bottom: 1px dashed;
+        font-size: 17px;
+        line-height: 21px;
+        color: #e92063;
+        display: inline-block;
+    }
 </style>
 
 @livewireStyles
