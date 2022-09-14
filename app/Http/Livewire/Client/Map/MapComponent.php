@@ -9,39 +9,49 @@ use Livewire\Component;
 
 class MapComponent extends Component
 {
-    public $long, $lat, $geoJson, $type, $patentJson;
+    public $long, $lat, $geoJson, $type, $country, $classification, $patentJson, $isLoading = false;
     protected $filters = [];
     protected $patents = [];
 
-    protected $listeners = ['updateMap' => 'updateMapModel', 'type_updated' => 'updatedType'];
+    protected $listeners = ['country_updated' => 'updatedCountry', 'type_updated' => 'updatedType', 'classification_updated' => 'updatedClassification'];
 
-    public function updateMapModel($searchString)
+    public function mount($type, $country, $classification)
     {
-        $this->filters = Business::filter($searchString)->get();
+        $this->country = $country;
+        $this->type = $type;
+        $this->classification = $classification;
+        if ($country != null) {
+            if ($this->type == "business" && $this->classification != null) {
+                $this->filters = Business::where(['country_id' => $country, 'industry_classification_id' => $this->classification])->get();
+            } else {
+                $this->filters = Business::where('country_id', $country)->get();
+            }
+        } else {
+            if ($this->type == "business" && $this->classification != null) {
+                $this->filters = Business::where(['industry_classification_id' => $this->classification])->get();
+            } else {
+                $this->filters = Business::get();
+            }
+        }
+        $this->patents = Patent::get();
+        $this->country = $country;
         $this->loadJsonData();
+        $this->emit("loader_off");
     }
 
-    public function mount($type)
+    public function updatedCountry($country)
     {
-        $this->filters = Business::get();
-        $this->patents = Patent::get();
-        $this->type = $type;
-        
-        if($type == "Laos"){
-            $this->geoJson = collect([])->toJson();
-            $this->patentJson = collect([])->toJson();
-        }else{
-            $this->loadJsonData();
-        }
-        // $this->emit("mapUpdated");
-        $this->emit("mapUpdated", ["geoJson" => $this->geoJson, "patentJson" => $this->patentJson]);
-        
+        $this->mount($this->type, $country, $this->classification);
     }
 
     public function updatedType($type)
     {
-        $this->type = $type;
-        $this->mount($type);
+        $this->mount($type, $this->country, $this->classification);
+    }
+
+    public function updatedClassification($classification)
+    {
+        $this->mount($this->type, $this->country, $classification);
     }
 
     private function loadJsonData()
@@ -49,65 +59,76 @@ class MapComponent extends Component
         $data = [];
         $data = $this->filters;
 
-        $renderData = [];
-        $patentData = [];
 
-        // foreach($data->chunk(100) as $row)
-        // {
-        // Business
-        foreach ($data as $business) {
-            $renderData[] = [
-                'type' => 'Feature',
-                'geometry' => [
-                    'coordinates' => [$business->long, $business->lat],
-                    'type' => 'Point',
-                ],
-                'properties' => [
-                    'locationId' => $business->id,
-                    'company_name' => $business->company_name ?? 'No Data',
-                    'date_registerd' => $business->date_registered ?? 'No Data',
-                    'ngc_code' => $business->ngc_code ?? 'No Data',
-                    'address' => $business->address ?? 'No Data',
-                    'business_type' => $business->businessType->type ?? 'No Data',
-                    'industry_classification' => $business->industryClassification->classifications ?? 'No Data',
-                    'industry_description' => $business->industry_description ?? 'No Data',
-                ]
-            ];
-        }
-        // }
+        if ($this->type == "all" || $this->type == "business") {
+            $businessData = [];
 
-        foreach ($this->patents as $patent) {
-            $patentData[] = [
-                'type' => 'Feature',
-                'geometry' => [
-                    'coordinates' => [$patent->long, $patent->lat],
-                    'type' => 'Point',
-                ],
-                'properties' => [
-                    'id' => $patent->id,
-                    'patent_id' => $patent->patent_id,
-                    'title' => $patent->title ?? 'No Data',
-                    'date_registerd' => $patent->date ?? 'No Data'
-                ]
+            foreach ($data as $business) {
+                $businessData[] = [
+                    'type' => 'Feature',
+                    'geometry' => [
+                        'coordinates' => [$business->long, $business->lat],
+                        'type' => 'Point',
+                    ],
+                    'properties' => [
+                        'locationId' => $business->id,
+                        'company_name' => $business->company_name ?? 'No Data',
+                        'date_registerd' => $business->date_registered ?? 'No Data',
+                        'ngc_code' => $business->ngc_code ?? 'No Data',
+                        'address' => $business->address ?? 'No Data',
+                        'business_type' => $business->businessType->type ?? 'No Data',
+                        'industry_classification' => $business->industryClassification->classifications ?? 'No Data',
+                        'industry_description' => $business->industry_description ?? 'No Data',
+                    ]
+                ];
+            }
+
+            $geoLocations = [
+                'type' => 'FeatureCollection',
+                'features' => $businessData
             ];
+
+            $geoJson = collect($geoLocations)->toJson();
+            $this->geoJson = $geoJson;
+        } else {
+            $geoLocations = null;
         }
 
-        $geoLocations = [
-            'type' => 'FeatureCollection',
-            'features' => $renderData
-        ];
 
-        $patentGeoLocations = [
-            'type' => 'FeatureCollection',
-            'features' => $patentData
-        ];
+        if ($this->type == "all" || $this->type == "patent") {
+            $patentData = [];
 
-        $geoJson = collect($geoLocations)->toJson();
-        $this->geoJson = $geoJson;
-        $patentJson = collect($patentGeoLocations)->toJson();
-        $this->patentJson = $patentJson;
+            foreach ($this->patents as $patent) {
+                $patentData[] = [
+                    'type' => 'Feature',
+                    'geometry' => [
+                        'coordinates' => [$patent->long, $patent->lat],
+                        'type' => 'Point',
+                    ],
+                    'properties' => [
+                        'id' => $patent->id,
+                        'patent_id' => $patent->patent_id,
+                        'title' => $patent->title ?? 'No Data',
+                        'date_registerd' => $patent->date ?? 'No Data'
+                    ]
+                ];
+            }
 
-        // $this->emit("mapUpdated", ["businessData" => $geoLocations, "patentData" => $patentGeoLocations]);
+            $patentGeoLocations = [
+                'type' => 'FeatureCollection',
+                'features' => $patentData
+            ];
+
+            $patentJson = collect($patentGeoLocations)->toJson();
+            $this->patentJson = $patentJson;
+        } else {
+            $patentGeoLocations = null;
+        }
+        // dd( count($businessData ?? []) + count($patentData ?? []));
+
+        $this->emit("resultsUpdated", count($businessData ?? []) + count($patentData ?? []));
+
+        $this->emit("mapUpdated", ["geoJson" => $geoLocations, "patentJson" => $patentGeoLocations]);
     }
 
     public function render()
