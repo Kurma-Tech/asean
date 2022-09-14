@@ -1,154 +1,181 @@
 <div>
     <div class="row">
-        <div class="col-6 col-sm-6">
-            <div class="card">
-                <div class="card-header border-transparent">
-                    <h3 class="card-title">Report Data</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table m-0">
-                            <thead>
-                                <tr>
-                                    <th>Year</th>
-                                    <th>Total Business</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($reportData as $key => $value)
-                                <tr>
-                                    <td>{{$key}}</td>
-                                    <td>{{$value}}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- /.table-responsive -->
-                </div>
+        <div class="col-12 col-sm-12 p-3">
+            <h3>Current Report</h3>
+            <div class="pull-right btn btn-success btn-sm" id="view-map-element">
+              View Map
             </div>
-
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 col-sm-6" wire:ignore>
+            <div id="scatter-datetime-chart"></div>
         </div>
         <div class="col-6 col-sm-6" wire:ignore>
-            <!-- solid sales graph -->
-            <div class="card bg-gradient-info">
-                <div class="card-header border-0">
-                    <h3 class="card-title">
-                        <i class="fas fa-th mr-1"></i>
-                        Market Graph
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <canvas class="chart" id="line-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer bg-transparent">
-                    <div class="row">
-                        <div class="col-4 text-center">
-                            <input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60" data-fgColor="#39CCCC">
+            <div id="line-chart"></div>
+        </div>
+    </div>
 
-                            <div class="text-white">Business</div>
-                        </div>
-                        <!-- ./col -->
-                        <div class="col-4 text-center">
-                            <input type="text" class="knob" data-readonly="true" value="50" data-width="60" data-height="60" data-fgColor="#39CCCC">
+    <div class="row">
+        <div class="col-12">
 
-                            <div class="text-white">Patient</div>
-                        </div>
-                        <!-- ./col -->
-                        <div class="col-4 text-center">
-                            <input type="text" class="knob" data-readonly="true" value="30" data-width="60" data-height="60" data-fgColor="#39CCCC">
-
-                            <div class="text-white">Journals</div>
-                        </div>
-                        <!-- ./col -->
-                    </div>
-                    <!-- /.row -->
-                </div>
-                <!-- /.card-footer -->
-            </div>
-            <!-- /.card -->
         </div>
     </div>
 </div>
 
 @push('extra-scripts')
-    <!-- ChartJS -->
-    <script src="{{asset('plugins/chart.js/Chart.min.js')}}"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="{{asset('plugins/jquery-knob/jquery.knob.min.js')}}"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    {{-- <script src="{{asset('client/dist/js/home.js')}}"></script> --}}
     <script>
-        $(function () {
-            var record = @json($records);
-
-            'use strict'
-            /* jQueryKnob */
-            $('.knob').knob()
-
-            // Sales graph chart
-            var salesGraphChartCanvas = $('#line-chart').get(0).getContext('2d')
-            // $('#revenue-chart').get(0).getContext('2d');
-
-            var salesGraphChartData = {
-                labels: record.label,
-                datasets: [
-                {
-                    label: 'Business',
-                    fill: false,
-                    borderWidth: 2,
-                    lineTension: 0,
-                    spanGaps: true,
-                    borderColor: '#efefef',
-                    pointRadius: 3,
-                    pointHoverRadius: 7,
-                    pointColor: '#efefef',
-                    pointBackgroundColor: '#efefef',
-                    data: record.data
-                }
-                ]
+        function generateDayWiseTimeSeries(baseval, count, yrange) {
+            var i = 0;
+            var series = [];
+            while (i < count) {
+            var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+        
+            series.push([baseval, y]);
+            baseval += 86400000;
+            i++;
             }
-
-            var salesGraphChartOptions = {
-                maintainAspectRatio: false,
-                responsive: true,
-                legend: {
-                display: false
-                },
-                scales: {
-                xAxes: [{
-                    ticks: {
-                    fontColor: '#efefef'
-                    },
-                    gridLines: {
-                    display: true,
-                    color: '#efefef',
-                    drawBorder: false
-                    }
-                }],
-                yAxes: [{
-                    ticks: {
-                    stepSize: 500,
-                    fontColor: '#efefef'
-                    },
-                    gridLines: {
-                    display: true,
-                    color: '#efefef',
-                    drawBorder: false
-                    }
-                }]
-                }
-            }
-
-            // This will get the first returned node in the jQuery collection.
-            // eslint-disable-next-line no-unused-vars
-            var salesGraphChart = new Chart(salesGraphChartCanvas, { // lgtm[js/unused-local-variable]
-                type: 'line',
-                data: salesGraphChartData,
-                options: salesGraphChartOptions
+            return series;
+        }
+        // var record = @json($records);
+        var scatterDateTimeChartOption = {
+          series: [{
+            name: 'Business',
+            data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
+              min: 10,
+              max: 60
             })
-        })
+          },
+          {
+            name: 'Patent',
+            data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
+              min: 10,
+              max: 60
+            })
+          },
+          {
+            name: 'Journals',
+            data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 30, {
+              min: 10,
+              max: 60
+            })
+          },
+        ],
+          chart: {
+          height: 350,
+          type: 'scatter',
+          zoom: {
+            type: 'xy'
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        grid: {
+          xaxis: {
+            lines: {
+              show: true
+            }
+          },
+          yaxis: {
+            lines: {
+              show: true
+            }
+          },
+        },
+        xaxis: {
+          type: 'datetime',
+        },
+        yaxis: {
+          max: 70
+        }
+        };
+
+        var scatterDateTimeChart = new ApexCharts(document.querySelector("#scatter-datetime-chart"), scatterDateTimeChartOption);
+        scatterDateTimeChart.render();
+
+        // Line Draw
+        var lineChartOptions = {
+          series: [{
+            name: "Session Duration",
+            data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
+          },
+          {
+            name: "Page Views",
+            data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35]
+          },
+          {
+            name: 'Total Visits',
+            data: [87, 57, 74, 99, 75, 38, 62, 47, 82, 56, 45, 47]
+          }
+        ],
+          chart: {
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: false
+          },
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          width: [5, 7, 5],
+          curve: 'straight',
+          dashArray: [0, 8, 5]
+        },
+        title: {
+          text: 'Page Statistics',
+          align: 'left'
+        },
+        legend: {
+          tooltipHoverFormatter: function(val, opts) {
+            return val + ' - ' + opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] + ''
+          }
+        },
+        markers: {
+          size: 0,
+          hover: {
+            sizeOffset: 6
+          }
+        },
+        xaxis: {
+          categories: ['01 Jan', '02 Jan', '03 Jan', '04 Jan', '05 Jan', '06 Jan', '07 Jan', '08 Jan', '09 Jan',
+            '10 Jan', '11 Jan', '12 Jan'
+          ],
+        },
+        tooltip: {
+          y: [
+            {
+              title: {
+                formatter: function (val) {
+                  return val + " (mins)"
+                }
+              }
+            },
+            {
+              title: {
+                formatter: function (val) {
+                  return val + " per session"
+                }
+              }
+            },
+            {
+              title: {
+                formatter: function (val) {
+                  return val;
+                }
+              }
+            }
+          ]
+        },
+        grid: {
+          borderColor: '#f1f1f1',
+        }
+        };
+
+        var lineChart = new ApexCharts(document.querySelector("#line-chart"), lineChartOptions);
+        lineChart.render();
     </script>
 @endpush

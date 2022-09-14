@@ -1,101 +1,14 @@
 @push('extra-styles')
-    <link rel="stylesheet" href="{{ asset('client/dist/css/apexcharts.css') }}">
-    <style>
-        #chart {
-            max-width: 650px;
-            margin: 15px 0;
-        }
-        .overflow-control { overflow: hidden; }
-        .map-overlay-box {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            height: 100%;
-            overflow-y: auto;
-            min-width: 450px;
-            padding: 15px 15px 20px;
-            background-color: rgba(0,0,0,.3);
-            z-index: 9;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-        }
-        #map-overlay-scroll::-webkit-scrollbar-track
-        {
-            background-color: hsl(0deg 0% 2%);
-        }
-
-        #map-overlay-scroll::-webkit-scrollbar
-        {
-            width: 6px;
-            background-color: #F5F5F5;
-        }
-
-        #map-overlay-scroll::-webkit-scrollbar-thumb
-        {
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
-            background-color: hsl(18deg 3% 6%);;
-        }
-
-        .map-overlay-box > .overlay-title { font-size: 1.5em; line-height: 1em; font-weight: 600; margin: 0; padding: 0; margin-bottom: .3em; }
-        .map-overlay-box > .data-report-title { font-size: 1em; line-break: 1em; font-weight: 500; margin: 0; padding: 0; margin-bottom: .3em; }
-        .map-overlay-box > .data-report-count { font-size: 1em; line-break: 1em; font-weight: 400; margin: 0; padding: 0; margin-bottom: .3em; }
-
-
-        #filter-wrapper {
-            z-index: 99;
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            min-width: 300px;
-            height: 100%;
-            transform: translateX(300px);
-            overflow-y: auto;
-            -webkit-transition: all 0.4s ease 0s;
-            -moz-transition: all 0.4s ease 0s;
-            -ms-transition: all 0.4s ease 0s;
-            -o-transition: all 0.4s ease 0s;
-            transition: all 0.4s ease 0s;
-            background-color: rgba(0,0,0,.3);
-            backdrop-filter: blur(5px);
-            padding: 15px;
-        }
-        
-        .filter-nav {
-            position: absolute;
-            top: 0;
-            width: 250px;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-        
-        #filter-toggle {
-            z-index: 1;
-            position: absolute;
-            top: 15px;
-            right: 15px;
-        }
-        
-        #filter-wrapper.active {
-            right: 300px;
-            width: 300px;
-            -webkit-transition: all 0.4s ease 0s;
-            -moz-transition: all 0.4s ease 0s;
-            -ms-transition: all 0.4s ease 0s;
-            -o-transition: all 0.4s ease 0s;
-            transition: all 0.4s ease 0s;
-        }
-        .square { display: inline-block; padding: 6px; text-align: right; color: hsl(340deg 82% 52%);}
-        .square:hover { color: hsl(340deg 72% 42%)!important; }
-
-        .filter-inputs { margin-top: 20px; }
-
-        .apexcharts-tooltip,
-        .apexcharts-menu-item {
-            color: rgb(0, 0, 0);
-        }
-    </style>
+<style>
+    .view-report {
+        cursor: pointer;
+        border-bottom: 1px dashed;
+        font-size: 17px;
+        line-height: 21px;
+        color: #e92063;
+        display: inline-block;
+    }
+</style>
 @endpush
 
 <div>
@@ -139,14 +52,15 @@
         <section class="content p-0">
             <div class="container-fluid p-0">
                 <div class="row m-0">
-                    <div class="col-12 col-sm-12 position-relative overflow-control p-0" wire:ignore>
+                    <div class="col-12 col-sm-12 position-relative overflow-control p-0" id="mapSection" wire:ignore>
                         @livewire('client.map.map-component', ['type' => $type])
                         <div class="map-overlay-box" id="map-overlay-scroll">
                             <h1 class="overlay-title">Asean</h1>
                             <h3 class="data-report-title">All Countries</h3>
                             <p class="data-report-count">1,419,71 results</p>
+                            <h3 class="view-report" id="view-report-element">Show Report</h3>
                             <hr class="mb-2">
-                            <div id="chart"></div>
+                            <div id="countryChart"></div>
                         </div>
                         <a id="filter-toggle" href="#" class="toggle square"><i class="fas fa-filter fa-lg" aria-hidden="true"></i></a>
                         <div id="filter-wrapper">
@@ -192,6 +106,9 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-12 col-sm-12 p-3" id="reportSection" wire:ignore>
+                        @livewire('client.report.report-component', ['type' => $type])
+                    </div>
                 </div>
             </div>
         </section>
@@ -199,9 +116,8 @@
 </div>
 
 @push('extra-scripts')
-    <script src="{{ asset('client/dist/js/apexcharts.min.js') }}"></script>
     <script>
-        var options = {
+        var countryChartOption = {
             series: 
                 [
                     {
@@ -269,19 +185,7 @@
                 }
         };
 
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
-        chart.render();
-    </script>
-    <script>
-        // Close menu
-        $("#close-filter").click(function(e) {
-            e.preventDefault();
-            $("#filter-wrapper").toggleClass("active");
-        });
-        // Open menu
-        $("#filter-toggle").click(function(e) {
-            e.preventDefault();
-            $("#filter-wrapper").toggleClass("active");
-        });
+        var countryChart = new ApexCharts(document.querySelector("#countryChart"), countryChartOption);
+        countryChart.render();
     </script>
 @endpush

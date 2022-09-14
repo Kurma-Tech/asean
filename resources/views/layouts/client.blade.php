@@ -3,7 +3,7 @@
 <head>
   @include('client/includes/_head')
 </head>
-<body class="hold-transition layout-footer-fixed dark-mode layout-navbar-fixed layout-fixed">
+<body class="hold-transition layout-footer-fixed dark-mode layout-navbar-fixed layout-fixed remove-scrolling">
     <div class="wrapper">
 
         <!-- Preloader -->
@@ -21,9 +21,7 @@
         @include('client/includes/_footer')
     </div>
     <!-- ./wrapper -->
-
     @include('client/includes/_scripts')
-
 </body>
 </html>
 

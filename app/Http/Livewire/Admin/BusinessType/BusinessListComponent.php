@@ -126,8 +126,8 @@ class BusinessListComponent extends Component
             }
         } catch (\Throwable $th) {
             DB::rollback();
-            $this->error = $th->getMessage();
-            // $this->error = 'Ops! looks like we had some problem';
+            // $this->error = $th->getMessage();
+            $this->error = 'Ops! looks like we had some problem';
             $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
         }
     }
