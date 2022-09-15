@@ -15,7 +15,7 @@
                             <p class="data-report-count">{{$results}} results</p>
                             <h3 class="view-report" id="view-report-element">Show Report</h3>
                             <hr class="mb-2">
-                            <div id="countryChart"></div>
+                            <div id="countryChart" wire:ignore></div>
                         </div>
                         <a id="filter-toggle" href="#" class="toggle square"><i class="fas fa-filter fa-lg"
                                 aria-hidden="true"></i></a>
@@ -74,15 +74,15 @@
         var countryChartOption = {
             series: [{
                     name: "Business",
-                    data: [4400, 5500, 4100, 3000, 2200, 4300, 2100, 2160, 3300, 4400]
+                    data: {!! collect($businessCountListByCountry)->toJson(); !!}
                 },
                 {
                     name: "Patent",
-                    data: [5300, 3200, 3300, 5200, 1300, 6600, 3300, 5500, 4400, 3200]
+                    data: {!! collect($patentCountListByCountry)->toJson(); !!}
                 },
                 {
                     name: "Journals",
-                    data: [4600, 3600, 4100, 5400, 2200, 4300, 3300, 5500, 4400, 3200]
+                    data: []
                 }
             ],
             chart: {
@@ -117,9 +117,7 @@
                 intersect: false
             },
             xaxis: {
-                categories: ['Brunei', 'Cambodia', 'Indonesia', 'Laos', 'Malaysia', 'Myanmar', 'Philippines',
-                    'Singapore', 'Thailand', 'Vietnam'
-                ],
+                categories: {!! collect($countriesNameList)->toJson(); !!},
                 colors: ['#fff']
             },
             colors: ['#ffd600', '#b71c1c', '#01579b'],
