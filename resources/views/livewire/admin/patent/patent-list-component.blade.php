@@ -56,14 +56,100 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12">
+                <div class="col-4 col-md-4 col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">{{ $btnType }} Patent</h3>
+                            <button type="button" class="btn btn-xs btn-info pull-right" data-toggle="modal" data-target="#modal-default">
+                                <i class="fa fa-file-import"></i> Import CSV
+                            </button>
+                        </div>
+                        <!-- ./card-header -->
+                        <form wire:submit.prevent="storePatent">
+                            <div class="card-body">
+                                <input type="hidden" wire:model="hiddenId">
+                                <div class="form-group">
+                                    <label for="title">Title*</label>
+                                    <input type="text" class="form-control" id="title" placeholder="Enter Patent Title" wire:model='title'>
+                                    @error('title')
+                                    <div class="error">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="patent_id">Patent ID*</label>
+                                    <input type="text" class="form-control" id="patent_id" placeholder="Enter Patent ID" wire:model='patent_id'>
+                                    @error('patent_id')
+                                    <div class="error">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="country_id">Country*</label>
+                                    <select class="form-control select2 select2bs4" id="kind_id" wire:model="kind_id" style="width: 100%;">
+                                        <option hidden>Choose Patent Kind</option>
+                                        <option>Alaska</option>
+                                        <option>California</option>
+                                        <option>Delaware</option>
+                                        <option>Tennessee</option>
+                                        <option>Texas</option>
+                                        <option>Washington</option>
+                                    </select>
+                                    <div class="error">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="kind_id">Kind*</label>
+                                    <select class="form-control select2 select2bs4" id="kind_id" wire:model="kind_id" style="width: 100%;">
+                                        <option hidden>Choose Patent Kind</option>
+                                        <option>Alaska</option>
+                                        <option>California</option>
+                                        <option>Delaware</option>
+                                        <option>Tennessee</option>
+                                        <option>Texas</option>
+                                        <option>Washington</option>
+                                    </select>
+                                    @error('kind_id')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="type_id">Type*</label>
+                                    <select class="form-control select2 select2bs4" id="type_id" wire:model="type_id" style="width: 100%;">
+                                        <option hidden>Choose Patent Type</option>
+                                        <option>Alaska</option>
+                                        <option>California</option>
+                                        <option>Delaware</option>
+                                        <option>Tennessee</option>
+                                        <option>Texas</option>
+                                        <option>Washington</option>
+                                    </select>
+                                    @error('type_id')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="date">Date Registred*</label>
+                                    <input type="text" class="form-control" name="date" id="patent_date_registerd" wire:model="date"/>
+                                    @error('date')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-success">{{ $btnType }}</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <div class="col-8 col-md-8 col-sm-12">
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">All Patent List</h3>
-                            <span class="pull-right">
-                                <a href="{{route('admin.patent.add')}}" class="btn btn-xs bg-primary"><i class="fa fa-plus"></i> Add Patent</a>
-                            </span>
-                            <div class="clear-fix"></div>
                         </div>
                         <!-- ./card-header -->
                         <div class="card-body">
@@ -121,21 +207,15 @@
                             </table>
                         </div>
                         <!-- /.card-body -->
-                        <!-- /.card-body -->
                         <div class="card-footer clearfix">
-                            <ul class="pagination pagination-sm m-0 float-right">
-                                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                            </ul>
+                            {{$patentKinds->links('admin.render.admin-pagination-links')}}
                         </div>
                     </div>
                     <!-- /.card -->
                 </div>
             </div>
             <!-- /.row -->
+            @livewire('admin.patent-kind.import-component')
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
