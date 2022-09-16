@@ -24,6 +24,9 @@ class HomeComponent extends Component
     public $per_page = 10;
     private $filters = [];
     private $filters_all = [];
+    public $businessCountListByCountry = [];
+    public $patentCountListByCountry = [];
+    public $countriesNameList = [];
 
     protected $listeners = ['resultsUpdated' => 'updatedResults'];
 
@@ -31,6 +34,15 @@ class HomeComponent extends Component
         $total_business_count = Business::count();
         $total_patent_count = Patent::count();
         $this->results = $total_business_count + $total_patent_count;
+        $businessCountByCountry = Business::get()->pluck('country_id')->countBy();
+        Country::get()->pluck('id')->each(function ($item, $key) use ($businessCountByCountry)  {
+            $this->businessCountListByCountry[$key] = $businessCountByCountry[$item] ?? 0;
+        });
+        $patentCountByCountry = Patent::get()->pluck('country_id')->countBy();
+        Country::get()->pluck('id')->each(function ($item, $key) use ($patentCountByCountry)  {
+            $this->patentCountListByCountry[$key] = $patentCountByCountry[$item] ?? 0;
+        });
+        $this->countriesNameList = Country::get()->pluck('name');
     }
 
     public function updatedResults($results)
