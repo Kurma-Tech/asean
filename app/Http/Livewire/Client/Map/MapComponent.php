@@ -56,9 +56,9 @@ class MapComponent extends Component
 
     private function loadJsonData()
     {
+
         $data = [];
         $data = $this->filters;
-
 
         if ($this->type == "all" || $this->type == "business") {
             $businessData = [];
@@ -127,6 +127,15 @@ class MapComponent extends Component
         // dd( count($businessData ?? []) + count($patentData ?? []));
 
         $this->emit("resultsUpdated", count($businessData ?? []) + count($patentData ?? []));
+
+        $businessByYears = $data->pluck('year')->countBy();
+        $patentByYears = $this->patents->pluck('date')->countBy(function ($date) {
+            return substr(strchr($date, "-", -1), 0);
+        });
+
+        $lineChartYears = $businessByYears->keys()->concat($patentByYears->keys());
+
+        $this->emit("reportsUpdated", ["businessCountByYears" => $businessByYears->values(), "patentCountByYears" => $patentByYears->values(), "lineChartYears" => $lineChartYears->sort()]);
 
         $this->emit("mapUpdated", ["geoJson" => $geoLocations, "patentJson" => $patentGeoLocations]);
     }

@@ -11,44 +11,7 @@ class ReportComponent extends Component
 {
     use WithPagination;
 
-    public $type;
-    public $reportData = [];
-    public $records;
-    protected $listeners = ['updateReport' => 'updateReportModel'];
-
-    public function updateReportModel()
-    {
-        $this->getReport();
-    }
-
-    public function mount($type)
-    {
-        $this->type = $type;
-        $this->getReport();
-    }
-
-    private function getReport()
-    {
-        $getReport = Business::groupBy('year')
-                ->selectRaw('count(*) as total, year')
-                ->groupBy('year')
-                ->pluck('total','year');
-        $this->reportData = $getReport;
-        $this->getGraph();
-    }
-
-    private function getGraph()
-    {
-        if(count($this->reportData))
-        {
-            foreach($this->reportData as $key => $value)
-            {
-                $data['label'][] = $key;
-                $data['data'][] = $value;
-            }
-            $this->records = $data;
-        }
-    }
+    public $type, $country, $classification;
 
     public function render()
     {

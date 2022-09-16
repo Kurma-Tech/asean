@@ -84,13 +84,166 @@
 
 @push('extra-scripts')
     <script>
-        // var record = @json($records);
+        Livewire.on('reportsUpdated', (data) => {
+            // Line Draw
+            var lineChartOptions = {
+                series: [{
+                        name: "Business",
+                        // data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
+                        data: data.businessCountByYears
+                    },
+                    {
+                        name: "Patent",
+                        // data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35]
+                        data: data.patentCountByYears
+                    },
+                    {
+                        name: 'Journal',
+                        // data: [87, 57, 74, 99, 75, 38, 62, 47, 82, 56, 45, 47]
+                        data: []
+                    }
+                ],
+                chart: {
+                    height: 350,
+                    type: 'line',
+                    foreColor: '#fff',
+                    zoom: {
+                        enabled: false
+                    },
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    width: [3, 3, 3],
+                    curve: 'straight',
+                    dashArray: [0, 0, 0]
+                },
+                title: {
+                    text: 'Page Statistics',
+                    align: 'left'
+                },
+                legend: {
+                    tooltipHoverFormatter: function(val, opts) {
+                        return val + ' - ' + opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] +
+                            ''
+                    }
+                },
+                markers: {
+                    size: 0,
+                    hover: {
+                        sizeOffset: 6
+                    }
+                },
+                xaxis: {
+                    // categories: [
+                    //     '01 Jan', '02 Jan', '03 Jan', '04 Jan', '05 Jan', '06 Jan', '07 Jan', '08 Jan',
+                    //     '09 Jan', '10 Jan', '11 Jan', '12 Jan'
+                    // ],
+                    categories: data.lineChartYears
+                },
+                colors: ['#ffd600', '#b71c1c', '#01579b'],
+                tooltip: {
+                    y: [{
+                            title: {
+                                formatter: function(val) {
+                                    return val + " "
+                                }
+                            }
+                        },
+                        {
+                            title: {
+                                formatter: function(val) {
+                                    return val + " "
+                                }
+                            }
+                        },
+                        {
+                            title: {
+                                formatter: function(val) {
+                                    return val;
+                                }
+                            }
+                        }
+                    ]
+                },
+                grid: {
+                    borderColor: '#f1f1f1',
+                }
+            };
+
+            var lineChart = new ApexCharts(document.querySelector("#line-chart"), lineChartOptions);
+            lineChart.render();
+
+            // Country Wise
+            var CountryWiseChartOptions = {
+                series: [{
+                    name: 'Business',
+                    // data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+                    data: data.businessCountByYears
+                }, {
+                    name: 'Patent',
+                    // data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+                    data: data.patentCountByYears
+                }, {
+                    name: 'Journal',
+                    // data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+                    data: ['1']
+                }],
+                chart: {
+                    type: 'bar',
+                    foreColor: '#fff',
+                    height: 350
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '55%',
+                        endingShape: 'rounded'
+                    },
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
+                },
+                xaxis: {
+                    // categories: ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022'],
+                    categories: data.lineChartYears,
+                },
+                yaxis: {
+                    title: {
+                        text: 'Yearly Growth',
+                        color: '#fff'
+                    }
+                },
+                fill: {
+                    opacity: 1
+                },
+                colors: ['#ffd600', '#b71c1c', '#01579b'],
+                tooltip: {
+                    y: {
+                        formatter: function(val) {
+                            return "$ " + val + " thousands"
+                        }
+                    }
+                }
+            };
+
+            var CountryWiseChart = new ApexCharts(document.querySelector("#country-wise-chart"), CountryWiseChartOptions);
+            CountryWiseChart.render();
+
+        });
 
         // Forcast
         var forcastChartOptions = {
             series: [{
                 name: 'Data Forcast',
-                data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 9, 17, 2, 7, 5]
+                // data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 9, 17, 2, 7, 5]
+                data: []
             }],
             chart: {
                 height: 350,
@@ -106,7 +259,7 @@
             },
             xaxis: {
                 type: 'datetime',
-                categories: ['1/11/2000', '2/11/2000', '3/11/2000', '4/11/2000', '5/11/2000', '6/11/2000', '7/11/2000',
+                categories: ['1/11/2022', '2/11/2000', '3/11/2000', '4/11/2000', '5/11/2000', '6/11/2000', '7/11/2000',
                     '8/11/2000', '9/11/2000', '10/11/2000', '11/11/2000', '12/11/2000', '1/11/2001', '2/11/2001',
                     '3/11/2001', '4/11/2001', '5/11/2001', '6/11/2001'
                 ],
@@ -145,145 +298,5 @@
 
         var forcastChart = new ApexCharts(document.querySelector("#forcast-chart"), forcastChartOptions);
         forcastChart.render();
-
-        // Line Draw
-        var lineChartOptions = {
-            series: [{
-                    name: "Business",
-                    data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
-                },
-                {
-                    name: "Patent",
-                    data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35]
-                },
-                {
-                    name: 'Journal',
-                    data: [87, 57, 74, 99, 75, 38, 62, 47, 82, 56, 45, 47]
-                }
-            ],
-            chart: {
-                height: 350,
-                type: 'line',
-                foreColor: '#fff',
-                zoom: {
-                    enabled: false
-                },
-            },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                width: [3, 3, 3],
-                curve: 'straight',
-                dashArray: [0, 0, 0]
-            },
-            title: {
-                text: 'Page Statistics',
-                align: 'left'
-            },
-            legend: {
-                tooltipHoverFormatter: function(val, opts) {
-                    return val + ' - ' + opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] + ''
-                }
-            },
-            markers: {
-                size: 0,
-                hover: {
-                    sizeOffset: 6
-                }
-            },
-            xaxis: {
-                categories: ['01 Jan', '02 Jan', '03 Jan', '04 Jan', '05 Jan', '06 Jan', '07 Jan', '08 Jan', '09 Jan',
-                    '10 Jan', '11 Jan', '12 Jan'
-                ],
-            },
-            colors: ['#ffd600', '#b71c1c', '#01579b'],
-            tooltip: {
-                y: [{
-                        title: {
-                            formatter: function(val) {
-                                return val + " (mins)"
-                            }
-                        }
-                    },
-                    {
-                        title: {
-                            formatter: function(val) {
-                                return val + " per session"
-                            }
-                        }
-                    },
-                    {
-                        title: {
-                            formatter: function(val) {
-                                return val;
-                            }
-                        }
-                    }
-                ]
-            },
-            grid: {
-                borderColor: '#f1f1f1',
-            }
-        };
-
-        var lineChart = new ApexCharts(document.querySelector("#line-chart"), lineChartOptions);
-        lineChart.render();
-
-        // Country Wise
-        var CountryWiseChartOptions = {
-            series: [{
-                name: 'Business',
-                data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-            }, {
-                name: 'Patent',
-                data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-            }, {
-                name: 'Journal',
-                data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-            }],
-            chart: {
-                type: 'bar',
-                foreColor: '#fff',
-                height: 350
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '55%',
-                    endingShape: 'rounded'
-                },
-            },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                show: true,
-                width: 2,
-                colors: ['transparent']
-            },
-            xaxis: {
-                categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-            },
-            yaxis: {
-                title: {
-                    text: 'Yearly Growth',
-                    color: '#fff'
-                }
-            },
-            fill: {
-                opacity: 1
-            },
-            tooltip: {
-                y: {
-                    formatter: function(val) {
-                        return "$ " + val + " thousands"
-                    }
-                }
-            }
-        };
-
-        var CountryWiseChart = new ApexCharts(document.querySelector("#country-wise-chart"), CountryWiseChartOptions);
-        CountryWiseChart.render();
     </script>
 @endpush

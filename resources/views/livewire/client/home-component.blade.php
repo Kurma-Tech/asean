@@ -61,7 +61,7 @@
                         </div>
                     </div>
                     <div class="col-12 col-sm-12 p-3 scroll-element" id="reportSection" wire:ignore>
-                        @livewire('client.report.report-component', ['type' => $type])
+                        @livewire('client.report.report-component', ['type' => $type, 'country' => $country, 'classification' => $classification])
                     </div>
                 </div>
             </div>

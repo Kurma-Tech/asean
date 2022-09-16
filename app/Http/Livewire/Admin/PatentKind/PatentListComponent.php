@@ -24,6 +24,8 @@ class PatentListComponent extends Component
     public $slug;
     public $btnType = 'Create';
 
+    protected $listeners = ['refreshPatentKindListComponent' => '$refresh'];
+
     public function generateslug()
     {
         $this->slug = SlugService::createSlug(PatentKind::class, 'slug', $this->kind);

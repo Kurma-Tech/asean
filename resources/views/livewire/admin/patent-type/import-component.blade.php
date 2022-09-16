@@ -3,12 +3,12 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-info pt-2 pb-2">
-                    <h4 class="modal-title text-white" style="font-size: 15px;">Import Business</h4>
+                    <h4 class="modal-title text-white" style="font-size: 15px;">Import Patent Type</h4>
                     <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form wire:submit.prevent='businessImport'>
+                <form wire:submit.prevent='patentTypeImport'>
                     <div class="modal-body">
                         <div class="input-group">
                             <div class="custom-file">
@@ -17,33 +17,21 @@
                             </div>
                         </div>
                         @error('file') <p class="text-red">{{ $message }}</p> @enderror
-                        <blockquote class="blockquote">
-                            <p class="mb-0"><span class="text-red-400">Note*</span>: accepted file types xlsl, xls, csv</p>
-                            <footer class="blockquote-footer"><a href="#" wire:click="downloadSample">click here</a> <span>to download CSV formate</span></footer>
-                        </blockquote>
+                        
                         <div class="mt-1 p-1"><strong class="text-red-400 strong-code">Colums accepted:</strong>
                             <code class="text-xs text-info-400">
-                                year, 
-                                company_name, 
-                                business_type, 
-                                psic_code, 
-                                sec_no, 
-                                date_registered, 
-                                ngc_code, 
-                                status, 
-                                address, 
-                                industry_code, 
-                                industry_description, 
-                                geo_code, 
-                                geo_description, 
-                                long, 
-                                lat
+                                "type" only
                             </code>
                         </div>
+
+                        <blockquote class="blockquote">
+                            <p class="mb-0"><span class="text-red-400">Note*</span>: accepted file types csv</p>
+                            <footer class="blockquote-footer"><a href="#" wire:click="downloadSample">click here</a> <span>to download CSV format</span></footer>
+                        </blockquote>
                     </div>
                     <div class="modal-footer justify-content-end pt-1 pb-1">
                         <button type="button" class="btn btn-sm btn-danger pt-1 pb-1" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-sm btn-info pt-1 pb-1">Business Import</button>
+                        <button type="submit" class="btn btn-sm btn-info pt-1 pb-1">Type Import</button>
                     </div>
                 </form>
             </div>
@@ -64,4 +52,3 @@
         });
     </script>
 @endpush
-

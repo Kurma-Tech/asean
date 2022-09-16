@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('businesses', function (Blueprint $table) {
-            $table->bigInteger('country_id')->unsigned()->nullable();
+            $table->bigInteger('country_id')->unsigned()->nullable() ;
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('CASCADE')->onUpdate('CASCADE');
         });
     }

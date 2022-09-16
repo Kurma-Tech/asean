@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Livewire\Admin\Business;
+namespace App\Http\Livewire\Admin\PatentType;
 
-use App\Imports\BusinessImport;
+use App\Imports\PatentTypeImport;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -24,26 +24,34 @@ class ImportComponent extends Component
         ];
     }
 
-    public function businessImport()
+    public function render()
+    {
+        return view('livewire.admin.patent-type.import-component');
+    }
+
+    public function patentTypeImport()
     {
         $this->validate();
+
+        dd($this->file);
 
         DB::beginTransaction();
 
         try {
 
-            Excel::import(new BusinessImport, $this->file);
+            Excel::import(new PatentTypeImport, $this->file);
 
             DB::commit();
             
             $this->reset();
-            $this->success = 'Business Data Imported Successfully';
+            $this->success = 'Patent Type Imported Successfully';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
+            $this->emit('refreshPatentTypeListComponent');
 
         } catch (\Throwable $th) {
             DB::rollback();
             $this->error = 'Ops! looks like we had some problem';
-            $this->error = $th->getMessage();
+            // $this->error = $th->getMessage();
             $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
         }
     }
@@ -51,19 +59,14 @@ class ImportComponent extends Component
     public function downloadSample()
     {
         try{
-            return response()->download(storage_path("app\public\business-import-sample.csv"));
-            $this->success = 'Sample Downloaded';
+            return response()->download(storage_path("app\public\patent-type-import-sample.csv"));
+            $this->success = 'Patent Type Sample Downloaded';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
         } catch (\Throwable $th) {
             DB::rollback();
             $this->error = 'Ops! looks like we had some problem';
-            $this->error = $th->getMessage();
+            // $this->error = $th->getMessage();
             $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
         }
-    }
-
-    public function render()
-    {
-        return view('livewire.admin.business.import-component');
     }
 }

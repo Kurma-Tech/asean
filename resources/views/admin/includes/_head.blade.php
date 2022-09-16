@@ -18,6 +18,8 @@
                 .pull-right{float: right;}
                 .clear-fix{content: '';display: table;clear: both;}
                 .error{color: #bd2130;}
+                .blockquote{font-size: 15px;border-left: 0.2rem solid #17a2b8;margin: 0.5em 0rem;padding: 0.5em 0.7rem;}
+                .strong-code{font-size: 12px;display:block;}
         </style>
 
         @livewireStyles
