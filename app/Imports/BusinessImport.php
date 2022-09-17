@@ -23,7 +23,7 @@ class BusinessImport implements ToModel, WithHeadingRow, WithChunkReading, WithB
 
     public function model(array $row)
     {
-        $businessType = $this->businessType->where('type', $row['business_type_id'])->first();
+        $businessType = $this->businessType->where('type', $row['business_type'])->first();
         $industryClassification = $this->industryClassification->where('psic_code', $row['psic_code'])->first();
         
         return new Business([

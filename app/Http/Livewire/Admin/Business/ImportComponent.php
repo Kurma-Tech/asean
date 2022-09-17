@@ -20,7 +20,7 @@ class ImportComponent extends Component
     protected function rules()
     {
         return [
-            'file' => 'required|mimes:xlsl,xls,csv,txt'
+            'file' => 'required|mimes:xlsl,xls,csv,txt|max:500000'
         ];
     }
 
@@ -31,7 +31,7 @@ class ImportComponent extends Component
         DB::beginTransaction();
 
         try {
-
+            set_time_limit(0);
             Excel::import(new BusinessImport, $this->file);
 
             DB::commit();
