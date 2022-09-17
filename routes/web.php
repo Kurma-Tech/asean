@@ -52,9 +52,6 @@ Route::prefix('admin')->name('admin.')->group(function() {
     Route::get('business/types', BusinessTypeBusinessListComponent::class)->name('typeBusiness.list');
     // Patent
     Route::get('patent', PatentListComponent::class)->name('patent.list');
-    Route::get('patent/add', PatentAddComponent::class)->name('patent.add');
-    Route::get('patent/update', PatentUpdateComponent::class)->name('patent.update');
-    Route::get('patent/trashed', PatentTrashedComponent::class)->name('patent.trashed');
     // PatentType
     Route::get('patent/types', PatentTypePatentListComponent::class)->name('typePatent.list');
     // PatentKind

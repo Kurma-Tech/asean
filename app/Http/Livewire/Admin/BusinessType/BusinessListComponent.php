@@ -131,4 +131,10 @@ class BusinessListComponent extends Component
             $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
         }
     }
+
+    // reset fields
+    public function resetFields()
+    {
+        $this->reset('type', 'slug', 'hiddenId', 'btnType');
+    }
 }

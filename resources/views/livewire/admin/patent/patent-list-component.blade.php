@@ -68,79 +68,109 @@
                         <form wire:submit.prevent="storePatent">
                             <div class="card-body">
                                 <input type="hidden" wire:model="hiddenId">
-                                <div class="form-group">
-                                    <label for="title">Title*</label>
-                                    <input type="text" class="form-control" id="title" placeholder="Enter Patent Title" wire:model='title'>
-                                    @error('title')
-                                    <div class="error">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="patent_id">Patent ID*</label>
-                                    <input type="text" class="form-control" id="patent_id" placeholder="Enter Patent ID" wire:model='patent_id'>
-                                    @error('patent_id')
-                                    <div class="error">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="country_id">Country*</label>
-                                    <select class="form-control select2 select2bs4" id="kind_id" wire:model="kind_id" style="width: 100%;">
-                                        <option hidden>Choose Patent Kind</option>
-                                        <option>Alaska</option>
-                                        <option>California</option>
-                                        <option>Delaware</option>
-                                        <option>Tennessee</option>
-                                        <option>Texas</option>
-                                        <option>Washington</option>
-                                    </select>
-                                    <div class="error">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="title">Title*</label>
+                                            <input type="text" class="form-control" id="title" placeholder="Enter Patent Title" wire:model='title'>
+                                            @error('title')
+                                            <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
 
-                                <div class="form-group">
-                                    <label for="kind_id">Kind*</label>
-                                    <select class="form-control select2 select2bs4" id="kind_id" wire:model="kind_id" style="width: 100%;">
-                                        <option hidden>Choose Patent Kind</option>
-                                        <option>Alaska</option>
-                                        <option>California</option>
-                                        <option>Delaware</option>
-                                        <option>Tennessee</option>
-                                        <option>Texas</option>
-                                        <option>Washington</option>
-                                    </select>
-                                    @error('kind_id')
-                                        <div class="error">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="patent_id">Patent ID*</label>
+                                            <input type="text" class="form-control" id="patent_id" placeholder="Enter Patent ID" wire:model='patent_id'>
+                                            @error('patent_id')
+                                            <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="country_id">Country*</label>
+                                            <select class="form-control select2 select2bs4" id="country_id" wire:model="country_id" style="width: 100%;">
+                                                <option hidden>Choose Country</option>
+                                                @foreach($countries as $country)
+                                                <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('country_id')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
 
-                                <div class="form-group">
-                                    <label for="type_id">Type*</label>
-                                    <select class="form-control select2 select2bs4" id="type_id" wire:model="type_id" style="width: 100%;">
-                                        <option hidden>Choose Patent Type</option>
-                                        <option>Alaska</option>
-                                        <option>California</option>
-                                        <option>Delaware</option>
-                                        <option>Tennessee</option>
-                                        <option>Texas</option>
-                                        <option>Washington</option>
-                                    </select>
-                                    @error('type_id')
-                                        <div class="error">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="kind_id">Kind*</label>
+                                            <select class="form-control select2 select2bs4" id="kind_id" wire:model="kind_id" style="width: 100%;">
+                                                <option hidden>Choose Patent Kind</option>
+                                                @foreach($patentKinds as $pKind)
+                                                <option value="{{ $pKind->id }}">{{ $pKind->kind }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('kind_id')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
 
-                                <div class="form-group">
-                                    <label for="date">Date Registred*</label>
-                                    <input type="text" class="form-control" name="date" id="patent_date_registerd" wire:model="date"/>
-                                    @error('date')
-                                        <div class="error">{{ $message }}</div>
-                                    @enderror
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="type_id">Type*</label>
+                                            <select class="form-control select2 select2bs4" id="type_id" wire:model="type_id" style="width: 100%;">
+                                                <option hidden>Choose Patent Type</option>
+                                                @foreach($patentTypes as $pType)
+                                                <option value="{{ $pType->id }}">{{ $pType->type }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('type_id')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="date">Date Registred*</label>
+                                            <input type="text" class="form-control" name="date" id="patent_date_registered" wire:model="date" onchange="this.dispatchEvent(new InputEvent('input'))"/>
+                                            @error('date')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="long">Longitude*</label>
+                                            <input type="text" class="form-control" id="long" placeholder="Enter Longitude" wire:model='long'>
+                                            @error('long')
+                                            <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="lat">Latitude*</label>
+                                            <input type="text" class="form-control" id="lat" placeholder="Enter Latitude" wire:model='lat'>
+                                            @error('lat')
+                                            <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <!-- /.card-body -->
                         
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-success">{{ $btnType }}</button>
+                                <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> {{ $btnType }}</button>
+                                <div class="btn btn-sm btn-danger pull-right" data-toggle="tooltip" data-placement="top" title="Reset Form Fields" wire:click="resetFields()"><i class="fas fa-redo-alt"></i> Reset Fields</div>
                             </div>
                         </form>
                     </div>
@@ -167,10 +197,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr data-widget="expandable-table" aria-expanded="false">
-                                        <td>1</td>
-                                        <td>7473386</td>
-                                        <td>Mold for tire</td>
+                                    @foreach($patents as $patent)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $patent->patent_id }}</td>
+                                        <td>{{ $patent->title }}</td>
                                         <td>
                                             B2
                                         </td>
@@ -178,45 +209,75 @@
                                             utility
                                         </td>
                                         <td>
-                                            2009-01-06
+                                            {{ $patent->date }}
                                         </td>
                                         <td>
-                                            <span class="badge badge-info">6.40308</span>
-                                            <span class="badge badge-primary">101.707</span>
+                                            <span class="badge badge-info">{{ $patent->lat }}</span>
+                                            <span class="badge badge-primary">{{ $patent->long }}</span>
                                         </td>
                                         <td>
-                                            <a href="#" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i></a>
-                                            <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-alt"></i></a>
+                                            @if($patent->deleted_at)
+                                            <a href="#" class="btn btn-xs bg-success" wire:click="restore({{$patent->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
+                                                <i class="fas fa-trash-restore"></i>
+                                            </a>
+                                            @else
+                                            <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$patent->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="#" class="btn btn-xs bg-danger" wire:click="softDelete({{$patent->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                <i class="far fa-trash-alt"></i>
+                                            </a>
+                                            @endif
                                         </td>
                                     </tr>
-                                    <tr class="expandable-body">
-                                        <td colspan="8">
-                                            <ul class="products-list product-list-in-card pl-2 pr-2">
-                                                <li class="item">
-                                                    <div class="product-info">
-                                                        <div class="product-title">
-                                                            Description
-                                                        </div>
-                                                        <p>The invention provides an integrated fully-integrated elevator car and a work method thereof. The integrated fully-integrated elevator ca comprises a car top plate, a car bottom plate, a car left wallplate and a car right car plate, and the car left wall plate and the car right wall plate are arranged between the car top plate and the car bottom plate. The front side of the car left wall plate and the front side of the car right wall plate are fixedly connected with a front wall, and the car top plate comprises a fixed car top plate body and a movable car top plate body hinged to the rear side of the fixed car top plate body. The car bottom plate comprises a fixed car bottom plate body and a movable car bottom plate body hinged to the rear side of the fixed car bottom plate body. The carright wall plate comprises a fixed right car wall and a movable right car wall hinged to the fixed right car wall. The car left wall plate comprises a fixed left car wall and a movable left car wall hinged to the rear side of the fixed left car wall. The movable car top plate body, the fixed car bottom plate body, the fixed right car wall and the fixed left car wall are integrated, and an openingfor allowing personnel to get in and out is reserved in the middle of the front wall. According to the integrated fully-integrated elevator car and the work method thereof, the foldable structure is utilized, the elevator car can conveniently enter a built door of a villa and enter a room, the elevator mounting workload is reduced, and the labor charges are reduced.</p>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer clearfix">
-                            {{$patentKinds->links('admin.render.admin-pagination-links')}}
+                            {{$patents->links('admin.render.admin-pagination-links')}}
                         </div>
                     </div>
                     <!-- /.card -->
                 </div>
             </div>
             <!-- /.row -->
-            @livewire('admin.patent-kind.import-component')
+            @livewire('admin.patent.import-component')
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
 </div>
+
+@push('extra-styles')
+<!-- Select2 -->
+<link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
+@endpush
+
+@push('extra-scripts')
+<!-- Select2 -->
+<script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+<!-- InputMask -->
+<script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
+<!-- Summernote -->
+<script src="{{ asset('plugins/summernote/summernote-bs4.min.js') }}"></script>
+<script>
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+    
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+
+        $("#patent_date_registered").datepicker({
+            format: "yyyy-mm-dd",
+            autoclose:true //to close picker once year is selected
+        });
+    });
+</script>
+@endpush

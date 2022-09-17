@@ -98,18 +98,6 @@
                                         <span class="badge badge-danger right">New</span>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{route('admin.patent.add')}}" class="nav-link {{ (request()->routeIs('admin.patent.add')) ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-circle text-success"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{route('admin.patent.trashed')}}" class="nav-link {{ (request()->routeIs('admin.patent.trashed')) ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-circle text-danger"></i>
-                                        <p>Trashed Data</p>
-                                    </a>
-                                </li>
                             </ul>
                         </li>
                         <li class="nav-item {{ (request()->routeIs('admin.journals*')) ? 'menu-open' : '' }}">
