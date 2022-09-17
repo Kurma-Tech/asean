@@ -14,9 +14,11 @@ class ClassificationList extends Component
     public $perPage = 5;
     public $search = '';
     public $orderBy = 'id';
-    public $sortBy = false;
+    public $sortBy = true;
 
     public $error;
+
+    protected $listeners = ['refreshClassificationListComponent' => '$refresh'];
 
     public function render()
     {

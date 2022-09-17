@@ -20,7 +20,7 @@ class ImportComponent extends Component
     protected function rules()
     {
         return [
-            'file' => 'required|mimes:xlsl,xls,csv'
+            'file' => 'required|mimes:xlsl,xls,csv,txt'
         ];
     }
 
@@ -38,6 +38,7 @@ class ImportComponent extends Component
             $this->reset();
             $this->success = 'Classification Data Imported Successfully';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
+            $this->emit('refreshClassificationListComponent');
 
         } catch (\Throwable $th) {
             DB::rollback();

@@ -11,12 +11,17 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
 class ClassificationImport implements ToModel, WithHeadingRow, WithChunkReading, WithBatchInserts
 {
+    // public $data = [
+    //     "classification 2" => "Hotels & Restaurants 2"
+    // ];
+
     public function model(array $row)
     {
+
         return new IndustryClassification([
-            "parent_id"       => $row['parent_id'],
-            "classifications" => $row['classifications'],
-            "psic_code"       => $row['psic_code'],
+            "parent_id"       => $row['parent_id'] ?? null,
+            "classifications" => $row['classifications'] ?? null,
+            "psic_code"       => $row['psic_code'] ?? null,
         ]);
     }
 
