@@ -1,4 +1,5 @@
 @push('extra-styles')
+
 @endpush
 
 <div>
@@ -10,52 +11,67 @@
                     <div class="col-12 col-sm-12 position-relative overflow-control p-0" id="mapSection">
                         @livewire('client.map.map-component', ['type' => $type, 'country' => $country, 'classification' => $classification])
                         <div class="map-overlay-box overlay-scroll">
-                            <div class="form-group">
-                                <label for="company_name">Search</label>
-                                <div class="row col-md-12 mb-4" style="width: 320px;">
-                                    <select class="form-control col-md-3" wire:model="type">
-                                        <option hidden>Choose Data Type</option>
-                                        <option value="all">All</option>
-                                        <option value="business">Business</option>
-                                        <option value="patent">Patent</option>
-                                        <option value="journals">Journals</option>
-                                    </select>
-                                    <input type="text" class="form-control col-md-7 mr-2" id="search" placeholder="Search..." wire:model="search">
-                                    {{-- <br> --}}
-                                    <button class="btn btn-danger btn-m"><i class="fa fa-search" aria-hidden="true" wire:click="handleSearch"></i></button>
+                            <h3 class="search-title">Search</h3>
+
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <div class="input-group input-group-sm">
+                                        <select class="form-control" wire:model="type">
+                                            <option hidden>Choose Data Type</option>
+                                            <option value="all">All</option>
+                                            <option value="business">Business</option>
+                                            <option value="patent">Patent</option>
+                                            <option value="journals">Journals</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-8">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control" id="search" placeholder="Search..." wire:model="search">
+                                        <span class="input-group-append">
+                                            <button type="button" class="btn btn-sm btn-default btn-flat" wire:click="handleSearch"><i
+                                                class="fa fa-search pinkred" aria-hidden="true"></i></button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="filter-inputs" style="max-width: 320px;">
+                            <div class="filter-inputs mt-0">
                                 <div class="form-group">
                                     <label>Sort by Countries:</label>
-                                    <select class="form-control" style="width: 100%;" wire:model="country">
-                                        <option hidden>Choose Countries</option>
-                                        @foreach ($countries as $country)
-                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="input-group input-group-sm">
+                                        <select class="form-control" wire:model="country">
+                                            <option hidden>Choose Countries</option>
+                                            @foreach ($countries as $country)
+                                                <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                                 @if ($type != 'all')
                                     <div class="form-group">
                                         <label>Sort by Classifications:</label>
-                                        <select class="form-control" style="width: 100%;" wire:model="classification">
-                                            <option hidden>Choose Classifications</option>
-                                            <option value="">All</option>
-                                            @foreach ($classifications as $classification)
-                                                <option value="{{ $classification->id }}">
-                                                    {{ $classification->classifications }}</option>
-                                            @endforeach
-                                        </select>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="classification">
+                                                <option hidden>Choose Classifications</option>
+                                                <option value="">All</option>
+                                                @foreach ($classifications as $classification)
+                                                    <option value="{{ $classification->id }}">
+                                                        {{ $classification->classifications }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                 @endif
                             </div>
                             <hr class="mb-2">
                             <div class="row">
-                                <p class="data-report-count mr-2">About {{ $results }} results.</p>
-                                <p class="view-report" id="view-report-element" class="text-success">Show Report</p>
+                                <div class="col-md-12">
+                                    <span class="data-report-count mr-2">About {{ $results }} results.</span>
+                                    <span class="view-report pull-right" id="view-report-element">Show Report</span>
+                                </div>
                             </div>
-                            
-                            <div id="accordion" style="width: 320px;">
+
+                            <div id="accordion">
                                 @if (array_key_exists('features', $businessResults))
                                     @foreach ($businessResults['features'] as $businessResult)
                                         <div class="card card-secondary" wire:ignore>
@@ -79,7 +95,11 @@
                                                         {{ $businessResult['properties']['address'] }}</p>
                                                     <p><strong>Business Type:</strong>
                                                         {{ $businessResult['properties']['business_type'] }}</p>
-                                                    <button class="btn btn-danger btn-sm fly-over-btn"  wire:click="handleFlyOver({{$businessResult['geometry']['coordinates'][0]}}, {{$businessResult['geometry']['coordinates'][1]}})" data-lat="{{$businessResult['geometry']['coordinates'][0]}}" data-long="{{$businessResult['geometry']['coordinates'][1]}}">Show in map</button>
+                                                    <button class="btn btn-danger btn-sm fly-over-btn"
+                                                        wire:click="handleFlyOver({{ $businessResult['geometry']['coordinates'][0] }}, {{ $businessResult['geometry']['coordinates'][1] }})"
+                                                        data-lat="{{ $businessResult['geometry']['coordinates'][0] }}"
+                                                        data-long="{{ $businessResult['geometry']['coordinates'][1] }}">Show
+                                                        in map</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -105,7 +125,10 @@
                                                         {{ $patentResult['properties']['patent_id'] }}</p>
                                                     <p><strong>Date Registered:</strong>
                                                         {{ $patentResult['properties']['date_registerd'] }}</p>
-                                                    <button class="btn btn-danger btn-sm fly-over-btn"  data-lat="{{$patentResult['geometry']['coordinates'][0]}}" data-long="{{$patentResult['geometry']['coordinates'][1]}}">Show in map</button>
+                                                    <button class="btn btn-danger btn-sm fly-over-btn"
+                                                        data-lat="{{ $patentResult['geometry']['coordinates'][0] }}"
+                                                        data-long="{{ $patentResult['geometry']['coordinates'][1] }}">Show
+                                                        in map</button>
                                                 </div>
                                             </div>
                                         </div>
