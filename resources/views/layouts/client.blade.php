@@ -18,7 +18,7 @@
         {{$slot}}
         <!-- /.content-wrapper -->
 
-        @include('client/includes/_footer')
+        {{-- @include('client/includes/_footer') --}}
     </div>
     <!-- ./wrapper -->
     @include('client/includes/_scripts')

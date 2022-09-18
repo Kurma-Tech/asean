@@ -6,7 +6,7 @@
         type="text/css">
     <style>
         #map {
-            height: 90vh;
+            height: 100vh;
             width: 100%;
             position: relative;
         }

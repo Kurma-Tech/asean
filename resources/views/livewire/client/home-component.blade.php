@@ -30,7 +30,7 @@
                                         <input type="text" class="form-control" id="search" placeholder="Search..." wire:model="search">
                                         <span class="input-group-append">
                                             <button type="button" class="btn btn-sm btn-default btn-flat" wire:click="handleSearch"><i
-                                                class="fa fa-search pinkred" aria-hidden="true"></i></button>
+                                                class="fa fa-search lemongreen" aria-hidden="true"></i></button>
                                         </span>
                                     </div>
                                 </div>
@@ -63,7 +63,6 @@
                                     </div>
                                 @endif
                             </div>
-                            <hr class="mb-2">
                             <div class="row">
                                 <div class="col-md-12">
                                     <span class="data-report-count mr-2">About {{ $results }} results.</span>
@@ -71,11 +70,13 @@
                                 </div>
                             </div>
 
+                            <hr class="mb-2">
+
                             <div id="accordion">
                                 @if (array_key_exists('features', $businessResults))
                                     @foreach ($businessResults['features'] as $businessResult)
                                         <div class="card card-secondary" wire:ignore>
-                                            <div class="card-header">
+                                            <div class="card-header" style="border-radius: 0;">
                                                 <h4 class="card-title w-100">
                                                     <a class="d-block w-100" data-toggle="collapse"
                                                         href="#result{{ $businessResult['properties']['locationId'] }}">
@@ -139,7 +140,7 @@
                         <a id="filter-toggle" href="#" class="btn toggle square"><i class="fas fa-chart-bar fa-lg"
                                 aria-hidden="true"></i> Data Report</a>
                         <div id="filter-wrapper" wire:ignore.self class="overlay-scroll active">
-                            <a id="close-filter" href="#" class="toggle square"><i
+                            <a id="close-filter" href="#" class="toggle square-close"><i
                                     class="fa fa-times fa-lg"></i></a>
                             <div id="countryChart" wire:ignore></div>
                         </div>
