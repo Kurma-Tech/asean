@@ -11,8 +11,6 @@ class ReportComponent extends Component
 {
     use WithPagination;
 
-    public $type, $country, $classification;
-
     public function render()
     {
         return view('livewire.client.report.report-component');

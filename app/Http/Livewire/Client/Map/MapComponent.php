@@ -85,7 +85,7 @@ class MapComponent extends Component
 
         if ($this->type == "all" || $this->type == "business") {
             $businessData = [];
-
+            ini_set('memory_limit', '300M');
             foreach ($data as $business) {
                 $businessData[] = [
                     'type' => 'Feature',

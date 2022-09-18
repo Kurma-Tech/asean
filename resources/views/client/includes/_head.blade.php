@@ -147,8 +147,28 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
     .view-report {
         cursor: pointer;
         border-bottom: 1px dashed;
-        color: rgb(101, 214, 255);
+        color: #8bc34a;
         display: inline-block;
+    }
+    .search-title {
+        font-size: 18px;
+        line-height: 35px;
+        text-transform: uppercase;
+        border-bottom: 1px dashed #8bc34a;
+        display: inline-block;
+        color: #8bc34a;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .pinkred {color: #e92063;}
+    .pinkred-bg {background: #e92063;}
+
+    hr {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        border: 0;
+        border-top: 1px solid rgb(255 255 255 / 26%);
     }
 </style>
 
