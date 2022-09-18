@@ -35,25 +35,26 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
         bottom: 0;
         height: 100%;
         overflow-y: auto;
-        min-width: 450px;
+        min-width: 320px;
+        mmax-width: 320px;
         padding: 15px 15px 20px;
         background-color: rgba(0,0,0,.3);
         z-index: 9;
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
     }
-    #map-overlay-scroll::-webkit-scrollbar-track
+    .overlay-scroll::-webkit-scrollbar-track
     {
         background-color: hsl(0deg 0% 2%);
     }
 
-    #map-overlay-scroll::-webkit-scrollbar
+    .overlay-scroll::-webkit-scrollbar
     {
         width: 6px;
         background-color: #F5F5F5;
     }
 
-    #map-overlay-scroll::-webkit-scrollbar-thumb
+    .overlay-scroll::-webkit-scrollbar-thumb
     {
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
         background-color: hsl(18deg 3% 6%);
@@ -61,18 +62,18 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
 
     .map-overlay-box > .overlay-title { font-size: 1.5em; line-height: 1em; font-weight: 600; margin: 0; padding: 0; margin-bottom: .3em; }
     .map-overlay-box > .data-report-title { font-size: 1em; line-break: 1em; font-weight: 500; margin: 0; padding: 0; margin-bottom: .3em; }
-    .map-overlay-box > .data-report-count { font-size: 1em; line-break: 1em; font-weight: 400; margin: 0; padding: 0; margin-bottom: .3em; }
+    .map-overlay-box > .data-report-count { font-size: 1em; line-break: 1em; font-weight: 400; }
 
 
     #filter-wrapper {
-        z-index: 99;
+        z-index: 8;
         position: absolute;
         right: 0;
         top: 0;
         bottom: 0;
-        min-width: 300px;
+        min-width: 450px;
         height: 100%;
-        transform: translateX(300px);
+        transform: translateX(450px);
         overflow-y: auto;
         -webkit-transition: all 0.4s ease 0s;
         -moz-transition: all 0.4s ease 0s;
@@ -87,7 +88,7 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
     .filter-nav {
         position: absolute;
         top: 0;
-        width: 250px;
+        width: 450px;
         margin: 0;
         padding: 0;
         list-style: none;
@@ -101,8 +102,8 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
     }
     
     #filter-wrapper.active {
-        right: 300px;
-        width: 300px;
+        right: 450px;
+        width: 450px;
         -webkit-transition: all 0.4s ease 0s;
         -moz-transition: all 0.4s ease 0s;
         -ms-transition: all 0.4s ease 0s;
@@ -146,9 +147,7 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
     .view-report {
         cursor: pointer;
         border-bottom: 1px dashed;
-        font-size: 17px;
-        line-height: 21px;
-        color: #e92063;
+        color: rgb(101, 214, 255);
         display: inline-block;
     }
 </style>

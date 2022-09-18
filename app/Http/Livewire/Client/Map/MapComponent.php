@@ -9,31 +9,42 @@ use Livewire\Component;
 
 class MapComponent extends Component
 {
-    public $long, $lat, $geoJson, $type, $country, $classification, $patentJson, $isLoading = false;
+    public $long, $lat, $geoJson, $type, $country, $classification, $patentJson, $isLoading = false, $searchValue = '';
     protected $filters = [];
     protected $patents = [];
 
-    protected $listeners = ['country_updated' => 'updatedCountry', 'type_updated' => 'updatedType', 'classification_updated' => 'updatedClassification'];
+    protected $listeners = ['country_updated' => 'updatedCountry', 'type_updated' => 'updatedType', 'classification_updated' => 'updatedClassification', 'handleSearchEvent' => 'mapHandleSearchEvent'];
 
     public function mount($type, $country, $classification)
     {
         $this->country = $country;
         $this->type = $type;
         $this->classification = $classification;
+        $searchValues = explode(" ",$this->searchValue);
+        $businessQuery = Business::orderBy('company_name', 'ASC');
+        foreach ($searchValues as $key => $searchValue) {
+            $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
+        }
+        
         if ($country != null) {
             if ($this->type == "business" && $this->classification != null) {
-                $this->filters = Business::where(['country_id' => $country, 'industry_classification_id' => $this->classification])->get();
+                $businessQuery = $businessQuery->where(['country_id' => $country, 'industry_classification_id' => $this->classification]);
             } else {
-                $this->filters = Business::where('country_id', $country)->get();
+                $businessQuery = $businessQuery->where('country_id', $country);
             }
         } else {
             if ($this->type == "business" && $this->classification != null) {
-                $this->filters = Business::where(['industry_classification_id' => $this->classification])->get();
+                $businessQuery = $businessQuery->where(['industry_classification_id' => $this->classification]);
             } else {
-                $this->filters = Business::get();
+                $businessQuery = $businessQuery;
             }
         }
-        $this->patents = Patent::get();
+        $this->filters = $businessQuery->take(100)->get();
+        $patentQuery = Patent::orderBy('id', 'ASC');
+        foreach ($searchValues as $key => $searchValue) {
+            $patentQuery = $patentQuery->where('title', 'LIKE', '%' . $searchValue . '%')->orWhere('patent_id', 'LIKE', '%' . $searchValue . '%');
+        }
+        $this->patents = $patentQuery->take(100)->get();
         $this->country = $country;
         $this->loadJsonData();
         $this->emit("loader_off");
@@ -42,6 +53,12 @@ class MapComponent extends Component
     public function updatedCountry($country)
     {
         $this->mount($this->type, $country, $this->classification);
+    }
+
+    public function mapHandleSearchEvent($search)
+    {
+        $this->searchValue = $search;
+        $this->mount($this->type, $this->country, $this->classification);
     }
 
     public function updatedType($type)
@@ -140,6 +157,8 @@ class MapComponent extends Component
         $this->emit("reportsUpdated", ["businessCountByYears" => $businessByYears->values(), "patentCountByYears" => $patentByYears->values(), "lineChartYears" => $lineChartYears->sort()]);
 
         $this->emit("mapUpdated", ["geoJson" => $geoLocations, "patentJson" => $patentGeoLocations]);
+
+        $this->emit("resultsDataUpdate", ['businessData' => $geoLocations, 'patentData' => $patentGeoLocations]);
     }
 
     public function render()

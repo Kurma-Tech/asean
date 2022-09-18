@@ -9,22 +9,23 @@
                 <div class="row m-0">
                     <div class="col-12 col-sm-12 position-relative overflow-control p-0" id="mapSection">
                         @livewire('client.map.map-component', ['type' => $type, 'country' => $country, 'classification' => $classification])
-                        <div class="map-overlay-box" id="map-overlay-scroll">
-                            <h1 class="overlay-title">Asean</h1>
-                            <h3 class="data-report-title">All Countries</h3>
-                            <p class="data-report-count">{{$results}} results</p>
-                            <h3 class="view-report" id="view-report-element">Show Report</h3>
-                            <hr class="mb-2">
-                            <div id="countryChart" wire:ignore></div>
-                        </div>
-                        <a id="filter-toggle" href="#" class="toggle square"><i class="fas fa-filter fa-lg"
-                                aria-hidden="true"></i></a>
-                        <div id="filter-wrapper" wire:ignore.self>
-                            <a id="close-filter" href="#" class="toggle square"><i
-                                    class="fa fa-times fa-lg"></i></a>
-                            <h5>Filter Options</h5>
-                            <hr class="mb-2">
-                            <div class="filter-inputs">
+                        <div class="map-overlay-box overlay-scroll">
+                            <div class="form-group">
+                                <label for="company_name">Search</label>
+                                <div class="row col-md-12 mb-4" style="width: 320px;">
+                                    <select class="form-control col-md-3" wire:model="type">
+                                        <option hidden>Choose Data Type</option>
+                                        <option value="all">All</option>
+                                        <option value="business">Business</option>
+                                        <option value="patent">Patent</option>
+                                        <option value="journals">Journals</option>
+                                    </select>
+                                    <input type="text" class="form-control col-md-7 mr-2" id="search" placeholder="Search..." wire:model="search">
+                                    {{-- <br> --}}
+                                    <button class="btn btn-danger btn-m"><i class="fa fa-search" aria-hidden="true" wire:click="handleSearch"></i></button>
+                                </div>
+                            </div>
+                            <div class="filter-inputs" style="max-width: 320px;">
                                 <div class="form-group">
                                     <label>Sort by Countries:</label>
                                     <select class="form-control" style="width: 100%;" wire:model="country">
@@ -34,16 +35,6 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label>Sort by Data:</label>
-                                    <select class="form-control" style="width: 100%;" wire:model="type">
-                                        <option hidden>Choose Data Type</option>
-                                        <option value="all">All</option>
-                                        <option value="business">Business</option>
-                                        <option value="patent">Patent</option>
-                                        <option value="journals">Journals</option>
-                                    </select>
-                                </div>
                                 @if ($type != 'all')
                                     <div class="form-group">
                                         <label>Sort by Classifications:</label>
@@ -51,13 +42,83 @@
                                             <option hidden>Choose Classifications</option>
                                             <option value="">All</option>
                                             @foreach ($classifications as $classification)
-                                                <option value="{{$classification->id}}">{{$classification->classifications}}</option>
+                                                <option value="{{ $classification->id }}">
+                                                    {{ $classification->classifications }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 @endif
-
                             </div>
+                            <hr class="mb-2">
+                            <div class="row">
+                                <p class="data-report-count mr-2">About {{ $results }} results.</p>
+                                <p class="view-report" id="view-report-element" class="text-success">Show Report</p>
+                            </div>
+                            
+                            <div id="accordion" style="width: 320px;">
+                                @if (array_key_exists('features', $businessResults))
+                                    @foreach ($businessResults['features'] as $businessResult)
+                                        <div class="card card-secondary" wire:ignore>
+                                            <div class="card-header">
+                                                <h4 class="card-title w-100">
+                                                    <a class="d-block w-100" data-toggle="collapse"
+                                                        href="#result{{ $businessResult['properties']['locationId'] }}">
+                                                        {{ $businessResult['properties']['company_name'] }}
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="result{{ $businessResult['properties']['locationId'] }}"
+                                                class="collapse {{ $loop->index == 0 ? 'show' : '' }}"
+                                                data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <p><strong>NGC Code:</strong>
+                                                        {{ $businessResult['properties']['ngc_code'] }}</p>
+                                                    <p><strong>Date Registered:</strong>
+                                                        {{ $businessResult['properties']['date_registerd'] }}</p>
+                                                    <p><strong>Address:</strong>
+                                                        {{ $businessResult['properties']['address'] }}</p>
+                                                    <p><strong>Business Type:</strong>
+                                                        {{ $businessResult['properties']['business_type'] }}</p>
+                                                    <button class="btn btn-danger btn-sm fly-over-btn"  wire:click="handleFlyOver({{$businessResult['geometry']['coordinates'][0]}}, {{$businessResult['geometry']['coordinates'][1]}})" data-lat="{{$businessResult['geometry']['coordinates'][0]}}" data-long="{{$businessResult['geometry']['coordinates'][1]}}">Show in map</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+
+                                @if (array_key_exists('features', $patentResults))
+                                    @foreach ($patentResults['features'] as $patentResult)
+                                        <div class="card card-secondary" wire:ignore>
+                                            <div class="card-header">
+                                                <h4 class="card-title w-100">
+                                                    <a class="d-block w-100" data-toggle="collapse"
+                                                        href="#result{{ $patentResult['properties']['id'] }}">
+                                                        {{ $patentResult['properties']['title'] }}
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="result{{ $patentResult['properties']['id'] }}"
+                                                class="collapse {{ $loop->index == 0 ? 'show' : '' }}"
+                                                data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <p><strong>Patent Id:</strong>
+                                                        {{ $patentResult['properties']['patent_id'] }}</p>
+                                                    <p><strong>Date Registered:</strong>
+                                                        {{ $patentResult['properties']['date_registerd'] }}</p>
+                                                    <button class="btn btn-danger btn-sm fly-over-btn"  data-lat="{{$patentResult['geometry']['coordinates'][0]}}" data-long="{{$patentResult['geometry']['coordinates'][1]}}">Show in map</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                        <a id="filter-toggle" href="#" class="btn toggle square"><i class="fas fa-chart-bar fa-lg"
+                                aria-hidden="true"></i> Data Report</a>
+                        <div id="filter-wrapper" wire:ignore.self class="overlay-scroll active">
+                            <a id="close-filter" href="#" class="toggle square"><i
+                                    class="fa fa-times fa-lg"></i></a>
+                            <div id="countryChart" wire:ignore></div>
                         </div>
                     </div>
                     <div class="col-12 col-sm-12 p-3 scroll-element" id="reportSection" wire:ignore>
@@ -74,11 +135,11 @@
         var countryChartOption = {
             series: [{
                     name: "Business",
-                    data: {!! collect($businessCountListByCountry)->toJson(); !!}
+                    data: {!! collect($businessCountListByCountry)->toJson() !!}
                 },
                 {
                     name: "Patent",
-                    data: {!! collect($patentCountListByCountry)->toJson(); !!}
+                    data: {!! collect($patentCountListByCountry)->toJson() !!}
                 },
                 {
                     name: "Journals",
@@ -117,12 +178,12 @@
                 intersect: false
             },
             xaxis: {
-                categories: {!! collect($countriesNameList)->toJson(); !!},
+                categories: {!! collect($countriesNameList)->toJson() !!},
                 colors: ['#fff']
             },
             colors: ['#ffd600', '#b71c1c', '#01579b'],
             title: {
-                text: "Showing result of 2022, All Categories, All Countries",
+                text: "Total registered businesses, patents and journals till now.",
                 align: 'left',
                 margin: 0,
                 offsetX: 0,
