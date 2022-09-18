@@ -21,12 +21,12 @@ class MapComponent extends Component
         $this->type = $type;
         $this->classification = $classification;
         $searchValues = explode(" ", $this->searchValue);
-        $businessQuery = Business::orderBy('company_name', 'ASC');
+        $businessQuery = Business::select(['id', 'company_name', 'ngc_code', 'country_id', 'industry_classification_id', 'date_registered', 'industry_description', 'long', 'lat'])->orderBy('id', 'ASC');
+        // ini_set('memory_limit', -1);
         foreach ($searchValues as $key => $searchValue) {
             $businessQuery = $businessQuery->where(function ($query) use ($searchValue) {
                 $query->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
             });
-            // $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
         }
 
         if ($country != null) {
@@ -42,15 +42,14 @@ class MapComponent extends Component
                 $businessQuery = $businessQuery;
             }
         }
-        $this->filters = $businessQuery->take(100)->get();
-        $patentQuery = Patent::orderBy('id', 'ASC');
+        $this->filters = $businessQuery->take(1000)->get();
+        $patentQuery = Patent::select(['id', 'title', 'patent_id', 'country_id', 'date', 'long', 'lat'])->orderBy('id', 'ASC');
         foreach ($searchValues as $key => $searchValue) {
             $patentQuery = $patentQuery->where(function ($query) use ($searchValue) {
                 $query->where('title', 'LIKE', '%' . $searchValue . '%')->orWhere('patent_id', 'LIKE', '%' . $searchValue . '%');
             });
-            // $patentQuery = $patentQuery->where('title', 'LIKE', '%' . $searchValue . '%')->orWhere('patent_id', 'LIKE', '%' . $searchValue . '%');
         }
-        $this->patents = $patentQuery->take(100)->get();
+        $this->patents = $patentQuery->take(1000)->get();
         $this->country = $country;
         $this->loadJsonData();
         $this->emit("loader_off");
@@ -79,14 +78,9 @@ class MapComponent extends Component
 
     private function loadJsonData()
     {
-
-        $data = [];
-        $data = $this->filters;
-
         if ($this->type == "all" || $this->type == "business") {
             $businessData = [];
-            ini_set('memory_limit', '300M');
-            foreach ($data as $business) {
+            foreach ($this->filters as $business) {
                 $businessData[] = [
                     'type' => 'Feature',
                     'geometry' => [
@@ -105,18 +99,15 @@ class MapComponent extends Component
                     ]
                 ];
             }
-
             $geoLocations = [
                 'type' => 'FeatureCollection',
                 'features' => $businessData
             ];
-
             $geoJson = collect($geoLocations)->toJson();
             $this->geoJson = $geoJson;
         } else {
             $geoLocations = null;
         }
-
 
         if ($this->type == "all" || $this->type == "patent") {
             $patentData = [];
@@ -151,7 +142,7 @@ class MapComponent extends Component
 
         $this->emit("resultsUpdated", count($businessData ?? []) + count($patentData ?? []));
 
-        $businessByYears = $data->pluck('year')->countBy();
+        $businessByYears = $this->filters->pluck('year')->countBy();
         $patentByYears = $this->patents->pluck('date')->countBy(function ($date) {
             return substr(strchr($date, "-", -1), 0);
         });

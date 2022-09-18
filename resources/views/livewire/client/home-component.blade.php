@@ -3,7 +3,7 @@
 @endpush
 
 <div>
-    @include('client/includes/_sidebar')
+    {{-- @include('client/includes/_sidebar') --}}
     <div class="content-wrapper">
         <section class="content p-0">
             <div class="container-fluid p-0">
