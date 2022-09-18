@@ -27,8 +27,10 @@ class HomeComponent extends Component
     public $businessCountListByCountry = [];
     public $patentCountListByCountry = [];
     public $countriesNameList = [];
+    public $businessResults = [];
+    public $patentResults = [];
 
-    protected $listeners = ['resultsUpdated' => 'updatedResults'];
+    protected $listeners = ['resultsUpdated' => 'updatedResults', 'resultsDataUpdate' => "updatedResultsData"];
 
     public function mount(){
         $total_business_count = Business::count();
@@ -45,9 +47,24 @@ class HomeComponent extends Component
         $this->countriesNameList = Country::get()->pluck('name');
     }
 
+    public function handleSearch(){
+        $this->emit("loader_on");
+        $this->emit("handleSearchEvent", $this->search);
+    }
+
+    public function handleFlyOver($long, $lat){
+        $this->emit('flyover', ["long" => $long, "lat" => $lat]);
+    }
+
     public function updatedResults($results)
     {
-        $this->results  = $results;
+        $this->results = $results;
+    }
+
+    public function updatedResultsData($data)
+    {
+        $this->businessResults  = $data["businessData"] ?? [];
+        $this->patentResults  = $data["patentData"] ?? [];
     }
 
     public function updatedCountry($country)

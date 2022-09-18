@@ -46,6 +46,7 @@
         .position-relative {
             position: relative;
         }
+
         .mapboxgl-popup-content {
             width: max-content;
             padding-top: 18px;
@@ -91,6 +92,21 @@
                 ] // Set the map's geographical boundaries.
             });
             console.log(map);
+
+            var showInMapButtons = document.getElementsByClassName('.fly-over-btn');
+            console.log(showInMapButtons);
+            for (let i = 0; i < showInMapButtons.length; i++) {
+                console.log("aksh");
+                showInMapButtons[i].addEventListener("click", function() {
+                    console.log(this.dataset.long);
+                    map.fire('click', {
+                        latLng: {
+                            lon: this.dataset.long,
+                            lat: this.dataset.lat
+                        }
+                    });
+                })
+            }
         }
         document.addEventListener("livewire:load", handleLivewireLoad, true);
 
@@ -352,6 +368,8 @@
                 addBusinessPoint();
                 addPatentHeat();
                 addPatentPoint();
+
+
             });
 
             // map.on('moveend', () => {
@@ -523,6 +541,14 @@
         });
         Livewire.on('loader_off', () => {
             document.getElementById('loader').style.display = 'none';
+        });
+        Livewire.on('flyover', (data) => {
+            map.flyTo({
+                center: [data.long, data.lat],
+                essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+                zoom: 15
+            });
+            // map.fireEvent('click', {latlng: L.latLng(data.lat, data.long)});
         });
     </script>
     <!-- MAPBOX CUSTOMS -->
