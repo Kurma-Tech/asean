@@ -62,25 +62,27 @@ class MapComponent extends Component
 
         if ($this->type == "all" || $this->type == "business") {
             $businessData = [];
-
-            foreach ($data as $business) {
-                $businessData[] = [
-                    'type' => 'Feature',
-                    'geometry' => [
-                        'coordinates' => [$business->long, $business->lat],
-                        'type' => 'Point',
-                    ],
-                    'properties' => [
-                        'locationId' => $business->id,
-                        'company_name' => $business->company_name ?? 'No Data',
-                        'date_registerd' => $business->date_registered ?? 'No Data',
-                        'ngc_code' => $business->ngc_code ?? 'No Data',
-                        'address' => $business->address ?? 'No Data',
-                        'business_type' => $business->businessType->type ?? 'No Data',
-                        'industry_classification' => $business->industryClassification->classifications ?? 'No Data',
-                        'industry_description' => $business->industry_description ?? 'No Data',
-                    ]
-                ];
+            ini_set('memory_limit', '300M');
+            foreach ($data->chunk(1000) as $businessRow) {
+                foreach($businessRow as $business) {
+                    $businessData[] = [
+                        'type' => 'Feature',
+                        'geometry' => [
+                            'coordinates' => [$business->long, $business->lat],
+                            'type' => 'Point',
+                        ],
+                        'properties' => [
+                            'locationId' => $business->id,
+                            'company_name' => $business->company_name ?? 'No Data',
+                            'date_registerd' => $business->date_registered ?? 'No Data',
+                            'ngc_code' => $business->ngc_code ?? 'No Data',
+                            'address' => $business->address ?? 'No Data',
+                            'business_type' => $business->businessType->type ?? 'No Data',
+                            'industry_classification' => $business->industryClassification->classifications ?? 'No Data',
+                            'industry_description' => $business->industry_description ?? 'No Data',
+                        ]
+                    ];
+                }
             }
 
             $geoLocations = [
