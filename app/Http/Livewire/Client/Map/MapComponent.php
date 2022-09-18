@@ -20,12 +20,15 @@ class MapComponent extends Component
         $this->country = $country;
         $this->type = $type;
         $this->classification = $classification;
-        $searchValues = explode(" ",$this->searchValue);
+        $searchValues = explode(" ", $this->searchValue);
         $businessQuery = Business::orderBy('company_name', 'ASC');
         foreach ($searchValues as $key => $searchValue) {
-            $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
+            $businessQuery = $businessQuery->where(function ($query) use ($searchValue) {
+                $query->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
+            });
+            // $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
         }
-        
+
         if ($country != null) {
             if ($this->type == "business" && $this->classification != null) {
                 $businessQuery = $businessQuery->where(['country_id' => $country, 'industry_classification_id' => $this->classification]);
@@ -42,7 +45,10 @@ class MapComponent extends Component
         $this->filters = $businessQuery->take(100)->get();
         $patentQuery = Patent::orderBy('id', 'ASC');
         foreach ($searchValues as $key => $searchValue) {
-            $patentQuery = $patentQuery->where('title', 'LIKE', '%' . $searchValue . '%')->orWhere('patent_id', 'LIKE', '%' . $searchValue . '%');
+            $patentQuery = $patentQuery->where(function ($query) use ($searchValue) {
+                $query->where('title', 'LIKE', '%' . $searchValue . '%')->orWhere('patent_id', 'LIKE', '%' . $searchValue . '%');
+            });
+            // $patentQuery = $patentQuery->where('title', 'LIKE', '%' . $searchValue . '%')->orWhere('patent_id', 'LIKE', '%' . $searchValue . '%');
         }
         $this->patents = $patentQuery->take(100)->get();
         $this->country = $country;
