@@ -17,6 +17,7 @@ class MapComponent extends Component
 
     public function mount($type, $country, $classification)
     {
+        // ini_set('memory_limit', '3000M');
         $this->country = $country;
         $this->type = $type;
         $this->classification = $classification;
@@ -42,7 +43,8 @@ class MapComponent extends Component
                 $businessQuery = $businessQuery;
             }
         }
-        $this->filters = $businessQuery->take(100)->get();
+        $this->filters = $businessQuery->take(1000)->get()->chunk(100);
+        // dd($this->filters);
         $patentQuery = Patent::orderBy('id', 'ASC');
         foreach ($searchValues as $key => $searchValue) {
             $patentQuery = $patentQuery->where(function ($query) use ($searchValue) {
@@ -80,31 +82,35 @@ class MapComponent extends Component
     private function loadJsonData()
     {
 
+        
         $data = [];
         $data = $this->filters;
 
         if ($this->type == "all" || $this->type == "business") {
             $businessData = [];
-            ini_set('memory_limit', '300M');
-            foreach ($data as $business) {
-                $businessData[] = [
-                    'type' => 'Feature',
-                    'geometry' => [
-                        'coordinates' => [$business->long, $business->lat],
-                        'type' => 'Point',
-                    ],
-                    'properties' => [
-                        'locationId' => $business->id,
-                        'company_name' => $business->company_name ?? 'No Data',
-                        'date_registerd' => $business->date_registered ?? 'No Data',
-                        'ngc_code' => $business->ngc_code ?? 'No Data',
-                        'address' => $business->address ?? 'No Data',
-                        'business_type' => $business->businessType->type ?? 'No Data',
-                        'industry_classification' => $business->industryClassification->classifications ?? 'No Data',
-                        'industry_description' => $business->industry_description ?? 'No Data',
-                    ]
-                ];
+            foreach ($data as $key => $chunkedData) {
+
+                foreach ($chunkedData as $business) {
+                    $businessData[] = [
+                        'type' => 'Feature',
+                        'geometry' => [
+                            'coordinates' => [$business->long ?? 0, $business->lat ?? 0],
+                            'type' => 'Point',
+                        ],
+                        'properties' => [
+                            'locationId' => $business->id,
+                            'company_name' => $business->company_name ?? 'No Data',
+                            'date_registerd' => $business->date_registered ?? 'No Data',
+                            'ngc_code' => $business->ngc_code ?? 'No Data',
+                            'address' => $business->address ?? 'No Data',
+                            'business_type' => $business->businessType->type ?? 'No Data',
+                            'industry_classification' => $business->industryClassification->classifications ?? 'No Data',
+                            'industry_description' => $business->industry_description ?? 'No Data',
+                        ]
+                    ];
+                }
             }
+            // dd($businessData);
 
             $geoLocations = [
                 'type' => 'FeatureCollection',

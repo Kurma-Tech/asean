@@ -75,7 +75,7 @@
                             <div id="accordion">
                                 @if (array_key_exists('features', $businessResults))
                                     @foreach ($businessResults['features'] as $businessResult)
-                                        <div class="card card-secondary" wire:ignore>
+                                        <div class="card card-secondary">
                                             <div class="card-header" style="border-radius: 0;">
                                                 <h4 class="card-title w-100">
                                                     <a class="d-block w-100" data-toggle="collapse"
@@ -86,7 +86,7 @@
                                             </div>
                                             <div id="result{{ $businessResult['properties']['locationId'] }}"
                                                 class="collapse {{ $loop->index == 0 ? 'show' : '' }}"
-                                                data-parent="#accordion">
+                                                data-parent="#accordion" wire:ignore.self>
                                                 <div class="card-body">
                                                     <p><strong>NGC Code:</strong>
                                                         {{ $businessResult['properties']['ngc_code'] }}</p>
@@ -109,7 +109,7 @@
 
                                 @if (array_key_exists('features', $patentResults))
                                     @foreach ($patentResults['features'] as $patentResult)
-                                        <div class="card card-secondary" wire:ignore>
+                                        <div class="card card-secondary">
                                             <div class="card-header">
                                                 <h4 class="card-title w-100">
                                                     <a class="d-block w-100" data-toggle="collapse"
@@ -120,7 +120,7 @@
                                             </div>
                                             <div id="result{{ $patentResult['properties']['id'] }}"
                                                 class="collapse {{ $loop->index == 0 ? 'show' : '' }}"
-                                                data-parent="#accordion">
+                                                data-parent="#accordion" wire:ignore.self>
                                                 <div class="card-body">
                                                     <p><strong>Patent Id:</strong>
                                                         {{ $patentResult['properties']['patent_id'] }}</p>
