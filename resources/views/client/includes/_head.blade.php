@@ -173,6 +173,12 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
         border: 0;
         border-top: 1px solid rgb(255 255 255 / 26%);
     }
+
+    .dark-mode .preloader {
+        background-color: rgb(69, 77, 85, .3) !important;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+    }
 </style>
 
 @livewireStyles
