@@ -64,8 +64,12 @@ class HomeComponent extends Component
 
     public function updatedResultsData($data)
     {
+        $this->businessResults = [];
+        $this->patentResults = [];
+        Log::info(collect($this->businessResults)->toJson());
         $this->businessResults  = $data["businessData"] ?? [];
         $this->patentResults  = $data["patentData"] ?? [];
+        Log::info(collect($this->businessResults)->toJson());
     }
 
     public function updatedCountry($country)

@@ -74,8 +74,8 @@
 
                             <div id="accordion">
                                 @if (array_key_exists('features', $businessResults))
-                                    @foreach ($businessResults['features'] as $businessResult)
-                                        <div class="card card-secondary" wire:ignore>
+                                    {{-- @foreach ($businessResults['features'] as $businessResult)
+                                        <div class="card card-secondary">
                                             <div class="card-header" style="border-radius: 0;">
                                                 <h4 class="card-title w-100">
                                                     <a class="d-block w-100" data-toggle="collapse"
@@ -86,7 +86,7 @@
                                             </div>
                                             <div id="result{{ $businessResult['properties']['locationId'] }}"
                                                 class="collapse {{ $loop->index == 0 ? 'show' : '' }}"
-                                                data-parent="#accordion">
+                                                data-parent="#accordion" wire:ignore.self>
                                                 <div class="card-body">
                                                     <p><strong>NGC Code:</strong>
                                                         {{ $businessResult['properties']['ngc_code'] }}</p>
@@ -95,7 +95,7 @@
                                                     <p><strong>Address:</strong>
                                                         {{ $businessResult['properties']['address'] }}</p>
                                                     <p><strong>Business Type:</strong>
-                                                        {{-- {{ $businessResult['properties']['business_type'] }}</p> --}}
+                                                        {{ $businessResult['properties']['business_type'] }}</p>
                                                     <button class="btn btn-danger btn-sm fly-over-btn"
                                                         wire:click="handleFlyOver({{ $businessResult['geometry']['coordinates'][0] }}, {{ $businessResult['geometry']['coordinates'][1] }})"
                                                         data-lat="{{ $businessResult['geometry']['coordinates'][0] }}"
@@ -104,12 +104,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endforeach
+                                    @endforeach --}}
                                 @endif
 
                                 @if (array_key_exists('features', $patentResults))
-                                    @foreach ($patentResults['features'] as $patentResult)
-                                        <div class="card card-secondary" wire:ignore>
+                                    {{-- @foreach ($patentResults['features'] as $patentResult)
+                                        <div class="card card-secondary">
                                             <div class="card-header">
                                                 <h4 class="card-title w-100">
                                                     <a class="d-block w-100" data-toggle="collapse"
@@ -120,7 +120,7 @@
                                             </div>
                                             <div id="result{{ $patentResult['properties']['id'] }}"
                                                 class="collapse {{ $loop->index == 0 ? 'show' : '' }}"
-                                                data-parent="#accordion">
+                                                data-parent="#accordion" wire:ignore.self>
                                                 <div class="card-body">
                                                     <p><strong>Patent Id:</strong>
                                                         {{ $patentResult['properties']['patent_id'] }}</p>
@@ -133,7 +133,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endforeach
+                                    @endforeach --}}
                                 @endif
                             </div>
                         </div>
