@@ -28,135 +28,120 @@ class MapComponent extends Component
         $patents = [];
 
     protected $listeners = [
+        'mapFirstLoad' => 'mapHandleMapFirstLoad',
         'country_updated' => 'updatedCountry',
         'type_updated' => 'updatedType',
         'classification_updated' => 'updatedClassification',
         'handleSearchEvent' => 'mapHandleSearchEvent'
     ];
 
-    public function mount($type, $country, $classification)
+
+    /* 
+        Mapping Listeners to Handler Functions 
+    */
+    public function mapHandleMapFirstLoad()
+    {
+        $this->type = "all";
+        $this->emit("loader_on");
+        $this->filterData($this->type, $this->country, $this->classification);
+    }
+
+    public function updatedCountry($country)
+    {
+        $this->filterData($this->type, $country, $this->classification);
+    }
+
+    public function mapHandleSearchEvent($search)
+    {
+        $this->searchValue = $search;
+        $this->filterData($this->type, $this->country, $this->classification);
+    }
+
+    public function updatedType($type)
+    {
+        $this->filterData($type, $this->country, $this->classification);
+    }
+
+    public function updatedClassification($classification)
+    {
+        $this->filterData($this->type, $this->country, $classification);
+    }
+    /* 
+        Mapping Listeners to Handler Functions End
+    */
+
+    private function filterData($type, $country, $classification)
     {
         // ini_set('memory_limit', '3000M');
+        $this->mount();
 
         // Updating filter values
         $this->country = $country;
         $this->type = $type;
         $this->classification = $classification;
 
-
-        /* Model Queries */
-        // $businessQuery = Business::select([
-        //     'id',
-        //     // 'company_name',
-        //     // 'ngc_code',
-        //     // 'country_id',
-        //     // 'industry_classification_id',
-        //     // 'date_registered',
-        //     // 'industry_description',
-        //     'long',
-        //     'lat', 
-        //     'year'
-        // ])->orderBy('id', 'ASC');
-        $businessTest = DB::select('select `id`, `lat`, `long` from businesses WHERE `company_name` LIKE '."'%test%';",);
-        $patentQuery = Patent::select([
-            'id',
-            // 'title',
-            // 'patent_id',
-            // 'country_id',
-            'date',
-            'long',
-            'lat'
-        ])->orderBy('id', 'ASC');
-        /* Model Queries End */
-
-        dd($businessTest);
-
-
         /* Search from searchKeywords */
         $searchValues = explode(" ", $this->searchValue); // List of search keywords
 
+
+        /* Model Queries */
+        DB::enableQueryLog();
+        $businessQuery =  DB::table('businesses')->select('id', 'lat', 'long', 'year');
+        $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'date');
+        /* Model Queries End */
+
+
+        /* Search from searchKeywords */
         // Searching business on company_name and ngc_code fields
-        // foreach ($searchValues as $key => $searchValue) {
-        //     $businessQuery = $businessQuery->where(function ($query) use ($searchValue) {
-        //         $query->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
-        //     });
-        // }
+        foreach ($searchValues as $searchValue) {
+            $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
+        }
 
         // Searching patents on title and patent_id fields
-        // foreach ($searchValues as $key => $searchValue) {
-        //     $patentQuery = $patentQuery->where(function ($query) use ($searchValue) {
-        //         $query->where('title', 'LIKE', '%' . $searchValue . '%')->orWhere('patent_id', 'LIKE', '%' . $searchValue . '%');
-        //     });
-        // }
+        foreach ($searchValues as $searchValue) {
+            $patentQuery = $patentQuery->where('title', 'LIKE', '%' . $searchValue . '%')->orWhere('patent_id', 'LIKE', '%' . $searchValue . '%');
+        }
         /* Search from searchKeywords End */
 
 
         /* Filter By Country and Classification */
         if ($country != null) {
             if ($this->type == "business" && $this->classification != null) {
-                $businessQuery = $businessQuery->where(['country_id' => $country, 'industry_classification_id' => $this->classification]);
+                $businessQuery = $businessQuery->where('country_id', $country)->where('industry_classification_id', $this->classification);
             } else {
                 $businessQuery = $businessQuery->where('country_id', $country);
             }
         } else {
             if ($this->type == "business" && $this->classification != null) {
-                $businessQuery = $businessQuery->where(['industry_classification_id' => $this->classification]);
-            } else {
-                $businessQuery = $businessQuery;
+                $businessQuery = $businessQuery->where('industry_classification_id', $this->classification);
             }
         }
         /* Filter By Country and Classification End*/
 
 
-        /* Default data for Charts */
-        $tempBusinessQuery = $businessQuery; // Temporary Business Query Variable
-        $tempPatentQuery = $patentQuery; // Temporary Patent Query Variable
-        $this->chartBusinessCount = $tempBusinessQuery->pluck('year')->countBy(); // business chart count
+        /* Get Query Data */
+        $this->business = $businessQuery->get();
+        $this->patents = $patentQuery->get();
+        /* Get Query Data End */
 
-        $this->chartPatentsCount = $tempPatentQuery->pluck('date')->countBy(function ($date) {
+
+        /* Default data for Charts */
+        // $tempBusinessQuery = $businessQuery; // Temporary Business Query Variable
+        // $tempPatentQuery = $patentQuery; // Temporary Patent Query Variable
+        $this->chartBusinessCount = collect($this->business)->pluck('year')->countBy(); // business chart count
+
+        $this->chartPatentsCount = collect($this->patents)->pluck('date')->countBy(function ($date) {
             return substr(strchr($date, "-", -1), 0);
         }); // Count of filtered patents with year extraction
-
         /* Default data for Charts End*/
 
-
-        /* Get Query Data */
-        $this->business = $businessQuery->take(50000)->get()->chunk(1000);
-        $this->patents = $patentQuery->take(50000)->get()->chunk(1000);
-        /* Get Query Data End */
 
 
         $this->loadJsonData(); // Load data for map
         $this->emit("loader_off"); // Loader off
-    }
 
-
-    /* 
-        Mapping Listeners to Handler Functions 
-    */
-    public function updatedCountry($country)
-    {
-        $this->mount($this->type, $country, $this->classification);
+        // dd(DB::getQueryLog());
     }
-
-    public function mapHandleSearchEvent($search)
-    {
-        $this->searchValue = $search;
-        $this->mount($this->type, $this->country, $this->classification);
-    }
-
-    public function updatedType($type)
-    {
-        $this->mount($type, $this->country, $this->classification);
-    }
-
-    public function updatedClassification($classification)
-    {
-        $this->mount($this->type, $this->country, $classification);
-    }
-    /* 
-        Mapping Listeners to Handler Functions End
-    */
 
 
     private function loadJsonData()
@@ -164,27 +149,18 @@ class MapComponent extends Component
         /*  */
         if ($this->type == "all" || $this->type == "business") {
             $tempBusinessData = [];
-            
-            foreach ($this->business as $key => $chunkedData) {
-                foreach ($chunkedData as $business) {
-                    $tempBusinessData[] = [
-                        'type' => 'Feature',
-                        'geometry' => [
-                            'coordinates' => [$business->long ?? 0, $business->lat ?? 0],
-                            'type' => 'Point',
-                        ],
-                        'properties' => [
-                            'locationId' => $business->id,
-                            // 'company_name' => $business->company_name ?? 'No Data',
-                            // 'date_registerd' => $business->date_registered ?? 'No Data',
-                            // 'ngc_code' => $business->ngc_code ?? 'No Data',
-                            // 'address' => $business->address ?? 'No Data',
-                            // 'business_type' => $business->businessType->type ?? 'No Data',
-                            // 'industry_classification' => $business->industryClassification->classifications ?? 'No Data',
-                            // 'industry_description' => $business->industry_description ?? 'No Data',
-                        ]
-                    ];
-                }
+
+            foreach ($this->business as $business) {
+                $tempBusinessData[] = [
+                    'type' => 'Feature',
+                    'geometry' => [
+                        'coordinates' => [$business->long ?? 0, $business->lat ?? 0],
+                        'type' => 'Point',
+                    ],
+                    'properties' => [
+                        'locationId' => $business->id,
+                    ]
+                ];
             }
             $geoBusinessData = [
                 'type' => 'FeatureCollection',
@@ -195,7 +171,7 @@ class MapComponent extends Component
         } else {
             $geoBusinessData = null;
         }
-        
+
 
         if ($this->type == "all" || $this->type == "patent") {
             $patentData = [];
@@ -208,9 +184,6 @@ class MapComponent extends Component
                     ],
                     'properties' => [
                         'id' => $patent->id,
-                        // 'patent_id' => $patent->patent_id,
-                        // 'title' => $patent->title ?? 'No Data',
-                        // 'date_registerd' => $patent->date ?? 'No Data'
                     ]
                 ];
             }
@@ -233,6 +206,32 @@ class MapComponent extends Component
         $this->emit("mapUpdated", ["geoJson" => $geoBusinessData, "patentJson" => $patentGeoLocations]);
 
         $this->emit("resultsDataUpdate", ['businessData' => $geoBusinessData, 'patentData' => $patentGeoLocations]);
+    }
+
+    public function getBusinessDataFromId($id)
+    {
+        $business = Business::find($id);
+        return [
+            'locationId' => $business->id,
+            'company_name' => $business->company_name ?? 'No Data',
+            'date_registerd' => $business->date_registered ?? 'No Data',
+            'ngc_code' => $business->ngc_code ?? 'No Data',
+            'address' => $business->address ?? 'No Data',
+            'business_type' => $business->businessType->type ?? 'No Data',
+            'industry_classification' => $business->industryClassification->classifications ?? 'No Data',
+            'industry_description' => $business->industry_description ?? 'No Data'
+        ];
+    }
+
+    public function getPatentDataFromId($id)
+    {
+        $patent = Patent::find($id);
+        return [
+            'id' => $patent->id,
+            'patent_id' => $patent->patent_id,
+            'title' => $patent->title ?? 'No Data',
+            'date_registerd' => $patent->date ?? 'No Data'
+        ];
     }
 
     public function render()

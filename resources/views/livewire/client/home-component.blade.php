@@ -9,7 +9,7 @@
             <div class="container-fluid p-0">
                 <div class="row m-0">
                     <div class="col-12 col-sm-12 position-relative overflow-control p-0" id="mapSection">
-                        @livewire('client.map.map-component', ['type' => $type, 'country' => $country, 'classification' => $classification])
+                        @livewire('client.map.map-component')
                         <div class="map-overlay-box overlay-scroll">
                             <h3 class="search-title">Search</h3>
 

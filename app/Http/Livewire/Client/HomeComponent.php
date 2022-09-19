@@ -37,7 +37,7 @@ class HomeComponent extends Component
         $total_business_count = DB::table('businesses')->count();
         $total_patent_count = DB::table('patents')->count();
         $this->results = $total_business_count + $total_patent_count;
-        $businessCountByCountry = Business::select('country_id')->pluck('country_id')->countBy();
+        $businessCountByCountry = DB::table('businesses')->select('country_id')->get()->pluck('country_id')->countBy();
         Country::select('id')->pluck('id')->each(function ($item, $key) use ($businessCountByCountry)  {
             $this->businessCountListByCountry[$key] = $businessCountByCountry[$item] ?? 0;
         });
@@ -66,10 +66,8 @@ class HomeComponent extends Component
     {
         $this->businessResults = [];
         $this->patentResults = [];
-        Log::info(collect($this->businessResults)->toJson());
         $this->businessResults  = $data["businessData"] ?? [];
         $this->patentResults  = $data["patentData"] ?? [];
-        Log::info(collect($this->businessResults)->toJson());
     }
 
     public function updatedCountry($country)

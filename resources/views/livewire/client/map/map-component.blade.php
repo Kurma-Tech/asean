@@ -275,41 +275,46 @@
             }, );
 
             map.on('click', 'business-point', (event) => {
-                const content =
-                    `<div class="card card-secondary popUp-content">
+                coordinates = event.features[0].geometry.coordinates;
+                @this.getBusinessDataFromId(event.features[0].properties.locationId).then((businessData) => {
+                    const content =
+                        `<div class="card card-secondary popUp-content">
                             <div class="card-header">
-                                <h3 class="card-title">${event.features[0].properties.company_name}</h3>
+                                <h3 class="card-title">${businessData.company_name}</h3>
                             </div>
 
                             <div class="card-body">
                                 <strong><i class="fas fa-map-marker-alt mr-1"></i> Address</strong>
                                 <p class="text-muted">
-                                    ${event.features[0].properties.address}
+                                    ${businessData.address}
                                 </p>
 
                                 <hr>
 
                                 <strong><i class="fas fa-book mr-1"></i> Date Registerd</strong>
-                                <p class="text-muted">${event.features[0].properties.date_registerd}</p>
+                                <p class="text-muted">${businessData.date_registerd}</p>
 
                                 <hr>
 
                                 <strong><i class="fas fa-pencil-alt mr-1"></i> Business Type & Ind. Classification</strong>
                                 <p class="text-muted">
-                                    <p class="badge badge-md badge-info cursor-pointer" title="Business Type">${event.features[0].properties.business_type}</p>
-                                    <p class="badge badge-md badge-primary cursor-pointer" title="Industry Classification">${event.features[0].properties.industry_classification}</p>
+                                    <p class="badge badge-md badge-info cursor-pointer" title="Business Type">${businessData.business_type}</p>
+                                    <p class="badge badge-md badge-primary cursor-pointer" title="Industry Classification">${businessData.industry_classification}</p>
                                 </p>
 
                                 <hr>
 
                                 <strong><i class="far fa-file-alt mr-1"></i> Industry Description</strong>
-                                <p class="text-muted">${event.features[0].properties.industry_description}</p>
+                                <p class="text-muted">${businessData.industry_description}</p>
                             </div>
-                        </div>`
-                new mapboxgl.Popup()
-                    .setLngLat(event.features[0].geometry.coordinates)
-                    .setHTML(content)
-                    .addTo(map);
+                        </div>`;
+                    new mapboxgl.Popup()
+                        .setLngLat(coordinates)
+                        .setHTML(content)
+                        .addTo(map);
+                })
+
+
             });
         }
 
@@ -328,49 +333,54 @@
             }, );
 
             map.on('click', 'patent-point', (event) => {
-                const content =
-                    `<div class="card card-secondary popUp-content">
+                coordinates = event.features[0].geometry.coordinates;
+                @this.getPatentDataFromId(event.features[0].properties.id).then((patentData) => {
+                    const content =
+                        `<div class="card card-secondary popUp-content">
                             <div class="card-header">
-                                <h3 class="card-title">${event.features[0].properties.title}</h3>
+                                <h3 class="card-title">${patentData.title}</h3>
                             </div>
 
                             <div class="card-body">
                                 <strong><i class="fas fa-book mr-1"></i> Date Registerd</strong>
-                                <p class="text-muted">${event.features[0].properties.date}</p>
+                                <p class="text-muted">${patentData.date}</p>
 
                                 <hr>
                             </div>
                         </div>`
-                new mapboxgl.Popup()
-                    .setLngLat(event.features[0].geometry.coordinates)
-                    .setHTML(content)
-                    .addTo(map);
+                    new mapboxgl.Popup()
+                        .setLngLat(coordinates)
+                        .setHTML(content)
+                        .addTo(map);
+                })
+
             });
         }
 
         function handleLivewireLoad() {
             console.log("handleLivewireLoad");
-            geoLocations = {!! $geoJson !!}
-            patentData = {!! $patentJson !!}
+            Livewire.emit('mapFirstLoad');
+            // geoLocations = {!! $geoJson !!}
+            // patentData = {!! $patentJson !!}
 
-            map.on('load', () => {
-                map.addSource('business', {
-                    'type': 'geojson',
-                    'data': geoLocations
-                });
+            // map.on('load', () => {
+            //     map.addSource('business', {
+            //         'type': 'geojson',
+            //         'data': geoLocations
+            //     });
 
-                map.addSource('patent', {
-                    'type': 'geojson',
-                    'data': patentData
-                });
+            //     map.addSource('patent', {
+            //         'type': 'geojson',
+            //         'data': patentData
+            //     });
 
-                addBusinessHeat();
-                addBusinessPoint();
-                addPatentHeat();
-                addPatentPoint();
+            //     addBusinessHeat();
+            //     addBusinessPoint();
+            //     addPatentHeat();
+            //     addPatentPoint();
 
 
-            });
+            // });
 
             // map.on('moveend', () => {
             //     // console.log(currentMarkers);
