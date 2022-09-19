@@ -89,7 +89,6 @@ class MapComponent extends Component
         if ($this->type == "all" || $this->type == "business") {
             $businessData = [];
             foreach ($data as $key => $chunkedData) {
-
                 foreach ($chunkedData as $business) {
                     $businessData[] = [
                         'type' => 'Feature',
