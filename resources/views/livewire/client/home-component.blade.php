@@ -3,7 +3,7 @@
 @endpush
 
 <div>
-    @include('client/includes/_sidebar')
+    {{-- @include('client/includes/_sidebar') --}}
     <div class="content-wrapper">
         <section class="content p-0">
             <div class="container-fluid p-0">
@@ -74,7 +74,7 @@
 
                             <div id="accordion">
                                 @if (array_key_exists('features', $businessResults))
-                                    @foreach ($businessResults['features'] as $businessResult)
+                                    {{-- @foreach ($businessResults['features'] as $businessResult)
                                         <div class="card card-secondary">
                                             <div class="card-header" style="border-radius: 0;">
                                                 <h4 class="card-title w-100">
@@ -104,11 +104,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endforeach
+                                    @endforeach --}}
                                 @endif
 
                                 @if (array_key_exists('features', $patentResults))
-                                    @foreach ($patentResults['features'] as $patentResult)
+                                    {{-- @foreach ($patentResults['features'] as $patentResult)
                                         <div class="card card-secondary">
                                             <div class="card-header">
                                                 <h4 class="card-title w-100">
@@ -133,7 +133,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endforeach
+                                    @endforeach --}}
                                 @endif
                             </div>
                         </div>
