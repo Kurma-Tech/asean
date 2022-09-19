@@ -95,7 +95,7 @@
                                                     <p><strong>Address:</strong>
                                                         {{ $businessResult['properties']['address'] }}</p>
                                                     <p><strong>Business Type:</strong>
-                                                        {{ $businessResult['properties']['business_type'] }}</p>
+                                                        {{-- {{ $businessResult['properties']['business_type'] }}</p> --}}
                                                     <button class="btn btn-danger btn-sm fly-over-btn"
                                                         wire:click="handleFlyOver({{ $businessResult['geometry']['coordinates'][0] }}, {{ $businessResult['geometry']['coordinates'][1] }})"
                                                         data-lat="{{ $businessResult['geometry']['coordinates'][0] }}"

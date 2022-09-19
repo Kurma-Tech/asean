@@ -6,6 +6,7 @@ use App\Models\Country;
 use App\Models\Business;
 use App\Models\Patent;
 use App\Models\IndustryClassification;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -33,8 +34,8 @@ class HomeComponent extends Component
     protected $listeners = ['resultsUpdated' => 'updatedResults', 'resultsDataUpdate' => "updatedResultsData"];
 
     public function mount(){
-        $total_business_count = Business::select('id')->count();
-        $total_patent_count = Patent::select('id')->count();
+        $total_business_count = DB::table('businesses')->count();
+        $total_patent_count = DB::table('patents')->count();
         $this->results = $total_business_count + $total_patent_count;
         $businessCountByCountry = Business::select('country_id')->pluck('country_id')->countBy();
         Country::select('id')->pluck('id')->each(function ($item, $key) use ($businessCountByCountry)  {
@@ -44,7 +45,7 @@ class HomeComponent extends Component
         Country::select('id')->pluck('id')->each(function ($item, $key) use ($patentCountByCountry)  {
             $this->patentCountListByCountry[$key] = $patentCountByCountry[$item] ?? 0;
         });
-        $this->countriesNameList = Country::select('name')->pluck('name');
+        $this->countriesNameList = DB::table('countries')->select('name')->pluck('name');
     }
 
     public function handleSearch(){

@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class MapComponent extends Component
 {
-    public $long, $lat, $geoJson, $type, $country, $classification, $patentJson, $isLoading = false, $searchValue = '';
+    public $long, $lat, $geoJson, $type, $country, $classification, $patentJson, $isLoading = false, $searchValue = '', $chartBcount;
     protected $filters = [];
     protected $patents = [];
 
@@ -42,7 +42,9 @@ class MapComponent extends Component
                 $businessQuery = $businessQuery;
             }
         }
-        $this->filters = $businessQuery->take(1000)->get();
+        $q = $businessQuery->take(20000);
+        $this->filters = $q->get();
+        $this->chartBcount = $q->select('year')->pluck('year')->countBy();
         $patentQuery = Patent::select(['id', 'title', 'patent_id', 'country_id', 'date', 'long', 'lat'])->orderBy('id', 'ASC');
         foreach ($searchValues as $key => $searchValue) {
             $patentQuery = $patentQuery->where(function ($query) use ($searchValue) {
@@ -93,9 +95,9 @@ class MapComponent extends Component
                         'date_registerd' => $business->date_registered ?? 'No Data',
                         'ngc_code' => $business->ngc_code ?? 'No Data',
                         'address' => $business->address ?? 'No Data',
-                        'business_type' => $business->businessType->type ?? 'No Data',
-                        'industry_classification' => $business->industryClassification->classifications ?? 'No Data',
-                        'industry_description' => $business->industry_description ?? 'No Data',
+                        // 'business_type' => $business->businessType->type ?? 'No Data',
+                        // 'industry_classification' => $business->industryClassification->classifications ?? 'No Data',
+                        // 'industry_description' => $business->industry_description ?? 'No Data',
                     ]
                 ];
             }
@@ -142,7 +144,7 @@ class MapComponent extends Component
 
         $this->emit("resultsUpdated", count($businessData ?? []) + count($patentData ?? []));
 
-        $businessByYears = $this->filters->pluck('year')->countBy();
+        $businessByYears = $this->chartBcount;
         $patentByYears = $this->patents->pluck('date')->countBy(function ($date) {
             return substr(strchr($date, "-", -1), 0);
         });
