@@ -27,9 +27,26 @@
             height: 34px;
         }
 
+        #background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #background img {
+            width: 100%;
+            height: 100%;
+        }
+
         .popUp-content {
             overflow-y: auto;
             max-height: 400px;
+            
             width: 100%;
         }
 
@@ -57,6 +74,9 @@
 <div>
     <div id="map" wire:ignore>
         <div id="loader"><img src="loader.gif" alt="loader"></div>
+        {{-- <div id="background">
+            <img src="star-background-min.jpg" alt="background" srcset="">
+        </div> --}}
     </div>
 </div>
 
@@ -74,6 +94,7 @@
         var map;
         var geoLocations;
         var loadLocations;
+        var businessChunkedData = 0;
 
         window.addEventListener("DOMContentLoaded", handleWindowLoad, true);
 
@@ -85,7 +106,7 @@
                 style: "{{ env('MAPBOX_STYLE') }}", // style URL
                 center: [111.09841688936865, 2.37304225637002], // starting position [lng, lat]
                 zoom: 5, // starting zoom
-                projection: "equirectangular", // display the map as a 3D globe
+                projection: "globe", // display the map as a 3D globe
                 pitch: 45,
                 bearing: -17.6,
                 antialias: true,
@@ -94,13 +115,10 @@
                     [141.79211516906793, 27.60302090835848]
                 ] // Set the map's geographical boundaries.
             });
-            add3dLayer();
-            console.log(map);
+            // add3dLayer();
 
             var showInMapButtons = document.getElementsByClassName('.fly-over-btn');
-            console.log(showInMapButtons);
             for (let i = 0; i < showInMapButtons.length; i++) {
-                console.log("aksh");
                 showInMapButtons[i].addEventListener("click", function() {
                     console.log(this.dataset.long);
                     map.fire('click', {
@@ -562,9 +580,8 @@
 
 
         Livewire.on('mapUpdated', (data) => {
-            console.log(@this.businessChunkedData);
             try {
-                for (let index = 0; index < @this.businessChunkedData; index++) {
+                for (let index = 0; index < businessChunkedData; index++) {
                     var mapLayer = map.getLayer('business-heat' + 'business' + index);
                     if (typeof mapLayer !== 'undefined') {
                         map.removeLayer('business-heat' + 'business' + index).removeLayer('business-point' +
@@ -579,6 +596,9 @@
             } catch (error) {
 
             }
+            businessChunkedData = data.geoJson.length;
+            var tempData = data.geoJson;
+            console.log(tempData);
 
             if (data.geoJson != null) {
                 for (let index = 0; index < data.geoJson.length; index++) {
@@ -588,6 +608,34 @@
                     });
                     addBusinessHeat('business' + index);
                     addBusinessPoint('business' + index);
+                    $('#accordion').append(
+                        `
+                        <div class="card card-secondary">
+                            <div class="card-header" style="border-radius: 0;">
+                                <h4 class="card-title w-100">
+                                    <a class="d-block w-100" data-toggle="collapse"
+                                        href="#business-${tempData[index].features.properties.locationId}">
+                                        ${tempData[index].features.properties.locationId}
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="business-${tempData[index].features.properties.locationId}"
+                                class="collapse"
+                                data-parent="#accordion" wire:ignore.self>
+                                <div class="card-body">
+                                    <p><strong>NGC Code:</strong>
+                                        asdfas
+                                    <p><strong>Date Registered:</strong>
+                                        asdfas
+                                    <p><strong>Address:</strong>
+                                        asd
+                                    <p><strong>Business Type:</strong>
+                                        asdasdfas
+                                </div>
+                            </div>
+                        </div>
+                        `
+                    );
                 }
             }
 

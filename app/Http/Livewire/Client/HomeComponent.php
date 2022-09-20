@@ -14,7 +14,7 @@ use Livewire\WithPagination;
 class HomeComponent extends Component
 {
     use WithPagination;
-    
+
     public $search = '';
     public $parent_id;
     public $industryClass;
@@ -31,29 +31,32 @@ class HomeComponent extends Component
     public $businessResults = [];
     public $patentResults = [];
 
-    protected $listeners = ['resultsUpdated' => 'updatedResults', 'resultsDataUpdate' => "updatedResultsData"];
+    protected $listeners = ['resultsUpdated' => 'updatedResults'];
 
-    public function mount(){
+    public function mount()
+    {
         $total_business_count = DB::table('businesses')->count();
         $total_patent_count = DB::table('patents')->count();
         $this->results = $total_business_count + $total_patent_count;
         $businessCountByCountry = DB::table('businesses')->select('country_id')->get()->pluck('country_id')->countBy();
-        Country::select('id')->pluck('id')->each(function ($item, $key) use ($businessCountByCountry)  {
+        Country::select('id')->pluck('id')->each(function ($item, $key) use ($businessCountByCountry) {
             $this->businessCountListByCountry[$key] = $businessCountByCountry[$item] ?? 0;
         });
         $patentCountByCountry = Patent::select('country_id')->pluck('country_id')->countBy();
-        Country::select('id')->pluck('id')->each(function ($item, $key) use ($patentCountByCountry)  {
+        Country::select('id')->pluck('id')->each(function ($item, $key) use ($patentCountByCountry) {
             $this->patentCountListByCountry[$key] = $patentCountByCountry[$item] ?? 0;
         });
         $this->countriesNameList = DB::table('countries')->select('name')->pluck('name');
     }
 
-    public function handleSearch(){
+    public function handleSearch()
+    {
         $this->emit("loader_on");
         $this->emit("handleSearchEvent", $this->search);
     }
 
-    public function handleFlyOver($long, $lat){
+    public function handleFlyOver($long, $lat)
+    {
         $this->emit('flyover', ["long" => $long, "lat" => $lat]);
     }
 
@@ -62,18 +65,18 @@ class HomeComponent extends Component
         $this->results = $results;
     }
 
-    // public function updatedResultsData($data)
-    // {
-    //     $this->businessResults = [];
-    //     $this->patentResults = [];
-    //     $this->businessResults  = $data["businessData"] ?? [];
-    //     $this->patentResults  = $data["patentData"] ?? [];
-    // }
+    public function handleMapUpdated($data)
+    {
+        // $this->businessResults = [];
+        // $this->patentResults = [];
+        // $this->businessResults  = $data["geoJson"] ?? [];
+        // $this->patentResults  = $data["patentJson"] ?? [];
+    }
 
     public function updatedCountry($country)
     {
-        $this->country = $country;
         $this->emit("loader_on");
+        $this->country = $country;
         $this->emit('country_updated', $country);
     }
 
@@ -90,7 +93,7 @@ class HomeComponent extends Component
         $this->emit("loader_on");
         $this->emit('classification_updated', $classification);
     }
-    
+
     public function render()
     {
         // if($this->parent_id != '')
@@ -111,9 +114,9 @@ class HomeComponent extends Component
         $this->emit('updateMap', $this->search);
         $this->emit('updateReport');
 
-        $countries = Country::select('status', 'name')->where("status", "1")->get();
+        $countries = Country::select('id', 'status', 'name')->where("status", "1")->get();
         $classifications = [];
-        if($this->type == "business"){
+        if ($this->type == "business") {
             $classifications = IndustryClassification::select('id', 'classifications')->get();
         }
 
@@ -122,7 +125,7 @@ class HomeComponent extends Component
             // 'filters_all' => $this->filters_all,
             // 'filter' => $filter,
             'countries' => $countries,
-            'classifications' => $classifications,
+            'classifications' => $classifications
             // 'type' => $this->type,
             // 'industryClass' => $this->industryClass
         ])->layout('layouts.client');
