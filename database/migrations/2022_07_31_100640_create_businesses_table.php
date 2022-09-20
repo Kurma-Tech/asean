@@ -24,13 +24,13 @@ return new class extends Migration
             $table->string('company_name')->nullable();
             $table->string('date_registered')->nullable();
             $table->string('ngc_code')->nullable();
-            $table->enum('status', ['REGISTERED', 'UNREGISTERED'])->nullable();
+            $table->enum('status', ['REGISTERED', 'UNREGISTERED'])->nullable()->default('REGISTERED');
             $table->string('address')->nullable();
             $table->string('industry_code')->nullable();
             $table->text('industry_description')->nullable();
             $table->string('geo_code')->nullable();
-            $table->decimal('long', 29, 20)->nullable();
-            $table->decimal('lat', 29, 20)->nullable();
+            $table->decimal('long', 8, 10)->nullable();
+            $table->decimal('lat', 8, 10)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

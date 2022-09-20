@@ -235,7 +235,7 @@
 
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-success btn-sm">Add Business</button>
-                                <a href="#" class="btn btn-danger btn-sm pull-right">Discard</a>
+                                <a href="{{ route('admin.business.list') }}" class="btn btn-info btn-sm pull-right">View List</a>
                             </div>
                         </div>
                         <!-- /.card -->
@@ -335,8 +335,6 @@
                 theme: 'bootstrap4'
             });
 
-
-
             $('#country_name').on('change', function (e) {
                 let data = $(this).val();
                     @this.set('country_id', data);
@@ -350,18 +348,6 @@
             $('#industry_classification_name').on('change', function (e) {
                 let data = $(this).val();
                     @this.set('industry_classification_id', data);
-            });
-
-            Livewire.on('countryEvent', (data) => {
-                $('#country_name').val(data).trigger('change');
-            });
-
-            Livewire.on('typeEvent', (data) => {
-                $('#type_name').val(data).trigger('change');
-            });
-
-            Livewire.on('kindEvent', (data) => {
-                $('#kind_name').val(data).trigger('change');
             });
 
             $("#year").datepicker({

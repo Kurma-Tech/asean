@@ -84,8 +84,7 @@ class BusinessAddComponent extends Component
 
     // Store
     public function storeBusiness()
-    {
-        
+    {  
         $this->validate(); // validate Business form
 
         DB::beginTransaction();
@@ -107,6 +106,7 @@ class BusinessAddComponent extends Component
             $business->long                       = $this->long;
             $business->lat                        = $this->lat;
             $business->address                    = $this->address;
+            $business->status                     = 'REGISTERED';
             $business->save();
 
             DB::commit();
