@@ -21,7 +21,6 @@ class MapComponent extends Component
         $isLoading = false,
         $searchValue = '',
         $chartBusinessCount,
-        $businessChunkedData = 0,
         $chartPatentsCount;
 
     protected
@@ -49,6 +48,7 @@ class MapComponent extends Component
 
     public function updatedCountry($country)
     {
+        Log::info($country);
         $this->filterData($this->type, $country, $this->classification);
     }
 
@@ -74,7 +74,7 @@ class MapComponent extends Component
     private function filterData($type, $country, $classification)
     {
         // ini_set('memory_limit', '3000M');
-        $this->mount();
+        // $this->mount();
 
         // Updating filter values
         $this->country = $country;
@@ -94,8 +94,10 @@ class MapComponent extends Component
 
         /* Search from searchKeywords */
         // Searching business on company_name and ngc_code fields
-        foreach ($searchValues as $searchValue) {
-            $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
+        if ($this->searchValue != "") {
+            foreach ($searchValues as $searchValue) {
+                $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
+            }
         }
 
         // Searching patents on title and patent_id fields
@@ -140,8 +142,9 @@ class MapComponent extends Component
 
         $this->loadJsonData(); // Load data for map
         $this->emit("loader_off"); // Loader off
-
+        // dd($this->business);
         // dd(DB::getQueryLog());
+
     }
 
 
@@ -170,9 +173,8 @@ class MapComponent extends Component
                 ];
                 array_push($tempBusinessDataChunked, $geoBusinessData);
             }
-            $this->businessChunkedData = count($tempBusinessDataChunked);
-            $geoJson = collect($geoBusinessData)->toJson();
-            $this->geoJson = $geoJson;
+            // $geoJson = collect($geoBusinessData)->toJson();
+            // $this->geoJson = $geoJson;
         } else {
             $tempBusinessDataChunked = [];
         }
