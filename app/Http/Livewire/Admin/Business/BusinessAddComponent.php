@@ -8,20 +8,22 @@ use Livewire\Component;
 
 class BusinessAddComponent extends Component
 {
-    public $company_name;
-    public $sec_no;
-    public $ngc_code;
-    public $business_type_id;
-    public $industry_classification_id;
-    public $year;
-    public $date_registerd;
-    public $geo_code;
-    public $industry_code;
-    public $geo_description;
-    public $industry_description;
-    public $address;
-    public $long;
-    public $lat;
+    public 
+        $company_name,
+        $sec_no,
+        $ngc_code,
+        $business_type_id,
+        $industry_classification_id,
+        $country_id,
+        $year,
+        $date_registerd,
+        $geo_code,
+        $industry_code,
+        $geo_description,
+        $industry_description,
+        $address,
+        $long,
+        $lat;
 
     protected $listeners = ['geo_description_changed' => 'geoDescriptionMapping', 'industry_description_changed' => 'industryDescriptionMapping'];
 
@@ -39,10 +41,11 @@ class BusinessAddComponent extends Component
             'company_name'               => 'required',
             'sec_no'                     => 'required',
             'ngc_code'                   => 'nullable',
-            'business_type_id'           => 'required',
-            'industry_classification_id' => 'required',
-            'year'                       => 'required',
-            'date_registerd'             => 'required',
+            'business_type_id'           => 'required|integer',
+            'industry_classification_id' => 'required|integer',
+            'country_id'                 => 'required|integer',
+            'year'                       => 'required|date_format:"Y"',
+            'date_registerd'             => 'required|date_format:"Y-m-d"',
             'geo_code'                   => 'nullable',
             'industry_code'              => 'nullable',
             'geo_description'            => 'nullable',
@@ -51,6 +54,24 @@ class BusinessAddComponent extends Component
             'lat'                        => 'required',
             'address'                    => 'required'
         ];
+    }
+
+    protected $messages = [
+        'country_id.required'                 => 'Country field is required',
+        'country_id.integer'                  => 'You must select country from drop down',
+        'business_type_id.required'           => 'Business type field is required',
+        'business_type_id.integer'            => 'You must select business type from drop down',
+        'industry_classification_id.required' => 'Classification field is required',
+        'industry_classification_id.integer'  => 'You must select classification from drop down',
+        'long.required'                       => 'Longitude field is required',
+        'lat.required'                        => 'Latitude field is required',
+    ];
+
+    public function mount()
+    {
+        $this->countries               = DB::table('countries')->select('id', 'name')->get();
+        $this->businessTypes           = DB::table('business_types')->select('id', 'type')->get();
+        $this->industryClassifications = DB::table('industry_classifications')->select('id', 'classifications')->get();
     }
 
     public function render()
@@ -72,6 +93,7 @@ class BusinessAddComponent extends Component
             $business->ngc_code                   = $this->ngc_code;
             $business->business_type_id           = $this->business_type_id;
             $business->industry_classification_id = $this->industry_classification_id;
+            $business->country_id                 = $this->country_id;
             $business->year                       = $this->year;
             $business->date_registerd             = $this->date_registerd;
             $business->geo_code                   = $this->geo_code;
