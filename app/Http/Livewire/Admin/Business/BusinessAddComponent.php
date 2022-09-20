@@ -8,7 +8,7 @@ use Livewire\Component;
 
 class BusinessAddComponent extends Component
 {
-    public 
+    public
         $company_name,
         $sec_no,
         $ngc_code,
@@ -16,7 +16,7 @@ class BusinessAddComponent extends Component
         $industry_classification_id,
         $country_id,
         $year,
-        $date_registerd,
+        $date_registered,
         $geo_code,
         $industry_code,
         $geo_description,
@@ -27,11 +27,13 @@ class BusinessAddComponent extends Component
 
     protected $listeners = ['geo_description_changed' => 'geoDescriptionMapping', 'industry_description_changed' => 'industryDescriptionMapping'];
 
-    public function geoDescriptionMapping($geoDescription){ // geo description
+    public function geoDescriptionMapping($geoDescription)
+    { // geo description
         $this->geo_description = $geoDescription;
     }
 
-    public function industryDescriptionMapping($industryDescription){ // industry description
+    public function industryDescriptionMapping($industryDescription)
+    { // industry description
         $this->industry_description = $industryDescription;
     }
 
@@ -44,8 +46,8 @@ class BusinessAddComponent extends Component
             'business_type_id'           => 'required|integer',
             'industry_classification_id' => 'required|integer',
             'country_id'                 => 'required|integer',
-            'year'                       => 'required|date_format:"Y"',
-            'date_registerd'             => 'required|date_format:"Y-m-d"',
+            'year'                       => 'required',
+            'date_registered'            => 'required|date_format:"m/d/Y"',
             'geo_code'                   => 'nullable',
             'industry_code'              => 'nullable',
             'geo_description'            => 'nullable',
@@ -67,21 +69,23 @@ class BusinessAddComponent extends Component
         'lat.required'                        => 'Latitude field is required',
     ];
 
-    public function mount()
-    {
-        $this->countries               = DB::table('countries')->select('id', 'name')->get();
-        $this->businessTypes           = DB::table('business_types')->select('id', 'type')->get();
-        $this->industryClassifications = DB::table('industry_classifications')->select('id', 'classifications')->get();
-    }
-
     public function render()
     {
-        return view('livewire.admin.business.business-add-component')->layout('layouts.admin');
+        $countries               = DB::table('countries')->select('id', 'name')->get();
+        $businessTypes           = DB::table('business_types')->select('id', 'type')->get();
+        $industryClassifications = DB::table('industry_classifications')->select('id', 'classifications')->get();
+
+        return view('livewire.admin.business.business-add-component', [
+            'countries' => $countries, 
+            'businessTypes' => $businessTypes, 
+            'industryClassifications' => $industryClassifications
+        ])->layout('layouts.admin');
     }
 
     // Store
     public function storeBusiness()
     {
+        
         $this->validate(); // validate Business form
 
         DB::beginTransaction();
@@ -95,7 +99,7 @@ class BusinessAddComponent extends Component
             $business->industry_classification_id = $this->industry_classification_id;
             $business->country_id                 = $this->country_id;
             $business->year                       = $this->year;
-            $business->date_registerd             = $this->date_registerd;
+            $business->date_registered            = $this->date_registered;
             $business->geo_code                   = $this->geo_code;
             $business->industry_code              = $this->industry_code;
             $business->geo_description            = $this->geo_description;
@@ -107,15 +111,15 @@ class BusinessAddComponent extends Component
 
             DB::commit();
 
-            $this->dispatchBrowserEvent('success-message',['message' => 'Business has been added to the list.']);
+            $this->dispatchBrowserEvent('success-message', ['message' => 'Business has been added to the list.']);
 
             $this->reset();
-            
+
         } catch (\Throwable $th) {
             DB::rollback();
-            // $this->error = $th->getMessage();
             $this->error = 'Ops! looks like we had some problem';
-            $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
+            $this->error = $th->getMessage();
+            $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);
         }
     }
 }
