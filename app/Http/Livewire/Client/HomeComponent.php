@@ -62,13 +62,13 @@ class HomeComponent extends Component
         $this->results = $results;
     }
 
-    public function updatedResultsData($data)
-    {
-        $this->businessResults = [];
-        $this->patentResults = [];
-        $this->businessResults  = $data["businessData"] ?? [];
-        $this->patentResults  = $data["patentData"] ?? [];
-    }
+    // public function updatedResultsData($data)
+    // {
+    //     $this->businessResults = [];
+    //     $this->patentResults = [];
+    //     $this->businessResults  = $data["businessData"] ?? [];
+    //     $this->patentResults  = $data["patentData"] ?? [];
+    // }
 
     public function updatedCountry($country)
     {
@@ -79,8 +79,8 @@ class HomeComponent extends Component
 
     public function updatedType($type)
     {
-        $this->type = $type;
         $this->emit("loader_on");
+        $this->type = $type;
         $this->emit('type_updated', $type);
     }
 

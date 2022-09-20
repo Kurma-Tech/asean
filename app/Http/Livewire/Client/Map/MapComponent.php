@@ -21,6 +21,7 @@ class MapComponent extends Component
         $isLoading = false,
         $searchValue = '',
         $chartBusinessCount,
+        $businessChunkedData = 0,
         $chartPatentsCount;
 
     protected
@@ -120,7 +121,7 @@ class MapComponent extends Component
 
 
         /* Get Query Data */
-        $this->business = $businessQuery->get();
+        $this->business = $businessQuery->get()->chunk(5000);
         $this->patents = $patentQuery->get();
         /* Get Query Data End */
 
@@ -148,28 +149,32 @@ class MapComponent extends Component
     {
         /*  */
         if ($this->type == "all" || $this->type == "business") {
-            $tempBusinessData = [];
-
-            foreach ($this->business as $business) {
-                $tempBusinessData[] = [
-                    'type' => 'Feature',
-                    'geometry' => [
-                        'coordinates' => [$business->long ?? 0, $business->lat ?? 0],
-                        'type' => 'Point',
-                    ],
-                    'properties' => [
-                        'locationId' => $business->id,
-                    ]
+            $tempBusinessDataChunked = [];
+            foreach ($this->business as $chunkedData) {
+                $tempBusinessData = [];
+                foreach ($chunkedData as $business) {
+                    $tempBusinessData[] = [
+                        'type' => 'Feature',
+                        'geometry' => [
+                            'coordinates' => [$business->long ?? 0, $business->lat ?? 0],
+                            'type' => 'Point',
+                        ],
+                        'properties' => [
+                            'locationId' => $business->id,
+                        ]
+                    ];
+                }
+                $geoBusinessData = [
+                    'type' => 'FeatureCollection',
+                    'features' => $tempBusinessData
                 ];
+                array_push($tempBusinessDataChunked, $geoBusinessData);
             }
-            $geoBusinessData = [
-                'type' => 'FeatureCollection',
-                'features' => $tempBusinessData
-            ];
+            $this->businessChunkedData = count($tempBusinessDataChunked);
             $geoJson = collect($geoBusinessData)->toJson();
             $this->geoJson = $geoJson;
         } else {
-            $geoBusinessData = null;
+            $tempBusinessDataChunked = [];
         }
 
 
@@ -203,9 +208,9 @@ class MapComponent extends Component
 
         $this->emit("reportsUpdated", ["businessCountByYears" => $this->chartBusinessCount->values(), "patentCountByYears" => $this->chartPatentsCount->values(), "lineChartYears" => $lineChartYears->sort()]);
 
-        $this->emit("mapUpdated", ["geoJson" => $geoBusinessData, "patentJson" => $patentGeoLocations]);
+        $this->emit("mapUpdated", ["geoJson" => $tempBusinessDataChunked, "patentJson" => $patentGeoLocations]);
 
-        $this->emit("resultsDataUpdate", ['businessData' => $geoBusinessData, 'patentData' => $patentGeoLocations]);
+        // $this->emit("resultsDataUpdate", ['businessData' => $tempBusinessDataChunked, 'patentData' => $patentGeoLocations]);
     }
 
     public function getBusinessDataFromId($id)

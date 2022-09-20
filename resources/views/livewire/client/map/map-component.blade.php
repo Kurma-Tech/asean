@@ -110,11 +110,11 @@
         }
         document.addEventListener("livewire:load", handleLivewireLoad, true);
 
-        function addBusinessHeat() {
+        function addBusinessHeat(sourceId) {
             map.addLayer({
-                'id': 'business-heat',
+                'id': 'business-heat' + sourceId,
                 'type': 'heatmap',
-                'source': 'business',
+                'source': sourceId,
                 'maxzoom': 9,
                 'paint': {
                     // Increase the heatmap weight based on frequency and property magnitude
@@ -254,11 +254,11 @@
             }, );
         }
 
-        function addBusinessPoint() {
+        function addBusinessPoint(sourceId) {
             map.addLayer({
-                'id': 'business-point',
+                'id': 'business-point' + sourceId,
                 'type': 'circle',
-                'source': 'business',
+                'source': sourceId,
                 'minzoom': 7,
                 'paint': {
                     'circle-radius': {
@@ -274,7 +274,7 @@
                 }
             }, );
 
-            map.on('click', 'business-point', (event) => {
+            map.on('click', 'business-point'+sourceId, (event) => {
                 coordinates = event.features[0].geometry.coordinates;
                 @this.getBusinessDataFromId(event.features[0].properties.locationId).then((businessData) => {
                     const content =
@@ -514,11 +514,15 @@
 
 
         Livewire.on('mapUpdated', (data) => {
+            console.log(@this.businessChunkedData);
             try {
-                var mapLayer = map.getLayer('business-heat');
-                if (typeof mapLayer !== 'undefined') {
-                    map.removeLayer('business-heat').removeLayer('business-point').removeSource('business');
+                for (let index = 0; index < @this.businessChunkedData; index++) {
+                    var mapLayer = map.getLayer('business-heat' + 'business' + index);
+                    if (typeof mapLayer !== 'undefined') {
+                        map.removeLayer('business-heat' + 'business' + index).removeLayer('business-point' + 'business' + index).removeSource('business' + index);
+                    }
                 }
+
                 var mapLayer = map.getLayer('patent-heat');
                 if (typeof mapLayer !== 'undefined') {
                     map.removeLayer('patent-heat').removeLayer('patent-point').removeSource('patent');
@@ -528,12 +532,14 @@
             }
 
             if (data.geoJson != null) {
-                map.addSource('business', {
-                    'type': 'geojson',
-                    'data': data.geoJson
-                });
-                addBusinessHeat();
-                addBusinessPoint();
+                for (let index = 0; index < data.geoJson.length; index++) {
+                    map.addSource('business' + index, {
+                        'type': 'geojson',
+                        'data': data.geoJson[index]
+                    });
+                    addBusinessHeat('business' + index);
+                    addBusinessPoint('business' + index);
+                }
             }
 
             if (data.patentJson != null) {
