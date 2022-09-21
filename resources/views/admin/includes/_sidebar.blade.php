@@ -1,8 +1,8 @@
         <aside class="main-sidebar sidebar-dark-success elevation-4">
             <!-- Brand Logo -->
-            <a href="index3.html" class="brand-link">
-                <img src="{{asset('admin/dist/img/asean-favicon.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
+            <a href="{{ route('admin.dashboard') }}" class="brand-link">
+                <img src="{{asset('admin/dist/img/asean-favicon.png')}}" alt="Asean Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">ASEAN</span>
             </a>
 
             <!-- Sidebar -->
@@ -46,7 +46,6 @@
                                     <a href="{{route('admin.countries.list')}}" class="nav-link {{ (request()->routeIs('admin.countries.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-info"></i>
                                         <p>View All</p>
-                                        <span class="badge badge-danger right">New</span>
                                     </a>
                                 </li>
                             </ul>
@@ -65,7 +64,6 @@
                                     <a href="{{route('admin.business.list')}}" class="nav-link {{ (request()->routeIs('admin.business.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-info"></i>
                                         <p>View All</p>
-                                        <span class="badge badge-danger right">New</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -95,7 +93,6 @@
                                     <a href="{{route('admin.patent.list')}}" class="nav-link {{ (request()->routeIs('admin.patent.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-info"></i>
                                         <p>View All</p>
-                                        <span class="badge badge-danger right">New</span>
                                     </a>
                                 </li>
                             </ul>
@@ -113,19 +110,6 @@
                                     <a href="{{route('admin.journals.list')}}" class="nav-link {{ (request()->routeIs('admin.journals.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-info"></i>
                                         <p>View All</p>
-                                        <span class="badge badge-danger right">New</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{route('admin.journals.add')}}" class="nav-link {{ (request()->routeIs('admin.journals.add')) ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-circle text-success"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{route('admin.journals.trashed')}}" class="nav-link {{ (request()->routeIs('admin.journals.trashed')) ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-circle text-danger"></i>
-                                        <p>Trashed Data</p>
                                     </a>
                                 </li>
                             </ul>
@@ -144,21 +128,8 @@
                                     <a href="{{route('admin.classification.list')}}" class="nav-link {{ (request()->routeIs('admin.classification.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-info"></i>
                                         <p>View All</p>
-                                        <span class="badge badge-danger right">New</span>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{route('admin.classification.add')}}" class="nav-link {{ (request()->routeIs('admin.classification.add')) ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-circle text-success"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                {{-- <li class="nav-item">
-                                    <a href="{{route('admin.classification.trashed')}}" class="nav-link {{ (request()->routeIs('admin.classification.trashed')) ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-circle text-danger"></i>
-                                        <p>Trashed Data</p>
-                                    </a>
-                                </li> --}}
                             </ul>
                         </li>
                         <li class="nav-item {{ (request()->routeIs('admin.typeBusiness*')) ? 'menu-open' : '' }}">
@@ -213,6 +184,14 @@
                             </ul>
                         </li>
                         <li class="nav-header">SETTINGS</li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.manpower.list') }}" class="nav-link">
+                                <i class="nav-icon fas fa-copy"></i>
+                                <p>
+                                    Man Power
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-copy"></i>

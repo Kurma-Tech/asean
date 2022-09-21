@@ -181,7 +181,7 @@
                 style: "{{ env('MAPBOX_STYLE') }}", // style URL
                 center: [111.09841688936865, 2.37304225637002], // starting position [lng, lat]
                 zoom: 5, // starting zoom
-                projection: "globe", // display the map as a 3D globe
+                projection: "equirectangular", // display the map as a 3D globe
                 pitch: 45,
                 bearing: -17.6,
                 antialias: true,

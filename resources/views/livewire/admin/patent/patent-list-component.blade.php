@@ -89,10 +89,10 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="col-md-6 col-sm-12">
+                                    <div class="col-md-6 col-sm-12" wire:ignore>
                                         <div class="form-group">
-                                            <label for="country_id">Country*</label>
-                                            <select class="form-control select2 select2bs4" id="country_id" wire:model="country_id" style="width: 100%;">
+                                            <label for="country_name">Country*</label>
+                                            <select class="form-control select2 select2bs4" id="country_name" wire:model="country_id" style="width: 100%;">
                                                 <option hidden>Choose Country</option>
                                                 @foreach($countries as $country)
                                                 <option value="{{ $country->id }}">{{ $country->name }}</option>
@@ -104,10 +104,10 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12">
+                                    <div class="col-md-6 col-sm-12" wire:ignore>
                                         <div class="form-group">
-                                            <label for="kind_id">Kind*</label>
-                                            <select class="form-control select2 select2bs4" id="kind_id" wire:model="kind_id" style="width: 100%;">
+                                            <label for="kind_name">Kind*</label>
+                                            <select class="form-control select2 select2bs4" id="kind_name" wire:model="kind_id" style="width: 100%;">
                                                 <option hidden>Choose Patent Kind</option>
                                                 @foreach($patentKinds as $pKind)
                                                 <option value="{{ $pKind->id }}">{{ $pKind->kind }}</option>
@@ -119,10 +119,10 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12">
+                                    <div class="col-md-6 col-sm-12" wire:ignore>
                                         <div class="form-group">
-                                            <label for="type_id">Type*</label>
-                                            <select class="form-control select2 select2bs4" id="type_id" wire:model="type_id" style="width: 100%;">
+                                            <label for="type_name">Type*</label>
+                                            <select class="form-control select2 select2bs4" id="type_name" wire:model="type_id" style="width: 100%;">
                                                 <option hidden>Choose Patent Type</option>
                                                 @foreach($patentTypes as $pType)
                                                 <option value="{{ $pType->id }}">{{ $pType->type }}</option>
@@ -267,15 +267,42 @@
 <script>
     $(function () {
         //Initialize Select2 Elements
-        $('.select2').select2()
+        $('.select2').select2();
     
         //Initialize Select2 Elements
         $('.select2bs4').select2({
             theme: 'bootstrap4'
         })
 
+        $('#country_name').on('change', function (e) {
+            let data = $(this).val();
+                @this.set('country_id', data);
+        });
+
+        $('#kind_name').on('change', function (e) {
+            let data = $(this).val();
+                @this.set('kind_id', data);
+        });
+
+        $('#type_name').on('change', function (e) {
+            let data = $(this).val();
+                @this.set('type_id', data);
+        });
+
+        Livewire.on('countryEvent', (data) => {
+            $('#country_name').val(data).trigger('change');
+        });
+
+        Livewire.on('typeEvent', (data) => {
+            $('#type_name').val(data).trigger('change');
+        });
+
+        Livewire.on('kindEvent', (data) => {
+            $('#kind_name').val(data).trigger('change');
+        });
+
         $("#patent_date_registered").datepicker({
-            format: "yyyy-mm-dd",
+            format: "mm/dd/yyyy",
             autoclose:true //to close picker once year is selected
         });
     });

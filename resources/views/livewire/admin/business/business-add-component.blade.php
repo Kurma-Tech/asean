@@ -51,14 +51,14 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-6 col-sm-12">
+                                    <div class="col-md-6 col-sm-12" wire:ignore>
                                         <div class="form-group">
-                                            <label for="business_type_id">Business Type*</label>
-                                            <select class="form-control select2 select2bs4" id="business_type_id"
+                                            <label for="business_type_name">Business Type*</label>
+                                            <select class="form-control select2 select2bs4" id="business_type_name"
                                                 wire:model="business_type_id" style="width: 100%;">
                                                 <option hidden>Choose Business Type</option>
-                                                @foreach($industryClassifications as $classification)
-                                                <option value="{{ $classification->id }}">{{ $classification->classifications }}</option>
+                                                @foreach($businessTypes as $businessType)
+                                                <option value="{{ $businessType->id }}">{{ $businessType->type }}</option>
                                                 @endforeach
                                             </select>
                                             @error('business_type_id')
@@ -67,15 +67,15 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12">
+                                    <div class="col-md-6 col-sm-12" wire:ignore>
                                         <div class="form-group">
-                                            <label for="industry_classification_id">Industry Classification*</label>
+                                            <label for="industry_classification_name">Industry Classification*</label>
                                             <select class="form-control select2 select2bs4"
-                                                id="industry_classification_id" wire:model="industry_classification_id"
+                                                id="industry_classification_name" wire:model="industry_classification_id"
                                                 style="width: 100%;">
                                                 <option hidden>Choose Industry Classification</option>
-                                                @foreach($businessTypes as $businessType)
-                                                <option value="{{ $businessType->id }}">{{ $businessType->type }}</option>
+                                                @foreach($industryClassifications as $classification)
+                                                <option value="{{ $classification->id }}">{{ $classification->classifications }}</option>
                                                 @endforeach
                                             </select>
                                             @error('industry_classification_id')
@@ -90,19 +90,19 @@
                                         <div class="form-group">
                                             <label for="year">Business Year*</label>
                                             <input type="text" class="form-control" name="year" id="year"
-                                                wire:model="year" />
+                                                wire:model="year" onchange="this.dispatchEvent(new InputEvent('input'))"/>
                                             @error('year')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12">
+                                    <div class="col-md-6 col-sm-12" wire:ignore>
                                         <div class="form-group">
-                                            <label for="date_registerd">Full Date Registred*</label>
-                                            <input type="text" class="form-control" name="date_registerd"
-                                                id="date_registerd" wire:model="date_registerd" />
-                                            @error('date_registerd')
+                                            <label for="date_registered">Full Date Registred*</label>
+                                            <input type="text" class="form-control" name="date_registered"
+                                                id="date_registered" wire:model="date_registered" onchange="this.dispatchEvent(new InputEvent('input'))"/>
+                                            @error('date_registered')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -134,8 +134,8 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-6 col-sm-12">
-                                        <div class="form-group" wire:ignore>
+                                    <div class="col-md-6 col-sm-12" wire:ignore>
+                                        <div class="form-group">
                                             <label for="geo_description">Geo Description</label>
                                             <textarea id="geo_description" wire:model="geo_description"></textarea>
                                             @error('geo_description')
@@ -144,8 +144,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12">
-                                        <div class="form-group" wire:ignore>
+                                    <div class="col-md-6 col-sm-12" wire:ignore>
+                                        <div class="form-group">
                                             <label for="industry_description">Industry Description</label>
                                             <textarea id="industry_description" wire:model="industry_description"></textarea>
                                             @error('industry_description')
@@ -200,12 +200,12 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-12" wire:ignore>
                                         <div class="form-group">
-                                            <label for="country_id">Country*</label>
+                                            <label for="country_name">Country*</label>
                                             <select class="form-control select2 select2bs4"
-                                                id="country_id" wire:model="country_id"
-                                                style="width: 100%;">
+                                                id="country_name" wire:model="country_id"
+                                                style="width: 100%;" onchange="this.dispatchEvent(new InputEvent('input'))">
                                                 <option hidden>Select Country</option>
                                                 @foreach($countries as $country)
                                                 <option value="{{ $country->id }}">{{ $country->name }}</option>
@@ -235,7 +235,7 @@
 
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-success btn-sm">Add Business</button>
-                                <a href="#" class="btn btn-danger btn-sm pull-right">Discard</a>
+                                <a href="{{ route('admin.business.list') }}" class="btn btn-info btn-sm pull-right">View List</a>
                             </div>
                         </div>
                         <!-- /.card -->
@@ -326,17 +326,29 @@
             })
         })
 
-
-
-
         $(function() {
             //Initialize Select2 Elements
-            $('.select2').select2()
+            $('.select2').select2();
 
             //Initialize Select2 Elements
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
-            })
+            });
+
+            $('#country_name').on('change', function (e) {
+                let data = $(this).val();
+                    @this.set('country_id', data);
+            });
+
+            $('#business_type_name').on('change', function (e) {
+                let data = $(this).val();
+                    @this.set('business_type_id', data);
+            });
+
+            $('#industry_classification_name').on('change', function (e) {
+                let data = $(this).val();
+                    @this.set('industry_classification_id', data);
+            });
 
             $("#year").datepicker({
                 format: "yyyy",
@@ -345,7 +357,7 @@
                 autoclose: true //to close picker once year is selected
             });
 
-            $("#date_registerd").datepicker({
+            $("#date_registered").datepicker({
                 format: "mm/dd/yyyy",
                 autoclose: true //to close picker once year is selected
             });

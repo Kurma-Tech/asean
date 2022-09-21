@@ -113,8 +113,18 @@
                                                         <div class="product-title">
                                                             Action
                                                         </div>
-                                                        <a href="#" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i></a>
-                                                        <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-alt"></i></a>
+                                                        @if($business->deleted_at)
+                                                        <a href="javascript:void(0)" class="btn btn-xs bg-success" wire:click="restore({{$business->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
+                                                            <i class="fas fa-trash-restore"></i>
+                                                        </a>
+                                                        @else
+                                                        <a href="{{ route('admin.business.update', ['key' => $business->id]) }}" class="btn btn-xs bg-warning" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <a href="javascript:void(0)" class="btn btn-xs bg-danger" wire:click="softDelete({{$business->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </a>
+                                                        @endif
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -194,8 +204,18 @@
                                                         <div class="product-title">
                                                             Action
                                                         </div>
-                                                        <a href="#" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i></a>
-                                                        <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-alt"></i></a>
+                                                        @if($business->deleted_at)
+                                                        <a href="javascript:void(0)" class="btn btn-xs bg-success" wire:click="restore({{$business->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
+                                                            <i class="fas fa-trash-restore"></i>
+                                                        </a>
+                                                        @else
+                                                        <a href="{{ route('admin.business.update', ['key' => $business->id]) }}" class="btn btn-xs bg-warning" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <a href="javascript:void(0)" class="btn btn-xs bg-danger" wire:click="softDelete({{$business->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </a>
+                                                        @endif
                                                     </div>
                                                 </li>
                                             </ul>

@@ -13,6 +13,7 @@ use App\Http\Livewire\Admin\Journals\JournalsAddComponent;
 use App\Http\Livewire\Admin\Journals\JournalsListComponent;
 use App\Http\Livewire\Admin\Journals\JournalsTrashedComponent;
 use App\Http\Livewire\Admin\Journals\JournalsUpdateComponent;
+use App\Http\Livewire\Admin\Manpower\ManpowerListComponent;
 use App\Http\Livewire\Admin\Patent\PatentListComponent;
 use App\Http\Livewire\Admin\PatentKind\PatentListComponent as PatentKindPatentListComponent;
 use App\Http\Livewire\Admin\PatentType\PatentListComponent as PatentTypePatentListComponent;
@@ -42,7 +43,7 @@ Route::prefix('admin')->name('admin.')->group(function() {
     // Business
     Route::get('business', BusinessListComponent::class)->name('business.list');
     Route::get('business/add', BusinessAddComponent::class)->name('business.add');
-    Route::get('business/update', BusinessUpdateComponent::class)->name('business.update');
+    Route::get('business/update/{key}', BusinessUpdateComponent::class)->name('business.update');
     Route::get('business/trashed', BusinessTrashedComponent::class)->name('business.trashed');
     Route::get('business/import/sample-download', BusinessTrashedComponent::class)->name('business.download.sample');
     // BusinessType
@@ -55,14 +56,10 @@ Route::prefix('admin')->name('admin.')->group(function() {
     Route::get('patent/kinds', PatentKindPatentListComponent::class)->name('kindPatent.list');
     // Journals
     Route::get('journals', JournalsListComponent::class)->name('journals.list');
-    Route::get('journals/add', JournalsAddComponent::class)->name('journals.add');
-    Route::get('journals/update', JournalsUpdateComponent::class)->name('journals.update');
-    Route::get('journals/trashed', JournalsTrashedComponent::class)->name('journals.trashed');
     // Classification
     Route::get('classification', ClassificationList::class)->name('classification.list');
-    Route::get('classification/add', ClassificationAdd::class)->name('classification.add');
-    // Route::get('classification/update', ClassificationUpdate::class)->name('classification.update');
-    // Route::get('classification/trashed', ClassificationTrashed::class)->name('classification.trashed');
+    // ManPower
+    Route::get('manpower', ManpowerListComponent::class)->name('manpower.list');
 });
 
 // Client

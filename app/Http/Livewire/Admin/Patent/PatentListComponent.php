@@ -21,7 +21,10 @@ class PatentListComponent extends Component
 
     public $error;
 
-    public $countries, $patentKinds, $patentTypes;
+    public 
+        $countries = [],
+        $patentKinds = [],
+        $patentTypes = [];
 
     public $hiddenId = 0;
     public $title;
@@ -44,7 +47,7 @@ class PatentListComponent extends Component
             'country_id' => 'required|integer',
             'kind_id'    => 'required|integer',
             'type_id'    => 'required|integer',
-            'date'       => 'required|date_format:"Y-m-d"',
+            'date'       => 'required|date_format:"m/d/Y"',
             'long'       => 'required',
             'lat'        => 'required',
         ];
@@ -73,7 +76,7 @@ class PatentListComponent extends Component
         return view('livewire.admin.patent.patent-list-component', [
             'patents' => Patent::search($this->search)
                 ->withTrashed()
-                ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
+                ->orderBy($this->orderBy, $this->sortBy ? 'asc' : 'desc')
                 ->paginate($this->perPage),
         ])->layout('layouts.admin');
     }
@@ -81,18 +84,15 @@ class PatentListComponent extends Component
     // Store
     public function storePatent()
     {
-        // dd($this->date);
         $this->validate(); // validate Patent form
 
         DB::beginTransaction();
 
         try {
             $updateId = $this->hiddenId;
-            if($updateId > 0)
-            {
+            if ($updateId > 0) {
                 $patent = Patent::find($updateId); // update Patent
-            }
-            else{
+            } else {
                 $patent = new Patent(); // create Patent
             }
 
@@ -108,15 +108,14 @@ class PatentListComponent extends Component
 
             DB::commit();
 
-            $this->dispatchBrowserEvent('success-message',['message' => 'Patent Kind has been ' . $this->btnType . '.']);
+            $this->dispatchBrowserEvent('success-message', ['message' => 'Patent Kind has been ' . $this->btnType . '.']);
 
             $this->reset('title', 'patent_id', 'country_id', 'kind_id', 'type_id', 'date', 'long', 'lat', 'hiddenId', 'btnType');
-            
         } catch (\Throwable $th) {
             DB::rollback();
             $this->error = $th->getMessage();
             // $this->error = 'Ops! looks like we had some problem';
-            $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
+            $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);
         }
     }
 
@@ -134,6 +133,10 @@ class PatentListComponent extends Component
         $this->long       = $singlePatent->long;
         $this->lat        = $singlePatent->lat;
         $this->btnType    = 'Update';
+
+        $this->emit('countryEvent', $this->country_id);
+        $this->emit('typeEvent', $this->kind_id);
+        $this->emit('kindEvent', $this->kind_id);
     }
 
     // softDelete
@@ -143,16 +146,16 @@ class PatentListComponent extends Component
             $data = Patent::find($id);
             if ($data != null) {
                 $data->delete();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Patent deleted successfully']);
-            }else{
+                $this->dispatchBrowserEvent('success-message', ['message' => 'Patent deleted successfully']);
+            } else {
                 $this->error = 'Ops! looks like we had some problem';
-                $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
+                $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);
             }
         } catch (\Throwable $th) {
             DB::rollback();
             // $this->error = 'Ops! looks like we had some problem';
             $this->error = $th->getMessage();
-            $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
+            $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);
         }
     }
 
@@ -163,16 +166,16 @@ class PatentListComponent extends Component
             $data = Patent::onlyTrashed()->find($id);
             if ($data != null) {
                 $data->restore();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Patent restored successfully']);
-            }else{
+                $this->dispatchBrowserEvent('success-message', ['message' => 'Patent restored successfully']);
+            } else {
                 $this->error = 'Ops! looks like we had some problem';
-                $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
+                $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);
             }
         } catch (\Throwable $th) {
             DB::rollback();
             // $this->error = $th->getMessage();
             $this->error = 'Ops! looks like we had some problem';
-            $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
+            $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);
         }
     }
 
