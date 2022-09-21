@@ -29,8 +29,8 @@ return new class extends Migration
             $table->string('industry_code')->nullable();
             $table->text('industry_description')->nullable();
             $table->string('geo_code')->nullable();
-            $table->decimal('long', 8, 10)->nullable();
-            $table->decimal('lat', 8, 10)->nullable();
+            $table->decimal('long', 10, 8)->nullable();
+            $table->decimal('lat', 10, 8)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
