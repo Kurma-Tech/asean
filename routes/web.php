@@ -58,7 +58,6 @@ Route::prefix('admin')->name('admin.')->group(function() {
     Route::get('journals', JournalsListComponent::class)->name('journals.list');
     // Classification
     Route::get('classification', ClassificationList::class)->name('classification.list');
-    Route::get('classification/add', ClassificationAdd::class)->name('classification.add');
     // ManPower
     Route::get('manpower', ManpowerListComponent::class)->name('manpower.list');
 });

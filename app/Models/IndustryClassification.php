@@ -41,4 +41,9 @@ class IndustryClassification extends Model
     public function parent(){
         return $this->hasOne(IndustryClassification::class, "id", "parent_id");
     }
+
+    public function manpowers()
+    {
+        return $this->belongsToMany(Manpower::class, 'classification_manpowers');
+    }
 }

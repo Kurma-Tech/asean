@@ -21,4 +21,10 @@ class Manpower extends Model
                 ->orWhere('description', 'like', '%'.$search.'%')
                 ->orWhere('skilled', 'like', '%'.$search.'%');
     }
+
+    // User model
+    public function classifications()
+    {
+        return $this->belongsToMany(IndustryClassification::class, 'classification_manpowers');
+    }
 }

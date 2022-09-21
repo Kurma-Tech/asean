@@ -31,8 +31,8 @@ class ManpowerListComponent extends Component
     {
         return [
             'title' => 'required|min:2',
-            'description' => 'required|min:3',
-            'skilled' => 'required',
+            'description' => 'nullable|min:10',
+            'skilled' => 'required|in:PROFESSIONAL,TRADESMAN',
             'status' => 'boolean'
         ];
     }
@@ -50,13 +50,13 @@ class ManpowerListComponent extends Component
     // Store
     public function storeManpower()
     {
-        $updateId = $this->hiddenId;
-        if($updateId < 0)
-            $this->validate(); // validate Manpower form
+        $this->validate(); // validate Manpower form
 
         DB::beginTransaction();
 
         try {
+            $updateId = $this->hiddenId;
+
             if($updateId > 0)
             {
                 $manpower = Manpower::find($updateId); // update Manpower
@@ -91,6 +91,7 @@ class ManpowerListComponent extends Component
         $singleManpower    = Manpower::find($manpower_id);
         $this->hiddenId    = $singleManpower->id;
         $this->title       = $singleManpower->title;
+        $this->skilled     = $singleManpower->skilled;
         $this->description = $singleManpower->description;
         $this->status      = $singleManpower->status;
         $this->btnType     = 'Update';

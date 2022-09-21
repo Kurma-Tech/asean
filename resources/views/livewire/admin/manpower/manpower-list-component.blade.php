@@ -69,7 +69,7 @@
                             <div class="card-body">
                                 <input type="hidden" wire:model="hiddenId">
                                 <div class="form-group">
-                                    <label for="title">Title</label>
+                                    <label for="title">Title*</label>
                                     <input type="text" class="form-control" id="title" placeholder="Enter Manpower Title" wire:model='title'>
                                     @error('title')
                                     <div class="error">{{ $message }}</div>
@@ -79,7 +79,7 @@
                                     <label for="skilled_name">Skilled*</label>
                                     <select class="form-control select2 select2bs4"
                                         id="skilled_name" wire:model="skilled"
-                                        style="width: 100%;" onchange="this.dispatchEvent(new InputEvent('input'))">
+                                        style="width: 100%;">
                                         <option hidden>Select Skilled Category</option>
                                         <option value="PROFESSIONAL">PROFESSIONAL</option>
                                         <option value="TRADESMAN">TRADESMAN</option>
@@ -95,7 +95,7 @@
                                     <div class="error">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-group" wire:ignore>
+                                <div class="form-group">
                                     <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
                                         <input type="checkbox" class="custom-control-input" id="customSwitch3" value="1" wire:model="status">
                                         <label class="custom-control-label" for="customSwitch3">Active / De-active manpower</label>
@@ -127,6 +127,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Title</th>
+                                        <th>Skilled</th>
                                         <th>Description</th>
                                         <th>Status</th>
                                         <th>Trashed</th>
@@ -138,6 +139,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $manpower->title }}</td>
+                                        <td>{{ $manpower->skilled }}</td>
                                         <td>{{ $manpower->description }}</td>
                                         <td>
                                             <span class="badge {{ ($manpower->status) ? 'bg-success':'bg-danger' }}">{{ ($manpower->status) ? 'Active':'De-activated' }}</span>
