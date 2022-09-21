@@ -46,7 +46,7 @@
         .popUp-content {
             overflow-y: auto;
             max-height: 400px;
-            
+
             width: 100%;
         }
 
@@ -95,6 +95,85 @@
         var geoLocations;
         var loadLocations;
         var businessChunkedData = 0;
+        var current_page = 1;
+        var records_per_page = 20;
+        var mergedData = [];
+
+        function prevPage() {
+            if (current_page > 1) {
+                current_page--;
+                changePage(current_page);
+            }
+        }
+
+        function nextPage() {
+            if (current_page < numPages()) {
+                current_page++;
+                changePage(current_page);
+            }
+        }
+
+        function changePage(page) {
+            var btn_next = document.getElementById("btn_next");
+            var btn_prev = document.getElementById("btn_prev");
+            var listing_table = document.getElementById("accordion");
+            var page_span = document.getElementById("page");
+
+            // Validate page
+            if (page < 1) page = 1;
+            if (page > numPages()) page = numPages();
+
+            listing_table.innerHTML = "";
+
+            for (var i = (page - 1) * records_per_page; i < (page * records_per_page) && i < mergedData.length; i++) {
+                listing_table.innerHTML +=
+                    `
+                    <div class="card card-secondary">
+                        <div class="card-header" style="border-radius: 0;">
+                            <h4 class="card-title w-100">
+                                <a class="d-block w-100" data-toggle="collapse"
+                                    href="#business-${mergedData[i].properties.locationId}">
+                                    ${mergedData[i].properties.locationId}
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="business-${mergedData[i].properties.locationId}"
+                            class="collapse"
+                            data-parent="#accordion" wire:ignore.self>
+                            <div class="card-body">
+                                <p><strong>NGC Code:</strong>
+                                    asdfas
+                                <p><strong>Date Registered:</strong>
+                                    asdfas
+                                <p><strong>Address:</strong>
+                                    asd
+                                <p><strong>Business Type:</strong>
+                                    asdasdfas
+                            </div>
+                        </div>
+                    </div>
+                    `;
+            }
+            page_span.innerHTML = page + "/" + numPages();
+
+            if (page == 1) {
+                btn_prev.style.visibility = "hidden";
+            } else {
+                btn_prev.style.visibility = "visible";
+            }
+
+            if (page == numPages()) {
+                btn_next.style.visibility = "hidden";
+            } else {
+                btn_next.style.visibility = "visible";
+            }
+        }
+
+
+        function numPages() {
+            return Math.ceil(mergedData.length / records_per_page);
+        }
+
 
         window.addEventListener("DOMContentLoaded", handleWindowLoad, true);
 
@@ -424,7 +503,7 @@
 
         function handleLivewireLoad() {
             console.log("handleLivewireLoad");
-            
+
             Livewire.emit('mapFirstLoad');
             // geoLocations = {!! $geoJson !!}
             // patentData = {!! $patentJson !!}
@@ -597,8 +676,9 @@
 
             }
             businessChunkedData = data.geoJson.length;
-            var tempData = data.geoJson;
-            console.log(tempData);
+            mergedData = [...new Set([].concat(...data.geoJson.map((element) => element.features)))];
+            changePage(1);
+            console.log(mergedData);
 
             if (data.geoJson != null) {
                 for (let index = 0; index < data.geoJson.length; index++) {
@@ -608,34 +688,6 @@
                     });
                     addBusinessHeat('business' + index);
                     addBusinessPoint('business' + index);
-                    $('#accordion').append(
-                        `
-                        <div class="card card-secondary">
-                            <div class="card-header" style="border-radius: 0;">
-                                <h4 class="card-title w-100">
-                                    <a class="d-block w-100" data-toggle="collapse"
-                                        href="#business-${tempData[index].features.properties.locationId}">
-                                        ${tempData[index].features.properties.locationId}
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="business-${tempData[index].features.properties.locationId}"
-                                class="collapse"
-                                data-parent="#accordion" wire:ignore.self>
-                                <div class="card-body">
-                                    <p><strong>NGC Code:</strong>
-                                        asdfas
-                                    <p><strong>Date Registered:</strong>
-                                        asdfas
-                                    <p><strong>Address:</strong>
-                                        asd
-                                    <p><strong>Business Type:</strong>
-                                        asdasdfas
-                                </div>
-                            </div>
-                        </div>
-                        `
-                    );
                 }
             }
 
