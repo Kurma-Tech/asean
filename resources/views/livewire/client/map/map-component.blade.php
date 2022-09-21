@@ -676,14 +676,9 @@
 
             }
             businessChunkedData = data.geoJson.length;
-<<<<<<< HEAD
-            // var tempData = data.geoJson;
-            // console.log(tempData);
-=======
             mergedData = [...new Set([].concat(...data.geoJson.map((element) => element.features)))];
             changePage(1);
             console.log(mergedData);
->>>>>>> 1281077c4e4b40097911f03d8250738fbd1f2023
 
             if (data.geoJson != null) {
                 for (let index = 0; index < data.geoJson.length; index++) {
@@ -693,37 +688,6 @@
                     });
                     addBusinessHeat('business' + index);
                     addBusinessPoint('business' + index);
-<<<<<<< HEAD
-                    // $('#accordion').append(
-                    //     `
-                    //     <div class="card card-secondary">
-                    //         <div class="card-header" style="border-radius: 0;">
-                    //             <h4 class="card-title w-100">
-                    //                 <a class="d-block w-100" data-toggle="collapse"
-                    //                     href="#business-${tempData[index].features.properties.locationId}">
-                    //                     ${tempData[index].features.properties.locationId}
-                    //                 </a>
-                    //             </h4>
-                    //         </div>
-                    //         <div id="business-${tempData[index].features.properties.locationId}"
-                    //             class="collapse"
-                    //             data-parent="#accordion" wire:ignore.self>
-                    //             <div class="card-body">
-                    //                 <p><strong>NGC Code:</strong>
-                    //                     asdfas
-                    //                 <p><strong>Date Registered:</strong>
-                    //                     asdfas
-                    //                 <p><strong>Address:</strong>
-                    //                     asd
-                    //                 <p><strong>Business Type:</strong>
-                    //                     asdasdfas
-                    //             </div>
-                    //         </div>
-                    //     </div>
-                    //     `
-                    // );
-=======
->>>>>>> 1281077c4e4b40097911f03d8250738fbd1f2023
                 }
             }
 
