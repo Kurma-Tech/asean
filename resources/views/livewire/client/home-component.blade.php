@@ -1,5 +1,4 @@
 @push('extra-styles')
-
 @endpush
 
 <div>
@@ -27,10 +26,12 @@
                                 </div>
                                 <div class="form-group col-md-8">
                                     <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control" id="search" placeholder="Search..." wire:model="search">
+                                        <input type="text" class="form-control" id="search"
+                                            placeholder="Search..." wire:model="search">
                                         <span class="input-group-append">
-                                            <button type="button" class="btn btn-sm btn-default btn-flat" wire:click="handleSearch"><i
-                                                class="fa fa-search lemongreen" aria-hidden="true"></i></button>
+                                            <button type="button" class="btn btn-sm btn-default btn-flat"
+                                                wire:click="handleSearch"><i class="fa fa-search lemongreen"
+                                                    aria-hidden="true"></i></button>
                                         </span>
                                     </div>
                                 </div>
@@ -71,7 +72,9 @@
                             </div>
 
                             <hr class="mb-2">
-
+                            <a href="javascript:prevPage()" id="btn_prev">Prev</a>
+                            <a href="javascript:nextPage()" id="btn_next">Next</a>
+                            page: <span id="page"></span>
                             <div id="accordion" wire:ignore>
                                 @if (array_key_exists('features', $businessResults))
                                     @foreach ($businessResults['features'] as $businessResult)
@@ -96,11 +99,11 @@
                                                         {{-- {{ $businessResult['properties']['address'] }}</p> --}}
                                                     <p><strong>Business Type:</strong>
                                                         {{-- {{ $businessResult['properties']['business_type'] }}</p> --}}
-                                                    <button class="btn btn-danger btn-sm fly-over-btn"
-                                                        wire:click="handleFlyOver({{ $businessResult['geometry']['coordinates'][0] }}, {{ $businessResult['geometry']['coordinates'][1] }})"
-                                                        data-lat="{{ $businessResult['geometry']['coordinates'][0] }}"
-                                                        data-long="{{ $businessResult['geometry']['coordinates'][1] }}">Show
-                                                        in map</button>
+                                                        <button class="btn btn-danger btn-sm fly-over-btn"
+                                                            wire:click="handleFlyOver({{ $businessResult['geometry']['coordinates'][0] }}, {{ $businessResult['geometry']['coordinates'][1] }})"
+                                                            data-lat="{{ $businessResult['geometry']['coordinates'][0] }}"
+                                                            data-long="{{ $businessResult['geometry']['coordinates'][1] }}">Show
+                                                            in map</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -126,10 +129,10 @@
                                                         {{-- {{ $patentResult['properties']['patent_id'] }}</p> --}}
                                                     <p><strong>Date Registered:</strong>
                                                         {{-- {{ $patentResult['properties']['date_registerd'] }}</p> --}}
-                                                    <button class="btn btn-danger btn-sm fly-over-btn"
-                                                        data-lat="{{ $patentResult['geometry']['coordinates'][0] }}"
-                                                        data-long="{{ $patentResult['geometry']['coordinates'][1] }}">Show
-                                                        in map</button>
+                                                        <button class="btn btn-danger btn-sm fly-over-btn"
+                                                            data-lat="{{ $patentResult['geometry']['coordinates'][0] }}"
+                                                            data-long="{{ $patentResult['geometry']['coordinates'][1] }}">Show
+                                                            in map</button>
                                                 </div>
                                             </div>
                                         </div>
