@@ -57,6 +57,7 @@ class HomeComponent extends Component
 
     public function handleFlyOver($long, $lat)
     {
+        dd("aefas");
         $this->emit('flyover', ["long" => $long, "lat" => $lat]);
     }
 

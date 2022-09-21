@@ -87,7 +87,7 @@ class MapComponent extends Component
 
         /* Model Queries */
         DB::enableQueryLog();
-        $businessQuery =  DB::table('businesses')->select('id', 'lat', 'long', 'year');
+        $businessQuery =  DB::table('businesses')->select('id', 'lat', 'long', 'year', 'company_name');
         $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'date');
         /* Model Queries End */
 
@@ -164,6 +164,7 @@ class MapComponent extends Component
                         ],
                         'properties' => [
                             'locationId' => $business->id,
+                            'company_name' => $business->company_name
                         ]
                     ];
                 }

@@ -76,14 +76,14 @@
                             <a href="javascript:nextPage()" id="btn_next">Next</a>
                             page: <span id="page"></span>
                             <div id="accordion" wire:ignore>
-                                @if (array_key_exists('features', $businessResults))
+                                {{-- @if (array_key_exists('features', $businessResults))
                                     @foreach ($businessResults['features'] as $businessResult)
                                         <div class="card card-secondary">
                                             <div class="card-header" style="border-radius: 0;">
                                                 <h4 class="card-title w-100">
                                                     <a class="d-block w-100" data-toggle="collapse"
                                                         href="#result{{ $businessResult['properties']['locationId'] }}">
-                                                        {{-- {{ $businessResult['properties']['company_name'] }} --}}
+                                                        {{ $businessResult['properties']['company_name'] }}
                                                     </a>
                                                 </h4>
                                             </div>
@@ -92,13 +92,13 @@
                                                 data-parent="#accordion" wire:ignore.self>
                                                 <div class="card-body">
                                                     <p><strong>NGC Code:</strong>
-                                                        {{-- {{ $businessResult['properties']['ngc_code'] }}</p> --}}
+                                                        {{ $businessResult['properties']['ngc_code'] }}</p>
                                                     <p><strong>Date Registered:</strong>
-                                                        {{-- {{ $businessResult['properties']['date_registerd'] }}</p> --}}
+                                                        {{ $businessResult['properties']['date_registerd'] }}</p>
                                                     <p><strong>Address:</strong>
-                                                        {{-- {{ $businessResult['properties']['address'] }}</p> --}}
+                                                        {{ $businessResult['properties']['address'] }}</p>
                                                     <p><strong>Business Type:</strong>
-                                                        {{-- {{ $businessResult['properties']['business_type'] }}</p> --}}
+                                                        {{ $businessResult['properties']['business_type'] }}</p>
                                                         <button class="btn btn-danger btn-sm fly-over-btn"
                                                             wire:click="handleFlyOver({{ $businessResult['geometry']['coordinates'][0] }}, {{ $businessResult['geometry']['coordinates'][1] }})"
                                                             data-lat="{{ $businessResult['geometry']['coordinates'][0] }}"
@@ -108,16 +108,16 @@
                                             </div>
                                         </div>
                                     @endforeach
-                                @endif
+                                @endif --}}
 
-                                @if (array_key_exists('features', $patentResults))
+                                {{-- @if (array_key_exists('features', $patentResults))
                                     @foreach ($patentResults['features'] as $patentResult)
                                         <div class="card card-secondary">
                                             <div class="card-header">
                                                 <h4 class="card-title w-100">
                                                     <a class="d-block w-100" data-toggle="collapse"
                                                         href="#result{{ $patentResult['properties']['id'] }}">
-                                                        {{-- {{ $patentResult['properties']['title'] }} --}}
+                                                        {{ $patentResult['properties']['title'] }}
                                                     </a>
                                                 </h4>
                                             </div>
@@ -126,9 +126,9 @@
                                                 data-parent="#accordion" wire:ignore.self>
                                                 <div class="card-body">
                                                     <p><strong>Patent Id:</strong>
-                                                        {{-- {{ $patentResult['properties']['patent_id'] }}</p> --}}
+                                                        {{ $patentResult['properties']['patent_id'] }}</p>
                                                     <p><strong>Date Registered:</strong>
-                                                        {{-- {{ $patentResult['properties']['date_registerd'] }}</p> --}}
+                                                        {{ $patentResult['properties']['date_registerd'] }}</p>
                                                         <button class="btn btn-danger btn-sm fly-over-btn"
                                                             data-lat="{{ $patentResult['geometry']['coordinates'][0] }}"
                                                             data-long="{{ $patentResult['geometry']['coordinates'][1] }}">Show
@@ -137,7 +137,7 @@
                                             </div>
                                         </div>
                                     @endforeach
-                                @endif
+                                @endif --}}
                             </div>
                         </div>
                         <a id="filter-toggle" href="#" class="btn toggle square"><i class="fas fa-chart-bar fa-lg"
