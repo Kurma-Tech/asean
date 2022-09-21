@@ -106,7 +106,7 @@
                 style: "{{ env('MAPBOX_STYLE') }}", // style URL
                 center: [111.09841688936865, 2.37304225637002], // starting position [lng, lat]
                 zoom: 5, // starting zoom
-                projection: "globe", // display the map as a 3D globe
+                projection: "equirectangular", // display the map as a 3D globe
                 pitch: 45,
                 bearing: -17.6,
                 antialias: true,
@@ -597,8 +597,8 @@
 
             }
             businessChunkedData = data.geoJson.length;
-            var tempData = data.geoJson;
-            console.log(tempData);
+            // var tempData = data.geoJson;
+            // console.log(tempData);
 
             if (data.geoJson != null) {
                 for (let index = 0; index < data.geoJson.length; index++) {
@@ -608,34 +608,34 @@
                     });
                     addBusinessHeat('business' + index);
                     addBusinessPoint('business' + index);
-                    $('#accordion').append(
-                        `
-                        <div class="card card-secondary">
-                            <div class="card-header" style="border-radius: 0;">
-                                <h4 class="card-title w-100">
-                                    <a class="d-block w-100" data-toggle="collapse"
-                                        href="#business-${tempData[index].features.properties.locationId}">
-                                        ${tempData[index].features.properties.locationId}
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="business-${tempData[index].features.properties.locationId}"
-                                class="collapse"
-                                data-parent="#accordion" wire:ignore.self>
-                                <div class="card-body">
-                                    <p><strong>NGC Code:</strong>
-                                        asdfas
-                                    <p><strong>Date Registered:</strong>
-                                        asdfas
-                                    <p><strong>Address:</strong>
-                                        asd
-                                    <p><strong>Business Type:</strong>
-                                        asdasdfas
-                                </div>
-                            </div>
-                        </div>
-                        `
-                    );
+                    // $('#accordion').append(
+                    //     `
+                    //     <div class="card card-secondary">
+                    //         <div class="card-header" style="border-radius: 0;">
+                    //             <h4 class="card-title w-100">
+                    //                 <a class="d-block w-100" data-toggle="collapse"
+                    //                     href="#business-${tempData[index].features.properties.locationId}">
+                    //                     ${tempData[index].features.properties.locationId}
+                    //                 </a>
+                    //             </h4>
+                    //         </div>
+                    //         <div id="business-${tempData[index].features.properties.locationId}"
+                    //             class="collapse"
+                    //             data-parent="#accordion" wire:ignore.self>
+                    //             <div class="card-body">
+                    //                 <p><strong>NGC Code:</strong>
+                    //                     asdfas
+                    //                 <p><strong>Date Registered:</strong>
+                    //                     asdfas
+                    //                 <p><strong>Address:</strong>
+                    //                     asd
+                    //                 <p><strong>Business Type:</strong>
+                    //                     asdasdfas
+                    //             </div>
+                    //         </div>
+                    //     </div>
+                    //     `
+                    // );
                 }
             }
 

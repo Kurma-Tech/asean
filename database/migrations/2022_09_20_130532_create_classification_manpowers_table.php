@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('industry_classification_manpowers', function (Blueprint $table) {
+        Schema::create('classification_manpowers', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('classification_id')->unsigned()->nullable();
-            $table->foreign('classification_id')->references('id')->on('industry_classificationss')->onDelete('CASCADE')->onUpdate('CASCADE');
+            $table->foreign('classification_id')->references('id')->on('industry_classifications')->onDelete('CASCADE')->onUpdate('CASCADE');
             $table->bigInteger('manpower_id')->unsigned()->nullable();
             $table->foreign('manpower_id')->references('id')->on('manpowers')->onDelete('CASCADE')->onUpdate('CASCADE');
             $table->integer('seats')->default(0);
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('industry_classification_manpowers');
+        Schema::dropIfExists('classification_manpowers');
     }
 };

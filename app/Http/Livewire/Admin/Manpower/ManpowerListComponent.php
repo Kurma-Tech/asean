@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Livewire\Admin\PatentKind;
+namespace App\Http\Livewire\Admin\Manpower;
 
-use App\Models\PatentKind;
-use Cviebrock\EloquentSluggable\Services\SlugService;
+use App\Models\Manpower;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class PatentListComponent extends Component
+class ManpowerListComponent extends Component
 {
     use WithPagination;
 
@@ -20,29 +19,28 @@ class PatentListComponent extends Component
     public $error;
 
     public $hiddenId = 0;
-    public $kind;
-    public $slug;
+    public $title;
+    public $description;
+    public $skilled;
+    public $status = 1;
     public $btnType = 'Create';
 
-    protected $listeners = ['refreshPatentKindListComponent' => '$refresh'];
-
-    public function generateslug()
-    {
-        $this->slug = SlugService::createSlug(PatentKind::class, 'slug', $this->kind);
-    }
+    protected $listeners = ['refreshManpowerListComponent' => '$refresh'];
 
     protected function rules()
     {
         return [
-            'kind' => 'required|min:3',
-            'slug' => 'required|min:3|unique:patent_kinds,slug',
+            'title' => 'required|min:2',
+            'description' => 'required|min:3',
+            'skilled' => 'required',
+            'status' => 'boolean'
         ];
     }
 
     public function render()
     {
-        return view('livewire.admin.patent-kind.patent-list-component', [
-            'patentKinds' => PatentKind::search($this->search)
+        return view('livewire.admin.manpower.manpower-list-component', [
+            'manpowers' => Manpower::search($this->search)
                 ->withTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
                 ->paginate($this->perPage),
@@ -50,58 +48,62 @@ class PatentListComponent extends Component
     }
 
     // Store
-    public function storePatentKind()
+    public function storeManpower()
     {
-        $this->validate(); // validate PatentKind form
+        $updateId = $this->hiddenId;
+        if($updateId < 0)
+            $this->validate(); // validate Manpower form
 
         DB::beginTransaction();
 
         try {
-            $updateId = $this->hiddenId;
             if($updateId > 0)
             {
-                $pKind = PatentKind::find($updateId); // update PatentKind
+                $manpower = Manpower::find($updateId); // update Manpower
             }
             else{
-                $pKind = new PatentKind(); // create PatentKind
+                $manpower = new Manpower(); // create Manpower
             }
 
-            $pKind->kind  = $this->kind;
-            $pKind->slug  = $this->slug;
-            $pKind->save();
+            $manpower->title       = $this->title;
+            $manpower->description = $this->description;
+            $manpower->skilled     = $this->skilled;
+            $manpower->status      = $this->status;
+            $manpower->save();
 
             DB::commit();
 
-            $this->dispatchBrowserEvent('success-message',['message' => 'Patent Kind has been ' . $this->btnType . '.']);
+            $this->dispatchBrowserEvent('success-message',['message' => 'Manpower has been ' . $this->btnType . '.']);
 
-            $this->reset('kind', 'slug', 'hiddenId', 'btnType');
+            $this->reset('title', 'description', 'skilled', 'status', 'hiddenId', 'btnType');
             
         } catch (\Throwable $th) {
             DB::rollback();
-            // $this->error = $th->getMessage();
-            $this->error = 'Ops! looks like we had some problem';
+            $this->error = $th->getMessage();
+            // $this->error = 'Ops! looks like we had some problem';
             $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
         }
     }
 
     // Update Form
-    public function editForm($kind_id)
+    public function editForm($manpower_id)
     {
-        $singleKind     = PatentKind::find($kind_id);
-        $this->hiddenId = $singleKind->id;
-        $this->kind     = $singleKind->kind;
-        $this->slug     = $singleKind->slug;
-        $this->btnType  = 'Update';
+        $singleManpower    = Manpower::find($manpower_id);
+        $this->hiddenId    = $singleManpower->id;
+        $this->title       = $singleManpower->title;
+        $this->description = $singleManpower->description;
+        $this->status      = $singleManpower->status;
+        $this->btnType     = 'Update';
     }
 
     // softDelete
     public function softDelete($id)
     {
         try {
-            $data = PatentKind::find($id);
+            $data = Manpower::find($id);
             if ($data != null) {
                 $data->delete();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Patent Kind deleted successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Manpower deleted successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -118,10 +120,10 @@ class PatentListComponent extends Component
     public function restore($id)
     {
         try {
-            $data = PatentKind::onlyTrashed()->find($id);
+            $data = Manpower::onlyTrashed()->find($id);
             if ($data != null) {
                 $data->restore();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Patent Kind restored successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Manpower restored successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -137,6 +139,6 @@ class PatentListComponent extends Component
     // reset fields
     public function resetFields()
     {
-        $this->reset('kind', 'slug', 'hiddenId', 'btnType');
+        $this->reset('title', 'description', 'skilled', 'status', 'hiddenId', 'btnType');
     }
 }

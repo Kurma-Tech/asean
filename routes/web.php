@@ -13,6 +13,7 @@ use App\Http\Livewire\Admin\Journals\JournalsAddComponent;
 use App\Http\Livewire\Admin\Journals\JournalsListComponent;
 use App\Http\Livewire\Admin\Journals\JournalsTrashedComponent;
 use App\Http\Livewire\Admin\Journals\JournalsUpdateComponent;
+use App\Http\Livewire\Admin\Manpower\ManpowerListComponent;
 use App\Http\Livewire\Admin\Patent\PatentListComponent;
 use App\Http\Livewire\Admin\PatentKind\PatentListComponent as PatentKindPatentListComponent;
 use App\Http\Livewire\Admin\PatentType\PatentListComponent as PatentTypePatentListComponent;
@@ -58,6 +59,8 @@ Route::prefix('admin')->name('admin.')->group(function() {
     // Classification
     Route::get('classification', ClassificationList::class)->name('classification.list');
     Route::get('classification/add', ClassificationAdd::class)->name('classification.add');
+    // ManPower
+    Route::get('manpower', ManpowerListComponent::class)->name('manpower.list');
 });
 
 // Client
