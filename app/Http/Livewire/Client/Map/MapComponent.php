@@ -96,13 +96,15 @@ class MapComponent extends Component
         // Searching business on company_name and ngc_code fields
         if ($this->searchValue != "") {
             foreach ($searchValues as $searchValue) {
-                $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
+                // $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
+                $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%');
             }
         }
 
         // Searching patents on title and patent_id fields
         foreach ($searchValues as $searchValue) {
-            $patentQuery = $patentQuery->where('title', 'LIKE', '%' . $searchValue . '%')->orWhere('patent_id', 'LIKE', '%' . $searchValue . '%');
+            // $patentQuery = $patentQuery->where('title', 'LIKE', '%' . $searchValue . '%')->orWhere('patent_id', 'LIKE', '%' . $searchValue . '%');
+            $patentQuery = $patentQuery->where('title', 'LIKE', '%' . $searchValue . '%');
         }
         /* Search from searchKeywords End */
 
