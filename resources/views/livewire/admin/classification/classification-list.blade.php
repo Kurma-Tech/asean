@@ -203,7 +203,8 @@
                             <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th style="width:5%;">#</th>
+                                        <th style="width:2.5%;">#</th>
+                                        <th style="width:2.5%;">ID</th>
                                         <th style="width:40%;">Classification</th>
                                         <th style="width:30%;">Parent Classification</th>
                                         <th style="width:25%;">Type</th>
@@ -213,6 +214,7 @@
                                     @foreach ($industryClassificationsList as $industryClassification)
                                     <tr data-widget="expandable-table" aria-expanded="false">
                                         <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $industryClassification->id }}</td>
                                         <td>{{ $industryClassification->classifications }}</td>
                                         <td>
                                             <span class="badge badge-primary">{{ $industryClassification->parent->classifications ?? 'Self' }}</span>
@@ -221,7 +223,10 @@
                                             @if($industryClassification->parent_id)
                                             <span class="badge badge-success badge-sm">Child Category</span>
                                             @else
-                                            <span class="badge badge-danger badge-sm">Parent Category</span>
+                                            <span class="badge badge-info badge-sm">Parent Category</span>
+                                            @endif
+                                            @if($industryClassification->deleted_at)
+                                            <span class="badge badge-danger badge-sm">Trashed</span>
                                             @endif
                                         </td>
                                     </tr>

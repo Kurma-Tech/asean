@@ -3,8 +3,6 @@
 namespace App\Imports;
 
 use App\Models\Business;
-use App\Models\BusinessType;
-use App\Models\IndustryClassification;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
