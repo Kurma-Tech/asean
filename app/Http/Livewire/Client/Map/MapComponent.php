@@ -110,6 +110,7 @@ class MapComponent extends Component
         /* Filter By Country and Classification */
         if ($country != null) {
             if ($this->type == "business" && $this->classification != null) {
+                Log::info($this->classification);
                 $businessQuery = $businessQuery->where('country_id', $country)->where('industry_classification_id', $this->classification);
             } else {
                 $businessQuery = $businessQuery->where('country_id', $country);
