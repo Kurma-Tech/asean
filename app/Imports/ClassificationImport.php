@@ -12,13 +12,6 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
 class ClassificationImport implements ToModel, WithHeadingRow, WithChunkReading, WithBatchInserts
 {
-    // private $industryClassifications;
-
-    public function __construct()
-    {
-        // $this->industryClassifications = DB::table('industry_classifications')->select('id')->where('parent_id', null);
-    }
-
     public function model(array $row)
     {
 
@@ -32,7 +25,7 @@ class ClassificationImport implements ToModel, WithHeadingRow, WithChunkReading,
         } else {
             $industryClassification = null;
         }
-        Log:info(($industryClassification != null) ? $industryClassification->id : $row['parent_name']);
+        
         return new IndustryClassification([
             "parent_id"       => ($industryClassification != null) ? $industryClassification->id : null,
             "classifications" => $row['classifications'] ?? null,
