@@ -75,7 +75,7 @@
 
                             <div class="row">
                                 <div class="col-md-12 mt-3 mb-3">
-                                    <div>
+                                    <div wire:ignore>
                                         PAGE: <span id="page"></span>
                                     </div>
                                     <div style="display: flex; justify-content: space-between;">
