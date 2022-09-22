@@ -33,6 +33,7 @@
 
                         <blockquote class="blockquote">
                             <p class="mb-0"><span class="text-red-400">Note*</span>: First check the <strong>ID</strong> of the field data <strong>i.e. 'Country', 'Patent Kind', & 'Patent Type'</strong> on your system & match them with your CSV file. If not exist try adding them first then upload csv file.</p>
+                            <p class="mb-0"><span class="text-red-400">Note*</span>: accepted file types xlsx, xls, csv</p>
                             <footer class="blockquote-footer"><a href="#" wire:click="downloadSample">click here</a> <span>to download CSV format</span></footer>
                         </blockquote>
                     </div>

@@ -18,7 +18,7 @@
                         </div>
                         @error('file') <p class="text-red">{{ $message }}</p> @enderror
                         <blockquote class="blockquote">
-                            <p class="mb-0"><span class="text-red-400">Note*</span>: accepted file types xlsl, xls, csv</p>
+                            <p class="mb-0"><span class="text-red-400">Note*</span>: accepted file types xlsx, xls, csv</p>
                             <footer class="blockquote-footer"><a href="#" wire:click="downloadSample">click here</a> <span>to download CSV formate</span></footer>
                         </blockquote>
                         <div class="mt-1 p-1"><strong class="text-red-400 strong-code">Colums accepted:</strong>

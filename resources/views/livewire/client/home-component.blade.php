@@ -72,9 +72,19 @@
                             </div>
 
                             <hr class="mb-2">
-                            <a href="javascript:prevPage()" id="btn_prev">Prev</a>
-                            <a href="javascript:nextPage()" id="btn_next">Next</a>
-                            page: <span id="page"></span>
+
+                            <div class="row">
+                                <div class="col-md-12 mt-3 mb-3">
+                                    <div wire:ignore>
+                                        PAGE: <span id="page"></span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <a href="javascript:prevPage()" class="btn btn-xs btn-default" id="btn_prev">Prev</a>
+                                        <a href="javascript:nextPage()" class="btn btn-xs btn-default pull-right" id="btn_next">Next</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
                             <div id="accordion" wire:ignore>
                                 {{-- @if (array_key_exists('features', $businessResults))
                                     @foreach ($businessResults['features'] as $businessResult)

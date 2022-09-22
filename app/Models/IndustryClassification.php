@@ -2,29 +2,16 @@
 
 namespace App\Models;
 
-use Cviebrock\EloquentSluggable\Sluggable;
-use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class IndustryClassification extends Model
 {
-    use HasFactory, SoftDeletes, Sluggable, SluggableScopeHelpers;
+    use HasFactory, SoftDeletes;
 
     protected $table = "industry_classifications";
     protected $guarded = ['id'];
-
-    public function sluggable(): array
-    {
-        return [
-            'slug' => [
-                'source'   => ['classifications'],
-                'onUpdate' => true,
-                'unique'   => true,
-            ]
-        ];
-    }
 
     public static function search($search){
         return empty($search) ? static::query()
@@ -44,6 +31,7 @@ class IndustryClassification extends Model
 
     public function manpowers()
     {
-        return $this->belongsToMany(Manpower::class, 'classification_manpowers');
+        return $this->belongsToMany(Manpower::class, 'classification_manpowers', 'classification_id', 'manpower_id')
+                    ->withPivot(['seats']);
     }
 }

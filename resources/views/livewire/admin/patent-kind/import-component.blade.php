@@ -25,7 +25,7 @@
                         </div>
 
                         <blockquote class="blockquote">
-                            <p class="mb-0"><span class="text-red-400">Note*</span>: accepted file types csv</p>
+                            <p class="mb-0"><span class="text-red-400">Note*</span>: accepted file types xlsx, xls, csv</p>
                             <footer class="blockquote-footer"><a href="#" wire:click="downloadSample">click here</a> <span>to download CSV format</span></footer>
                         </blockquote>
                     </div>

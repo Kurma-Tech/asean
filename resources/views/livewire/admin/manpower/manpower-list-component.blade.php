@@ -79,7 +79,7 @@
                                     <label for="skilled_name">Skilled*</label>
                                     <select class="form-control select2 select2bs4"
                                         id="skilled_name" wire:model="skilled"
-                                        style="width: 100%;">
+                                        style="width: 100%;" onchange="this.dispatchEvent(new InputEvent('input'))">
                                         <option hidden>Select Skilled Category</option>
                                         <option value="PROFESSIONAL">PROFESSIONAL</option>
                                         <option value="TRADESMAN">TRADESMAN</option>
@@ -139,7 +139,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $manpower->title }}</td>
-                                        <td>{{ $manpower->skilled }}</td>
+                                        <td><span class="badge {{ ($manpower->skilled == 'PROFESSIONAL') ? 'bg-primary':'bg-info' }}">{{ $manpower->skilled }}</span></td>
                                         <td>{{ $manpower->description }}</td>
                                         <td>
                                             <span class="badge {{ ($manpower->status) ? 'bg-success':'bg-danger' }}">{{ ($manpower->status) ? 'Active':'De-activated' }}</span>

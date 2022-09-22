@@ -20,7 +20,7 @@ class ImportComponent extends Component
     protected function rules()
     {
         return [
-            'file' => 'required|mimes:xlsl,xls,csv,txt'
+            'file' => 'required|mimes:xlsx,xls,csv,txt'
         ];
     }
 
@@ -32,8 +32,6 @@ class ImportComponent extends Component
     public function patentTypeImport()
     {
         $this->validate();
-
-        dd($this->file);
 
         DB::beginTransaction();
 

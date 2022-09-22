@@ -150,6 +150,18 @@
                     </div>
                     `;
             }
+
+            var showInMapButtons = document.getElementsByClassName('fly-over-btn');
+            for (let i = 0; i < showInMapButtons.length; i++) {
+                showInMapButtons[i].addEventListener("click", function() {
+                    map.flyTo({
+                        center: [this.dataset.lat, this.dataset.long, ],
+                        essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+                        zoom: 18
+                    });
+                })
+            }
+            
             page_span.innerHTML = page + "/" + numPages();
 
             if (page == 1) {
@@ -661,16 +673,6 @@
             businessChunkedData = data.geoJson.length;
             mergedData = [...new Set([].concat(...data.geoJson.map((element) => element.features)))];
             changePage(1);
-            var showInMapButtons = document.getElementsByClassName('fly-over-btn');
-            for (let i = 0; i < showInMapButtons.length; i++) {
-                showInMapButtons[i].addEventListener("click", function() {
-                    map.flyTo({
-                        center: [this.dataset.lat, this.dataset.long, ],
-                        essential: true, // this animation is considered essential with respect to prefers-reduced-motion
-                        zoom: 18
-                    });
-                })
-            }
 
             if (data.geoJson != null) {
                 for (let index = 0; index < data.geoJson.length; index++) {
