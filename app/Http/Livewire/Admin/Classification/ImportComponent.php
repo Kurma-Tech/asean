@@ -30,7 +30,7 @@ class ImportComponent extends Component
 
         DB::beginTransaction();
         try {
-
+            ini_set('memory_limit', -1);
             Excel::import(new ClassificationImport, $this->file);
 
             DB::commit();
