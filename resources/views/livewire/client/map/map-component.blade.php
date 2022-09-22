@@ -133,7 +133,7 @@
                             <h4 class="card-title w-100">
                                 <a class="d-block w-100" data-toggle="collapse"
                                     href="#business-${mergedData[i].properties.locationId}">
-                                    ${mergedData[i].properties.locationId}
+                                    ${mergedData[i].properties.company_name}
                                 </a>
                             </h4>
                         </div>
@@ -141,14 +141,10 @@
                             class="collapse"
                             data-parent="#accordion" wire:ignore.self>
                             <div class="card-body">
-                                <p><strong>NGC Code:</strong>
-                                    asdfas
-                                <p><strong>Date Registered:</strong>
-                                    asdfas
-                                <p><strong>Address:</strong>
-                                    asd
-                                <p><strong>Business Type:</strong>
-                                    asdasdfas
+                                <button class="btn btn-danger btn-sm fly-over-btn"
+                                    data-lat="${mergedData[i].geometry.coordinates[0]}"
+                                    data-long="${mergedData[i].geometry.coordinates[1]}">Show
+                                    in map</button>
                             </div>
                         </div>
                     </div>
@@ -195,19 +191,6 @@
                 ] // Set the map's geographical boundaries.
             });
             // add3dLayer();
-
-            var showInMapButtons = document.getElementsByClassName('.fly-over-btn');
-            for (let i = 0; i < showInMapButtons.length; i++) {
-                showInMapButtons[i].addEventListener("click", function() {
-                    console.log(this.dataset.long);
-                    map.fire('click', {
-                        latLng: {
-                            lon: this.dataset.long,
-                            lat: this.dataset.lat
-                        }
-                    });
-                })
-            }
         }
         document.addEventListener("livewire:load", handleLivewireLoad, true);
 
@@ -678,7 +661,16 @@
             businessChunkedData = data.geoJson.length;
             mergedData = [...new Set([].concat(...data.geoJson.map((element) => element.features)))];
             changePage(1);
-            console.log(mergedData);
+            var showInMapButtons = document.getElementsByClassName('fly-over-btn');
+            for (let i = 0; i < showInMapButtons.length; i++) {
+                showInMapButtons[i].addEventListener("click", function() {
+                    map.flyTo({
+                        center: [this.dataset.lat, this.dataset.long, ],
+                        essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+                        zoom: 18
+                    });
+                })
+            }
 
             if (data.geoJson != null) {
                 for (let index = 0; index < data.geoJson.length; index++) {
