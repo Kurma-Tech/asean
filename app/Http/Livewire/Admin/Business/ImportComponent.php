@@ -27,11 +27,10 @@ class ImportComponent extends Component
     public function businessImport()
     {
         $this->validate();
-
+        ini_set('memory_limit', -1);
         DB::beginTransaction();
 
         try {
-            set_time_limit(0);
             Excel::import(new BusinessImport, $this->file);
 
             DB::commit();
