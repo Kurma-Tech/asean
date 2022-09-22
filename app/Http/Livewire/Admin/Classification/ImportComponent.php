@@ -27,10 +27,9 @@ class ImportComponent extends Component
     public function dataImport()
     {
         $this->validate();
-
+        ini_set('memory_limit', -1);
         DB::beginTransaction();
         try {
-            ini_set('memory_limit', -1);
             Excel::import(new ClassificationImport, $this->file);
 
             DB::commit();
@@ -43,7 +42,7 @@ class ImportComponent extends Component
         } catch (\Throwable $th) {
             DB::rollback();
             $this->error = 'Ops! looks like we had some problem';
-            $this->error = $th->getMessage();
+            // $this->error = $th->getMessage();
             $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
         }
     }
@@ -57,7 +56,7 @@ class ImportComponent extends Component
         } catch (\Throwable $th) {
             DB::rollback();
             $this->error = 'Ops! looks like we had some problem';
-            $this->error = $th->getMessage();
+            // $this->error = $th->getMessage();
             $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
         }
     }
