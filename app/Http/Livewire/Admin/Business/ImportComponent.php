@@ -32,7 +32,6 @@ class ImportComponent extends Component
 
         try {
             set_time_limit(0);
-            ini_set('upload_max_filesize ', '50M');
             Excel::import(new BusinessImport, $this->file);
 
             DB::commit();
