@@ -20,7 +20,13 @@ class ClassificationImport implements ToModel, WithHeadingRow, WithChunkReading,
 
     public function model(array $row)
     {
-        $industryClassification = $this->industryClassifications->where('classifications', $row['parent_name'])->first();
+        if(isset($row['parent_name']))
+            $industryClassification = $this->industryClassifications
+                     ->where('classifications', $row['parent_name'])
+                     ->first();
+        else
+            $industryClassification = [];
+
         return new IndustryClassification([
             "parent_id"       => $industryClassification->id ?? null,
             "classifications" => $row['classifications'] ?? null,
