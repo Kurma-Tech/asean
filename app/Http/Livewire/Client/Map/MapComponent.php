@@ -96,13 +96,15 @@ class MapComponent extends Component
         // Searching business on company_name and ngc_code fields
         if ($this->searchValue != "") {
             foreach ($searchValues as $searchValue) {
-                $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
+                // $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
+                $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%');
             }
         }
 
         // Searching patents on title and patent_id fields
         foreach ($searchValues as $searchValue) {
-            $patentQuery = $patentQuery->where('title', 'LIKE', '%' . $searchValue . '%')->orWhere('patent_id', 'LIKE', '%' . $searchValue . '%');
+            // $patentQuery = $patentQuery->where('title', 'LIKE', '%' . $searchValue . '%')->orWhere('patent_id', 'LIKE', '%' . $searchValue . '%');
+            $patentQuery = $patentQuery->where('title', 'LIKE', '%' . $searchValue . '%');
         }
         /* Search from searchKeywords End */
 
@@ -110,6 +112,7 @@ class MapComponent extends Component
         /* Filter By Country and Classification */
         if ($country != null) {
             if ($this->type == "business" && $this->classification != null) {
+                Log::info($this->classification);
                 $businessQuery = $businessQuery->where('country_id', $country)->where('industry_classification_id', $this->classification);
             } else {
                 $businessQuery = $businessQuery->where('country_id', $country);

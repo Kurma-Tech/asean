@@ -125,9 +125,11 @@
 
             listing_table.innerHTML = "";
 
-            for (var i = (page - 1) * records_per_page; i < (page * records_per_page) && i < mergedData.length; i++) {
-                listing_table.innerHTML +=
-                    `
+            console.log(mergedData);
+            if (mergedData.length > 0) {
+                for (var i = (page - 1) * records_per_page; i < (page * records_per_page) && i < mergedData.length; i++) {
+                    listing_table.innerHTML +=
+                        `
                     <div class="card card-secondary">
                         <div class="card-header" style="border-radius: 0;">
                             <h4 class="card-title w-100">
@@ -149,6 +151,7 @@
                         </div>
                     </div>
                     `;
+                }
             }
 
             var showInMapButtons = document.getElementsByClassName('fly-over-btn');
@@ -161,7 +164,7 @@
                     });
                 })
             }
-            
+
             page_span.innerHTML = page + "/" + numPages();
 
             if (page == 1) {

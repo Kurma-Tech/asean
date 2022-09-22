@@ -20,7 +20,7 @@ class ImportComponent extends Component
     protected function rules()
     {
         return [
-            'file' => 'required|mimes:xlsx,xls,csv,txt'
+            'file' => 'mimes:xlsx,xls,csv,txt'
         ];
     }
 
@@ -30,7 +30,8 @@ class ImportComponent extends Component
         ini_set('memory_limit', -1);
         DB::beginTransaction();
 
-        try {
+        // try {
+            // set_time_limit(0);
             Excel::import(new BusinessImport, $this->file);
 
             DB::commit();
@@ -39,12 +40,12 @@ class ImportComponent extends Component
             $this->success = 'Business Data Imported Successfully';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
 
-        } catch (\Throwable $th) {
-            DB::rollback();
-            $this->error = 'Ops! looks like we had some problem';
-            $this->error = $th->getMessage();
-            $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
-        }
+        // } catch (\Throwable $th) {
+        //     DB::rollback();
+        //     $this->error = 'Ops! looks like we had some problem';
+        //     $this->error = $th->getMessage();
+        //     $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
+        // }
     }
 
     public function downloadSample()
