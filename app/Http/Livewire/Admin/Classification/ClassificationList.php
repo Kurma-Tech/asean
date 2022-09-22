@@ -87,6 +87,7 @@ class ClassificationList extends Component
     // Store
     public function storeClassification()
     {
+        dd($this->seats);
         $this->validate(); // validate Patent form
 
         DB::beginTransaction();
@@ -136,11 +137,11 @@ class ClassificationList extends Component
         $this->btnType                 = 'Update';
         $this->classificationManpowers = $singleData->manpowers;
         
-        foreach($this->classificationManpowers as $key => $value)
-        {
-            $this->manpower_id.'.'.$key = $value->id;
-            $this->seats.'.'.$key = $value->pivot->seats;
-        }
+        // foreach($this->classificationManpowers as $key => $value)
+        // {
+        //     $this->manpower_id.'.'.$key = $value->id;
+        //     $this->seats.'.'.$key = $value->pivot->seats;
+        // }
     }
 
     // softDelete

@@ -146,7 +146,7 @@
                                                     @foreach($inputs as $key => $value)
                                                     <tr>
                                                         <td>
-                                                            <select class="form-control @error('manpower_id.'.$key + $classificationManpowers->count() ? $classificationManpowers->count() : 1) is-invalid @enderror" wire:model="manpower_id.{{ $key + $classificationManpowers->count() ? $classificationManpowers->count() : 1 }}">
+                                                            <select class="form-control @error('manpower_id.'.($key + ($classificationManpowers != [] ? count($classificationManpowers) : 1))) is-invalid @enderror" wire:model="{{ 'manpower_id.'.($key + ($classificationManpowers != [] ? count($classificationManpowers) : 1)) }}">
                                                                 <option hidden>Select Manpower</option>
                                                                 @foreach($manpowers as $manpower)
                                                                 <option value="{{ $manpower->id }}">{{ $manpower->title }} -- {{ $manpower->skilled }}</option>
@@ -154,7 +154,7 @@
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <input type="number" min="1" class="form-control  @error('seats.'.$key + $classificationManpowers->count() ? $classificationManpowers->count() : 1) is-invalid @enderror" placeholder="Enter number of seats" wire:model='seats.{{ $key + $classificationManpowers->count() ? $classificationManpowers->count() : 1 }}'>
+                                                            <input type="number" min="1" class="form-control  @error('seats.'.($key + ($classificationManpowers != [] ? count($classificationManpowers) : 1))) is-invalid @enderror" placeholder="Enter number of seats" wire:model='{{ 'seats.'.($key + ($classificationManpowers != [] ? count($classificationManpowers) : 1)) }}'>
                                                         </td>
                                                         <td>
                                                             <a href="javascript:void(0)" class="btn btn-xs bg-danger" wire:click.prevent="removeFields({{$key}})" data-toggle="tooltip" data-placement="top" title="Remove Field Row">
