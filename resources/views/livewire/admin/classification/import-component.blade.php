@@ -23,7 +23,7 @@
                         </blockquote>
                         <div class="mt-1 p-1"><strong class="text-red-400" style="font-size: 12px;display:block;">Colums accepted:</strong>
                             <code class="text-xs text-info-400">
-                                parent_id,
+                                parent_name,
                                 classifications,
                                 psic_code
                             </code>
