@@ -3,7 +3,6 @@
 namespace App\Imports;
 
 use App\Models\IndustryClassification;
-use Cviebrock\EloquentSluggable\Services\SlugService;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
@@ -11,9 +10,6 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
 class ClassificationImport implements ToModel, WithHeadingRow, WithChunkReading, WithBatchInserts
 {
-    // public $data = [
-    //     "classification 2" => "Hotels & Restaurants 2"
-    // ];
 
     public function model(array $row)
     {

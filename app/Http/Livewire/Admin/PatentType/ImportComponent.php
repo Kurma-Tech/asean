@@ -33,8 +33,6 @@ class ImportComponent extends Component
     {
         $this->validate();
 
-        dd($this->file);
-
         DB::beginTransaction();
 
         try {
