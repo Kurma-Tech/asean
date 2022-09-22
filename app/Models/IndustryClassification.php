@@ -44,6 +44,7 @@ class IndustryClassification extends Model
 
     public function manpowers()
     {
-        return $this->belongsToMany(Manpower::class, 'classification_manpowers');
+        return $this->belongsToMany(Manpower::class, 'classification_manpowers', 'classification_id', 'manpower_id')
+                    ->withPivot(['seats']);
     }
 }

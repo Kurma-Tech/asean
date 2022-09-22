@@ -22,9 +22,9 @@ class Manpower extends Model
                 ->orWhere('skilled', 'like', '%'.$search.'%');
     }
 
-    // User model
     public function classifications()
     {
-        return $this->belongsToMany(IndustryClassification::class, 'classification_manpowers');
+        return $this->belongsToMany(IndustryClassification::class, 'classification_manpowers', 'manpower_id', 'classification_id')
+                    ->withPivot(['seats']);
     }
 }

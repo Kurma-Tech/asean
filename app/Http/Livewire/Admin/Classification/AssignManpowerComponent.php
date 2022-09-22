@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\Classification;
 
+use App\Models\IndustryClassification;
 use App\Models\Manpower;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -10,13 +11,15 @@ class AssignManpowerComponent extends Component
 {
     public
         $manpower_id,
-        $classification_id,
-        $seets,
+        $singleClassification,
+        $seats,
         $manpowers = [],
         $inputs = [],
         $i = 1;
 
     public $updateMode = false;
+
+    public $error;
 
     public function addFields($i)
     {
@@ -42,26 +45,17 @@ class AssignManpowerComponent extends Component
 
     public function assignManpower()
     {
-        $this->validate(); // validate Patent form
-
+        // $this->validate(); // validate Patent form
         DB::beginTransaction();
 
         try {
-            $updateId = $this->hiddenId;
-            if ($updateId > 0) {
-                $industryClassification = IndustryClassification::find($updateId); // update IndustryClassification
-            } else {
-                $industryClassification = new IndustryClassification(); // create IndustryClassification
-            }
+            
 
-            $industryClassification->classifications = $this->classifications;
-            $industryClassification->parent_id       = $this->parent_id;
-            $industryClassification->psic_code       = $this->psic_code;
-            $industryClassification->save();
+            // $this->getClassification->sync();
 
             DB::commit();
 
-            $this->dispatchBrowserEvent('success-message', ['message' => 'Industry Classification has been ' . $this->btnType . '.']);
+            $this->dispatchBrowserEvent('success-message', ['message' => 'Manpower assign to classification']);
 
             $this->reset('classifications', 'parent_id', 'psic_code', 'hiddenId', 'btnType', 'is_parent');
 
@@ -75,7 +69,6 @@ class AssignManpowerComponent extends Component
 
     public function resetFields()
     {
-        $this->manpower_id = [];
-        $this->seets       = [];
+        $this->reset('manpower_id', 'seets', 'inputs');
     }
 }

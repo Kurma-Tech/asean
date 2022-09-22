@@ -103,10 +103,77 @@
                                                 @enderror
                                             </div>
                                         </div>
+                                        <div class="col-md-12">
+                                            <label for="psic_code">Assign Manpower*</label>
+                                            <table class="table table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 70%;">Manpower</th>
+                                                        <th style="width: 20%;">Seat(s)</th>
+                                                        <th style="width: 10%;"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @forelse($classificationManpowers as $n => $claMan)
+                                                    <tr>
+                                                        <td>
+                                                            <select class="form-control @error('manpower_id.'.$n) is-invalid @enderror" wire:model="manpower_id.{{$n}}">
+                                                                <option hidden>Select Manpower</option>
+                                                                @foreach($manpowers as $manpower)
+                                                                <option value="{{ $manpower->id }}">{{ $manpower->title }} -- {{ $manpower->skilled }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" min="1" class="form-control @error('seats.'.$n) is-invalid @enderror" placeholder="Enter number of seats" wire:model='seats.{{$n}}'>
+                                                        </td>
+                                                    </tr>
+                                                    @empty
+                                                    <tr>
+                                                        <td>
+                                                            <select class="form-control @error('manpower_id.0') is-invalid @enderror" wire:model="manpower_id.0">
+                                                                <option hidden>Select Manpower</option>
+                                                                @foreach($manpowers as $manpower)
+                                                                <option value="{{ $manpower->id }}">{{ $manpower->title }} -- {{ $manpower->skilled }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" min="1" class="form-control @error('seats.0') is-invalid @enderror" placeholder="Enter number of seats" wire:model='seats.0'>
+                                                        </td>
+                                                    </tr>
+                                                    @endforelse
+                                                    @foreach($inputs as $key => $value)
+                                                    <tr>
+                                                        <td>
+                                                            <select class="form-control @error('manpower_id.'.$key + $classificationManpowers->count() ? $classificationManpowers->count() : 1) is-invalid @enderror" wire:model="manpower_id.{{ $key + $classificationManpowers->count() ? $classificationManpowers->count() : 1 }}">
+                                                                <option hidden>Select Manpower</option>
+                                                                @foreach($manpowers as $manpower)
+                                                                <option value="{{ $manpower->id }}">{{ $manpower->title }} -- {{ $manpower->skilled }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" min="1" class="form-control  @error('seats.'.$key + $classificationManpowers->count() ? $classificationManpowers->count() : 1) is-invalid @enderror" placeholder="Enter number of seats" wire:model='seats.{{ $key + $classificationManpowers->count() ? $classificationManpowers->count() : 1 }}'>
+                                                        </td>
+                                                        <td>
+                                                            <a href="javascript:void(0)" class="btn btn-xs bg-danger" wire:click.prevent="removeFields({{$key}})" data-toggle="tooltip" data-placement="top" title="Remove Field Row">
+                                                                <i class="fas fa-trash-alt"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                            <button class="btn text-white btn-success btn-sm" wire:click.prevent="addFields({{$i}})"><i class="fas fa-plus"></i> Add</button>
+                                        </div>
                                         
                                     @endif
 
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 m-2">
+
+                                        <hr class="mb-2">
+
                                         <div class="form-group">
                                             <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
                                                 <input type="checkbox" class="custom-control-input" id="customSwitch3" value="1" wire:model="is_parent">
@@ -137,9 +204,9 @@
                                 <thead>
                                     <tr>
                                         <th style="width:5%;">#</th>
-                                        <th style="width:50%;">Classification</th>
-                                        <th style="width:40%;">Parent Classification</th>
-                                        <th style="width:5%;">Assign</th>
+                                        <th style="width:40%;">Classification</th>
+                                        <th style="width:30%;">Parent Classification</th>
+                                        <th style="width:25%;">Type</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -151,9 +218,11 @@
                                             <span class="badge badge-primary">{{ $industryClassification->parent->classifications ?? 'Self' }}</span>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-xs btn-warning" data-toggle="modal" data-target="#modal-assign-manpower" data-toggle="tooltip" data-placement="top" title="Assign Manpower">
-                                                <i class="fa fa-plus"></i> <i class="fa fa-user"></i>
-                                            </button>
+                                            @if($industryClassification->parent_id)
+                                            <span class="badge badge-success badge-sm">Child Category</span>
+                                            @else
+                                            <span class="badge badge-danger badge-sm">Parent Category</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr class="expandable-body d-none">
@@ -188,20 +257,14 @@
                                                 </li>
                                                 <li class="item">
                                                     <div class="product-info">
+                                                        @if($industryClassification->manpowers->count())
                                                         <div class="product-title">
-                                                            Number of (PROFESSIONAL) Manpower
+                                                            Number of Manpower
                                                         </div>
-                                                        <span class="badge badge-primary badge-md">Software Engineer (50 PROFESSIONAL)</span>
-                                                        <span class="badge badge-primary badge-md">Management Staff (10 TRADESMAN)</span>
-                                                    </div>
-                                                </li>
-                                                <li class="item">
-                                                    <div class="product-info">
-                                                        <div class="product-title">
-                                                            Number of (TRADESMAN) Manpower
-                                                        </div>
-                                                        <span class="badge badge-info badge-md">Cook (50 PROFESSIONAL)</span>
-                                                        <span class="badge badge-info badge-md">Cleaner (10 TRADESMAN)</span>
+                                                        @endif
+                                                        @foreach($industryClassification->manpowers as $manpower)
+                                                        <span class="badge badge-primary badge-md">{{$manpower->title}} ({{$manpower->pivot->seats}})</span>
+                                                        @endforeach
                                                     </div>
                                                 </li>
                                             </ul>
@@ -222,8 +285,14 @@
             <!-- /.row -->
 
             @livewire('admin.classification.import-component')
-            @livewire('admin.classification.assign-manpower-component')
+
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
 </div>
+
+@push('extra-styles')
+    <style>
+        .has-error {border: 1px solid #ff7e7e;}
+    </style>
+@endpush
