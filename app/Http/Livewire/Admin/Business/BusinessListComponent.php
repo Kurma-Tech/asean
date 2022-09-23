@@ -18,6 +18,8 @@ class BusinessListComponent extends Component
 
     public $error;
 
+    protected $listeners = ['refreshBusinessListComponent' => '$refresh'];
+
     public function render()
     {
         return view('livewire.admin.business.business-list-component', [

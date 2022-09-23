@@ -39,7 +39,7 @@ class ImportComponent extends Component
             $this->reset();
             $this->success = 'Business Data Imported Successfully';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
-
+            $this->emit('refreshBusinessListComponent');
         } catch (\Throwable $th) {
             DB::rollback();
             $this->error = 'Ops! looks like we had some problem';
