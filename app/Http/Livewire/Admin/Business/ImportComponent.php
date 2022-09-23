@@ -32,6 +32,7 @@ class ImportComponent extends Component
 
         try {
             set_time_limit(0);
+
             Excel::import(new BusinessImport, $this->file);
 
             DB::commit();
@@ -39,7 +40,8 @@ class ImportComponent extends Component
             $this->reset();
             $this->success = 'Business Data Imported Successfully';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
-            $this->emit('refreshBusinessListComponent');
+
+            return redirect(request()->header('Referer'));
         } catch (\Throwable $th) {
             DB::rollback();
             $this->error = 'Ops! looks like we had some problem';
