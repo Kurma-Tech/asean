@@ -35,6 +35,7 @@ class HomeComponent extends Component
 
     public function mount()
     {
+        ini_set('memory_limit', '-1');
         $total_business_count = DB::table('businesses')->count();
         $total_patent_count = DB::table('patents')->count();
         $this->results = $total_business_count + $total_patent_count;
