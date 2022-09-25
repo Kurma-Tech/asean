@@ -189,10 +189,6 @@ class MapComponent extends Component
 
         $this->emit("resultsUpdated", count($businessData ?? []) + count($patentData ?? []));
 
-        $lineChartYears = $this->chartBusinessCount->keys()->concat($this->chartPatentsCount->keys());
-
-        $this->emit("reportsUpdated", ["businessCountByYears" => $this->chartBusinessCount->values(), "patentCountByYears" => $this->chartPatentsCount->values(), "lineChartYears" => $lineChartYears->sort()]);
-
         $this->emit("mapUpdated", ["geoJson" => $tempBusinessDataChunked, "patentJson" => $patentGeoLocations]);
     }
 
