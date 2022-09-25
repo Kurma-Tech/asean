@@ -18,6 +18,7 @@ use App\Http\Livewire\Admin\Patent\PatentListComponent;
 use App\Http\Livewire\Admin\PatentKind\PatentListComponent as PatentKindPatentListComponent;
 use App\Http\Livewire\Admin\PatentType\PatentListComponent as PatentTypePatentListComponent;
 use App\Http\Livewire\Client\HomeComponent;
+use App\Http\Livewire\Client\Report\ReportComponent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -65,6 +66,7 @@ Route::prefix('admin')->name('admin.')->group(function() {
 // Client
 Route::name('client.')->group(function() {
     Route::get('/', HomeComponent::class)->name('home');
+    Route::get('/report', ReportComponent::class)->name('report');
     // Dynamic Pages
     Route::get('/pages/{slug?}', HomeComponent::class)->name('pages');
 });

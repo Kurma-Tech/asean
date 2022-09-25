@@ -67,7 +67,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <span class="data-report-count mr-2">About {{ $results }} results.</span>
-                                    <span class="view-report pull-right" id="view-report-element">Show Report</span>
+                                    <a href="{{ route('client.report') }}" class="view-report pull-right" id="view-report-element" target="_blank">Show Report</a>
                                 </div>
                             </div>
 
@@ -158,9 +158,9 @@
                             <div id="countryChart" wire:ignore></div>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-12 p-3 scroll-element" id="reportSection" wire:ignore>
-                        @livewire('client.report.report-component', ['type' => $type, 'country' => $country, 'classification' => $classification])
-                    </div>
+                    {{-- <div class="col-12 col-sm-12 p-3 scroll-element" id="reportSection" wire:ignore>
+                        @livewire('client.report.report-component')
+                    </div> --}}
                 </div>
             </div>
         </section>

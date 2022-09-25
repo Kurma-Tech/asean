@@ -24,30 +24,30 @@ $.widget.bridge('uibutton', $.ui.button)
         e.preventDefault();
         $("#filter-wrapper").toggleClass("active");
     });
-    // Scroll To
-    $("#view-report-element").click(function() {
-        enableScroll(); // enable scroll
-        $('html, body').animate({
-            scrollTop: $("#reportSection").offset().top
-        }, 1000);
-        disableScroll(); // disable scroll
-    });
+    // // Scroll To
+    // $("#view-report-element").click(function() {
+    //     enableScroll(); // enable scroll
+    //     $('html, body').animate({
+    //         scrollTop: $("#reportSection").offset().top
+    //     }, 1000);
+    //     disableScroll(); // disable scroll
+    // });
 
-    $("#view-map-element").click(function() {
-        enableScroll(); // enable scroll
-        $('html, body').animate({
-            scrollTop: $("#mapSection").offset().top-45
-        }, 1000);
-        disableScroll(); // disable scroll
-    });
+    // $("#view-map-element").click(function() {
+    //     enableScroll(); // enable scroll
+    //     $('html, body').animate({
+    //         scrollTop: $("#mapSection").offset().top-45
+    //     }, 1000);
+    //     disableScroll(); // disable scroll
+    // });
 
-    function disableScroll() { 
-        document.body.classList.add("remove-scrolling"); 
-    } 
+    // function disableScroll() { 
+    //     document.body.classList.add("remove-scrolling"); 
+    // } 
 
-    function enableScroll() { 
-        document.body.classList.remove("remove-scrolling"); 
-    }
+    // function enableScroll() { 
+    //     document.body.classList.remove("remove-scrolling"); 
+    // }
 </script>
 
 @livewireScripts

@@ -35,7 +35,6 @@ class MapComponent extends Component
         'handleSearchEvent' => 'mapHandleSearchEvent'
     ];
 
-
     /* 
         Mapping Listeners to Handler Functions 
     */
@@ -73,10 +72,7 @@ class MapComponent extends Component
 
     private function filterData($type, $country, $classification)
     {
-        // ini_set('memory_limit', '3000M');
         ini_set('memory_limit', '-1');
-        // $this->mount();
-
         // Updating filter values
         $this->country = $country;
         $this->type = $type;
@@ -125,30 +121,13 @@ class MapComponent extends Component
         }
         /* Filter By Country and Classification End*/
 
-
         /* Get Query Data */
         $this->business = $businessQuery->get()->chunk(5000);
         $this->patents = $patentQuery->get();
         /* Get Query Data End */
 
-
-        /* Default data for Charts */
-        // $tempBusinessQuery = $businessQuery; // Temporary Business Query Variable
-        // $tempPatentQuery = $patentQuery; // Temporary Patent Query Variable
-        $this->chartBusinessCount = collect($this->business)->pluck('year')->countBy(); // business chart count
-
-        $this->chartPatentsCount = collect($this->patents)->pluck('date')->countBy(function ($date) {
-            return substr(strchr($date, "-", -1), 0);
-        }); // Count of filtered patents with year extraction
-        /* Default data for Charts End*/
-
-
-
         $this->loadJsonData(); // Load data for map
         $this->emit("loader_off"); // Loader off
-        // dd($this->business);
-        // dd(DB::getQueryLog());
-
     }
 
 
@@ -179,8 +158,6 @@ class MapComponent extends Component
                 ];
                 array_push($tempBusinessDataChunked, $geoBusinessData);
             }
-            // $geoJson = collect($geoBusinessData)->toJson();
-            // $this->geoJson = $geoJson;
         } else {
             $tempBusinessDataChunked = [];
         }
@@ -217,8 +194,6 @@ class MapComponent extends Component
         $this->emit("reportsUpdated", ["businessCountByYears" => $this->chartBusinessCount->values(), "patentCountByYears" => $this->chartPatentsCount->values(), "lineChartYears" => $lineChartYears->sort()]);
 
         $this->emit("mapUpdated", ["geoJson" => $tempBusinessDataChunked, "patentJson" => $patentGeoLocations]);
-
-        // $this->emit("resultsDataUpdate", ['businessData' => $tempBusinessDataChunked, 'patentData' => $patentGeoLocations]);
     }
 
     public function getBusinessDataFromId($id)
