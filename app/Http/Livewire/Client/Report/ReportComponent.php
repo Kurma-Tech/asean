@@ -13,8 +13,7 @@ class ReportComponent extends Component
 
     protected
         $business = [],
-        $patents = [],
-        $allData = [];
+        $patents = [];
 
     protected $listeners = [
         'reportFirstLoad' => 'reportHandleFirstLoad',
@@ -65,14 +64,16 @@ class ReportComponent extends Component
                 $tempChartBusinessCount[$lineChartYears[$i]] = null;
             }
         }
-
-        // dd($lineChartYears->sort());
+        // dd($this->chartBusinessCount);
 
         $this->emit("reportsUpdated", ["businessCountByYears" => collect($tempChartBusinessCount)->values(), "patentCountByYears" => collect($tempChartPatentsCount)->values(), "lineChartYears" => collect($lineChartYears->sort())->values()]);
     }
 
     public function render()
     {
-        return view('livewire.client.report.report-component')->layout('layouts.client');
+        // dd(DB::table('businesses')->select('id', 'year')->pluck('year')->countBy());
+        return view('livewire.client.report.report-component', [
+            'allData' => DB::table('businesses')->select('id', 'year')->pluck('year')->countBy()
+        ])->layout('layouts.client');
     }
 }

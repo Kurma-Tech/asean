@@ -43,13 +43,13 @@
                 </div>
             </div>
             <div class="row">
-                {{-- <div class="col-md-6 col-sm-12" wire:ignore>
+                <div class="col-md-6 col-sm-12" wire:ignore>
                     <div class="card">
                         <div class="card-body">
                             <div id="forcast-chart"></div>
                         </div>
                     </div>
-                </div> --}}
+                </div>
                 <div class="col-md-6 col-sm-12" wire:ignore>
                     <div class="card">
                         <div class="card-body">
@@ -79,10 +79,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach ($allData as $key => $value)
                                     <tr data-widget="expandable-table" aria-expanded="false">
-                                        <td>1</td>
-                                        <td>2011</td>
-                                        <td>11033</td>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $key }}</td>
+                                        <td>{{ $value }}</td>
                                     </tr>
                                     {{-- <tr class="expandable-body d-none">
                                         <td colspan="8">
@@ -109,6 +110,7 @@
                                             </ul>
                                         </td>
                                     </tr> --}}
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -318,65 +320,65 @@
 
         });
 
-        // Forcast
-        // var forcastChartOptions = {
-        //     series: [{
-        //         name: 'Data Forcast',
-        //         // data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 9, 17, 2, 7, 5]
-        //         data: []
-        //     }],
-        //     chart: {
-        //         height: 350,
-        //         type: 'line',
-        //         foreColor: '#fff',
-        //     },
-        //     forecastDataPoints: {
-        //         count: 7
-        //     },
-        //     stroke: {
-        //         width: 5,
-        //         curve: 'smooth'
-        //     },
-        //     xaxis: {
-        //         type: 'datetime',
-        //         categories: ['1/11/2022', '2/11/2000', '3/11/2000', '4/11/2000', '5/11/2000', '6/11/2000', '7/11/2000',
-        //             '8/11/2000', '9/11/2000', '10/11/2000', '11/11/2000', '12/11/2000', '1/11/2001', '2/11/2001',
-        //             '3/11/2001', '4/11/2001', '5/11/2001', '6/11/2001'
-        //         ],
-        //         tickAmount: 10,
-        //         labels: {
-        //             formatter: function(value, timestamp, opts) {
-        //                 return opts.dateFormatter(new Date(timestamp), 'dd MMM')
-        //             }
-        //         }
-        //     },
-        //     title: {
-        //         text: 'Forecast',
-        //         align: 'left',
-        //         style: {
-        //             fontSize: "16px",
-        //             color: '#fff'
-        //         }
-        //     },
-        //     fill: {
-        //         type: 'gradient',
-        //         gradient: {
-        //             shade: 'dark',
-        //             gradientToColors: ['#FDD835'],
-        //             shadeIntensity: 1,
-        //             type: 'horizontal',
-        //             opacityFrom: 1,
-        //             opacityTo: 1,
-        //             stops: [0, 100, 100, 100]
-        //         },
-        //     },
-        //     yaxis: {
-        //         min: -10,
-        //         max: 40
-        //     }
-        // };
+        Forcast
+        var forcastChartOptions = {
+            series: [{
+                name: 'Data Forcast',
+                // data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 9, 17, 2, 7, 5]
+                data: []
+            }],
+            chart: {
+                height: 350,
+                type: 'line',
+                foreColor: '#fff',
+            },
+            forecastDataPoints: {
+                count: 7
+            },
+            stroke: {
+                width: 5,
+                curve: 'smooth'
+            },
+            xaxis: {
+                type: 'datetime',
+                categories: ['1/11/2022', '2/11/2000', '3/11/2000', '4/11/2000', '5/11/2000', '6/11/2000', '7/11/2000',
+                    '8/11/2000', '9/11/2000', '10/11/2000', '11/11/2000', '12/11/2000', '1/11/2001', '2/11/2001',
+                    '3/11/2001', '4/11/2001', '5/11/2001', '6/11/2001'
+                ],
+                tickAmount: 10,
+                labels: {
+                    formatter: function(value, timestamp, opts) {
+                        return opts.dateFormatter(new Date(timestamp), 'dd MMM')
+                    }
+                }
+            },
+            title: {
+                text: 'Forecast',
+                align: 'left',
+                style: {
+                    fontSize: "16px",
+                    color: '#fff'
+                }
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shade: 'dark',
+                    gradientToColors: ['#FDD835'],
+                    shadeIntensity: 1,
+                    type: 'horizontal',
+                    opacityFrom: 1,
+                    opacityTo: 1,
+                    stops: [0, 100, 100, 100]
+                },
+            },
+            yaxis: {
+                min: -10,
+                max: 40
+            }
+        };
 
-        // var forcastChart = new ApexCharts(document.querySelector("#forcast-chart"), forcastChartOptions);
-        // forcastChart.render();
+        var forcastChart = new ApexCharts(document.querySelector("#forcast-chart"), forcastChartOptions);
+        forcastChart.render();
     </script>
 @endpush
