@@ -2,9 +2,6 @@
     <div class="row">
         <div class="col-12 col-sm-12 p-3">
             <h3>Current Report</h3>
-            <div class="btn btn-success btn-sm" id="view-map-element">
-                View Map
-            </div>
         </div>
     </div>
     <div class="row">
@@ -81,6 +78,9 @@
         </div>
     </div>
 </div>
+
+@push('extra-styles')
+@endpush
 
 @push('extra-scripts')
     <script>

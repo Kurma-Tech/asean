@@ -2,8 +2,6 @@
 
 namespace App\Http\Livewire\Client\Report;
 
-use App\Models\Business;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,6 +11,6 @@ class ReportComponent extends Component
 
     public function render()
     {
-        return view('livewire.client.report.report-component');
+        return view('livewire.client.report.report-component')->layout('layouts.client');
     }
 }

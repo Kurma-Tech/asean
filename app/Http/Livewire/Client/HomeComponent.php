@@ -67,14 +67,6 @@ class HomeComponent extends Component
         $this->results = $results;
     }
 
-    public function handleMapUpdated($data)
-    {
-        // $this->businessResults = [];
-        // $this->patentResults = [];
-        // $this->businessResults  = $data["geoJson"] ?? [];
-        // $this->patentResults  = $data["patentJson"] ?? [];
-    }
-
     public function updatedCountry($country)
     {
         $this->emit("loader_on");
@@ -98,21 +90,6 @@ class HomeComponent extends Component
 
     public function render()
     {
-        // if($this->parent_id != '')
-        // {
-        //     $filter = Business::whereHas('industryClassification', function($q)
-        //     {
-        //         $q->where('parent_id', '=', $this->parent_id);
-        //     });
-        // } else {
-        //     $filter = Business::filter($this->search);
-        // }
-
-        // $this->filters_all = $filter->get();
-        // $this->filters = $filter->paginate($this->per_page);
-
-        // $this->industryClass = IndustryClassification::where('parent_id', Null)->select('id', 'classifications')->get();
-
         $this->emit('updateMap', $this->search);
         $this->emit('updateReport');
 
@@ -123,13 +100,8 @@ class HomeComponent extends Component
         }
 
         return view('livewire.client.home-component', [
-            // 'filters' => $this->filters,
-            // 'filters_all' => $this->filters_all,
-            // 'filter' => $filter,
             'countries' => $countries,
             'classifications' => $classifications
-            // 'type' => $this->type,
-            // 'industryClass' => $this->industryClass
         ])->layout('layouts.client');
     }
 }
