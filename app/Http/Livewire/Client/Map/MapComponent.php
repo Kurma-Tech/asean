@@ -121,22 +121,10 @@ class MapComponent extends Component
         }
         /* Filter By Country and Classification End*/
 
-
         /* Get Query Data */
         $this->business = $businessQuery->get()->chunk(5000);
         $this->patents = $patentQuery->get();
         /* Get Query Data End */
-
-
-        /* Default data for Charts */
-        $this->chartBusinessCount = collect($this->business)->pluck('year')->countBy(); // business chart count
-
-        $this->chartPatentsCount = collect($this->patents)->pluck('date')->countBy(function ($date) {
-            return substr(strchr($date, "-", -1), 0);
-        }); // Count of filtered patents with year extraction
-        /* Default data for Charts End*/
-
-
 
         $this->loadJsonData(); // Load data for map
         $this->emit("loader_off"); // Loader off

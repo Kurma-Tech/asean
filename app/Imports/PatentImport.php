@@ -21,14 +21,14 @@ class PatentImport implements ToModel, WithHeadingRow, WithChunkReading, WithBat
     {
         $this->patentType = PatentType::select('id')->get();
         $this->patentKind = PatentKind::select('id')->get();
-        $this->country    = Country::select('id')->get();
+        $this->country    = Country::select('id', 'short_code')->get();
     }
 
     public function model(array $row)
     {
         $patentType = $this->patentType->where('id', $row['type_id'])->first();
         $patentKind = $this->patentKind->where('id', $row['kind_id'])->first();
-        $country    = $this->country->where('id', $row['country_id'])->first();
+        $country    = $this->country->where('id', $row['country_short_code'])->first();
         
         return new Patent([
             "title"      => $row['title'],

@@ -1,78 +1,118 @@
 <div>
-    <div class="row">
-        <div class="col-12 col-sm-12 p-3">
-            <h3>Current Report</h3>
-        </div>
-    </div>
-    <div class="row">
-        {{-- <div class="col-md-6 col-sm-12" wire:ignore>
-            <div class="card">
-                <div class="card-body">
-                    <div id="forcast-chart"></div>
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-sm-12 p-3">
+                    <h3>Current Report</h3>
                 </div>
             </div>
-        </div> --}}
-        <div class="col-md-6 col-sm-12" wire:ignore>
-            <div class="card">
-                <div class="card-body">
-                    <div id="line-chart"></div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Sort by Country:</label>
+                                        <select class="form-control" style="width: 100%;" wire:model="orderBy">
+                                            <option hidden>Select Country</option>
+                                            <option value="all">ALL</option>
+                                            <option value="1">Thiland</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Sort by Classifications:</label>
+                                        <select class="form-control" style="width: 100%;" wire:model="sortBy">
+                                            <option hidden>Select Classifications</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Sub Classifications</label>
+                                        <select class="form-control" style="width: 100%;" wire:model="perPage">
+                                            <option hidden>Select Sub-Classifications</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        {{-- <div class="col-md-12 col-sm-12" wire:ignore>
-            <div class="card">
-                <div class="card-body">
-                    <div id="country-wise-chart"></div>
+            <div class="row">
+                {{-- <div class="col-md-6 col-sm-12" wire:ignore>
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="forcast-chart"></div>
+                        </div>
+                    </div>
+                </div> --}}
+                <div class="col-md-6 col-sm-12" wire:ignore>
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="line-chart"></div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div> --}}
-        <div class="col-md-6 col-sm-12" wire:ignore>
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Business Statistics</h3>
-                </div>
-                <div class="card-body">
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Year</th>
-                                <th>No. Business Data</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr data-widget="expandable-table" aria-expanded="false">
-                                <td>1</td>
-                                <td>2011</td>
-                                <td>11033</td>
-                            </tr>
-                            <tr class="expandable-body d-none">
-                                <td colspan="8">
-                                    <ul class="products-list product-list-in-card pl-2 pr-2">
-                                        <li class="item">
-                                            <div class="product-info">
-                                                <div class="product-title">
-                                                    Professional Manpower
-                                                </div>
-                                                <span class="badge badge-info badge-xs">40 Software Engineer</span>
-                                                <span class="badge badge-info badge-xs">3 Quality Assurance</span>
-                                                <span class="badge badge-info badge-xs">6 Human Resources</span>
-                                            </div>
-                                        </li>
-                                        <li class="item">
-                                            <div class="product-info">
-                                                <div class="product-title">
-                                                    Skill Manpower
-                                                </div>
-                                                <span class="badge badge-primary badge-xs">2 Cook</span>
-                                                <span class="badge badge-primary badge-xs">2 Cleaner</span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                {{-- <div class="col-md-12 col-sm-12" wire:ignore>
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="country-wise-chart"></div>
+                        </div>
+                    </div>
+                </div> --}}
+                <div class="col-md-6 col-sm-12" wire:ignore>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Business Statistics</h3>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Year</th>
+                                        <th>No. Business Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-widget="expandable-table" aria-expanded="false">
+                                        <td>1</td>
+                                        <td>2011</td>
+                                        <td>11033</td>
+                                    </tr>
+                                    {{-- <tr class="expandable-body d-none">
+                                        <td colspan="8">
+                                            <ul class="products-list product-list-in-card pl-2 pr-2">
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Professional Manpower
+                                                        </div>
+                                                        <span class="badge badge-info badge-xs">40 Software Engineer</span>
+                                                        <span class="badge badge-info badge-xs">3 Quality Assurance</span>
+                                                        <span class="badge badge-info badge-xs">6 Human Resources</span>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Skill Manpower
+                                                        </div>
+                                                        <span class="badge badge-primary badge-xs">2 Cook</span>
+                                                        <span class="badge badge-primary badge-xs">2 Cleaner</span>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr> --}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -84,6 +124,11 @@
 
 @push('extra-scripts')
     <script>
+        document.addEventListener("livewire:load", handleLivewireLoad, true);
+        function handleLivewireLoad() {
+            console.log("handleLivewireLoad");
+            Livewire.emit('reportFirstLoad');
+        }
         Livewire.on('reportsUpdated', (data) => {
             // Line Draw
             var lineChartOptions = {

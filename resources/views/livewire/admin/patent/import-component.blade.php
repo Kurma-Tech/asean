@@ -22,7 +22,7 @@
                             <code class="text-xs text-info-400">
                                 title,
                                 patent_id,
-                                country_id,
+                                country_short_code,
                                 kind_id,
                                 type_id,
                                 date,
