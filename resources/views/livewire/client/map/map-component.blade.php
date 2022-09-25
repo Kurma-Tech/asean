@@ -254,7 +254,7 @@
 
         function addBusinessHeat(sourceId) {
             map.addLayer({
-                'id': 'business-heat' + sourceId,
+                'id': 'business-heat',
                 'type': 'heatmap',
                 'source': sourceId,
                 'maxzoom': 9,
@@ -658,9 +658,13 @@
 
         Livewire.on('mapUpdated', (data) => {
             try {
+                var mapLayer = map.getLayer('business-heat');
+                if (typeof mapLayer !== "undefined") {
+                    map.removeLayer('business-heat').removeSource('businessHeatData');
+                }
                 for (let index = 0; index < businessChunkedData; index++) {
-                    var mapLayer = map.getLayer('business-heat' + 'business' + index);
-                    if (typeof mapLayer !== 'undefined') {
+                    var mapLayerTemp = map.getLayer('business-heat' + 'business' + index);
+                    if (typeof mapLayerTemp !== 'undefined') {
                         map.removeLayer('business-heat' + 'business' + index).removeLayer('business-point' +
                             'business' + index).removeSource('business' + index);
                     }
@@ -678,12 +682,19 @@
             changePage(1);
 
             if (data.geoJson != null) {
+                map.addSource('businessHeatData', {
+                    'type': 'geojson',
+                    'data': {
+                        'type' : 'FeatureCollection',
+                        'features' : mergedData
+                    }
+                });
+                addBusinessHeat('businessHeatData');
                 for (let index = 0; index < data.geoJson.length; index++) {
                     map.addSource('business' + index, {
                         'type': 'geojson',
                         'data': data.geoJson[index]
                     });
-                    addBusinessHeat('business' + index);
                     addBusinessPoint('business' + index);
                 }
             }
