@@ -74,6 +74,7 @@ class MapComponent extends Component
     private function filterData($type, $country, $classification)
     {
         // ini_set('memory_limit', '3000M');
+        ini_set('memory_limit', '-1');
         // $this->mount();
 
         // Updating filter values
@@ -153,6 +154,7 @@ class MapComponent extends Component
 
     private function loadJsonData()
     {
+        ini_set('memory_limit', '-1');
         /*  */
         if ($this->type == "all" || $this->type == "business") {
             $tempBusinessDataChunked = [];
