@@ -66,7 +66,7 @@ class ReportComponent extends Component
             }
         }
 
-        dd($lineChartYears->sort());
+        // dd($lineChartYears->sort());
 
         $this->emit("reportsUpdated", ["businessCountByYears" => collect($tempChartBusinessCount)->values(), "patentCountByYears" => collect($tempChartPatentsCount)->values(), "lineChartYears" => $lineChartYears->sort()]);
     }

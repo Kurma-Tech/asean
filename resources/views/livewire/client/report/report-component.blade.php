@@ -233,6 +233,8 @@
             //     }
             // ]);
 
+            console.log(data.lineChartYears);
+
             lineChart.updateOptions({
                 series: [
                     {
