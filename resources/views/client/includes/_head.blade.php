@@ -12,6 +12,8 @@
 <!-- overlayScrollbars -->
 <link rel="stylesheet" href="{{asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
 <link rel="stylesheet" href="{{ asset('client/dist/css/apexcharts.css') }}">
+<!-- Toastr -->
+<link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
 <style>
 .warning,.danger,.info { background-color: #dfdfdf; }
 .warning.active { background-color: #ffc107; color: antiquewhite !important; }
