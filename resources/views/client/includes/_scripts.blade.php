@@ -13,6 +13,9 @@ $.widget.bridge('uibutton', $.ui.button)
 
 <script src="{{ asset('client/dist/js/apexcharts.min.js') }}"></script>
 
+<!-- Toastr -->
+<script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+
 <script>
     // Close menu
     $("#close-filter").click(function(e) {
@@ -24,30 +27,32 @@ $.widget.bridge('uibutton', $.ui.button)
         e.preventDefault();
         $("#filter-wrapper").toggleClass("active");
     });
-    // // Scroll To
-    // $("#view-report-element").click(function() {
-    //     enableScroll(); // enable scroll
-    //     $('html, body').animate({
-    //         scrollTop: $("#reportSection").offset().top
-    //     }, 1000);
-    //     disableScroll(); // disable scroll
-    // });
+    
+    $(document).ready(function() {
+        toastr.options = {
+            "positionClass": "toast-top-right", 
+            "progressBar": true,
+        }
+        
+        window.addEventListener('close-auth-modal', event => {
+            $('.modal-auth').modal('toggle');
+        });
 
-    // $("#view-map-element").click(function() {
-    //     enableScroll(); // enable scroll
-    //     $('html, body').animate({
-    //         scrollTop: $("#mapSection").offset().top-45
-    //     }, 1000);
-    //     disableScroll(); // disable scroll
-    // });
+        window.addEventListener('success-message', event => {
+            toastr.success(event.detail.message, 'Success!');
+        });
 
-    // function disableScroll() { 
-    //     document.body.classList.add("remove-scrolling"); 
-    // } 
+        window.addEventListener('error-message', event => {
+            toastr.error(event.detail.message, 'Error!');
+        });
 
-    // function enableScroll() { 
-    //     document.body.classList.remove("remove-scrolling"); 
-    // }
+        window.livewire.onError(statusCode => {
+            if (statusCode === 419) {
+                alert('Your Session Time Out Please Refresh The Page');
+                return false
+            }
+        });
+    });
 </script>
 
 @livewireScripts

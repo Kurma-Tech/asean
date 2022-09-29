@@ -59,7 +59,7 @@
                         <div class="card-header">
                             <h3 class="card-title">All Journals List</h3>
                             <span class="pull-right">
-                                <a href="{{route('admin.journals.add')}}" class="btn btn-xs bg-primary"><i class="fa fa-plus"></i> Add Journals</a>
+                                <a href="" class="btn btn-xs bg-primary"><i class="fa fa-plus"></i> Add Journals</a>
                             </span>
                             <div class="clear-fix"></div>
                         </div>

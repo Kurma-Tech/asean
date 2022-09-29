@@ -29,7 +29,7 @@ class ImportComponent extends Component
         return view('livewire.admin.patent.import-component');
     }
 
-    public function patentKindImport()
+    public function patentImport()
     {
         $this->validate();
 
