@@ -21,7 +21,9 @@ class MapComponent extends Component
         $isLoading = false,
         $searchValue = '',
         $chartBusinessCount,
-        $chartPatentsCount;
+        $chartPatentsCount,
+        $totalBusiness = 0,
+        $totalPatents = 0;
 
     protected
         $business = [],
@@ -121,6 +123,9 @@ class MapComponent extends Component
         }
         /* Filter By Country and Classification End*/
 
+        $this->totalBusiness = $businessQuery->count();
+        $this->totalPatents = $patentQuery->count();
+
         /* Get Query Data */
         $this->business = $businessQuery->get()->chunk(5000);
         $this->patents = $patentQuery->get();
@@ -187,7 +192,7 @@ class MapComponent extends Component
             $patentGeoLocations = null;
         }
 
-        $this->emit("resultsUpdated", count($businessData ?? []) + count($patentData ?? []));
+        $this->emit("resultsUpdated", $this->totalBusiness + $this->totalPatents);
 
         $this->emit("mapUpdated", ["geoJson" => $tempBusinessDataChunked, "patentJson" => $patentGeoLocations]);
     }

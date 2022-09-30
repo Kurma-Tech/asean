@@ -96,7 +96,7 @@ class HomeComponent extends Component
         $countries = Country::select('id', 'status', 'name')->where("status", "1")->get();
         $classifications = [];
         if ($this->type == "business") {
-            $classifications = IndustryClassification::select('id', 'classifications')->get();
+            $classifications = IndustryClassification::select('id', 'classifications')->where('parent_id', '!=' , null)->get();
         }
 
         return view('livewire.client.home-component', [

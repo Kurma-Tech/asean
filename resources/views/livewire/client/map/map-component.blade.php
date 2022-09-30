@@ -511,10 +511,10 @@
                     map.removeLayer('business-heat').removeSource('businessHeatData');
                 }
                 for (let index = 0; index < businessChunkedData; index++) {
-                    var mapLayerTemp = map.getLayer('business-heat' + 'business' + index);
+                    console.log(index);
+                    var mapLayerTemp = map.getLayer('business-point' + 'business' + index);
                     if (typeof mapLayerTemp !== 'undefined') {
-                        map.removeLayer('business-heat' + 'business' + index).removeLayer('business-point' +
-                            'business' + index).removeSource('business' + index);
+                        map.removeLayer('business-point' + 'business' + index).removeSource('business' + index);
                     }
                 }
 
