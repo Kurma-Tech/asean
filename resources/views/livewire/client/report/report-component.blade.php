@@ -428,10 +428,10 @@
             ApexCharts.exec('forcast-chart', 'updateSeries', [{
                 data: data.forcastData
             }], true);
-            var emergingData = data.emergingBusiness.sort(function(x, y) {
-                return y.value - x.value;
-            });
-            addEmergingData(emergingData);
+            // var emergingData = data.emergingBusiness.sort(function(x, y) {
+            //     return y.value - x.value;
+            // });
+            // addEmergingData(emergingData);
         });
     </script>
 @endpush
