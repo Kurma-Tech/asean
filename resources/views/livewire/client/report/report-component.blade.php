@@ -325,7 +325,7 @@
                 },
                 yaxis: {
                     min: 0,
-                    max: 30000
+                    max: 40000
                 }
             };
 
@@ -401,10 +401,10 @@
         });
 
         function addEmergingData(data) {
-
+            $("#business-emerging tr").remove(); 
+            
             for (let index = 0; index < data.length; index++) {
                 const element = data[index];
-                console.log(element.key);
                 var myHtmlContent =
                     `
                     <td>${index+1}</td>
@@ -428,15 +428,7 @@
             ApexCharts.exec('forcast-chart', 'updateSeries', [{
                 data: data.forcastData
             }], true);
-
-            var emergingData = [];
-            Object.keys(data.emergingBusiness).forEach(element => {
-                emergingData.push({
-                    "key": element,
-                    "value": data.emergingBusiness[element]
-                });
-            });
-            emergingData = emergingData.sort(function(x, y) {
+            var emergingData = data.emergingBusiness.sort(function(x, y) {
                 return y.value - x.value;
             });
             addEmergingData(emergingData);

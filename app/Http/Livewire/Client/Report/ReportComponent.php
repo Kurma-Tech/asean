@@ -46,6 +46,17 @@ class ReportComponent extends Component
         $businessQuery =  DB::table('businesses')->select('id', 'year', 'date_registered', 'industry_classification_id');
         $patentQuery =  DB::table('patents')->select('id', 'date');
 
+        $tempBusinessForEmerging = $businessQuery->get();
+        $emergingBusinessData = [];
+
+        $emergingBusiness = collect($tempBusinessForEmerging)->pluck('industry_classification_id')->countBy()->sortByDesc(null)->take(10);
+
+        foreach ($emergingBusiness as $key => $value) {
+            array_push($emergingBusinessData, [
+                "key" => IndustryClassification::find($key)->classifications,
+                "value" => $value
+            ]);
+        }
 
         if ($this->country != null) {
             if ($this->classification != null) {
@@ -67,17 +78,6 @@ class ReportComponent extends Component
         /* Default data for Charts */
 
         $this->chartBusinessCount = collect($business)->pluck('year')->countBy(); // business chart count
-
-        $emergingBusinessData = [];
-
-        $emergingBusiness = collect($business)->pluck('industry_classification_id')->countBy()->sortByDesc(null)->take(10);
-
-        foreach ($emergingBusiness as $key => $value) {
-            array_push($emergingBusinessData, [
-                "key" => IndustryClassification::find($key)->classifications,
-                "value" => $value
-            ]);
-        }
 
         $this->chartPatentsCount = collect($patents)->pluck('date')->countBy(function ($date) {
             return substr(strchr($date, "/", 0), 4);
@@ -118,7 +118,7 @@ class ReportComponent extends Component
                 "forecastedFrom" =>  $this->tempForcastData["forecastedDates"]->count() - collect($tempChartBusinessCount)->keys()->count(),
                 "forcastDates" => $this->tempForcastData["forecastedDates"],
                 "forcastData" => $this->tempForcastData["forecastedData"],
-                "emergingBusiness" => collect($emergingBusinessData)
+                "emergingBusiness" => $emergingBusinessData
             ]);
             $this->isFirstLoad = false;
         }else{
@@ -129,7 +129,7 @@ class ReportComponent extends Component
                 "forecastedFrom" =>  $this->tempForcastData["forecastedDates"]->count() - collect($tempChartBusinessCount)->keys()->count(),
                 "forcastDates" => $this->tempForcastData["forecastedDates"],
                 "forcastData" => $this->tempForcastData["forecastedData"],
-                "emergingBusiness" => collect($emergingBusinessData)
+                "emergingBusiness" => $emergingBusinessData
             ]);
         }
 
@@ -162,7 +162,7 @@ class ReportComponent extends Component
     {
         // dd(DB::table('businesses')->select('id', 'year')->pluck('year')->countBy());
         $countries = Country::select('id', 'status', 'name')->where("status", "1")->get();
-        $classifications = IndustryClassification::select('id', 'classifications')->where('parent_id', '!=', null)->get();
+        $classifications = IndustryClassification::select('id', 'classifications')->where('parent_id', '!=', null)->where('classifications', '!=', null)->get();
         return view('livewire.client.report.report-component', [
             'countries' => $countries,
             'classifications' => $classifications,
