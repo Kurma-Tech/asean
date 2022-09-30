@@ -128,8 +128,7 @@ class ReportComponent extends Component
                 "lineChartYears" => collect($lineChartYears->sort())->values(),
                 "forecastedFrom" =>  $this->tempForcastData["forecastedDates"]->count() - collect($tempChartBusinessCount)->keys()->count(),
                 "forcastDates" => $this->tempForcastData["forecastedDates"],
-                "forcastData" => $this->tempForcastData["forecastedData"],
-                "emergingBusiness" => $emergingBusinessData
+                "forcastData" => $this->tempForcastData["forecastedData"]
             ]);
         }
 
