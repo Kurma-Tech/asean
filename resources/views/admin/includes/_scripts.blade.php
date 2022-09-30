@@ -18,6 +18,10 @@
                     $('#modal-default').modal('toggle');
                 });
 
+                window.addEventListener('close-auth-modal', event => {
+                    $('.modal-auth').modal('toggle');
+                });
+
                 window.addEventListener('success-message', event => {
                     toastr.success(event.detail.message, 'Success!');
                 });
@@ -28,7 +32,7 @@
 
                 window.livewire.onError(statusCode => {
                     if (statusCode === 419) {
-                        alert('Your own message');
+                        alert('Your Session Time Out Please Refresh The Page');
                         return false
                     }
                 });
