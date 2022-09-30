@@ -18,6 +18,67 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-12 col-sm-12" wire:ignore>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Business Manpower</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label>Skill Type:</label>
+                                            <select class="form-control">
+                                                <option hidden>Choose Skill Type</option>
+                                                <option value="1">Professional</option>
+                                                <option value="2">Tradesman</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label>Sort by Classifications:</label>
+                                            <select class="form-control">
+                                                <option hidden>Choose Industry</option>
+                                                <option value="">All</option>
+                                                @foreach ($classifications as $classification)
+                                                    <option value="{{ $classification->id }}">
+                                                        {{ $classification->classifications }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    {{-- <div class="col-md-3 col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label>Sub Classifications</label>
+                                            <select class="form-control" style="width: 100%;" wire:model="perPage">
+                                                <option hidden>Select Sub-Classifications</option>
+                                            </select>
+                                        </div>
+                                    </div> --}}
+                                </div>
+                                <table class="table table-bordered table-hover" id="business-manpower">
+                                    <tbody>
+                                        <tr>
+                                            <td>IT Staffing and Consulting - 6</td>
+                                            <td>Healthcare Staff - 2</td>
+                                            <td>Customer Respresentative - 7</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Accountants - 12</td>
+                                            <td>Auditors - 2</td>
+                                            <td>Electrical Engineer - 5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Chef - 2</td>
+                                            <td>Car Mechanic - 3</td>
+                                            <td>Cleaner - 1</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <div class="col-12">
@@ -88,7 +149,7 @@
                                                 <td>{{ $key }}</td>
                                                 <td>{{ $value }}</td>
                                             </tr> --}}
-                                            {{-- <tr class="expandable-body d-none">
+                                        {{-- <tr class="expandable-body d-none">
                                             <td colspan="8">
                                                 <ul class="products-list product-list-in-card pl-2 pr-2">
                                                     <li class="item">
@@ -401,8 +462,8 @@
         });
 
         function addEmergingData(data) {
-            $("#business-emerging tr").remove(); 
-            
+            $("#business-emerging tr").remove();
+
             for (let index = 0; index < data.length; index++) {
                 const element = data[index];
                 var myHtmlContent =
