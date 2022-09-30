@@ -46,17 +46,6 @@ class ReportComponent extends Component
         $businessQuery =  DB::table('businesses')->select('id', 'year', 'date_registered', 'industry_classification_id');
         $patentQuery =  DB::table('patents')->select('id', 'date');
 
-        $tempBusinessForEmerging = $businessQuery->get();
-        $emergingBusinessData = [];
-
-        $emergingBusiness = collect($tempBusinessForEmerging)->pluck('industry_classification_id')->countBy()->sortByDesc(null)->take(10);
-
-        foreach ($emergingBusiness as $key => $value) {
-            array_push($emergingBusinessData, [
-                "key" => IndustryClassification::find($key)->classifications,
-                "value" => $value
-            ]);
-        }
 
         if ($this->country != null) {
             if ($this->classification != null) {
@@ -78,6 +67,17 @@ class ReportComponent extends Component
         /* Default data for Charts */
 
         $this->chartBusinessCount = collect($business)->pluck('year')->countBy(); // business chart count
+
+        $emergingBusinessData = [];
+
+        $emergingBusiness = collect($business)->pluck('industry_classification_id')->countBy()->sortByDesc(null)->take(10);
+
+        foreach ($emergingBusiness as $key => $value) {
+            array_push($emergingBusinessData, [
+                "key" => IndustryClassification::find($key)->classifications,
+                "value" => $value
+            ]);
+        }
 
         $this->chartPatentsCount = collect($patents)->pluck('date')->countBy(function ($date) {
             return substr(strchr($date, "/", 0), 4);
