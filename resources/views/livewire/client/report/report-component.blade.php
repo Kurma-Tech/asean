@@ -43,7 +43,7 @@
                                                 <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                                 @foreach ($classifications as $classification)
                                                     <option value="{{ $classification->id }}">
-                                                        {{ GoogleTranslate::trans($classification->classifications, app()->getLocale()) }}</option>
+                                                        {{ $classification->classifications }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -91,7 +91,7 @@
                                             <select class="form-control" wire:model="country">
                                                 <option hidden>{{ GoogleTranslate::trans('Choose Countries', app()->getLocale()) }}</option>
                                                 @foreach ($countries as $country)
-                                                    <option value="{{ $country->id }}">{{ GoogleTranslate::trans($country->name, app()->getLocale()) }}</option>
+                                                    <option value="{{ $country->id }}">{{ $country->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -104,7 +104,7 @@
                                                 <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                                 @foreach ($classifications as $classification)
                                                     <option value="{{ $classification->id }}">
-                                                        {{ GoogleTranslate::trans($classification->classifications, app()->getLocale()) }}</option>
+                                                        {{ $classification->classifications }}</option>
                                                 @endforeach
                                             </select>
                                         </div>

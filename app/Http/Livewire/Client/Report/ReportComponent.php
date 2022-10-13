@@ -43,6 +43,7 @@ class ReportComponent extends Component
 
     public function filterData()
     {
+        ini_set('memory_limit', '-1');
         $businessQuery =  DB::table('businesses')->select('id', 'year', 'date_registered', 'industry_classification_id');
         $patentQuery =  DB::table('patents')->select('id', 'date');
 
