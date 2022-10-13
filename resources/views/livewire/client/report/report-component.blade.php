@@ -1,9 +1,9 @@
 <div>
     <div class="content">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row" style="margin-top: 60px;">
                 <div class="col-12 col-sm-12 p-3">
-                    <h3>Current Report</h3>
+                    <h3>{{ GoogleTranslate::trans('Current Report', app()->getLocale()) }}</h3>
                 </div>
             </div>
             <div class="row">
@@ -21,29 +21,29 @@
                     <div class="col-md-12 col-sm-12" wire:ignore>
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Business Manpower</h3>
+                                <h3 class="card-title">{{ GoogleTranslate::trans('Business Manpower', app()->getLocale()) }}</h3>
                             </div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <div class="form-group">
-                                            <label>Skill Type:</label>
+                                            <label>{{ GoogleTranslate::trans('Skill Type', app()->getLocale()) }}:</label>
                                             <select class="form-control">
-                                                <option hidden>Choose Skill Type</option>
-                                                <option value="1">Professional</option>
-                                                <option value="2">Tradesman</option>
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Skill Type', app()->getLocale()) }}</option>
+                                                <option value="1">{{ GoogleTranslate::trans('Professional', app()->getLocale()) }}</option>
+                                                <option value="2">{{ GoogleTranslate::trans('Tradesman', app()->getLocale()) }}</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <div class="form-group">
-                                            <label>Sort by Classifications:</label>
+                                            <label>{{ GoogleTranslate::trans('Sort by Classifications', app()->getLocale()) }}:</label>
                                             <select class="form-control">
-                                                <option hidden>Choose Industry</option>
-                                                <option value="">All</option>
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Industry', app()->getLocale()) }}</option>
+                                                <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                                 @foreach ($classifications as $classification)
                                                     <option value="{{ $classification->id }}">
-                                                        {{ $classification->classifications }}</option>
+                                                        {{ GoogleTranslate::trans($classification->classifications, app()->getLocale()) }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -87,24 +87,24 @@
                                 <div class="row">
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <div class="form-group">
-                                            <label>Sort by Country:</label>
+                                            <label>{{ GoogleTranslate::trans('Sort by Country', app()->getLocale()) }}:</label>
                                             <select class="form-control" wire:model="country">
-                                                <option hidden>Choose Countries</option>
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Countries', app()->getLocale()) }}</option>
                                                 @foreach ($countries as $country)
-                                                    <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                                    <option value="{{ $country->id }}">{{ GoogleTranslate::trans($country->name, app()->getLocale()) }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <div class="form-group">
-                                            <label>Sort by Classifications:</label>
+                                            <label>{{ GoogleTranslate::trans('Sort by Classifications', app()->getLocale()) }}:</label>
                                             <select class="form-control" wire:model="classification">
-                                                <option hidden>Choose Classifications</option>
-                                                <option value="">All</option>
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Classifications', app()->getLocale()) }}</option>
+                                                <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                                 @foreach ($classifications as $classification)
                                                     <option value="{{ $classification->id }}">
-                                                        {{ $classification->classifications }}</option>
+                                                        {{ GoogleTranslate::trans($classification->classifications, app()->getLocale()) }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -131,15 +131,15 @@
                     <div class="col-md-12 col-sm-12" wire:ignore>
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Top Emerging Business</h3>
+                                <h3 class="card-title">{{ GoogleTranslate::trans('Top Emerging Business', app()->getLocale()) }}</h3>
                             </div>
                             <div class="card-body">
                                 <table class="table table-bordered table-hover" id="business-emerging">
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Year</th>
-                                            <th>No. Business Data</th>
+                                            <th>{{ GoogleTranslate::trans('Year', app()->getLocale()) }}</th>
+                                            <th>{{ GoogleTranslate::trans('No. Business Data', app()->getLocale()) }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>

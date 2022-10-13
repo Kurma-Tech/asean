@@ -214,6 +214,7 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
+        'GoogleTranslate' => Stichoza\GoogleTranslate\GoogleTranslate::class,
     ])->toArray(),
 
 ];
