@@ -1,9 +1,9 @@
 <div>
     <div class="content">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row" style="margin-top: 60px;">
                 <div class="col-12 col-sm-12 p-3">
-                    <h3>Current Report</h3>
+                    <h3>{{ GoogleTranslate::trans('Current Report', app()->getLocale()) }}</h3>
                 </div>
             </div>
             <div class="row">
@@ -13,10 +13,10 @@
                             <div class="row">
                                 <div class="col-md-3 col-sm-6 col-xs-12">
                                     <div class="form-group">
-                                        <label>Sort by Country:</label>
+                                        <label>{{ GoogleTranslate::trans('Sort by Country', app()->getLocale()) }}:</label>
                                         <select class="form-control" style="width: 100%;" wire:model="orderBy">
-                                            <option hidden>Select Country</option>
-                                            <option value="all">ALL</option>
+                                            <option hidden>{{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}</option>
+                                            <option value="all">{{ GoogleTranslate::trans('ALL', app()->getLocale()) }}</option>
                                             <option value="1">Thiland</option>
                                         </select>
                                     </div>

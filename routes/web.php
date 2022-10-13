@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\LangConroller;
 use App\Http\Livewire\Admin\Business\BusinessAddComponent;
 use App\Http\Livewire\Admin\Business\BusinessListComponent;
 use App\Http\Livewire\Admin\Business\BusinessTrashedComponent;
@@ -71,6 +72,7 @@ Route::name('client.')->group(function() {
     // Dynamic Pages
     Route::get('/pages/{slug?}', HomeComponent::class)->name('pages');
     Route::get('/client/my-account', ClientDashboardComponent::class)->name('dashboard');
+    Route::get('lang/change', [LangConroller::class, 'change'])->name('changeLang');
 });
 
 Route::post('logout', [AuthController::class, 'destroy'])->name('logout');
