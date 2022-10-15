@@ -11,14 +11,16 @@ use App\Http\Livewire\Admin\Classification\ClassificationList;
 use App\Http\Livewire\Admin\Country\CountryListComponent;
 use App\Http\Livewire\Admin\DashboardComponent;
 use App\Http\Livewire\Admin\Journals\JournalsListComponent;
+use App\Http\Livewire\Admin\JournalsCategory\CategoryListComponent;
 use App\Http\Livewire\Admin\Manpower\ManpowerListComponent;
 use App\Http\Livewire\Admin\Patent\PatentListComponent;
+use App\Http\Livewire\Admin\PatentCategory\CategoryListComponent as PatentCategoryCategoryListComponent;
 use App\Http\Livewire\Admin\PatentKind\PatentListComponent as PatentKindPatentListComponent;
 use App\Http\Livewire\Admin\PatentType\PatentListComponent as PatentTypePatentListComponent;
 use App\Http\Livewire\Client\DashboardComponent as ClientDashboardComponent;
 use App\Http\Livewire\Client\HomeComponent;
 use App\Http\Livewire\Client\Report\ReportComponent;
-use App\Http\Livewire\LoginComponent;
+// use App\Http\Livewire\LoginComponent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,12 +54,16 @@ Route::prefix('admin')->name('admin.')->group(function() {
         Route::get('business/types', BusinessTypeBusinessListComponent::class)->name('typeBusiness.list');
         // Patent
         Route::get('patent', PatentListComponent::class)->name('patent.list');
+        // PatentCategory
+        Route::get('patent/category', PatentCategoryCategoryListComponent::class)->name('patentCategory.list');
         // PatentType
         Route::get('patent/types', PatentTypePatentListComponent::class)->name('typePatent.list');
         // PatentKind
         Route::get('patent/kinds', PatentKindPatentListComponent::class)->name('kindPatent.list');
         // Journals
         Route::get('journals', JournalsListComponent::class)->name('journals.list');
+        // JournalCategory
+        Route::get('journals/category', CategoryListComponent::class)->name('journalCategory.list');
         // Classification
         Route::get('classification', ClassificationList::class)->name('classification.list');
         // ManPower

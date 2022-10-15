@@ -1,3 +1,5 @@
+@section('title', 'Journals List')
+
 <div>
     <!-- Main content -->
     <div class="content">
@@ -11,7 +13,9 @@
                                     <div class="form-group">
                                         <label>Search:</label>
                                         <div class="input-group input-group-md">
-                                            <input type="search" class="form-control form-control-md" placeholder="Type your keywords here" wire:model.debounce.300ms='search'>
+                                            <input type="search" class="form-control form-control-md"
+                                                placeholder="Type your keywords here"
+                                                wire:model.debounce.300ms='search'>
                                         </div>
                                     </div>
                                 </div>
@@ -54,14 +58,216 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12">
+                <div class="col-4 col-md-4 col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">{{ $btnType }} Journals</h3>
+                            <button type="button" class="btn btn-xs btn-info pull-right" data-toggle="modal"
+                                data-target="#modal-default">
+                                <i class="fa fa-file-import"></i> Import CSV
+                            </button>
+                        </div>
+                        <!-- ./card-header -->
+                        <form wire:submit.prevent="storeJournal">
+                            <div class="card-body">
+                                <input type="hidden" wire:model="hiddenId">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="title">Title*</label>
+                                            <input type="text" class="form-control" id="title"
+                                                placeholder="Enter Journals Title" wire:model='title'>
+                                            @error('title')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="source_title">Source Title*</label>
+                                            <input type="text" class="form-control" id="source_title"
+                                                placeholder="Enter Source Title" wire:model='source_title'>
+                                            @error('source_title')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="abstract">Abstract*</label>
+                                            <input type="text" class="form-control" id="abstract"
+                                                placeholder="Enter Abstract" wire:model='abstract'>
+                                            @error('abstract')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="author_name">Author Name*</label>
+                                            <input type="text" class="form-control" id="author_name"
+                                                placeholder="Enter Author Name" wire:model='author_name'>
+                                            @error('author_name')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="publisher_name">Publisher Name*</label>
+                                            <input type="text" class="form-control" id="publisher_name"
+                                                placeholder="Enter Publisher Name" wire:model='publisher_name'>
+                                            @error('publisher_name')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="keywords">Keywords*</label>
+                                            <input type="text" class="form-control" name="input" id="keywords"
+                                                placeholder="Enter Keywords" wire:model='keywords'>
+                                            <small class="form-text text-muted">Separate keywords with a comma</small>
+                                            @error('keywords')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="link">Sourse Url*</label>
+                                            <input type="text" class="form-control" id="link"
+                                                placeholder="Enter Sourse Url" wire:model='link'>
+                                            @error('link')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="issn_no">ISSN No*</label>
+                                            <input type="text" class="form-control" id="issn_no"
+                                                placeholder="Enter ISSN No" wire:model='issn_no'>
+                                            @error('issn_no')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="citition_no">Citition No*</label>
+                                            <input type="text" class="form-control" id="citition_no"
+                                                placeholder="Enter Publisher Name" wire:model='citition_no'>
+                                            @error('citition_no')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="eid_no">EID No*</label>
+                                            <input type="text" class="form-control" id="eid_no"
+                                                placeholder="Enter EID No" wire:model='eid_no'>
+                                            @error('eid_no')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="published_year">Published Year*</label>
+                                            <input type="text" class="form-control" name="date"
+                                                id="published_year" wire:model="published_year" placeholder="YYYY"
+                                                onchange="this.dispatchEvent(new InputEvent('input'))" />
+                                            @error('published_year')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="category_id">Category*</label>
+                                            <select class="form-control" id="category_id"
+                                                wire:model="category_id" style="width: 100%;">
+                                                <option hidden>Choose Category</option>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->category }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('category_id')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="country_id">Country*</label>
+                                            <select class="form-control" id="country_id"
+                                                wire:model="country_id" style="width: 100%;">
+                                                <option hidden>Choose Category</option>
+                                                @foreach ($countries as $country)
+                                                    <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('country_id')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="long">Longitude*</label>
+                                            <input type="text" class="form-control" id="long"
+                                                placeholder="Enter Longitude" wire:model='long'>
+                                            @error('long')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="lat">Latitude*</label>
+                                            <input type="text" class="form-control" id="lat"
+                                                placeholder="Enter Latitude" wire:model='lat'>
+                                            @error('lat')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-plus"></i>
+                                    {{ $btnType }}</button>
+                                <div class="btn btn-sm btn-danger pull-right" data-toggle="tooltip"
+                                    data-placement="top" title="Reset Form Fields" wire:click="resetFields()"><i
+                                        class="fas fa-redo-alt"></i> Reset Fields</div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <div class="col-8 col-md-8 col-sm-12">
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">All Journals List</h3>
-                            <span class="pull-right">
-                                <a href="" class="btn btn-xs bg-primary"><i class="fa fa-plus"></i> Add Journals</a>
-                            </span>
-                            <div class="clear-fix"></div>
                         </div>
                         <!-- ./card-header -->
                         <div class="card-body">
@@ -69,70 +275,124 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>ID</th>
                                         <th>Title</th>
-                                        <th>App Number</th>
-                                        <th>Applicant</th>
-                                        <th>Date</th>
-                                        <th>Status</th>
+                                        <th>Abstract</th>
+                                        <th>Author Name</th>
+                                        <th>Year</th>
+                                        <th>Lat-Lon</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr data-widget="expandable-table" aria-expanded="false">
-                                        <td>1</td>
-                                        <td>Integrated fully-integrated elevator car and work method thereof</td>
-                                        <td>567FGUJKHG</td>
-                                        <td>
-                                            Honda Motors llc
-                                        </td>
-                                        <td>
-                                            2019/08/22
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-success">Active</span>
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i></a>
-                                            <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-alt"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr class="expandable-body">
-                                        <td colspan="8">
-                                            <ul class="products-list product-list-in-card pl-2 pr-2">
-                                                <li class="item">
-                                                    <div class="product-info">
-                                                        <div class="product-title">
-                                                            Description
-                                                        </div>
-                                                        <p>The invention provides an integrated fully-integrated elevator car and a work method thereof. The integrated fully-integrated elevator ca comprises a car top plate, a car bottom plate, a car left wallplate and a car right car plate, and the car left wall plate and the car right wall plate are arranged between the car top plate and the car bottom plate. The front side of the car left wall plate and the front side of the car right wall plate are fixedly connected with a front wall, and the car top plate comprises a fixed car top plate body and a movable car top plate body hinged to the rear side of the fixed car top plate body. The car bottom plate comprises a fixed car bottom plate body and a movable car bottom plate body hinged to the rear side of the fixed car bottom plate body. The carright wall plate comprises a fixed right car wall and a movable right car wall hinged to the fixed right car wall. The car left wall plate comprises a fixed left car wall and a movable left car wall hinged to the rear side of the fixed left car wall. The movable car top plate body, the fixed car bottom plate body, the fixed right car wall and the fixed left car wall are integrated, and an openingfor allowing personnel to get in and out is reserved in the middle of the front wall. According to the integrated fully-integrated elevator car and the work method thereof, the foldable structure is utilized, the elevator car can conveniently enter a built door of a villa and enter a room, the elevator mounting workload is reduced, and the labor charges are reduced.</p>
-                                                    </div>
-                                                </li>
-
-                                            </ul>
-                                        </td>
-                                    </tr>
-
-
+                                    @foreach ($journals as $journal)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $journal->patent_id }}</td>
+                                            <td>{{ $journal->title }}</td>
+                                            <td>
+                                                B2
+                                            </td>
+                                            <td>
+                                                utility
+                                            </td>
+                                            <td>
+                                                {{ $journal->date }}
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-info">{{ $journal->lat }}</span>
+                                                <span class="badge badge-primary">{{ $journal->long }}</span>
+                                            </td>
+                                            <td>
+                                                @if ($journal->deleted_at)
+                                                    <a href="#" class="btn btn-xs bg-success"
+                                                        wire:click="restore({{ $journal->id }})"
+                                                        data-toggle="tooltip" data-placement="top" title="Restore">
+                                                        <i class="fas fa-trash-restore"></i>
+                                                    </a>
+                                                @else
+                                                    <a href="javascript:void(0)" class="btn btn-xs bg-warning"
+                                                        wire:click="editForm({{ $journal->id }})"
+                                                        data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a href="#" class="btn btn-xs bg-danger"
+                                                        wire:click="softDelete({{ $journal->id }})"
+                                                        data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </a>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
                         <!-- /.card-body -->
-                        <!-- /.card-body -->
                         <div class="card-footer clearfix">
-                            <ul class="pagination pagination-sm m-0 float-right">
-                                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                            </ul>
+                            {{ $journals->links('admin.render.admin-pagination-links') }}
                         </div>
                     </div>
                     <!-- /.card -->
                 </div>
             </div>
             <!-- /.row -->
+            @livewire('admin.journals.import-component')
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
 </div>
+
+@push('extra-styles')
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css"
+        rel="stylesheet">
+@endpush
+
+@push('extra-scripts')
+    <!-- Select2 -->
+    <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+    <!-- InputMask -->
+    <script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
+    
+    <script>
+        $(function() {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+
+            $('#country_name').on('change', function(e) {
+                let data = $(this).val();
+                @this.set('country_id', data);
+            });
+
+            $('#category_name').on('change', function(e) {
+                let data = $(this).val();
+                @this.set('category_id', data);
+            });
+
+            Livewire.on('countryEvent', (data) => {
+                $('#country_name').val(data).trigger('change');
+            });
+
+            Livewire.on('typeEvent', (data) => {
+                $('#category_id').val(data).trigger('change');
+            });
+
+            $("#published_year").datepicker({
+                format: "yyyy",
+                viewMode: "years",
+                minViewMode: "years",
+                autoclose: true, //to close picker once year is selected
+                endDate: new Date()
+            });
+        });
+    </script>
+@endpush

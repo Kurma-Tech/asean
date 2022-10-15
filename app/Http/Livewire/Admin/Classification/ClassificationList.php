@@ -87,7 +87,6 @@ class ClassificationList extends Component
     // Store
     public function storeClassification()
     {
-        dd($this->seats);
         $this->validate(); // validate Patent form
 
         DB::beginTransaction();

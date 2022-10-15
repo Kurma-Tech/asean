@@ -108,7 +108,7 @@ class PatentListComponent extends Component
 
             DB::commit();
 
-            $this->dispatchBrowserEvent('success-message', ['message' => 'Patent Kind has been ' . $this->btnType . '.']);
+            $this->dispatchBrowserEvent('success-message', ['message' => 'Patent has been ' . $this->btnType . '.']);
 
             $this->reset('title', 'patent_id', 'country_id', 'kind_id', 'type_id', 'date', 'long', 'lat', 'hiddenId', 'btnType');
         } catch (\Throwable $th) {

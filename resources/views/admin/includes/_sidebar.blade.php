@@ -149,6 +149,23 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item {{ (request()->routeIs('admin.patentCategory*')) ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ (request()->routeIs('admin.patentCategory*')) ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-copy"></i>
+                                <p>
+                                    Patent Category
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route('admin.patentCategory.list')}}" class="nav-link {{ (request()->routeIs('admin.patentCategory.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-info"></i>
+                                        <p>View All</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="nav-item {{ (request()->routeIs('admin.typePatent*')) ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.typePatent*')) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-copy"></i>
@@ -177,6 +194,23 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{route('admin.kindPatent.list')}}" class="nav-link {{ (request()->routeIs('admin.kindPatent.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-info"></i>
+                                        <p>View All</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item {{ (request()->routeIs('admin.journalCategory*')) ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ (request()->routeIs('admin.journalCategory*')) ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-copy"></i>
+                                <p>
+                                    Journals Category
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route('admin.journalCategory.list')}}" class="nav-link {{ (request()->routeIs('admin.journalCategory.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-info"></i>
                                         <p>View All</p>
                                     </a>
