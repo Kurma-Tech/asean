@@ -4,7 +4,7 @@
             <a href="#" class="brand-link">
                 <img src="{{ asset('client/dist/img/asean-favicon.png') }}" alt="Asean Logo"
                     class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light" style="color: #8bc34a;">Aseana</span>
+                <span class="brand-text font-weight-light" style="color: #8bc34a;">Asean</span>
             </a>
 
             <ul class="navbar-nav ml-auto">
