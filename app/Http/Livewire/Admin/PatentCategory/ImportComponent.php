@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Livewire\Admin\Patent;
+namespace App\Http\Livewire\Admin\PatentCategory;
 
-use App\Imports\PatentImport;
+use App\Imports\PatentCategoryImport;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -24,27 +24,20 @@ class ImportComponent extends Component
         ];
     }
 
-    public function render()
-    {
-        return view('livewire.admin.patent.import-component');
-    }
-
-    public function patentImport()
+    public function dataImport()
     {
         $this->validate();
-
+        ini_set('memory_limit', -1);
         DB::beginTransaction();
-
         try {
-
-            Excel::import(new PatentImport, $this->file);
+            Excel::import(new PatentCategoryImport, $this->file);
 
             DB::commit();
             
             $this->reset();
-            $this->success = 'Patent Imported Successfully';
+            $this->success = 'Patent category data imported successfully';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
-            $this->emit('refreshPatentListComponent');
+            $this->emit('refreshJournalCategoryListComponent');
 
         } catch (\Throwable $th) {
             DB::rollback();
@@ -57,8 +50,8 @@ class ImportComponent extends Component
     public function downloadSample()
     {
         try{
-            return response()->download(storage_path("app\public\patent-import-sample.csv"));
-            $this->success = 'Patent Kind Sample Downloaded';
+            return response()->download(storage_path("app\public\patent-category-import-sample.csv"));
+            $this->success = 'Sample Downloaded';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
         } catch (\Throwable $th) {
             DB::rollback();
@@ -66,5 +59,10 @@ class ImportComponent extends Component
             // $this->error = $th->getMessage();
             $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
         }
+    }
+
+    public function render()
+    {
+        return view('livewire.admin.patent-category.import-component');
     }
 }

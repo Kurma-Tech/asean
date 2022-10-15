@@ -36,7 +36,7 @@ class PatentImport implements ToModel, WithHeadingRow, WithChunkReading, WithBat
             "country_id" => $country->id ?? NULL,
             "kind_id"    => $patentKind->id ?? NULL,
             "type_id"    => $patentType->id ?? NULL,
-            "date"       => $row['patent_id'],
+            "date"       => $row['date'],
             "long"       => $row['long'],
             "lat"        => $row['lat'],
         ]);

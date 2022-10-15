@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Livewire\Admin\Patent;
+namespace App\Http\Livewire\Admin\Journals;
 
-use App\Imports\PatentImport;
+use App\Imports\JournalImport;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -26,10 +26,10 @@ class ImportComponent extends Component
 
     public function render()
     {
-        return view('livewire.admin.patent.import-component');
+        return view('livewire.admin.journals.import-component');
     }
 
-    public function patentImport()
+    public function journalImport()
     {
         $this->validate();
 
@@ -37,14 +37,14 @@ class ImportComponent extends Component
 
         try {
 
-            Excel::import(new PatentImport, $this->file);
+            Excel::import(new JournalImport, $this->file);
 
             DB::commit();
             
             $this->reset();
-            $this->success = 'Patent Imported Successfully';
+            $this->success = 'Journal Imported Successfully';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
-            $this->emit('refreshPatentListComponent');
+            $this->emit('refreshJournalListComponent');
 
         } catch (\Throwable $th) {
             DB::rollback();
@@ -57,8 +57,8 @@ class ImportComponent extends Component
     public function downloadSample()
     {
         try{
-            return response()->download(storage_path("app\public\patent-import-sample.csv"));
-            $this->success = 'Patent Kind Sample Downloaded';
+            return response()->download(storage_path("app\public\journal-import-sample.csv"));
+            $this->success = 'Journal Sample Downloaded';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
         } catch (\Throwable $th) {
             DB::rollback();
