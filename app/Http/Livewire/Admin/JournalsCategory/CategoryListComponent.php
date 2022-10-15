@@ -27,7 +27,7 @@ class CategoryListComponent extends Component
     public $btnType = 'Create';
     public $error;
 
-    protected $listeners = ['refreshClassificationListComponent' => '$refresh'];
+    protected $listeners = ['refreshJournalCategoryListComponent' => '$refresh'];
 
     protected function rules()
     {

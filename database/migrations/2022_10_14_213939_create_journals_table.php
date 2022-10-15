@@ -23,13 +23,13 @@ return new class extends Migration
             $table->string('citition_no')->nullable();
             $table->string('eid_no')->nullable();
             $table->string('link')->nullable();
+            $table->string('source_title')->nullable();
             $table->bigInteger('country_id')->unsigned()->nullable();
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('CASCADE')->onUpdate('CASCADE');
             $table->bigInteger('category_id')->unsigned()->nullable();
             $table->foreign('category_id')->references('id')->on('journal_categories')->onDelete('CASCADE')->onUpdate('CASCADE');
             $table->string('published_year')->nullable();
             $table->json('keywords')->nullable();
-            $table->json('source_title')->nullable();
             $table->decimal('lat', 29, 20)->nullable();
             $table->decimal('long', 29, 20)->nullable();
             $table->timestamps();

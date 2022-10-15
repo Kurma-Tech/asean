@@ -36,7 +36,7 @@ class JournalsListComponent extends Component
            $issn_no,
            $citition_no,
            $eid_no,
-           $keywords = [],
+           $keywords,
            $link,
            $long,
            $lat;
@@ -58,7 +58,7 @@ class JournalsListComponent extends Component
             'issn_no'        => 'required',
             'citition_no'    => 'required',
             'eid_no'         => 'required',
-            'keywords'        => 'required',
+            'keywords'       => 'required',
             'link'           => 'required|url',
             'long'           => 'required',
             'lat'            => 'required',
@@ -116,7 +116,9 @@ class JournalsListComponent extends Component
             $journal->issn_no        = $this->issn_no;
             $journal->citition_no    = $this->citition_no;
             $journal->eid_no         = $this->eid_no;
-            $journal->keywords       = $this->keywords;
+            $keywordsToArray = explode(',', $this->keywords);
+            $keywordsJson = json_encode($keywordsToArray);
+            $journal->keywords       = $keywordsJson;
             $journal->link           = $this->link;
             $journal->long           = $this->long;
             $journal->lat            = $this->lat;
@@ -126,11 +128,20 @@ class JournalsListComponent extends Component
 
             $this->dispatchBrowserEvent('success-message', ['message' => 'Journal has been ' . $this->btnType . '.']);
 
-            $this->reset('title', 'published_year', 'country_id', 'category_id', 'abstract', 'author_name', 'publisher_name', 'long', 'lat', 'hiddenId', 'btnType', 'source_title', 'issn_no', 'citition_no', 'eid_no', 'keyword');
+            $this->reset(
+                'title', 'published_year', 
+                'country_id', 'category_id', 
+                'abstract', 'author_name', 
+                'publisher_name', 'long', 'lat', 
+                'source_title', 'issn_no', 
+                'citition_no', 'eid_no', 
+                'keywords', 'link',
+                'hiddenId', 'btnType'
+            );
         } catch (\Throwable $th) {
             DB::rollback();
-            $this->error = $th->getMessage();
-            // $this->error = 'Ops! looks like we had some problem';link
+            // $this->error = $th->getMessage();
+            $this->error = 'Ops! looks like we had some problem';
             $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);
         }
     }
@@ -150,14 +161,14 @@ class JournalsListComponent extends Component
         $this->issn_no        = $singleJournal->issn_no;
         $this->citition_no    = $singleJournal->citition_no;
         $this->eid_no         = $singleJournal->eid_no;
-        $this->keywords       = $singleJournal->keywords;
+        $this->keywords       = json_decode($singleJournal->keywords);
         $this->link           = $singleJournal->link;
         $this->long           = $singleJournal->long;
         $this->lat            = $singleJournal->lat;
         $this->btnType        = 'Update';
 
         $this->emit('countryEvent', $this->country_id);
-        $this->emit('categoryEvent', $this->kind_id);
+        $this->emit('categoryEvent', $this->category_id);
     }
 
     // softDelete
@@ -174,8 +185,8 @@ class JournalsListComponent extends Component
             }
         } catch (\Throwable $th) {
             DB::rollback();
-            // $this->error = 'Ops! looks like we had some problem';
-            $this->error = $th->getMessage();
+            $this->error = 'Ops! looks like we had some problem';
+            // $this->error = $th->getMessage();
             $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);
         }
     }
@@ -203,6 +214,15 @@ class JournalsListComponent extends Component
     // reset fields
     public function resetFields()
     {
-        $this->reset('title', 'published_year', 'country_id', 'category_id', 'abstract', 'author_name', 'publisher_name', 'long', 'lat', 'hiddenId', 'btnType', 'source_title', 'issn_no', 'citition_no', 'eid_no', 'keyword');
+        $this->reset(
+            'title', 'published_year', 
+            'country_id', 'category_id', 
+            'abstract', 'author_name', 
+            'publisher_name', 'long', 'lat', 
+            'source_title', 'issn_no', 
+            'citition_no', 'eid_no', 
+            'keywords', 'link',
+            'hiddenId', 'btnType'
+        );
     }
 }

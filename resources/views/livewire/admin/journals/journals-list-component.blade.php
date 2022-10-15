@@ -35,8 +35,15 @@
                                         <select class="form-control" style="width: 100%;" wire:model="orderBy">
                                             <option hidden>Choose Order By</option>
                                             <option value="id">By ID</option>
-                                            <option value="name">name</option>
-                                            <option value="isDeactivated">Activated</option>
+                                            <option value="title">name</option>
+                                            <option value="source_title">Source Title</option>
+                                            <option value="Abstract">Abstract</option>
+                                            <option value="author_name">Author Name</option>
+                                            <option value="publisher_name">Publisher Name</option>
+                                            <option value="issn_no">ISSN No</option>
+                                            <option value="citition_no">Citition No</option>
+                                            <option value="eid_no">EID No</option>
+                                            <option value="published_year">Published Year</option>
                                         </select>
                                     </div>
                                 </div>
@@ -275,34 +282,27 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>ID</th>
                                         <th>Title</th>
-                                        <th>Abstract</th>
-                                        <th>Author Name</th>
-                                        <th>Year</th>
-                                        <th>Lat-Lon</th>
+                                        <th>SourceTitle</th>
+                                        <th>AuthorName</th>
+                                        <th>PublishedYear</th>
+                                        <th>ISSN.No</th>
+                                        <th>Citition.No</th>
+                                        <th>EID.No</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($journals as $journal)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $journal->patent_id }}</td>
-                                            <td>{{ $journal->title }}</td>
-                                            <td>
-                                                B2
-                                            </td>
-                                            <td>
-                                                utility
-                                            </td>
-                                            <td>
-                                                {{ $journal->date }}
-                                            </td>
-                                            <td>
-                                                <span class="badge badge-info">{{ $journal->lat }}</span>
-                                                <span class="badge badge-primary">{{ $journal->long }}</span>
-                                            </td>
+                                        <tr data-widget="expandable-table" aria-expanded="false">
+                                            <td>{{ $loop->iteration ?? 'N/A' }}</td>
+                                            <td>{{ $journal->title ?? 'N/A' }}</td>
+                                            <td>{{ $journal->source_title ?? 'N/A' }}</td>
+                                            <td>{{ $journal->author_name ?? 'N/A' }}</td>
+                                            <td>{{ $journal->published_year ?? 'N/A' }}</td>
+                                            <td>{{ $journal->issn_no ?? 'N/A' }}</td>
+                                            <td>{{ $journal->citition_no ?? 'N/A' }}</td>
+                                            <td>{{ $journal->eid_no ?? 'N/A' }}</td>
                                             <td>
                                                 @if ($journal->deleted_at)
                                                     <a href="#" class="btn btn-xs bg-success"
@@ -322,6 +322,123 @@
                                                         <i class="far fa-trash-alt"></i>
                                                     </a>
                                                 @endif
+                                            </td>
+                                        </tr>
+                                        <tr class="expandable-body d-none">
+                                            <td colspan="8">
+                                                <ul class="products-list product-list-in-card pl-2 pr-2">
+                                                    <li class="item">
+                                                        <div class="product-info">
+                                                            <div class="product-title">
+                                                                Action
+                                                            </div>
+                                                            @if ($journal->deleted_at)
+                                                                <a href="#" class="btn btn-xs bg-success"
+                                                                    wire:click="restore({{ $journal->id }})"
+                                                                    data-toggle="tooltip" data-placement="top" title="Restore">
+                                                                    <i class="fas fa-trash-restore"></i>
+                                                                </a>
+                                                            @else
+                                                                <a href="javascript:void(0)" class="btn btn-xs bg-warning"
+                                                                    wire:click="editForm({{ $journal->id }})"
+                                                                    data-toggle="tooltip" data-placement="top" title="Edit">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <a href="#" class="btn btn-xs bg-danger"
+                                                                    wire:click="softDelete({{ $journal->id }})"
+                                                                    data-toggle="tooltip" data-placement="top" title="Delete">
+                                                                    <i class="far fa-trash-alt"></i>
+                                                                </a>
+                                                            @endif
+                                                        </div>
+                                                    </li>
+                                                    <li class="item">
+                                                        <div class="product-info">
+                                                            <div class="product-title">
+                                                                Abstract
+                                                            </div>
+                                                            <a href="javascript:void(0)" class="product-title">{{ $journal->abstract ?? 'N/A' }}</a>
+                                                        </div>
+                                                    </li>
+                                                    <li class="item">
+                                                        <div class="product-info">
+                                                            <div class="product-title">
+                                                                Publisher Name
+                                                            </div>
+                                                            <a href="javascript:void(0)" class="product-title">{{ $journal->publisher_name  ?? 'N/A'}}</a>
+                                                        </div>
+                                                    </li>
+                                                    <li class="item">
+                                                        <div class="product-info">
+                                                            <div class="product-title">
+                                                                Keywords
+                                                            </div>
+                                                            <a href="javascript:void(0)" class="product-title">
+                                                                @php $keywords = json_decode($journal->keywords) @endphp 
+                                                                @foreach ($keywords as $key)
+                                                                <span class="badge badge-secondary">{{$key}}</span>
+                                                                @endforeach
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                    <li class="item">
+                                                        <div class="product-info">
+                                                            <div class="product-title">
+                                                                Sourse Url
+                                                            </div>
+                                                            <a href="javascript:void(0)" class="product-title">{{$journal->link ?? 'N/A'}}</a>
+                                                        </div>
+                                                    </li>
+                                                    <li class="item">
+                                                        <div class="product-info">
+                                                            <div class="product-title">
+                                                                Category Name
+                                                            </div>
+                                                            <a href="javascript:void(0)" class="product-title">{{$journal->journalCategory->category ?? 'N/A'}}</a>
+                                                        </div>
+                                                    </li>
+                                                    <li class="item">
+                                                        <div class="product-info">
+                                                            <div class="product-title">
+                                                                Country Name
+                                                            </div>
+                                                            <a href="javascript:void(0)" class="product-title">{{$journal->country->name ?? 'N/A'}}</a>
+                                                        </div>
+                                                    </li>
+                                                    <li class="item">
+                                                        <div class="product-info">
+                                                            <div class="product-title">
+                                                                Geo Location
+                                                            </div>
+                                                            <a href="javascript:void(0)" class="product-title">{{$journal->long ?? 'N/A'}} (long), {{$journal->lat ?? 'N/A'}} (Lat)</a>
+                                                        </div>
+                                                    </li>
+                                                    <li class="item">
+                                                        <div class="product-info">
+                                                            <div class="product-title">
+                                                                Action
+                                                            </div>
+                                                            @if ($journal->deleted_at)
+                                                                <a href="#" class="btn btn-xs bg-success"
+                                                                    wire:click="restore({{ $journal->id }})"
+                                                                    data-toggle="tooltip" data-placement="top" title="Restore">
+                                                                    <i class="fas fa-trash-restore"></i>
+                                                                </a>
+                                                            @else
+                                                                <a href="javascript:void(0)" class="btn btn-xs bg-warning"
+                                                                    wire:click="editForm({{ $journal->id }})"
+                                                                    data-toggle="tooltip" data-placement="top" title="Edit">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <a href="#" class="btn btn-xs bg-danger"
+                                                                    wire:click="softDelete({{ $journal->id }})"
+                                                                    data-toggle="tooltip" data-placement="top" title="Delete">
+                                                                    <i class="far fa-trash-alt"></i>
+                                                                </a>
+                                                            @endif
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -382,8 +499,8 @@
                 $('#country_name').val(data).trigger('change');
             });
 
-            Livewire.on('typeEvent', (data) => {
-                $('#category_id').val(data).trigger('change');
+            Livewire.on('categoryEvent', (data) => {
+                $('#category_name').val(data).trigger('change');
             });
 
             $("#published_year").datepicker({

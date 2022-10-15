@@ -3,12 +3,12 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-info pt-2 pb-2">
-                    <h4 class="modal-title text-white" style="font-size: 15px;">Import Patent</h4>
+                    <h4 class="modal-title text-white" style="font-size: 15px;">Import Journals</h4>
                     <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form wire:submit.prevent='patentImport'>
+                <form wire:submit.prevent='journalImport'>
                     <div class="modal-body">
                         <div class="input-group">
                             <div class="custom-file">
@@ -21,25 +21,31 @@
                         <div class="mt-1 p-1"><strong class="text-red-400 strong-code">Colums accepted:</strong>
                             <code class="text-xs text-info-400">
                                 title,
-                                patent_id,
+                                published_year,
+                                abstract,
+                                author_name,
+                                acjs_code,
                                 country_short_code,
-                                kind_id,
-                                type_id,
-                                date,
+                                publisher_name,
+                                source_title,
+                                issn_no,
+                                citition_no,
+                                eid_no,
+                                keywords,
+                                link,
                                 long,
                                 lat
                             </code>
                         </div>
 
                         <blockquote class="blockquote">
-                            <p class="mb-0"><span class="text-red-400">Note*</span>: First check the <strong>ID</strong> of the field data <strong>i.e. 'Country', 'Patent Kind', & 'Patent Type'</strong> on your system & match them with your CSV file. If not exist try adding them first then upload csv file.</p>
                             <p class="mb-0"><span class="text-red-400">Note*</span>: accepted file types xlsx, xls, csv</p>
                             <footer class="blockquote-footer"><a href="#" wire:click="downloadSample">click here</a> <span>to download CSV format</span></footer>
                         </blockquote>
                     </div>
                     <div class="modal-footer justify-content-end pt-1 pb-1">
                         <button type="button" class="btn btn-sm btn-danger pt-1 pb-1" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-sm btn-info pt-1 pb-1">Patent Import</button>
+                        <button type="submit" class="btn btn-sm btn-info pt-1 pb-1">Journal Import</button>
                     </div>
                 </form>
             </div>

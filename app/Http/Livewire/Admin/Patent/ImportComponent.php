@@ -44,7 +44,7 @@ class ImportComponent extends Component
             $this->reset();
             $this->success = 'Patent Imported Successfully';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
-            $this->emit('refreshPatentKindListComponent');
+            $this->emit('refreshPatentListComponent');
 
         } catch (\Throwable $th) {
             DB::rollback();
@@ -57,7 +57,7 @@ class ImportComponent extends Component
     public function downloadSample()
     {
         try{
-            return response()->download(storage_path("app\public\patent-kind-import-sample.csv"));
+            return response()->download(storage_path("app\public\patent-import-sample.csv"));
             $this->success = 'Patent Kind Sample Downloaded';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
         } catch (\Throwable $th) {

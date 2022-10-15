@@ -3,7 +3,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-info pt-2 pb-2">
-                    <h4 class="modal-title text-white" style="font-size: 15px;">Import Classification</h4>
+                    <h4 class="modal-title text-white" style="font-size: 15px;">Import Journals Categories</h4>
                     <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -24,14 +24,14 @@
                         <div class="mt-1 p-1"><strong class="text-red-400" style="font-size: 12px;display:block;">Colums accepted:</strong>
                             <code class="text-xs text-info-400">
                                 parent_name,
-                                classifications,
-                                psic_code
+                                category,
+                                acjs_code
                             </code>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-end pt-1 pb-1">
                         <button type="button" class="btn btn-sm btn-danger pt-1 pb-1" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-sm btn-info pt-1 pb-1">Classification Import</button>
+                        <button type="submit" class="btn btn-sm btn-info pt-1 pb-1">Journals Categories Import</button>
                     </div>
                 </form>
             </div>
