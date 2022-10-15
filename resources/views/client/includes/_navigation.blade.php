@@ -43,7 +43,7 @@
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                    this.closest('form').submit();">
-                                    <i class="fas fa-user"></i> {{ GoogleTranslate::trans('Log Out', app()->getLocale()) }}
+                                    <i class="fas fa-sign-out-alt"></i> {{ GoogleTranslate::trans('Log Out', app()->getLocale()) }}
                                 </a>
                             </form>
                             <div class="dropdown-divider"></div>
