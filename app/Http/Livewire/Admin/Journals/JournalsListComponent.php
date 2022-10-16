@@ -42,7 +42,12 @@ class JournalsListComponent extends Component
            $lat;
     public $btnType = 'Create';
 
-    protected $listeners = ['refreshJournalListComponent' => '$refresh'];
+    protected $listeners = ['refreshJournalListComponent' => '$refresh', 'abstract_changed' => 'abstractMapping'];
+
+    public function abstractMapping($abstract)
+    { // abstract
+        $this->abstract = $abstract;
+    }
 
     protected function rules()
     {

@@ -15,15 +15,15 @@ return new class extends Migration
     {
         Schema::create('journals', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
+            $table->text('title')->nullable();
             $table->text('abstract')->nullable();
-            $table->string('author_name')->nullable();
-            $table->string('publisher_name')->nullable();
+            $table->text('author_name')->nullable();
+            $table->text('publisher_name')->nullable();
             $table->string('issn_no')->nullable();
             $table->string('citition_no')->nullable();
             $table->string('eid_no')->nullable();
             $table->string('link')->nullable();
-            $table->string('source_title')->nullable();
+            $table->text('source_title')->nullable();
             $table->bigInteger('country_id')->unsigned()->nullable();
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('CASCADE')->onUpdate('CASCADE');
             $table->bigInteger('category_id')->unsigned()->nullable();

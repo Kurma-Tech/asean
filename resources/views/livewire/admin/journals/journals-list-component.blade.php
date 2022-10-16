@@ -90,23 +90,12 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12">
+                                    <div class="col-md-12 col-sm-12">
                                         <div class="form-group">
                                             <label for="source_title">Source Title*</label>
                                             <input type="text" class="form-control" id="source_title"
                                                 placeholder="Enter Source Title" wire:model='source_title'>
                                             @error('source_title')
-                                                <div class="error">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 col-sm-12">
-                                        <div class="form-group">
-                                            <label for="abstract">Abstract*</label>
-                                            <input type="text" class="form-control" id="abstract"
-                                                placeholder="Enter Abstract" wire:model='abstract'>
-                                            @error('abstract')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -255,6 +244,16 @@
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12" wire:ignore>
+                                    <div class="form-group">
+                                        <label for="abstract">Abstract</label>
+                                        <textarea id="abstract" wire:model="abstract"></textarea>
+                                        @error('abstract')
+                                            <div class="error">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -466,6 +465,8 @@
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css"
         rel="stylesheet">
+    <!-- summernote -->
+    <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
 @endpush
 
 @push('extra-scripts')
@@ -474,6 +475,8 @@
     <!-- InputMask -->
     <script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
+    <!-- Summernote -->
+    <script src="{{ asset('plugins/summernote/summernote-bs4.min.js') }}"></script>
     
     <script>
         $(function() {
@@ -510,6 +513,25 @@
                 autoclose: true, //to close picker once year is selected
                 endDate: new Date()
             });
+
+            $('#abstract').summernote({
+                placeholder: 'Place some text here.',
+                tabsize: 2,
+                height: 300,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['view', ['fullscreen', 'codeview']] // 'help'
+                ],
+                callbacks: {
+                    onChange: function(e) {
+                        @this.set('abstract', e);
+                    }
+                }
+            })
         });
     </script>
 @endpush
