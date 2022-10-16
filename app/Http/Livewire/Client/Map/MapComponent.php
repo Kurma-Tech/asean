@@ -93,10 +93,22 @@ class MapComponent extends Component
 
         /* Search from searchKeywords */
         // Searching business on company_name and ngc_code fields
+        $tempOperation = "AND";
         if ($this->searchValue != "") {
-            foreach ($searchValues as $searchValue) {
+            foreach ($searchValues as $searchValue){
                 // $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
-                $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%');
+                if($searchValue == "AND"){
+
+                }else if($searchValue == "OR"){
+                    $tempOperation = "OR";
+                }else{
+                    if($tempOperation == "OR"){
+                        $businessQuery = $businessQuery->orWhere('company_name', 'LIKE', '%' . $searchValue . '%');
+                    }else{
+                        $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%');
+                    }
+                    $tempOperation = "AND";
+                }
             }
         }
 

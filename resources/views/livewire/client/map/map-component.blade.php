@@ -287,17 +287,17 @@
                         ['linear'],
                         ['heatmap-density'],
                         0,
-                        'rgba(255, 214, 0, 0)',
+                        'rgba(183, 28, 28, 0)',
                         0.2,
-                        'rgba(255, 214, 0, 0.5)',
+                        'rgba(183, 28, 28, 0.5)',
                         0.4,
-                        'rgba(255, 214, 0, 0.10)',
+                        'rgba(183, 28, 28, 0.20)',
                         0.6,
-                        'rgba(255, 214, 0, 0.15)',
+                        'rgba(183, 28, 28, 0.15)',
                         0.8,
-                        'rgba(255, 214, 0, 0.20)',
+                        'rgba(183, 28, 28, 0.20)',
                         1,
-                        'rgba(255, 214, 0, 0.25)'
+                        'rgba(183, 28, 28, 0.25)'
                     ],
                     // Adjust the heatmap radius by zoom level
                     'heatmap-radius': [
@@ -359,17 +359,17 @@
                         ['linear'],
                         ['heatmap-density'],
                         0,
-                        'rgba(183, 28, 28, 0)',
+                        'rgba(255, 214, 0, 0)',
                         0.2,
-                        'rgba(183, 28, 28, 0.5)',
+                        'rgba(255, 214, 0, 0.5)',
                         0.4,
-                        'rgba(183, 28, 28, 0.10)',
+                        'rgba(255, 214, 0, 0.10)',
                         0.6,
-                        'rgba(183, 28, 28, 0.15)',
+                        'rgba(255, 214, 0, 0.15)',
                         0.8,
-                        'rgba(183, 28, 28, 0.20)',
+                        'rgba(255, 214, 0, 0.20)',
                         1,
-                        'rgba(183, 28, 28, 0.25)'
+                        'rgba(255, 214, 0, 0.25)'
                     ],
                     // Adjust the heatmap radius by zoom level
                     'heatmap-radius': [
@@ -409,7 +409,7 @@
                             [15, 12]
                         ]
                     },
-                    'circle-color': "rgba(255, 214, 0, 0.85)",
+                    'circle-color': "rgba(183, 28, 28, 0.85)",
                     'circle-stroke-color': 'white',
                     'circle-stroke-width': 1
                 }
@@ -460,16 +460,28 @@
         }
 
         function addPatentPoint() {
+
+            map.loadImage(
+                '/light-bulb.png',
+                (error, image) => {
+                    if (error) throw error;
+                    map.addImage('custom-marker', image);
+                });
             map.addLayer({
                 'id': 'patent-point',
-                'type': 'circle',
+                // 'type': 'circle',
+                'type': 'symbol',
                 'source': 'patent',
                 'minzoom': 7,
-                'paint': {
-                    'circle-radius': 8,
-                    'circle-color': "rgba(183, 28, 28, 0.85)",
-                    'circle-stroke-color': 'white',
-                    'circle-stroke-width': 1
+                // 'paint': {
+                //     'circle-radius': 8,
+                //     'circle-color': "rgba(183, 28, 28, 0.85)",
+                //     'circle-stroke-color': 'white',
+                //     'circle-stroke-width': 1
+                // },
+                'layout': {
+                    'icon-image': 'custom-marker',
+                    'icon-size': 0.4
                 }
             }, );
 
@@ -533,8 +545,8 @@
                 map.addSource('businessHeatData', {
                     'type': 'geojson',
                     'data': {
-                        'type' : 'FeatureCollection',
-                        'features' : mergedData
+                        'type': 'FeatureCollection',
+                        'features': mergedData
                     }
                 });
                 addBusinessHeat('businessHeatData');
