@@ -13,22 +13,31 @@ class JournalImport implements ToModel, WithHeadingRow, WithChunkReading, WithBa
 {
     public function model(array $row)
     {
-        $category = DB::table('journal_categories')->select('id', 'acjs_code')->where('acjs_code', $row['acjs_code'])->first();
+        if (isset($row['acjs_code'])) {
+            $category = DB::table('journal_categories')
+                ->select('id')
+                ->where('acjs_code', $row['acjs_code'])
+                ->first();
+        } else {
+            $category = null;
+        }
         $country = DB::table('countries')->select('id', 'short_code')->where('short_code', $row['country_short_code'])->first();
+        $keywordsToArray = explode(',', $row['keywords']);
+        $keywordsJson = json_encode($keywordsToArray);
         
         return new Journal([
             "title"          => $row['title'],
             "published_year" => $row['published_year'],
             "abstract"       => $row['abstract'],
             "author_name"    => $row['author_name'],
-            "category_id"    => $category->id ?? NULL,
+            "category_id"    => ($category != null) ? $category->id : null,
             "country_id"     => $country->id ?? NULL,
             "publisher_name" => $row['publisher_name'],
             "source_title"   => $row['source_title'],
             "issn_no"        => $row['issn_no'],
             "citition_no"    => $row['citition_no'],
             "eid_no"         => $row['eid_no'],
-            "keywords"       => $row['keywords'],
+            "keywords"       => $keywordsJson,
             "link"           => $row['link'],
             "long"           => $row['long'],
             "lat"            => $row['lat']
