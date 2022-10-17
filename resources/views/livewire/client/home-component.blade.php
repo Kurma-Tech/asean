@@ -20,7 +20,7 @@
                                             <option value="all">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                             <option value="business">{{ GoogleTranslate::trans('Business', app()->getLocale()) }}</option>
                                             <option value="patent">{{ GoogleTranslate::trans('Patent', app()->getLocale()) }}</option>
-                                            <option value="journals">{{ GoogleTranslate::trans('Journals', app()->getLocale()) }}</option>
+                                            <option value="journal">{{ GoogleTranslate::trans('Journals', app()->getLocale()) }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -180,7 +180,7 @@
                 },
                 {
                     name: "Journals",
-                    data: []
+                    data: {!! collect($journalCountListByCountry)->toJson() !!}
                 }
             ],
             chart: {

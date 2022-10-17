@@ -209,6 +209,12 @@
                     if (error) throw error;
                     map.addImage('custom-marker', image);
                 });
+            map.loadImage(
+                '/bookmark.png',
+                (error, image) => {
+                    if (error) throw error;
+                    map.addImage('custom-marker-bookmark', image);
+                });
             // add3dLayer();
         }
         document.addEventListener("livewire:load", handleLivewireLoad, true);
@@ -400,6 +406,78 @@
             }, );
         }
 
+        function addJournalHeat() {
+            map.addLayer({
+                'id': 'journal-heat',
+                'type': 'heatmap',
+                'source': 'journal',
+                'maxzoom': 9,
+                'paint': {
+                    // Increase the heatmap weight based on frequency and property magnitude
+                    'heatmap-weight': [
+                        'interpolate',
+                        ['linear'],
+                        ['get', 'mag'],
+                        0,
+                        0,
+                        6,
+                        1
+                    ],
+                    // Increase the heatmap color weight weight by zoom level
+                    // heatmap-intensity is a multiplier on top of heatmap-weight
+                    'heatmap-intensity': [
+                        'interpolate',
+                        ['linear'],
+                        ['zoom'],
+                        0,
+                        1,
+                        9,
+                        3
+                    ],
+                    // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+                    // Begin color ramp at 0-stop with a 0-transparancy color
+                    // to create a blur-like effect.
+                    'heatmap-color': [
+                        'interpolate',
+                        ['linear'],
+                        ['heatmap-density'],
+                        0,
+                        'rgba(1, 87, 155, 0)',
+                        0.2,
+                        'rgba(1, 87, 155, 0.5)',
+                        0.4,
+                        'rgba(1, 87, 155, 0.10)',
+                        0.6,
+                        'rgba(1, 87, 155, 0.15)',
+                        0.8,
+                        'rgba(1, 87, 155, 0.20)',
+                        1,
+                        'rgba(1, 87, 155, 0.25)'
+                    ],
+                    // Adjust the heatmap radius by zoom level
+                    'heatmap-radius': [
+                        'interpolate',
+                        ['linear'],
+                        ['zoom'],
+                        0,
+                        2,
+                        9,
+                        20
+                    ],
+                    // Transition from heatmap to circle layer by zoom level
+                    'heatmap-opacity': [
+                        'interpolate',
+                        ['linear'],
+                        ['zoom'],
+                        7,
+                        1,
+                        9,
+                        0
+                    ]
+                }
+            }, );
+        }
+
         function addBusinessPoint(sourceId) {
             map.addLayer({
                 'id': 'business-point' + sourceId,
@@ -508,6 +586,65 @@
             });
         }
 
+        function addJournalPoint() {
+            map.addLayer({
+                'id': 'journal-point',
+                // 'type': 'circle',
+                'type': 'symbol',
+                'source': 'journal',
+                'minzoom': 7,
+                // 'paint': {
+                //     'circle-radius': 8,
+                //     'circle-color': "rgba(183, 28, 28, 0.85)",
+                //     'circle-stroke-color': 'white',
+                //     'circle-stroke-width': 1
+                // },
+                'layout': {
+                    'icon-image': 'custom-marker-bookmark',
+                    'icon-size': 0.5
+                }
+            }, );
+
+            map.on('click', 'journal-point', (event) => {
+                coordinates = event.features[0].geometry.coordinates;
+                @this.getJournalDataFromId(event.features[0].properties.id).then((journalData) => {
+                    const content =
+                        `<div class="card card-secondary popUp-content">
+                            <div class="card-header">
+                                <h3 class="card-title">${journalData.title}</h3>
+                            </div>
+
+                            <div class="card-body">
+                                <strong><i class="fas fa-book mr-1"></i>Author Name</strong>
+                                <p class="text-muted">${journalData.author_name}</p>
+
+                                <hr>
+
+                                <strong><i class="fas fa-book mr-1"></i>Publisher Name</strong>
+                                <p class="text-muted">${journalData.publisher_name}</p>
+
+                                <hr>
+
+                                <strong><i class="fas fa-book mr-1"></i>Published Year</strong>
+                                <p class="text-muted">${journalData.published_year}</p>
+                                <hr>
+                                <strong><i class="fas fa-book mr-1"></i>ISSN No</strong>
+                                <p class="text-muted">${journalData.issn_no}</p>
+                                <hr>
+                                <strong><i class="fas fa-book mr-1"></i>Citition No</strong>
+                                <p class="text-muted">${journalData.citition_no}</p>
+                                <hr>
+                            </div>
+                        </div>`
+                    new mapboxgl.Popup()
+                        .setLngLat(coordinates)
+                        .setHTML(content)
+                        .addTo(map);
+                });
+
+            });
+        }
+
         function handleLivewireLoad() {
             console.log("handleLivewireLoad");
             Livewire.emit('mapFirstLoad');
@@ -530,13 +667,19 @@
                 if (typeof mapLayer !== 'undefined') {
                     map.removeLayer('patent-heat').removeLayer('patent-point').removeSource('patent');
                 }
+
+                var mapLayer = map.getLayer('journal-heat');
+                if (typeof mapLayer !== 'undefined') {
+                    map.removeLayer('journal-heat').removeLayer('journal-point').removeSource('journal');
+                }
             } catch (error) {
 
             }
             businessChunkedData = data.geoJson.length;
             mergedDataBusiness = [...new Set([].concat(...data.geoJson.map((element) => element.features)))];
             mergedDataPatent = [...new Set([].concat(...data.patentJson.features))];
-            mergedData = mergedDataBusiness.concat(mergedDataPatent);
+            mergedDataJournal = [...new Set([].concat(...data.journalJson.features))];
+            mergedData = mergedDataBusiness.concat(mergedDataPatent).concat(mergedDataJournal);
             changePage(1);
 
             if (data.geoJson != null) {
@@ -564,6 +707,15 @@
                 });
                 addPatentHeat();
                 addPatentPoint();
+            }
+
+            if (data.journalJson != null) {
+                map.addSource('journal', {
+                    'type': 'geojson',
+                    'data': data.journalJson
+                });
+                addJournalHeat();
+                addJournalPoint();
             }
         });
 
