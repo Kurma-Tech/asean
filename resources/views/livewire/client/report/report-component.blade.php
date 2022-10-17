@@ -325,7 +325,7 @@
                     },
                     {
                         name: 'Journal',
-                        data: []
+                        data: data.journalCountByYears
                     }
                 ],
                 xaxis: {
