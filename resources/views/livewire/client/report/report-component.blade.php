@@ -265,7 +265,7 @@
                     // ],
                     categories: data.lineChartYears
                 },
-                colors: ['#ffd600', '#b71c1c', '#01579b'],
+                colors: ['#b71c1c', '#ffd600', '#01579b'],
                 tooltip: {
                     y: [{
                             title: {
@@ -325,7 +325,7 @@
                     },
                     {
                         name: 'Journal',
-                        data: []
+                        data: data.journalCountByYears
                     }
                 ],
                 xaxis: {
