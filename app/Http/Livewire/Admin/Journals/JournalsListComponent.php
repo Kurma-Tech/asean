@@ -55,7 +55,7 @@ class JournalsListComponent extends Component
             'title'          => 'required',
             'source_title'   => 'required',
             'country_id'     => 'required|integer',
-            'category_id'    => 'required|integer',
+            // 'category_id'    => 'required|integer',
             'abstract'       => 'required',
             'author_name'    => 'required',
             'publisher_name' => 'required',

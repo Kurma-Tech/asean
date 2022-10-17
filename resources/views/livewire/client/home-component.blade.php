@@ -20,7 +20,7 @@
                                             <option value="all">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                             <option value="business">{{ GoogleTranslate::trans('Business', app()->getLocale()) }}</option>
                                             <option value="patent">{{ GoogleTranslate::trans('Patent', app()->getLocale()) }}</option>
-                                            <option value="journals">{{ GoogleTranslate::trans('Journals', app()->getLocale()) }}</option>
+                                            <option value="journal">{{ GoogleTranslate::trans('Journals', app()->getLocale()) }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -48,7 +48,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                @if ($type != 'all')
+                                @if ($type == 'business')
                                     <div class="form-group">
                                         <label>{{ GoogleTranslate::trans('Sort by Classifications', app()->getLocale()) }}:</label>
                                         <div class="input-group input-group-sm">
@@ -180,7 +180,7 @@
                 },
                 {
                     name: "Journals",
-                    data: []
+                    data: {!! collect($journalCountListByCountry)->toJson() !!}
                 }
             ],
             chart: {
@@ -218,7 +218,7 @@
                 categories: {!! collect($countriesNameList)->toJson() !!},
                 colors: ['#fff']
             },
-            colors: ['#ffd600', '#b71c1c', '#01579b'],
+            colors: [ '#b71c1c', '#ffd600', '#01579b'],
             title: {
                 text: "{{ GoogleTranslate::trans('Total registered businesses, patents and journals till now.', app()->getLocale()) }}",
                 align: 'left',

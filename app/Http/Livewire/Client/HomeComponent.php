@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Client;
 
 use App\Models\Country;
 use App\Models\Business;
+use App\Models\Journal;
 use App\Models\Patent;
 use App\Models\IndustryClassification;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +28,7 @@ class HomeComponent extends Component
     private $filters_all = [];
     public $businessCountListByCountry = [];
     public $patentCountListByCountry = [];
+    public $journalCountListByCountry = [];
     public $countriesNameList = [];
     public $businessResults = [];
     public $patentResults = [];
@@ -46,6 +48,10 @@ class HomeComponent extends Component
         $patentCountByCountry = Patent::select('country_id')->pluck('country_id')->countBy();
         Country::select('id')->pluck('id')->each(function ($item, $key) use ($patentCountByCountry) {
             $this->patentCountListByCountry[$key] = $patentCountByCountry[$item] ?? 0;
+        });
+        $journalCountByCountry = Journal::select('country_id')->pluck('country_id')->countBy();
+        Country::select('id')->pluck('id')->each(function ($item, $key) use ($journalCountByCountry) {
+            $this->journalCountListByCountry[$key] = $journalCountByCountry[$item] ?? 0;
         });
         $this->countriesNameList = DB::table('countries')->select('name')->pluck('name');
     }

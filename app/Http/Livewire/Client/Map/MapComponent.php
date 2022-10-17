@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Client\Map;
 
 use App\Models\Business;
 use App\Models\Patent;
+use App\Models\Journal;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -23,11 +24,13 @@ class MapComponent extends Component
         $chartBusinessCount,
         $chartPatentsCount,
         $totalBusiness = 0,
-        $totalPatents = 0;
+        $totalPatents = 0,
+        $totalJournals = 0;
 
     protected
         $business = [],
-        $patents = [];
+        $patents = [],
+        $journals = [];
 
     protected $listeners = [
         'mapFirstLoad' => 'mapHandleMapFirstLoad',
@@ -87,24 +90,41 @@ class MapComponent extends Component
         /* Model Queries */
         DB::enableQueryLog();
         $businessQuery =  DB::table('businesses')->select('id', 'lat', 'long', 'year', 'company_name');
-        $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'date');
+        $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'date', 'title');
+        $journalQuery =  DB::table('journals')->select('id', 'lat', 'long', 'title');
         /* Model Queries End */
 
 
         /* Search from searchKeywords */
         // Searching business on company_name and ngc_code fields
+        $tempOperation = "AND";
         if ($this->searchValue != "") {
-            foreach ($searchValues as $searchValue) {
+            foreach ($searchValues as $searchValue){
                 // $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
-                $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%');
+                if($searchValue == "AND"){
+
+                }else if($searchValue == "OR"){
+                    $tempOperation = "OR";
+                }else{
+                    if($tempOperation == "OR"){
+                        $businessQuery = $businessQuery->orWhere('company_name', 'LIKE', '%' . $searchValue . '%');
+                        $patentQuery = $patentQuery->orWhere('title', 'LIKE', '%' . $searchValue . '%');
+                        $journalQuery = $journalQuery->orWhere('title', 'LIKE', '%' . $searchValue . '%');
+                    }else{
+                        $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%');
+                        $patentQuery = $patentQuery->where('title', 'LIKE', '%' . $searchValue . '%');
+                        $journalQuery = $journalQuery->where('title', 'LIKE', '%' . $searchValue . '%');
+                    }
+                    $tempOperation = "AND";
+                }
             }
         }
 
         // Searching patents on title and patent_id fields
-        foreach ($searchValues as $searchValue) {
+        // foreach ($searchValues as $searchValue) {
             // $patentQuery = $patentQuery->where('title', 'LIKE', '%' . $searchValue . '%')->orWhere('patent_id', 'LIKE', '%' . $searchValue . '%');
-            $patentQuery = $patentQuery->where('title', 'LIKE', '%' . $searchValue . '%');
-        }
+            
+        // }
         /* Search from searchKeywords End */
 
 
@@ -116,6 +136,8 @@ class MapComponent extends Component
             } else {
                 $businessQuery = $businessQuery->where('country_id', $country);
             }
+            $patentQuery = $patentQuery->where('country_id', $country);
+            $journalQuery = $journalQuery->where('country_id', $country);
         } else {
             if ($this->type == "business" && $this->classification != null) {
                 $businessQuery = $businessQuery->where('industry_classification_id', $this->classification);
@@ -125,10 +147,12 @@ class MapComponent extends Component
 
         $this->totalBusiness = $businessQuery->count();
         $this->totalPatents = $patentQuery->count();
+        $this->totalJournals = $journalQuery->count();
 
         /* Get Query Data */
         $this->business = $businessQuery->get()->chunk(5000);
         $this->patents = $patentQuery->get();
+        $this->journals = $journalQuery->get();
         /* Get Query Data End */
 
         $this->loadJsonData(); // Load data for map
@@ -153,7 +177,7 @@ class MapComponent extends Component
                         ],
                         'properties' => [
                             'locationId' => $business->id,
-                            'company_name' => $business->company_name
+                            'company_name' => $business->company_name,
                         ]
                     ];
                 }
@@ -179,6 +203,7 @@ class MapComponent extends Component
                     ],
                     'properties' => [
                         'id' => $patent->id,
+                        'company_name' => $patent->title,
                     ]
                 ];
             }
@@ -189,12 +214,41 @@ class MapComponent extends Component
             $patentJson = collect($patentGeoLocations)->toJson();
             $this->patentJson = $patentJson;
         } else {
-            $patentGeoLocations = null;
+            $patentGeoLocations = [
+                'type' => 'FeatureCollection',
+                'features' => []
+            ];
+        }
+
+        if ($this->type == "all" || $this->type == "journal") {
+            $journalData = [];
+            foreach ($this->journals as $journal) {
+                $journalData[] = [
+                    'type' => 'Feature',
+                    'geometry' => [
+                        'coordinates' => [$journal->long, $journal->lat],
+                        'type' => 'Point',
+                    ],
+                    'properties' => [
+                        'id' => $journal->id,
+                        'company_name' => $journal->title,
+                    ]
+                ];
+            }
+            $journalGeoLocations = [
+                'type' => 'FeatureCollection',
+                'features' => $journalData
+            ];
+        } else {
+            $journalGeoLocations = [
+                'type' => 'FeatureCollection',
+                'features' => []
+            ];
         }
 
         $this->emit("resultsUpdated", $this->totalBusiness + $this->totalPatents);
 
-        $this->emit("mapUpdated", ["geoJson" => $tempBusinessDataChunked, "patentJson" => $patentGeoLocations]);
+        $this->emit("mapUpdated", ["geoJson" => $tempBusinessDataChunked, "patentJson" => $patentGeoLocations, "journalJson" => $journalGeoLocations]);
     }
 
     public function getBusinessDataFromId($id)
@@ -220,6 +274,21 @@ class MapComponent extends Component
             'patent_id' => $patent->patent_id,
             'title' => $patent->title ?? 'No Data',
             'date_registerd' => $patent->date ?? 'No Data'
+        ];
+    }
+
+    public function getJournalDataFromId($id)
+    {
+        $journal = Journal::find($id);
+        return [
+            'id' => $journal->id,
+            'title' => $journal->title ?? 'No Data',
+            'abstract' => $journal->abstract ?? 'No Data',
+            'author_name' => $journal->author_name ?? 'No Data',
+            'publisher_name' => $journal->publisher_name ?? 'No Data',
+            'issn_no' => $journal->issn_no ?? 'No Data',
+            'published_year' => $journal->published_year ?? 'No Data',
+            'citition_no' => $journal->citition_no ?? 'No Data',
         ];
     }
 

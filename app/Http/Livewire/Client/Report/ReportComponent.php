@@ -13,7 +13,7 @@ class ReportComponent extends Component
         $chartBusinessCount,
         $chartPatentsCount,
         $country,
-        $classification, 
+        $classification,
         $isFirstLoad = true;
 
     protected
@@ -81,28 +81,43 @@ class ReportComponent extends Component
         }
 
         $this->chartPatentsCount = collect($patents)->pluck('date')->countBy(function ($date) {
-            return substr(strchr($date, "/", 0), 4);
+            $tempDate = substr(strchr($date, "/", 0), 4);
+            if(strlen($tempDate) == 4){
+                return $tempDate;
+            }else{
+                return false;
+            }
         }); // Count of filtered patents with year extraction
 
         /* Default data for Charts End*/
-        $lineChartYears = $this->chartBusinessCount->keys()->concat($this->chartPatentsCount->keys())->unique();
+        $lineChartYears = array_unique($this->chartBusinessCount->keys()->concat($this->chartPatentsCount->keys())->toArray());
+        sort($lineChartYears);
+        $lineChartYears = array_values(array_diff($lineChartYears,[0]));
         // dd($lineChartYears);
         $tempChartPatentsCount = [];
         for ($i = 0; $i < count($lineChartYears); $i++) {
-            if ($this->chartPatentsCount->has($lineChartYears[$i])) {
-                $tempChartPatentsCount[$lineChartYears[$i]] = $this->chartPatentsCount[$lineChartYears[$i]];
-            } else {
-                $tempChartPatentsCount[$lineChartYears[$i]] = null;
+            try {
+                if ($this->chartPatentsCount->has($lineChartYears[$i])) {
+                    $tempChartPatentsCount[$lineChartYears[$i]] = $this->chartPatentsCount[$lineChartYears[$i]];
+                } else {
+                    // $tempChartPatentsCount[$lineChartYears[$i]] = null;
+                }
+            } catch (\Throwable $th) {
+                //throw $th;
             }
         }
 
         $tempChartBusinessCount = [];
         for ($i = 0; $i < count($lineChartYears); $i++) {
-            if ($this->chartBusinessCount->has($lineChartYears[$i])) {
-                $tempChartBusinessCount[$lineChartYears[$i]] = $this->chartBusinessCount[$lineChartYears[$i]];
-            } else if ($lineChartYears[$i] == "" || $lineChartYears[$i] == null) {
-            } else {
-                $tempChartBusinessCount[$lineChartYears[$i]] = null;
+            try {
+                if ($this->chartBusinessCount->has($lineChartYears[$i])) {
+                    $tempChartBusinessCount[$lineChartYears[$i]] = $this->chartBusinessCount[$lineChartYears[$i]];
+                } else if ($lineChartYears[$i] == "" || $lineChartYears[$i] == null) {
+                } else {
+                    // $tempChartBusinessCount[$lineChartYears[$i]] = null;
+                }
+            } catch (\Throwable $th) {
+                //throw $th;
             }
         }
 
@@ -111,28 +126,27 @@ class ReportComponent extends Component
 
         $this->tempForcastData = $this->predict(collect($tempChartBusinessCount)->keys(), collect($tempChartBusinessCount)->values());
 
-        if ($this->isFirstLoad){
+        if ($this->isFirstLoad) {
             $this->emit("reportsFirstLoad", [
                 "businessCountByYears" => collect($tempChartBusinessCount)->values(),
                 "patentCountByYears" => collect($tempChartPatentsCount)->values(),
-                "lineChartYears" => collect($lineChartYears->sort())->values(),
+                "lineChartYears" => collect(($lineChartYears))->values(),
                 "forecastedFrom" =>  $this->tempForcastData["forecastedDates"]->count() - collect($tempChartBusinessCount)->keys()->count(),
                 "forcastDates" => $this->tempForcastData["forecastedDates"],
                 "forcastData" => $this->tempForcastData["forecastedData"],
                 "emergingBusiness" => $emergingBusinessData
             ]);
             $this->isFirstLoad = false;
-        }else{
+        } else {
             $this->emit("reportsUpdated", [
                 "businessCountByYears" => collect($tempChartBusinessCount)->values(),
                 "patentCountByYears" => collect($tempChartPatentsCount)->values(),
-                "lineChartYears" => collect($lineChartYears->sort())->values(),
+                "lineChartYears" => collect($lineChartYears)->values(),
                 "forecastedFrom" =>  $this->tempForcastData["forecastedDates"]->count() - collect($tempChartBusinessCount)->keys()->count(),
                 "forcastDates" => $this->tempForcastData["forecastedDates"],
                 "forcastData" => $this->tempForcastData["forecastedData"]
             ]);
         }
-
     }
 
     public function predict($forcastDates, $forcastData)
@@ -145,7 +159,7 @@ class ReportComponent extends Component
         $forecastedDates = $forcastDates;
         $forecastedData = $forcastData;
 
-        if ($forcastDates->count() != 0 && $nL != 0) {
+        if ($forcastDates->count() != 0 && $nL != 0 && $pL != 0) {
             $r = pow($pL / $pF, 1 / $nL) - 1;
 
             for ($i = 0; $i < 5; $i++) {
