@@ -158,7 +158,7 @@ class ReportComponent extends Component
         $forecastedDates = $forcastDates;
         $forecastedData = $forcastData;
 
-        if ($forcastDates->count() != 0 && $nL != 0) {
+        if ($forcastDates->count() != 0 && $nL != 0 && $pL != 0) {
             $r = pow($pL / $pF, 1 / $nL) - 1;
 
             for ($i = 0; $i < 5; $i++) {
