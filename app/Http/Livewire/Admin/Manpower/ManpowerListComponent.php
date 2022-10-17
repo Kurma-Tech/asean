@@ -30,7 +30,7 @@ class ManpowerListComponent extends Component
     protected function rules()
     {
         return [
-            'title' => 'required|min:2',
+            'title' => 'required',
             'description' => 'nullable|min:10',
             'skilled' => 'required|in:PROFESSIONAL,TRADESMAN',
             'status' => 'boolean'

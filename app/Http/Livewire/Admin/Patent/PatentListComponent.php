@@ -42,7 +42,7 @@ class PatentListComponent extends Component
     protected function rules()
     {
         return [
-            'title'      => 'required|min:3',
+            'title'      => 'required',
             'patent_id'  => 'required',
             'country_id' => 'required|integer',
             'kind_id'    => 'required|integer',
