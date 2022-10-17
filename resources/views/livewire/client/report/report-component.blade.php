@@ -131,7 +131,7 @@
                     <div class="col-md-12 col-sm-12" wire:ignore>
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">{{ GoogleTranslate::trans('Top Emerging Business', app()->getLocale()) }}</h3>
+                                <h3 class="card-title">{{ GoogleTranslate::trans('Popular Business', app()->getLocale()) }}</h3>
                             </div>
                             <div class="card-body">
                                 <table class="table table-bordered table-hover" id="business-emerging">
