@@ -34,8 +34,8 @@ class PatentListComponent extends Component
     protected function rules()
     {
         return [
-            'type' => 'required|min:1',
-            'slug' => 'required|min:1|unique:patent_types,slug',
+            'type' => 'required',
+            'slug' => 'required|unique:patent_types,slug',
         ];
     }
 

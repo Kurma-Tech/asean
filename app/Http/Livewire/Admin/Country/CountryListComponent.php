@@ -29,8 +29,8 @@ class CountryListComponent extends Component
     {
         return [
             'name'       => 'required|min:3',
-            'c_code'     => 'nullable|min:3|max:10',
-            'short_code' => 'nullable|min:3|max:10',
+            'c_code'     => 'nullable|min:1|max:10',
+            'short_code' => 'nullable|min:2|max:10',
             'status'     => 'boolean',
         ];
     }
