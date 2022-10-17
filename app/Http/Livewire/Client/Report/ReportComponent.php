@@ -90,8 +90,8 @@ class ReportComponent extends Component
         }); // Count of filtered patents with year extraction
 
         /* Default data for Charts End*/
-        $lineChartYears = $this->chartBusinessCount->keys()->concat($this->chartPatentsCount->keys())->unique();
-        dd($lineChartYears);
+        $lineChartYears = array_unique($this->chartBusinessCount->keys()->concat($this->chartPatentsCount->keys())->toArray());
+        // dd($lineChartYears);
         $tempChartPatentsCount = [];
         for ($i = 0; $i < count($lineChartYears); $i++) {
             try {
