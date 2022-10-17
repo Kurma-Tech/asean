@@ -91,6 +91,7 @@ class ReportComponent extends Component
 
         /* Default data for Charts End*/
         $lineChartYears = array_unique($this->chartBusinessCount->keys()->concat($this->chartPatentsCount->keys())->toArray());
+        sort($lineChartYears);
         // dd($lineChartYears);
         $tempChartPatentsCount = [];
         for ($i = 0; $i < count($lineChartYears); $i++) {
@@ -128,7 +129,7 @@ class ReportComponent extends Component
             $this->emit("reportsFirstLoad", [
                 "businessCountByYears" => collect($tempChartBusinessCount)->values(),
                 "patentCountByYears" => collect($tempChartPatentsCount)->values(),
-                "lineChartYears" => collect(sort($lineChartYears))->values(),
+                "lineChartYears" => collect(($lineChartYears))->values(),
                 "forecastedFrom" =>  $this->tempForcastData["forecastedDates"]->count() - collect($tempChartBusinessCount)->keys()->count(),
                 "forcastDates" => $this->tempForcastData["forecastedDates"],
                 "forcastData" => $this->tempForcastData["forecastedData"],
@@ -139,7 +140,7 @@ class ReportComponent extends Component
             $this->emit("reportsUpdated", [
                 "businessCountByYears" => collect($tempChartBusinessCount)->values(),
                 "patentCountByYears" => collect($tempChartPatentsCount)->values(),
-                "lineChartYears" => collect(sort($lineChartYears))->values(),
+                "lineChartYears" => collect($lineChartYears)->values(),
                 "forecastedFrom" =>  $this->tempForcastData["forecastedDates"]->count() - collect($tempChartBusinessCount)->keys()->count(),
                 "forcastDates" => $this->tempForcastData["forecastedDates"],
                 "forcastData" => $this->tempForcastData["forecastedData"]
