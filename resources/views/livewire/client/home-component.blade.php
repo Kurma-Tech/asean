@@ -218,7 +218,7 @@
                 categories: {!! collect($countriesNameList)->toJson() !!},
                 colors: ['#fff']
             },
-            colors: ['#ffd600', '#b71c1c', '#01579b'],
+            colors: [ '#b71c1c', '#ffd600', '#01579b'],
             title: {
                 text: "{{ GoogleTranslate::trans('Total registered businesses, patents and journals till now.', app()->getLocale()) }}",
                 align: 'left',
