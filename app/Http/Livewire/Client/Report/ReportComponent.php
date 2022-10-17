@@ -81,7 +81,12 @@ class ReportComponent extends Component
         }
 
         $this->chartPatentsCount = collect($patents)->pluck('date')->countBy(function ($date) {
-            return substr(strchr($date, "/", 0), 4);
+            $tempDate = substr(strchr($date, "/", 0), 4);
+            if(strlen($tempDate) == 4){
+                return $tempDate;
+            }else{
+                return false;
+            }
         }); // Count of filtered patents with year extraction
 
         /* Default data for Charts End*/
