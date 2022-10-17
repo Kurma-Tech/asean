@@ -12,13 +12,15 @@ class ReportComponent extends Component
     public
         $chartBusinessCount,
         $chartPatentsCount,
+        $chartJournalsCount,
         $country,
         $classification,
         $isFirstLoad = true;
 
     protected
         $business = [],
-        $patents = [];
+        $patents = [],
+        $journals = [];
 
     protected $listeners = [
         'reportFirstLoad' => 'reportHandleFirstLoad',
@@ -46,6 +48,7 @@ class ReportComponent extends Component
         ini_set('memory_limit', '-1');
         $businessQuery =  DB::table('businesses')->select('id', 'year', 'date_registered', 'industry_classification_id');
         $patentQuery =  DB::table('patents')->select('id', 'date');
+        $journalQuery =  DB::table('journals')->select('id', 'published_year');
 
 
         if ($this->country != null) {
@@ -54,6 +57,8 @@ class ReportComponent extends Component
             } else {
                 $businessQuery = $businessQuery->where('country_id', $this->country);
             }
+            $patentQuery = $patentQuery->where('country_id', $this->country);
+            $journalQuery = $journalQuery->where('country_id', $this->country);
         } else {
             if ($this->classification != null) {
                 $businessQuery = $businessQuery->where('industry_classification_id', $this->classification);
@@ -63,6 +68,7 @@ class ReportComponent extends Component
         /* Get Query Data */
         $business = $businessQuery->get();
         $patents = $patentQuery->get();
+        $journals = $journalQuery->get();
         /* Get Query Data End */
 
         /* Default data for Charts */
@@ -89,6 +95,8 @@ class ReportComponent extends Component
             }
         }); // Count of filtered patents with year extraction
 
+        $this->chartJournalsCount = collect($business)->pluck('published_year')->countBy();
+
         /* Default data for Charts End*/
         $lineChartYears = array_unique($this->chartBusinessCount->keys()->concat($this->chartPatentsCount->keys())->toArray());
         sort($lineChartYears);
@@ -99,6 +107,19 @@ class ReportComponent extends Component
             try {
                 if ($this->chartPatentsCount->has($lineChartYears[$i])) {
                     $tempChartPatentsCount[$lineChartYears[$i]] = $this->chartPatentsCount[$lineChartYears[$i]];
+                } else {
+                    // $tempChartPatentsCount[$lineChartYears[$i]] = null;
+                }
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+        }
+
+        $tempChartJournalsCount = [];
+        for ($i = 0; $i < count($lineChartYears); $i++) {
+            try {
+                if ($this->chartJournalsCount->has($lineChartYears[$i])) {
+                    $tempChartJournalsCount[$lineChartYears[$i]] = $this->chartJournalsCount[$lineChartYears[$i]];
                 } else {
                     // $tempChartPatentsCount[$lineChartYears[$i]] = null;
                 }
@@ -130,6 +151,7 @@ class ReportComponent extends Component
             $this->emit("reportsFirstLoad", [
                 "businessCountByYears" => collect($tempChartBusinessCount)->values(),
                 "patentCountByYears" => collect($tempChartPatentsCount)->values(),
+                "journalCountByYears" => collect($tempChartJournalsCount)->values(),
                 "lineChartYears" => collect(($lineChartYears))->values(),
                 "forecastedFrom" =>  $this->tempForcastData["forecastedDates"]->count() - collect($tempChartBusinessCount)->keys()->count(),
                 "forcastDates" => $this->tempForcastData["forecastedDates"],
@@ -141,6 +163,7 @@ class ReportComponent extends Component
             $this->emit("reportsUpdated", [
                 "businessCountByYears" => collect($tempChartBusinessCount)->values(),
                 "patentCountByYears" => collect($tempChartPatentsCount)->values(),
+                "journalCountByYears" => collect($tempChartJournalsCount)->values(),
                 "lineChartYears" => collect($lineChartYears)->values(),
                 "forecastedFrom" =>  $this->tempForcastData["forecastedDates"]->count() - collect($tempChartBusinessCount)->keys()->count(),
                 "forcastDates" => $this->tempForcastData["forecastedDates"],
