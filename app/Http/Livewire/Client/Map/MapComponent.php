@@ -87,16 +87,28 @@ class MapComponent extends Component
         /* Model Queries */
         DB::enableQueryLog();
         $businessQuery =  DB::table('businesses')->select('id', 'lat', 'long', 'year', 'company_name');
-        $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'date');
+        $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'date', 'title');
         /* Model Queries End */
 
 
         /* Search from searchKeywords */
         // Searching business on company_name and ngc_code fields
+        $tempOperation = "AND";
         if ($this->searchValue != "") {
-            foreach ($searchValues as $searchValue) {
+            foreach ($searchValues as $searchValue){
                 // $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
-                $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%');
+                if($searchValue == "AND"){
+
+                }else if($searchValue == "OR"){
+                    $tempOperation = "OR";
+                }else{
+                    if($tempOperation == "OR"){
+                        $businessQuery = $businessQuery->orWhere('company_name', 'LIKE', '%' . $searchValue . '%');
+                    }else{
+                        $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%');
+                    }
+                    $tempOperation = "AND";
+                }
             }
         }
 
@@ -116,6 +128,7 @@ class MapComponent extends Component
             } else {
                 $businessQuery = $businessQuery->where('country_id', $country);
             }
+            $patentQuery = $patentQuery->where('country_id', $country);
         } else {
             if ($this->type == "business" && $this->classification != null) {
                 $businessQuery = $businessQuery->where('industry_classification_id', $this->classification);
@@ -153,7 +166,8 @@ class MapComponent extends Component
                         ],
                         'properties' => [
                             'locationId' => $business->id,
-                            'company_name' => $business->company_name
+                            'company_name' => $business->company_name,
+                            'isBusiness' => true
                         ]
                     ];
                 }
@@ -179,6 +193,8 @@ class MapComponent extends Component
                     ],
                     'properties' => [
                         'id' => $patent->id,
+                        'company_name' => $patent->title,
+                        'isBusiness' => false
                     ]
                 ];
             }
@@ -189,7 +205,10 @@ class MapComponent extends Component
             $patentJson = collect($patentGeoLocations)->toJson();
             $this->patentJson = $patentJson;
         } else {
-            $patentGeoLocations = null;
+            $patentGeoLocations = [
+                'type' => 'FeatureCollection',
+                'features' => []
+            ];
         }
 
         $this->emit("resultsUpdated", $this->totalBusiness + $this->totalPatents);
