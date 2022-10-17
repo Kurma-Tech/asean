@@ -102,11 +102,15 @@ class ReportComponent extends Component
 
         $tempChartBusinessCount = [];
         for ($i = 0; $i < count($lineChartYears); $i++) {
-            if ($this->chartBusinessCount->has($lineChartYears[$i])) {
-                $tempChartBusinessCount[$lineChartYears[$i]] = $this->chartBusinessCount[$lineChartYears[$i]];
-            } else if ($lineChartYears[$i] == "" || $lineChartYears[$i] == null) {
-            } else {
-                $tempChartBusinessCount[$lineChartYears[$i]] = null;
+            try {
+                if ($this->chartBusinessCount->has($lineChartYears[$i])) {
+                    $tempChartBusinessCount[$lineChartYears[$i]] = $this->chartBusinessCount[$lineChartYears[$i]];
+                } else if ($lineChartYears[$i] == "" || $lineChartYears[$i] == null) {
+                } else {
+                    $tempChartBusinessCount[$lineChartYears[$i]] = null;
+                }
+            } catch (\Throwable $th) {
+                //throw $th;
             }
         }
 
