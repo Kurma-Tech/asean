@@ -128,7 +128,7 @@ class ReportComponent extends Component
             $this->emit("reportsFirstLoad", [
                 "businessCountByYears" => collect($tempChartBusinessCount)->values(),
                 "patentCountByYears" => collect($tempChartPatentsCount)->values(),
-                "lineChartYears" => collect($lineChartYears->sort())->values(),
+                "lineChartYears" => collect(sort($lineChartYears))->values(),
                 "forecastedFrom" =>  $this->tempForcastData["forecastedDates"]->count() - collect($tempChartBusinessCount)->keys()->count(),
                 "forcastDates" => $this->tempForcastData["forecastedDates"],
                 "forcastData" => $this->tempForcastData["forecastedData"],
@@ -139,7 +139,7 @@ class ReportComponent extends Component
             $this->emit("reportsUpdated", [
                 "businessCountByYears" => collect($tempChartBusinessCount)->values(),
                 "patentCountByYears" => collect($tempChartPatentsCount)->values(),
-                "lineChartYears" => collect($lineChartYears->sort())->values(),
+                "lineChartYears" => collect(sort($lineChartYears))->values(),
                 "forecastedFrom" =>  $this->tempForcastData["forecastedDates"]->count() - collect($tempChartBusinessCount)->keys()->count(),
                 "forcastDates" => $this->tempForcastData["forecastedDates"],
                 "forcastData" => $this->tempForcastData["forecastedData"]
