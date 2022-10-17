@@ -124,8 +124,6 @@
             if (page > numPages()) page = numPages();
 
             listing_table.innerHTML = "";
-
-            console.log(mergedData);
             if (mergedData.length > 0) {
                 for (var i = (page - 1) * records_per_page; i < (page * records_per_page) && i < mergedData.length; i++) {
                     listing_table.innerHTML +=
@@ -134,12 +132,12 @@
                         <div class="card-header" style="border-radius: 0;">
                             <h4 class="card-title w-100">
                                 <a class="d-block w-100" data-toggle="collapse"
-                                    href="#business-${mergedData[i].properties.locationId}">
+                                    href="#business-${(mergedData[i].properties.locationId !== undefined) ? mergedData[i].properties.locationId : ("patent-" + mergedData[i].properties.id)}">
                                     ${mergedData[i].properties.company_name}
                                 </a>
                             </h4>
                         </div>
-                        <div id="business-${mergedData[i].properties.locationId}"
+                        <div id="business-${(mergedData[i].properties.locationId !== undefined) ? mergedData[i].properties.locationId : ("patent-" + mergedData[i].properties.id)}"
                             class="collapse"
                             data-parent="#accordion" wire:ignore.self>
                             <div class="card-body">
@@ -204,6 +202,13 @@
                     [141.79211516906793, 27.60302090835848]
                 ] // Set the map's geographical boundaries.
             });
+
+            map.loadImage(
+                '/light-bulb.png',
+                (error, image) => {
+                    if (error) throw error;
+                    map.addImage('custom-marker', image);
+                });
             // add3dLayer();
         }
         document.addEventListener("livewire:load", handleLivewireLoad, true);
@@ -460,13 +465,6 @@
         }
 
         function addPatentPoint() {
-
-            map.loadImage(
-                '/light-bulb.png',
-                (error, image) => {
-                    if (error) throw error;
-                    map.addImage('custom-marker', image);
-                });
             map.addLayer({
                 'id': 'patent-point',
                 // 'type': 'circle',
@@ -515,7 +513,6 @@
             Livewire.emit('mapFirstLoad');
         }
 
-
         Livewire.on('mapUpdated', (data) => {
             try {
                 var mapLayer = map.getLayer('business-heat');
@@ -523,7 +520,6 @@
                     map.removeLayer('business-heat').removeSource('businessHeatData');
                 }
                 for (let index = 0; index < businessChunkedData; index++) {
-                    console.log(index);
                     var mapLayerTemp = map.getLayer('business-point' + 'business' + index);
                     if (typeof mapLayerTemp !== 'undefined') {
                         map.removeLayer('business-point' + 'business' + index).removeSource('business' + index);
@@ -538,7 +534,9 @@
 
             }
             businessChunkedData = data.geoJson.length;
-            mergedData = [...new Set([].concat(...data.geoJson.map((element) => element.features)))];
+            mergedDataBusiness = [...new Set([].concat(...data.geoJson.map((element) => element.features)))];
+            mergedDataPatent = [...new Set([].concat(...data.patentJson.features))];
+            mergedData = mergedDataBusiness.concat(mergedDataPatent);
             changePage(1);
 
             if (data.geoJson != null) {
@@ -546,7 +544,7 @@
                     'type': 'geojson',
                     'data': {
                         'type': 'FeatureCollection',
-                        'features': mergedData
+                        'features': mergedDataBusiness
                     }
                 });
                 addBusinessHeat('businessHeatData');
