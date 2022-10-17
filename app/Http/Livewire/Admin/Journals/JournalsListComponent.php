@@ -52,7 +52,7 @@ class JournalsListComponent extends Component
     protected function rules()
     {
         return [
-            'title'          => 'required|min:3',
+            'title'          => 'required',
             'source_title'   => 'required',
             'country_id'     => 'required|integer',
             // 'category_id'    => 'required|integer',
