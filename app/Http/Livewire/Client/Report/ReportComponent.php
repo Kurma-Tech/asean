@@ -108,7 +108,7 @@ class ReportComponent extends Component
                 if ($this->chartPatentsCount->has($lineChartYears[$i])) {
                     $tempChartPatentsCount[$lineChartYears[$i]] = $this->chartPatentsCount[$lineChartYears[$i]];
                 } else {
-                    // $tempChartPatentsCount[$lineChartYears[$i]] = null;
+                    $tempChartPatentsCount[$lineChartYears[$i]] = null;
                 }
             } catch (\Throwable $th) {
                 //throw $th;
@@ -121,7 +121,7 @@ class ReportComponent extends Component
                 if ($this->chartJournalsCount->has($lineChartYears[$i])) {
                     $tempChartJournalsCount[$lineChartYears[$i]] = $this->chartJournalsCount[$lineChartYears[$i]];
                 } else {
-                    // $tempChartPatentsCount[$lineChartYears[$i]] = null;
+                    $tempChartJournalsCount[$lineChartYears[$i]] = null;
                 }
             } catch (\Throwable $th) {
                 //throw $th;
@@ -135,7 +135,7 @@ class ReportComponent extends Component
                     $tempChartBusinessCount[$lineChartYears[$i]] = $this->chartBusinessCount[$lineChartYears[$i]];
                 } else if ($lineChartYears[$i] == "" || $lineChartYears[$i] == null) {
                 } else {
-                    // $tempChartBusinessCount[$lineChartYears[$i]] = null;
+                    $tempChartBusinessCount[$lineChartYears[$i]] = null;
                 }
             } catch (\Throwable $th) {
                 //throw $th;
