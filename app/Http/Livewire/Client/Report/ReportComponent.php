@@ -91,7 +91,7 @@ class ReportComponent extends Component
 
         /* Default data for Charts End*/
         $lineChartYears = $this->chartBusinessCount->keys()->concat($this->chartPatentsCount->keys())->unique();
-        // dd($lineChartYears);
+        dd($lineChartYears);
         $tempChartPatentsCount = [];
         for ($i = 0; $i < count($lineChartYears); $i++) {
             try {
