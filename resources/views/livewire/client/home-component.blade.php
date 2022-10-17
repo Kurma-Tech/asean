@@ -48,7 +48,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                @if ($type != 'all')
+                                @if ($type == 'business')
                                     <div class="form-group">
                                         <label>{{ GoogleTranslate::trans('Sort by Classifications', app()->getLocale()) }}:</label>
                                         <div class="input-group input-group-sm">

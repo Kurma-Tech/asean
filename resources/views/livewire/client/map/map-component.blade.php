@@ -124,8 +124,6 @@
             if (page > numPages()) page = numPages();
 
             listing_table.innerHTML = "";
-
-            console.log(mergedData);
             if (mergedData.length > 0) {
                 for (var i = (page - 1) * records_per_page; i < (page * records_per_page) && i < mergedData.length; i++) {
                     listing_table.innerHTML +=
@@ -134,12 +132,12 @@
                         <div class="card-header" style="border-radius: 0;">
                             <h4 class="card-title w-100">
                                 <a class="d-block w-100" data-toggle="collapse"
-                                    href="#business-${mergedData[i].properties.locationId}">
+                                    href="#business-${(mergedData[i].properties.locationId !== undefined) ? mergedData[i].properties.locationId : ("patent-" + mergedData[i].properties.id)}">
                                     ${mergedData[i].properties.company_name}
                                 </a>
                             </h4>
                         </div>
-                        <div id="business-${mergedData[i].properties.locationId}"
+                        <div id="business-${(mergedData[i].properties.locationId !== undefined) ? mergedData[i].properties.locationId : ("patent-" + mergedData[i].properties.id)}"
                             class="collapse"
                             data-parent="#accordion" wire:ignore.self>
                             <div class="card-body">
@@ -204,6 +202,13 @@
                     [141.79211516906793, 27.60302090835848]
                 ] // Set the map's geographical boundaries.
             });
+
+            map.loadImage(
+                '/light-bulb.png',
+                (error, image) => {
+                    if (error) throw error;
+                    map.addImage('custom-marker', image);
+                });
             // add3dLayer();
         }
         document.addEventListener("livewire:load", handleLivewireLoad, true);
@@ -287,17 +292,17 @@
                         ['linear'],
                         ['heatmap-density'],
                         0,
-                        'rgba(255, 214, 0, 0)',
+                        'rgba(183, 28, 28, 0)',
                         0.2,
-                        'rgba(255, 214, 0, 0.5)',
+                        'rgba(183, 28, 28, 0.5)',
                         0.4,
-                        'rgba(255, 214, 0, 0.10)',
+                        'rgba(183, 28, 28, 0.20)',
                         0.6,
-                        'rgba(255, 214, 0, 0.15)',
+                        'rgba(183, 28, 28, 0.15)',
                         0.8,
-                        'rgba(255, 214, 0, 0.20)',
+                        'rgba(183, 28, 28, 0.20)',
                         1,
-                        'rgba(255, 214, 0, 0.25)'
+                        'rgba(183, 28, 28, 0.25)'
                     ],
                     // Adjust the heatmap radius by zoom level
                     'heatmap-radius': [
@@ -359,17 +364,17 @@
                         ['linear'],
                         ['heatmap-density'],
                         0,
-                        'rgba(183, 28, 28, 0)',
+                        'rgba(255, 214, 0, 0)',
                         0.2,
-                        'rgba(183, 28, 28, 0.5)',
+                        'rgba(255, 214, 0, 0.5)',
                         0.4,
-                        'rgba(183, 28, 28, 0.10)',
+                        'rgba(255, 214, 0, 0.10)',
                         0.6,
-                        'rgba(183, 28, 28, 0.15)',
+                        'rgba(255, 214, 0, 0.15)',
                         0.8,
-                        'rgba(183, 28, 28, 0.20)',
+                        'rgba(255, 214, 0, 0.20)',
                         1,
-                        'rgba(183, 28, 28, 0.25)'
+                        'rgba(255, 214, 0, 0.25)'
                     ],
                     // Adjust the heatmap radius by zoom level
                     'heatmap-radius': [
@@ -409,7 +414,7 @@
                             [15, 12]
                         ]
                     },
-                    'circle-color': "rgba(255, 214, 0, 0.85)",
+                    'circle-color': "rgba(183, 28, 28, 0.85)",
                     'circle-stroke-color': 'white',
                     'circle-stroke-width': 1
                 }
@@ -462,14 +467,19 @@
         function addPatentPoint() {
             map.addLayer({
                 'id': 'patent-point',
-                'type': 'circle',
+                // 'type': 'circle',
+                'type': 'symbol',
                 'source': 'patent',
                 'minzoom': 7,
-                'paint': {
-                    'circle-radius': 8,
-                    'circle-color': "rgba(183, 28, 28, 0.85)",
-                    'circle-stroke-color': 'white',
-                    'circle-stroke-width': 1
+                // 'paint': {
+                //     'circle-radius': 8,
+                //     'circle-color': "rgba(183, 28, 28, 0.85)",
+                //     'circle-stroke-color': 'white',
+                //     'circle-stroke-width': 1
+                // },
+                'layout': {
+                    'icon-image': 'custom-marker',
+                    'icon-size': 0.4
                 }
             }, );
 
@@ -503,7 +513,6 @@
             Livewire.emit('mapFirstLoad');
         }
 
-
         Livewire.on('mapUpdated', (data) => {
             try {
                 var mapLayer = map.getLayer('business-heat');
@@ -511,7 +520,6 @@
                     map.removeLayer('business-heat').removeSource('businessHeatData');
                 }
                 for (let index = 0; index < businessChunkedData; index++) {
-                    console.log(index);
                     var mapLayerTemp = map.getLayer('business-point' + 'business' + index);
                     if (typeof mapLayerTemp !== 'undefined') {
                         map.removeLayer('business-point' + 'business' + index).removeSource('business' + index);
@@ -526,15 +534,17 @@
 
             }
             businessChunkedData = data.geoJson.length;
-            mergedData = [...new Set([].concat(...data.geoJson.map((element) => element.features)))];
+            mergedDataBusiness = [...new Set([].concat(...data.geoJson.map((element) => element.features)))];
+            mergedDataPatent = [...new Set([].concat(...data.patentJson.features))];
+            mergedData = mergedDataBusiness.concat(mergedDataPatent);
             changePage(1);
 
             if (data.geoJson != null) {
                 map.addSource('businessHeatData', {
                     'type': 'geojson',
                     'data': {
-                        'type' : 'FeatureCollection',
-                        'features' : mergedData
+                        'type': 'FeatureCollection',
+                        'features': mergedDataBusiness
                     }
                 });
                 addBusinessHeat('businessHeatData');
