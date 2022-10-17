@@ -95,7 +95,7 @@ class ReportComponent extends Component
             }
         }); // Count of filtered patents with year extraction
 
-        $this->chartJournalsCount = collect($business)->pluck('published_year')->countBy();
+        $this->chartJournalsCount = collect($journals)->pluck('published_year')->countBy();
 
         /* Default data for Charts End*/
         $lineChartYears = array_unique($this->chartBusinessCount->keys()->concat($this->chartPatentsCount->keys())->toArray());
