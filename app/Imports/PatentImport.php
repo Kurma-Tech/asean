@@ -28,7 +28,7 @@ class PatentImport implements ToModel, WithHeadingRow, WithChunkReading, WithBat
     {
         $patentType = $this->patentType->where('id', $row['type_id'])->first();
         $patentKind = $this->patentKind->where('id', $row['kind_id'])->first();
-        $country    = $this->country->where('id', $row['country_short_code'])->first();
+        $country    = $this->country->where('short_code', $row['country_short_code'])->first();
         
         return new Patent([
             "title"      => $row['title'],
