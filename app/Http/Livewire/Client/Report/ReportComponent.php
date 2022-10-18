@@ -121,7 +121,7 @@ class ReportComponent extends Component
                 if ($this->chartJournalsCount->has($lineChartYears[$i])) {
                     $tempChartJournalsCount[$lineChartYears[$i]] = $this->chartJournalsCount[$lineChartYears[$i]];
                 } else {
-                    $tempChartPatentsCount[$lineChartYears[$i]] = null;
+                    $tempChartJournalsCount[$lineChartYears[$i]] = null;
                 }
             } catch (\Throwable $th) {
                 //throw $th;
