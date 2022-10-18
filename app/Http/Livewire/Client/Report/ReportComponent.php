@@ -129,10 +129,12 @@ class ReportComponent extends Component
         }
 
         $tempChartBusinessCount = [];
+        $tempChartBusinessCountForForecast = [];
         for ($i = 0; $i < count($lineChartYears); $i++) {
             try {
                 if ($this->chartBusinessCount->has($lineChartYears[$i])) {
                     $tempChartBusinessCount[$lineChartYears[$i]] = $this->chartBusinessCount[$lineChartYears[$i]];
+                    $tempChartBusinessCountForForecast[$lineChartYears[$i]] = $this->chartBusinessCount[$lineChartYears[$i]];
                 } else if ($lineChartYears[$i] == "" || $lineChartYears[$i] == null) {
                 } else {
                     $tempChartBusinessCount[$lineChartYears[$i]] = null;
@@ -145,7 +147,7 @@ class ReportComponent extends Component
         //forecast
         // dd($tempChartBusinessCount);
 
-        $this->tempForcastData = $this->predict(collect($tempChartBusinessCount)->keys(), collect($tempChartBusinessCount)->values());
+        $this->tempForcastData = $this->predict(collect($tempChartBusinessCountForForecast)->keys(), collect($tempChartBusinessCountForForecast)->values());
 
         if ($this->isFirstLoad) {
             $this->emit("reportsFirstLoad", [
