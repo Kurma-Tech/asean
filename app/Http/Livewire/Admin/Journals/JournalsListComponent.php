@@ -69,8 +69,8 @@ class JournalsListComponent extends Component
     protected $messages = [
         'country_id.required'  => 'Country field is required',
         'country_id.integer'   => 'You must select country from drop down',
-        'category_id.required' => 'Patent kind field is required',
-        'category_id.integer'  => 'You must select patent kind from drop down',
+        'category_id.required' => 'Journals category field is required',
+        'category_id.integer'  => 'You must select journals category from drop down',
         'long.required'        => 'Longitude field is required',
         'lat.required'         => 'Latitude field is required',
     ];
@@ -140,8 +140,8 @@ class JournalsListComponent extends Component
             );
         } catch (\Throwable $th) {
             DB::rollback();
-            $this->error = $th->getMessage();
-            // $this->error = 'Ops! looks like we had some problem';
+            // $this->error = $th->getMessage();
+            $this->error = 'Ops! looks like we had some problem';
             $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);
         }
     }

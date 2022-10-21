@@ -172,8 +172,8 @@
 
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="category_id">Category*</label>
-                                            <select class="form-control" id="category_id"
+                                            <label for="category_name">Category*</label>
+                                            <select class="form-control" id="category_name"
                                                 wire:model="category_id" style="width: 100%;">
                                                 <option hidden>Choose Category</option>
                                                 @foreach ($categories as $category)
@@ -188,8 +188,8 @@
 
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="country_id">Country*</label>
-                                            <select class="form-control" id="country_id"
+                                            <label for="country_name">Country*</label>
+                                            <select class="form-control" id="country_name"
                                                 wire:model="country_id" style="width: 100%;">
                                                 <option hidden>Choose Category</option>
                                                 @foreach ($countries as $country)
