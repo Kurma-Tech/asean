@@ -131,7 +131,7 @@
                                         <div class="form-group">
                                             <label for="type_name">Intellectual Property Type*</label>
                                             <select class="form-control select2 select2bs4" id="type_name" wire:model="type_id" style="width: 100%;">
-                                                <option hidden>Choose Patent Type</option>
+                                                <option hidden>Choose Type Option</option>
                                                 @foreach($patentTypes as $pType)
                                                 <option value="{{ $pType->id }}">{{ $pType->type }}</option>
                                                 @endforeach
@@ -146,9 +146,9 @@
                                         <div class="form-group">
                                             <label for="kind_name">Intellectual Property Kind*</label>
                                             <select class="form-control select2 select2bs4" id="kind_name" wire:model="kind_id" style="width: 100%;">
-                                                <option hidden>Choose Patent Type</option>
-                                                @foreach($patentTypes as $pType)
-                                                <option value="{{ $pType->id }}">{{ $pType->type }}</option>
+                                                <option hidden>Choose Kind Option</option>
+                                                @foreach($patentKinds as $pKind)
+                                                <option value="{{ $pKind->id }}">{{ $pKind->type }}</option>
                                                 @endforeach
                                             </select>
                                             @error('kind_id')
@@ -162,9 +162,9 @@
                                             <label for="category_name">Patent Category*</label>
                                             <select class="form-control select2 select2bs4" id="category_name" wire:model="category_id" style="width: 100%;">
                                                 <option hidden>Choose Category</option>
-                                                {{-- @foreach($categories as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                @endforeach --}}
+                                                @foreach($categories as $category)
+                                                <option value="{{ $category->id }}">{{ $category->classification_category }}</option>
+                                                @endforeach
                                             </select>
                                             @error('category_id')
                                                 <div class="error">{{ $message }}</div>
