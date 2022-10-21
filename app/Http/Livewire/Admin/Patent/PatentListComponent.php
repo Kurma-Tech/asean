@@ -126,7 +126,7 @@ class PatentListComponent extends Component
 
             DB::commit();
 
-            $this->dispatchBrowserEvent('success-message', ['message' => 'Patent has been ' . $this->btnType . '.']);
+            $this->dispatchBrowserEvent('success-message', ['message' => 'Intellectual Property Has Been ' . $this->btnType . '.']);
 
             $this->reset('title', 'filing_no', 'registration_no', 'country_id', 'categories_id', 'kind_id', 'type_id', 'registration_date', 'publication_date', 'filing_date', 'inventor_name', 'long', 'lat', 'abstract', 'hiddenId', 'btnType');
         } catch (\Throwable $th) {
@@ -164,7 +164,7 @@ class PatentListComponent extends Component
             $data = Patent::find($id);
             if ($data != null) {
                 $data->delete();
-                $this->dispatchBrowserEvent('success-message', ['message' => 'Patent deleted successfully']);
+                $this->dispatchBrowserEvent('success-message', ['message' => 'Intellectual Property Deleted Successfully']);
             } else {
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);
@@ -184,7 +184,7 @@ class PatentListComponent extends Component
             $data = Patent::onlyTrashed()->find($id);
             if ($data != null) {
                 $data->restore();
-                $this->dispatchBrowserEvent('success-message', ['message' => 'Patent restored successfully']);
+                $this->dispatchBrowserEvent('success-message', ['message' => 'Intellectual Property Restored Successfully']);
             } else {
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);

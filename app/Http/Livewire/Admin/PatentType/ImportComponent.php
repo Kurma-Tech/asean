@@ -42,7 +42,7 @@ class ImportComponent extends Component
             DB::commit();
             
             $this->reset();
-            $this->success = 'Patent Type Imported Successfully';
+            $this->success = 'Intellectual Property Type Imported Successfully';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
             $this->emit('refreshPatentTypeListComponent');
 
