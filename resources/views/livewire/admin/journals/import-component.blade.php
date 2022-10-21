@@ -31,7 +31,6 @@
                                 issn_no,
                                 citition_no,
                                 keywords,
-                                link,
                                 long,
                                 lat
                             </code>

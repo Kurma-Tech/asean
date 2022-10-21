@@ -35,9 +35,7 @@ class JournalsListComponent extends Component
            $source_title,
            $issn_no,
            $citition_no,
-           $eid_no,
            $keywords,
-           $link,
            $long,
            $lat;
     public $btnType = 'Create';
@@ -62,7 +60,6 @@ class JournalsListComponent extends Component
             'issn_no'        => 'required',
             'citition_no'    => 'required',
             'keywords'       => 'required',
-            'link'           => 'nullable|url',
             'long'           => 'nullable',
             'lat'            => 'nullable',
         ];
@@ -118,11 +115,9 @@ class JournalsListComponent extends Component
             $journal->source_title   = $this->source_title;
             $journal->issn_no        = $this->issn_no;
             $journal->citition_no    = $this->citition_no;
-            $journal->eid_no         = $this->eid_no;
             $keywordsToArray = explode(',', $this->keywords);
             $keywordsJson = json_encode($keywordsToArray);
             $journal->keywords       = $keywordsJson;
-            $journal->link           = $this->link;
             $journal->long           = $this->long;
             $journal->lat            = $this->lat;
             $journal->save();
@@ -137,8 +132,7 @@ class JournalsListComponent extends Component
                 'abstract', 'author_name', 
                 'publisher_name', 'long', 'lat', 
                 'source_title', 'issn_no', 
-                'citition_no', 'eid_no', 
-                'keywords', 'link',
+                'citition_no', 'keywords', 
                 'hiddenId', 'btnType'
             );
         } catch (\Throwable $th) {
@@ -163,9 +157,7 @@ class JournalsListComponent extends Component
         $this->source_title   = $singleJournal->source_title;
         $this->issn_no        = $singleJournal->issn_no;
         $this->citition_no    = $singleJournal->citition_no;
-        $this->eid_no         = $singleJournal->eid_no;
         $this->keywords       = json_decode($singleJournal->keywords);
-        $this->link           = $singleJournal->link;
         $this->long           = $singleJournal->long;
         $this->lat            = $singleJournal->lat;
         $this->btnType        = 'Update';
@@ -217,14 +209,13 @@ class JournalsListComponent extends Component
     // reset fields
     public function resetFields()
     {
-        $this->reset(
+        $this->reset( 
             'title', 'published_year', 
             'country_id', 'category_id', 
             'abstract', 'author_name', 
             'publisher_name', 'long', 'lat', 
             'source_title', 'issn_no', 
-            'citition_no', 'eid_no', 
-            'keywords', 'link',
+            'citition_no', 'keywords', 
             'hiddenId', 'btnType'
         );
     }

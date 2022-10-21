@@ -53,13 +53,13 @@ Route::prefix('admin')->name('admin.')->group(function() {
         // BusinessType
         Route::get('business/types', BusinessTypeBusinessListComponent::class)->name('typeBusiness.list');
         // Patent
-        Route::get('patent', PatentListComponent::class)->name('patent.list');
+        Route::get('intellectual-property', PatentListComponent::class)->name('patent.list');
         // PatentCategory
-        Route::get('patent/category', PatentCategoryCategoryListComponent::class)->name('patentCategory.list');
+        Route::get('intellectual-property/category', PatentCategoryCategoryListComponent::class)->name('categoryPatent.list');
         // PatentType
-        Route::get('patent/types', PatentTypePatentListComponent::class)->name('typePatent.list');
+        Route::get('intellectual-property/types', PatentTypePatentListComponent::class)->name('typePatent.list');
         // PatentKind
-        Route::get('patent/kinds', PatentKindPatentListComponent::class)->name('kindPatent.list');
+        Route::get('intellectual-property/kinds', PatentKindPatentListComponent::class)->name('kindPatent.list');
         // Journals
         Route::get('journals', JournalsListComponent::class)->name('journals.list');
         // JournalCategory

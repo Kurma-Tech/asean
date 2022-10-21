@@ -36,9 +36,7 @@ class JournalImport implements ToModel, WithHeadingRow, WithChunkReading, WithBa
             "source_title"   => $row['source_title'],
             "issn_no"        => $row['issn_no'],
             "citition_no"    => $row['citition_no'],
-            // "eid_no"         => $row['eid_no'],
             "keywords"       => $keywordsJson,
-            "link"           => $row['link'],
             "long"           => $row['long'],
             "lat"            => $row['lat']
         ]);

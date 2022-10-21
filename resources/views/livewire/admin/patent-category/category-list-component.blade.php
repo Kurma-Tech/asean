@@ -23,8 +23,8 @@
                                         <select class="form-control" style="width: 100%;" wire:model="orderBy">
                                             <option hidden>Choose Order By</option>
                                             <option value="id">By ID</option>
-                                            <option value="acjs_code">ACJS Code</option>
-                                            <option value="category">Category</option>
+                                            <option value="ipc_code">IPC Code</option>
+                                            <option value="title">Title</option>
                                         </select>
                                     </div>
                                 </div>
@@ -71,7 +71,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="classification_category">Patent Title*</label>
+                                            <label for="classification_category">Category Title*</label>
                                             <input type="text" class="form-control" id="classification_category" placeholder="Enter Category Title" wire:model='classification_category'>
                                             @error('classification_category')
                                             <div class="error">{{ $message }}</div>
@@ -82,9 +82,9 @@
                                     @if(!$is_parent)
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="parent_id">Patent Category*</label>
+                                                <label for="parent_id">Parent Category*</label>
                                                 <select class="form-control" id="parent_id" wire:model="parent_id">
-                                                    <option hidden>Choose Parent</option>
+                                                    <option hidden>Choose Parent Category</option>
                                                     @foreach($parentCategories as $parent)
                                                     <option value="{{ $parent->id }}">{{ $parent->classification_category }}</option>
                                                     @endforeach
@@ -132,7 +132,7 @@
                 <div class="col-8 col-md-8 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">All Category List</h3>
+                            <h3 class="card-title">All Patent Category List</h3>
                         </div>
                         <!-- ./card-header -->
                         <div class="card-body" style="overflow-x:scroll;">
@@ -141,7 +141,7 @@
                                     <tr>
                                         <th style="width:2.5%;">#</th>
                                         <th style="width:2.5%;">ID</th>
-                                        <th style="width:30%;">Category</th>
+                                        <th style="width:30%;">Title</th>
                                         <th style="width:30%;">Parent Category</th>
                                         <th style="width:10%;">IPC Code</th>
                                         <th style="width:15%;">Type</th>
