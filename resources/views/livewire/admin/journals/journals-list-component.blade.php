@@ -101,18 +101,19 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12">
+                                    <div class="col-md-12 col-sm-12">
                                         <div class="form-group">
                                             <label for="author_name">Author Name*</label>
                                             <input type="text" class="form-control" id="author_name"
                                                 placeholder="Enter Author Name" wire:model='author_name'>
+                                            <small class="form-text text-muted">Separate keywords with a comma</small>
                                             @error('author_name')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12">
+                                    <div class="col-md-12 col-sm-12">
                                         <div class="form-group">
                                             <label for="publisher_name">Publisher Name*</label>
                                             <input type="text" class="form-control" id="publisher_name"
