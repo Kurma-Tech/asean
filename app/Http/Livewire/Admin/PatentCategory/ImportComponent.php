@@ -35,7 +35,7 @@ class ImportComponent extends Component
             DB::commit();
             
             $this->reset();
-            $this->success = 'Patent category data imported successfully';
+            $this->success = 'Category data imported successfully';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
             $this->emit('refreshJournalCategoryListComponent');
 

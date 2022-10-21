@@ -39,7 +39,7 @@ class CategoryListComponent extends Component
             return [
                 'classification_category' => 'required',
                 'parent_id'               => 'required|integer',
-                'ipc_code'               => 'required',
+                'ipc_code'                => 'required',
             ];
         }
     }
