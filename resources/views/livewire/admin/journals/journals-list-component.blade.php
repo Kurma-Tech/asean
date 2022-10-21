@@ -274,7 +274,14 @@
                                             <td>{{ $loop->iteration ?? 'N/A' }}</td>
                                             <td>{{ $journal->title ?? 'N/A' }}</td>
                                             <td>{{ $journal->source_title ?? 'N/A' }}</td>
-                                            <td>{{ $journal->author_name ?? 'N/A' }}</td>
+                                            <td>
+                                                @if($journal->author_name)
+                                                    @php $authors = json_decode($journal->author_name) @endphp 
+                                                    @foreach ($authors as $a)
+                                                    <span class="badge badge-secondary">{{$a}}</span>
+                                                    @endforeach
+                                                @endif
+                                            </td>
                                             <td>{{ $journal->published_year ?? 'N/A' }}</td>
                                             <td>{{ $journal->issn_no ?? 'N/A' }}</td>
                                             <td>{{ $journal->citition_no ?? 'N/A' }}</td>
