@@ -77,7 +77,7 @@ class JournalsListComponent extends Component
     public function mount()
     {
         $this->countries  = Country::select('id', 'name')->get();
-        $this->categories = JournalCategory::where('parent_id', '!=', null)->select('id', 'category')->get();
+        $this->categories = JournalCategory::where('parent_id', '=', null)->select('id', 'category')->get();
     }
 
     public function render()
@@ -115,8 +115,8 @@ class JournalsListComponent extends Component
             $journal->source_title   = $this->source_title;
             $journal->issn_no        = $this->issn_no;
             $journal->citition_no    = $this->citition_no;
-            $keywordsToArray = explode(',', $this->keywords);
-            $keywordsJson = json_encode($keywordsToArray);
+            $keywordsToArray         = explode(',', $this->keywords);
+            $keywordsJson            = json_encode($keywordsToArray);
             $journal->keywords       = $keywordsJson;
             $journal->long           = $this->long;
             $journal->lat            = $this->lat;
