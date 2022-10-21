@@ -23,7 +23,7 @@
                                         <select class="form-control" style="width: 100%;" wire:model="orderBy">
                                             <option hidden>Choose Order By</option>
                                             <option value="id">By ID</option>
-                                            <option value="acjs_code">ACJS Code</option>
+                                            <option value="acjs_code">Code</option>
                                             <option value="category">Category</option>
                                         </select>
                                     </div>
@@ -97,7 +97,7 @@
 
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="acjs_code">ACJS Code*</label>
+                                                <label for="acjs_code">Code*</label>
                                                 <input type="text" class="form-control" id="acjs_code" placeholder="Enter ACJS Code" wire:model='acjs_code'>
                                                 @error('acjs_code')
                                                 <div class="error">{{ $message }}</div>
@@ -112,7 +112,7 @@
 
                                         <div class="form-group">
                                             <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                                <input type="checkbox" class="custom-control-input" id="customSwitch3" value="1" wire:model="is_parent">
+                                                {{-- <input type="checkbox" class="custom-control-input" id="customSwitch3" value="1" wire:model="is_parent"> --}}
                                                 <label class="custom-control-label" for="customSwitch3">Is Parent Category</label>
                                             </div>
                                         </div>
@@ -142,8 +142,8 @@
                                         <th style="width:2.5%;">#</th>
                                         <th style="width:2.5%;">ID</th>
                                         <th style="width:30%;">Category</th>
-                                        <th style="width:30%;">Parent Category</th>
-                                        <th style="width:10%;">ACJS Code</th>
+                                        {{-- <th style="width:30%;">Parent Category</th> --}}
+                                        <th style="width:10%;">Code</th>
                                         <th style="width:15%;">Type</th>
                                         <th style="width:10%;">Action</th>
                                     </tr>
@@ -154,16 +154,16 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $category->id }}</td>
                                         <td>{{ $category->category }}</td>
-                                        <td>
+                                        {{-- <td>
                                             <span class="badge badge-primary">{{ $category->parent->category ?? 'Self' }}</span>
-                                        </td>
+                                        </td> --}}
                                         <td>{{ $category->acjs_code }}</td>
                                         <td>
-                                            @if($category->parent_id)
+                                            {{-- @if($category->parent_id)
                                             <span class="badge badge-success badge-sm">Child Category</span>
                                             @else
                                             <span class="badge badge-info badge-sm">Parent Category</span>
-                                            @endif
+                                            @endif --}}
                                             @if($category->deleted_at)
                                             <span class="badge badge-danger badge-sm">Trashed</span>
                                             @endif

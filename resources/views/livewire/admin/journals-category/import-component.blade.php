@@ -25,7 +25,7 @@
                             <code class="text-xs text-info-400">
                                 parent_name,
                                 category,
-                                acjs_code
+                                code
                             </code>
                         </div>
                     </div>
