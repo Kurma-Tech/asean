@@ -260,7 +260,6 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Title</th>
-                                        <th>SourceTitle</th>
                                         <th>AuthorName</th>
                                         <th>PublishedYear</th>
                                         <th>ISSN.No</th>
@@ -273,7 +272,6 @@
                                         <tr data-widget="expandable-table" aria-expanded="false">
                                             <td>{{ $loop->iteration ?? 'N/A' }}</td>
                                             <td>{{ $journal->title ?? 'N/A' }}</td>
-                                            <td>{{ $journal->source_title ?? 'N/A' }}</td>
                                             <td>
                                                 @if($journal->author_name)
                                                     @php $authors = json_decode($journal->author_name) @endphp 
@@ -337,9 +335,9 @@
                                                     <li class="item">
                                                         <div class="product-info">
                                                             <div class="product-title">
-                                                                Abstract
+                                                                Source Title
                                                             </div>
-                                                            <a href="javascript:void(0)" class="product-title">{{ $journal->abstract ?? 'N/A' }}</a>
+                                                            <a href="javascript:void(0)" class="product-title">{{ $journal->source_title  ?? 'N/A'}}</a>
                                                         </div>
                                                     </li>
                                                     <li class="item">
@@ -387,6 +385,14 @@
                                                                 Geo Location
                                                             </div>
                                                             <a href="javascript:void(0)" class="product-title">{{$journal->long ?? 'N/A'}} (long), {{$journal->lat ?? 'N/A'}} (Lat)</a>
+                                                        </div>
+                                                    </li>
+                                                    <li class="item">
+                                                        <div class="product-info">
+                                                            <div class="product-title">
+                                                                Abstract
+                                                            </div>
+                                                            <p class="product-title">{!! $journal->abstract ?? 'N/A' !!}</p>
                                                         </div>
                                                     </li>
                                                     <li class="item">
