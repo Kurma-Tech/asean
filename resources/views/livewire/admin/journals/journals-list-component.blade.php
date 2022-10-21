@@ -191,7 +191,7 @@
                                             <label for="country_name">Country*</label>
                                             <select class="form-control" id="country_name"
                                                 wire:model="country_id" style="width: 100%;">
-                                                <option hidden>Choose Category</option>
+                                                <option hidden>Choose Country</option>
                                                 @foreach ($countries as $country)
                                                     <option value="{{ $country->id }}">{{ $country->name }}</option>
                                                 @endforeach
