@@ -127,60 +127,68 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12" wire:ignore>
+                                    <div class="col-md-6 col-sm-12" >
                                         <div class="form-group">
                                             <label for="type_name">Intellectual Property Type*</label>
-                                            <select class="form-control select2 select2bs4" id="type_name" wire:model="type_id" style="width: 100%;">
-                                                <option hidden>Choose Type Option</option>
-                                                @foreach($patentTypes as $pType)
-                                                <option value="{{ $pType->id }}">{{ $pType->type }}</option>
-                                                @endforeach
-                                            </select>
+                                            <div wire:ignore>
+                                                <select class="form-control select2 select2bs4" id="type_name" wire:model="type_id" style="width: 100%;">
+                                                    <option hidden>Choose Type Option</option>
+                                                    @foreach($patentTypes as $pType)
+                                                    <option value="{{ $pType->id }}">{{ $pType->type }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                             @error('type_id')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12" wire:ignore>
+                                    <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label for="kind_name">Intellectual Property Kind*</label>
-                                            <select class="form-control select2 select2bs4" id="kind_name" wire:model="kind_id" style="width: 100%;">
-                                                <option hidden>Choose Kind Option</option>
-                                                @foreach($patentKinds as $pKind)
-                                                <option value="{{ $pKind->id }}">{{ $pKind->kind }}</option>
-                                                @endforeach
-                                            </select>
+                                            <div wire:ignore>
+                                                <select class="form-control select2 select2bs4" id="kind_name" wire:model="kind_id" style="width: 100%;">
+                                                    <option hidden>Choose Kind Option</option>
+                                                    @foreach($patentKinds as $pKind)
+                                                    <option value="{{ $pKind->id }}">{{ $pKind->kind }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                             @error('kind_id')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12" wire:ignore>
+                                    <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label for="category_name">Patent Category*</label>
-                                            <select class="form-control select2 select2bs4" id="category_name" wire:model="category_id" style="width: 100%;">
-                                                <option hidden>Choose Category</option>
-                                                @foreach($categories as $category)
-                                                <option value="{{ $category->id }}">{{ $category->classification_category }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('category_id')
+                                            <div wire:ignore>
+                                                <select class="form-control select2 select2bs4" id="category_name" wire:model="categories_id" style="width: 100%;">
+                                                    <option hidden>Choose Category</option>
+                                                    @foreach($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->classification_category }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            @error('categories_id')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12" wire:ignore>
+                                    <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label for="country_name">Country*</label>
-                                            <select class="form-control select2 select2bs4" id="country_name" wire:model="country_id" style="width: 100%;">
-                                                <option hidden>Choose Country</option>
-                                                @foreach($countries as $country)
-                                                <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                                @endforeach
-                                            </select>
+                                            <div wire:ignore>
+                                                <select class="form-control select2 select2bs4" id="country_name" wire:model="country_id" style="width: 100%;">
+                                                    <option hidden>Choose Country</option>
+                                                    @foreach($countries as $country)
+                                                    <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                             @error('country_id')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
@@ -238,10 +246,12 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-12 col-sm-12" wire:ignore>
+                                    <div class="col-md-12 col-sm-12">
                                         <div class="form-group">
                                             <label for="abstract">Abstract</label>
-                                            <textarea id="abstract" wire:model="abstract"></textarea>
+                                            <div wire:ignore>
+                                                <textarea id="abstract" wire:model="abstract"></textarea>
+                                            </div>
                                             @error('abstract')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror

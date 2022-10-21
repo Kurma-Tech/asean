@@ -51,33 +51,37 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-6 col-sm-12" wire:ignore>
+                                    <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label for="business_type_name">Business Type*</label>
-                                            <select class="form-control select2 select2bs4" id="business_type_name"
-                                                wire:model="business_type_id" style="width: 100%;">
-                                                <option hidden>Choose Business Type</option>
-                                                @foreach($businessTypes as $businessType)
-                                                <option value="{{ $businessType->id }}">{{ $businessType->type }}</option>
-                                                @endforeach
-                                            </select>
+                                            <div wire:ignore>
+                                                <select class="form-control select2 select2bs4" id="business_type_name"
+                                                    wire:model="business_type_id" style="width: 100%;">
+                                                    <option hidden>Choose Business Type</option>
+                                                    @foreach($businessTypes as $businessType)
+                                                    <option value="{{ $businessType->id }}">{{ $businessType->type }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                             @error('business_type_id')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12" wire:ignore>
+                                    <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label for="industry_classification_name">Industry Classification*</label>
-                                            <select class="form-control select2 select2bs4"
-                                                id="industry_classification_name" wire:model="industry_classification_id"
-                                                style="width: 100%;">
-                                                <option hidden>Choose Industry Classification</option>
-                                                @foreach($industryClassifications as $classification)
-                                                <option value="{{ $classification->id }}">{{ $classification->classifications }}</option>
-                                                @endforeach
-                                            </select>
+                                            <div wire:ignore>
+                                                <select class="form-control select2 select2bs4"
+                                                    id="industry_classification_name" wire:model="industry_classification_id"
+                                                    style="width: 100%;">
+                                                    <option hidden>Choose Industry Classification</option>
+                                                    @foreach($industryClassifications as $classification)
+                                                    <option value="{{ $classification->id }}">{{ $classification->classifications }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                             @error('industry_classification_id')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
@@ -97,7 +101,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12" wire:ignore>
+                                    <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label for="date_registered">Full Date Registred*</label>
                                             <input type="text" class="form-control" name="date_registered"
@@ -134,10 +138,12 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-6 col-sm-12" wire:ignore>
+                                    <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label for="geo_description">Geo Description</label>
-                                            <textarea id="geo_description" wire:model="geo_description"></textarea>
+                                            <div wire:ignore>
+                                                <textarea id="geo_description" wire:model="geo_description"></textarea>
+                                            </div>
                                             @error('geo_description')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
@@ -147,7 +153,9 @@
                                     <div class="col-md-6 col-sm-12" wire:ignore>
                                         <div class="form-group">
                                             <label for="industry_description">Industry Description</label>
-                                            <textarea id="industry_description" wire:model="industry_description"></textarea>
+                                            <div wire:ignore>
+                                                <textarea id="industry_description" wire:model="industry_description"></textarea>
+                                            </div>
                                             @error('industry_description')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
@@ -354,11 +362,13 @@
                 format: "yyyy",
                 viewMode: "years",
                 minViewMode: "years",
+                endDate: new Date(),
                 autoclose: true //to close picker once year is selected
             });
 
             $("#date_registered").datepicker({
                 format: "mm/dd/yyyy",
+                endDate: new Date(),
                 autoclose: true //to close picker once year is selected
             });
 

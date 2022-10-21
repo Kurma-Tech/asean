@@ -173,12 +173,14 @@
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label for="category_name">Category*</label>
-                                            <select class="form-control" id="category_name" wire:model="category_id" style="width: 100%;">
-                                                <option hidden>Choose Category</option>
-                                                @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}">{{ $category->category }}</option>
-                                                @endforeach
-                                            </select>
+                                            <div wire:ignore>
+                                                <select class="form-control select2 select2bs4" id="category_name" wire:model="category_id" style="width: 100%;">
+                                                    <option hidden>Choose Category</option>
+                                                    @foreach ($categories as $category)
+                                                        <option value="{{ $category->id }}">{{ $category->category }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                             @error('category_id')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
@@ -188,12 +190,14 @@
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label for="country_name">Country*</label>
-                                            <select class="form-control" id="country_name" wire:model="country_id" style="width: 100%;">
-                                                <option hidden>Choose Country</option>
-                                                @foreach ($countries as $country)
-                                                    <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                                @endforeach
-                                            </select>
+                                            <div wire:ignore>
+                                                <select class="form-control select2 select2bs4" id="country_name" wire:model="country_id" style="width: 100%;">
+                                                    <option hidden>Choose Country</option>
+                                                    @foreach ($countries as $country)
+                                                        <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                             @error('country_id')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
@@ -224,10 +228,12 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12 col-sm-12" wire:ignore>
+                                <div class="col-md-12 col-sm-12">
                                     <div class="form-group">
                                         <label for="abstract_text">Abstract</label>
-                                        <textarea id="abstract_text" wire:model.defer="abstract"></textarea>
+                                        <div wire:ignore>
+                                            <textarea id="abstract_text" wire:model="abstract">{{ $abstract }}</textarea>
+                                        </div>
                                         @error('abstract')
                                             <div class="error">{{ $message }}</div>
                                         @enderror
@@ -469,25 +475,29 @@
             //Initialize Select2 Elements
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
-            })
+            });
 
-            // $('#country_name').on('change', function(e) {
-            //     let data = $(this).val();
-            //     @this.set('country_id', data);
-            // });
+            $('#country_name').on('change', function(e) {
+                let data = $(this).val();
+                @this.set('country_id', data);
+            });
 
-            // $('#category_name').on('change', function(e) {
-            //     let data = $(this).val();
-            //     @this.set('category_id', data);
-            // });
+            $('#category_name').on('change', function(e) {
+                let data = $(this).val();
+                @this.set('category_id', data);
+            });
 
-            // Livewire.on('countryEvent', (data) => {
-            //     $('#country_name').val(data).trigger('change');
-            // });
+            Livewire.on('countryEvent', (data) => {
+                $('#country_name').val(data).trigger('change');
+            });
 
-            // Livewire.on('categoryEvent', (data) => {
-            //     $('#category_name').val(data).trigger('change');
-            // });
+            Livewire.on('categoryEvent', (data) => {
+                $('#category_name').val(data).trigger('change');
+            });
+
+            Livewire.on('abstractEvent', (data) => {
+                $('#abstract_text').val(data).trigger('change');
+            });
 
             $("#published_year").datepicker({
                 format: "yyyy",
