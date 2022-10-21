@@ -148,7 +148,7 @@
                                             <select class="form-control select2 select2bs4" id="kind_name" wire:model="kind_id" style="width: 100%;">
                                                 <option hidden>Choose Kind Option</option>
                                                 @foreach($patentKinds as $pKind)
-                                                <option value="{{ $pKind->id }}">{{ $pKind->type }}</option>
+                                                <option value="{{ $pKind->id }}">{{ $pKind->kind }}</option>
                                                 @endforeach
                                             </select>
                                             @error('kind_id')
