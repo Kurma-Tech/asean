@@ -140,17 +140,22 @@ class PatentListComponent extends Component
     // Update Form
     public function editForm($id)
     {
-        $singlePatent     = Patent::find($id);
-        $this->hiddenId   = $singlePatent->id;
-        $this->title      = $singlePatent->title;
-        $this->patent_id  = $singlePatent->patent_id;
-        $this->country_id = $singlePatent->country_id;
-        $this->kind_id    = $singlePatent->kind_id;
-        $this->type_id    = $singlePatent->type_id;
-        $this->date       = $singlePatent->date;
-        $this->long       = $singlePatent->long;
-        $this->lat        = $singlePatent->lat;
-        $this->btnType    = 'Update';
+        $singlePatent             = Patent::find($id);
+        $this->hiddenId           = $singlePatent->id;
+        $this->title              = $singlePatent->title;
+        $this->country_id         = $singlePatent->country_id;
+        $this->category_id        = $singlePatent->category_id;
+        $this->kind_id            = $singlePatent->kind_id;
+        $this->type_id            = $singlePatent->type_id;
+        $this->regirstration_date = $singlePatent->regirstration_date;
+        $this->publication_date   = $singlePatent->publication_date;
+        $this->filing_date        = $singlePatent->filing_date;
+        $this->filing_no          = $singlePatent->filing_no;
+        $this->regirstration_no   = $singlePatent->regirstration_no;
+        $this->inventor_name      = implode(',',json_decode($singlePatent->inventor_name));
+        $this->long               = $singlePatent->long;
+        $this->lat                = $singlePatent->lat;
+        $this->btnType            = 'Update';
 
         $this->emit('countryEvent', $this->country_id);
         $this->emit('typeEvent', $this->kind_id);

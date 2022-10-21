@@ -42,9 +42,9 @@ class JournalsListComponent extends Component
 
     protected $listeners = ['refreshJournalListComponent' => '$refresh', 'abstract_changed' => 'abstractMapping'];
 
-    public function abstractMapping($abstract)
+    public function abstractMapping($abstractText)
     { // abstract
-        $this->abstract = $abstract;
+        $this->abstract = $abstractText;
     }
 
     protected function rules()
@@ -94,6 +94,7 @@ class JournalsListComponent extends Component
     // Store
     public function storeJournal()
     {
+        // dd($this->author_name);
         $this->validate(); // validate Journals form
 
         DB::beginTransaction();
@@ -155,12 +156,12 @@ class JournalsListComponent extends Component
         $this->published_year = $singleJournal->published_year;
         $this->country_id     = $singleJournal->country_id;
         $this->abstract       = $singleJournal->abstract;
-        $this->author_name    = json_decode($singleJournal->author_name);
+        $this->author_name    = implode(',',json_decode($singleJournal->author_name));
         $this->publisher_name = $singleJournal->publisher_name;
         $this->source_title   = $singleJournal->source_title;
         $this->issn_no        = $singleJournal->issn_no;
         $this->citition_no    = $singleJournal->citition_no;
-        $this->keywords       = json_decode($singleJournal->keywords);
+        $this->keywords       = implode(',',json_decode($singleJournal->author_name));
         $this->long           = $singleJournal->long;
         $this->lat            = $singleJournal->lat;
         $this->btnType        = 'Update';

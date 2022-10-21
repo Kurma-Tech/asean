@@ -37,7 +37,7 @@
                                             <option value="id">By ID</option>
                                             <option value="title">name</option>
                                             <option value="source_title">Source Title</option>
-                                            <option value="Abstract">Abstract</option>
+                                            <option value="abstract">Abstract</option>
                                             <option value="author_name">Author Name</option>
                                             <option value="publisher_name">Publisher Name</option>
                                             <option value="issn_no">ISSN No</option>
