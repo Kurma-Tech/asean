@@ -34,8 +34,8 @@ class PatentListComponent extends Component
     public $filing_no;
     public $applicant_company;
     public $inventor_name;
-    public $regirstration_no;
-    public $regirstration_date;
+    public $registration_no;
+    public $registration_date;
     public $publication_date;
     public $filing_date;
     public $country_id;
@@ -51,26 +51,33 @@ class PatentListComponent extends Component
     protected function rules()
     {
         return [
-            'title'      => 'required',
-            'patent_id'  => 'required',
-            'country_id' => 'required|integer',
-            'kind_id'    => 'required|integer',
-            'type_id'    => 'required|integer',
-            'date'       => 'required|date_format:"m/d/Y"',
-            'long'       => 'required',
-            'lat'        => 'required',
+            'title'             => 'required',
+            'filing_no'         => 'required',
+            'abstract'          => 'nullable',
+            'inventor_name'     => 'required',
+            'applicant_company' => 'required',
+            'country_id'        => 'required|integer',
+            'categories_id'     => 'required|integer',
+            'kind_id'           => 'required|integer',
+            'type_id'           => 'required|integer',
+            'registration_no'   => 'required',
+            'registration_date' => 'required|date_format:"m/d/Y"',
+            'filing_date'       => 'required|date_format:"m/d/Y"',
+            'publication_date'  => 'required|date_format:"m/d/Y"',
+            'long'              => 'nullable',
+            'lat'               => 'nullable',
         ];
     }
 
     protected $messages = [
-        'country_id.required' => 'Country field is required',
-        'country_id.integer'  => 'You must select country from drop down',
-        'kind_id.required'    => 'Patent kind field is required',
-        'kind_id.integer'     => 'You must select patent kind from drop down',
-        'type_id.required'    => 'Patent type field is required',
-        'type_id.integer'     => 'You must select patent type from drop down',
-        'long.required'       => 'Longitude field is required',
-        'lat.required'        => 'Latitude field is required',
+        'country_id.required'    => 'Country field is required',
+        'country_id.integer'     => 'You must select country from drop down',
+        'categories_id.required' => 'Category field is required',
+        'categories_id.integer'  => 'You must select category from drop down',
+        'kind_id.required'       => 'Patent kind field is required',
+        'kind_id.integer'        => 'You must select patent kind from drop down',
+        'type_id.required'       => 'Patent type field is required',
+        'type_id.integer'        => 'You must select patent type from drop down',
     ];
 
     public function mount()
@@ -108,6 +115,7 @@ class PatentListComponent extends Component
 
             $patent->title             = $this->title;
             $patent->filing_no         = $this->filing_no;
+            $patent->applicant_company = $this->applicant_company;
             $patent->registration_no   = $this->registration_no;
             $patent->country_id        = $this->country_id;
             $patent->categories_id     = $this->categories_id;
@@ -144,15 +152,16 @@ class PatentListComponent extends Component
         $this->hiddenId           = $singlePatent->id;
         $this->title              = $singlePatent->title;
         $this->country_id         = $singlePatent->country_id;
-        $this->category_id        = $singlePatent->category_id;
+        $this->categories_id      = $singlePatent->category_id;
         $this->kind_id            = $singlePatent->kind_id;
         $this->type_id            = $singlePatent->type_id;
-        $this->regirstration_date = $singlePatent->regirstration_date;
+        $this->registration_no    = $singlePatent->registration_no;
         $this->publication_date   = $singlePatent->publication_date;
         $this->filing_date        = $singlePatent->filing_date;
         $this->filing_no          = $singlePatent->filing_no;
         $this->regirstration_no   = $singlePatent->regirstration_no;
         $this->inventor_name      = implode(',',json_decode($singlePatent->inventor_name));
+        $this->applicant_company  = $singlePatent->applicant_company;
         $this->long               = $singlePatent->long;
         $this->lat                = $singlePatent->lat;
         $this->btnType            = 'Update';

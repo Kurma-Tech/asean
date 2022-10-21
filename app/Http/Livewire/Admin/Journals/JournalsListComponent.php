@@ -54,7 +54,7 @@ class JournalsListComponent extends Component
             'source_title'   => 'required',
             'country_id'     => 'required|integer',
             'category_id'    => 'required|integer',
-            'abstract'       => 'required',
+            'abstract'       => 'nullable',
             'author_name'    => 'required',
             'publisher_name' => 'required',
             'published_year' => 'required|date_format:"Y"',
@@ -155,6 +155,7 @@ class JournalsListComponent extends Component
         $this->title          = $singleJournal->title;
         $this->published_year = $singleJournal->published_year;
         $this->country_id     = $singleJournal->country_id;
+        $this->category_id    = $singleJournal->category_id;
         $this->abstract       = $singleJournal->abstract;
         $this->author_name    = implode(',',json_decode($singleJournal->author_name));
         $this->publisher_name = $singleJournal->publisher_name;
@@ -168,6 +169,7 @@ class JournalsListComponent extends Component
 
         $this->emit('countryEvent', $this->country_id);
         $this->emit('categoryEvent', $this->category_id);
+        $this->emit('abstractEvent', $this->abstract);
     }
 
     // softDelete
