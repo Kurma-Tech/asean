@@ -173,8 +173,7 @@
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label for="category_name">Category*</label>
-                                            <select class="form-control" id="category_name"
-                                                wire:model="category_id" style="width: 100%;">
+                                            <select class="form-control" id="category_name" wire:model="category_id" style="width: 100%;">
                                                 <option hidden>Choose Category</option>
                                                 @foreach ($categories as $category)
                                                     <option value="{{ $category->id }}">{{ $category->category }}</option>
@@ -189,8 +188,7 @@
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label for="country_name">Country*</label>
-                                            <select class="form-control" id="country_name"
-                                                wire:model="country_id" style="width: 100%;">
+                                            <select class="form-control" id="country_name" wire:model="country_id" style="width: 100%;">
                                                 <option hidden>Choose Country</option>
                                                 @foreach ($countries as $country)
                                                     <option value="{{ $country->id }}">{{ $country->name }}</option>
@@ -228,8 +226,8 @@
 
                                 <div class="col-md-12 col-sm-12" wire:ignore>
                                     <div class="form-group">
-                                        <label for="abstract">Abstract</label>
-                                        <textarea id="abstract" wire:model="abstract"></textarea>
+                                        <label for="abstract_text">Abstract</label>
+                                        <textarea id="abstract_text" wire:model.defer="abstract"></textarea>
                                         @error('abstract')
                                             <div class="error">{{ $message }}</div>
                                         @enderror
@@ -463,6 +461,7 @@
     <script src="{{ asset('plugins/summernote/summernote-bs4.min.js') }}"></script>
     
     <script>
+        "use strict";
         $(function() {
             //Initialize Select2 Elements
             $('.select2').select2();
@@ -472,23 +471,23 @@
                 theme: 'bootstrap4'
             })
 
-            $('#country_name').on('change', function(e) {
-                let data = $(this).val();
-                @this.set('country_id', data);
-            });
+            // $('#country_name').on('change', function(e) {
+            //     let data = $(this).val();
+            //     @this.set('country_id', data);
+            // });
 
-            $('#category_name').on('change', function(e) {
-                let data = $(this).val();
-                @this.set('category_id', data);
-            });
+            // $('#category_name').on('change', function(e) {
+            //     let data = $(this).val();
+            //     @this.set('category_id', data);
+            // });
 
-            Livewire.on('countryEvent', (data) => {
-                $('#country_name').val(data).trigger('change');
-            });
+            // Livewire.on('countryEvent', (data) => {
+            //     $('#country_name').val(data).trigger('change');
+            // });
 
-            Livewire.on('categoryEvent', (data) => {
-                $('#category_name').val(data).trigger('change');
-            });
+            // Livewire.on('categoryEvent', (data) => {
+            //     $('#category_name').val(data).trigger('change');
+            // });
 
             $("#published_year").datepicker({
                 format: "yyyy",
@@ -498,7 +497,7 @@
                 endDate: new Date()
             });
 
-            $('#abstract').summernote({
+            $('#abstract_text').summernote({
                 placeholder: 'Place some text here.',
                 tabsize: 2,
                 height: 300,
