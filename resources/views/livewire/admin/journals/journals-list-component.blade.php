@@ -168,7 +168,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12">
+                                    {{-- <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label for="eid_no">EID No*</label>
                                             <input type="text" class="form-control" id="eid_no"
@@ -177,7 +177,7 @@
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -287,7 +287,7 @@
                                         <th>PublishedYear</th>
                                         <th>ISSN.No</th>
                                         <th>Citition.No</th>
-                                        <th>EID.No</th>
+                                        {{-- <th>EID.No</th> --}}
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -301,7 +301,7 @@
                                             <td>{{ $journal->published_year ?? 'N/A' }}</td>
                                             <td>{{ $journal->issn_no ?? 'N/A' }}</td>
                                             <td>{{ $journal->citition_no ?? 'N/A' }}</td>
-                                            <td>{{ $journal->eid_no ?? 'N/A' }}</td>
+                                            {{-- <td>{{ $journal->eid_no ?? 'N/A' }}</td> --}}
                                             <td>
                                                 @if ($journal->deleted_at)
                                                     <a href="#" class="btn btn-xs bg-success"

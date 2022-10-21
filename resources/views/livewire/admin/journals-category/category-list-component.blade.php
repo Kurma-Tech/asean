@@ -106,17 +106,27 @@
                                         </div>
                                     @endif
 
-                                    <div class="col-md-12 m-2">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="acjs_code">Code*</label>
+                                            <input type="text" class="form-control" id="acjs_code" placeholder="Enter Code" wire:model='acjs_code'>
+                                            @error('acjs_code')
+                                            <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    {{-- <div class="col-md-12 m-2">
 
                                         <hr class="mb-2">
 
                                         <div class="form-group">
                                             <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                                {{-- <input type="checkbox" class="custom-control-input" id="customSwitch3" value="1" wire:model="is_parent"> --}}
+                                                <input type="checkbox" class="custom-control-input" id="customSwitch3" value="1" wire:model="is_parent">
                                                 <label class="custom-control-label" for="customSwitch3">Is Parent Category</label>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -144,7 +154,7 @@
                                         <th style="width:30%;">Category</th>
                                         {{-- <th style="width:30%;">Parent Category</th> --}}
                                         <th style="width:10%;">Code</th>
-                                        <th style="width:15%;">Type</th>
+                                        <th style="width:15%;">Trashed</th>
                                         <th style="width:10%;">Action</th>
                                     </tr>
                                 </thead>
@@ -166,6 +176,8 @@
                                             @endif --}}
                                             @if($category->deleted_at)
                                             <span class="badge badge-danger badge-sm">Trashed</span>
+                                            @else
+                                            <span class="badge badge-success badge-sm">Available</span>
                                             @endif
                                         </td>
                                         <td>

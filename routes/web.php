@@ -66,8 +66,6 @@ Route::prefix('admin')->name('admin.')->group(function() {
         Route::get('journals/category', CategoryListComponent::class)->name('journalCategory.list');
         // Classification
         Route::get('classification', ClassificationList::class)->name('classification.list');
-        // ManPower
-        Route::get('manpower', ManpowerListComponent::class)->name('manpower.list');
     });
 });
 

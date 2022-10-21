@@ -13,10 +13,10 @@ class JournalImport implements ToModel, WithHeadingRow, WithChunkReading, WithBa
 {
     public function model(array $row)
     {
-        if (isset($row['acjs_code'])) {
+        if (isset($row['category_code'])) {
             $category = DB::table('journal_categories')
                 ->select('id')
-                ->where('acjs_code', $row['acjs_code'])
+                ->where('acjs_code', $row['category_code'])
                 ->first();
         } else {
             $category = null;
@@ -36,7 +36,7 @@ class JournalImport implements ToModel, WithHeadingRow, WithChunkReading, WithBa
             "source_title"   => $row['source_title'],
             "issn_no"        => $row['issn_no'],
             "citition_no"    => $row['citition_no'],
-            "eid_no"         => $row['eid_no'],
+            // "eid_no"         => $row['eid_no'],
             "keywords"       => $keywordsJson,
             "link"           => $row['link'],
             "long"           => $row['long'],

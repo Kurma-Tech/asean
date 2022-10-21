@@ -103,7 +103,7 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
+                                        {{-- <div class="col-md-12">
                                             <label for="psic_code">Assign Manpower*</label>
                                             <table class="table table-bordered table-hover">
                                                 <thead>
@@ -166,7 +166,7 @@
                                                 </tbody>
                                             </table>
                                             <button class="btn text-white btn-success btn-sm" wire:click.prevent="addFields({{$i}})"><i class="fas fa-plus"></i> Add</button>
-                                        </div>
+                                        </div> --}}
                                         
                                     @endif
 
@@ -260,7 +260,7 @@
                                                         <a href="javascript:void(0)" class="product-title">{{ $industryClassification->psic_code ?? 'N/A'}}</a>
                                                     </div>
                                                 </li>
-                                                <li class="item">
+                                                {{-- <li class="item">
                                                     <div class="product-info">
                                                         @if($industryClassification->manpowers->count())
                                                         <div class="product-title">
@@ -271,7 +271,7 @@
                                                         <span class="badge badge-primary badge-md">{{$manpower->title}} ({{$manpower->pivot->seats}})</span>
                                                         @endforeach
                                                     </div>
-                                                </li>
+                                                </li> --}}
                                             </ul>
                                         </td>
                                     </tr>

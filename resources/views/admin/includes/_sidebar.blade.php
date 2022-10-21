@@ -219,10 +219,10 @@
                         </li>
                         <li class="nav-header">SETTINGS</li>
                         <li class="nav-item">
-                            <a href="{{ route('admin.manpower.list') }}" class="nav-link">
+                            <a href="" class="nav-link">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>
-                                    Man Power
+                                    
                                 </p>
                             </a>
                         </li>

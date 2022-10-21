@@ -55,18 +55,16 @@ class JournalsListComponent extends Component
             'title'          => 'required',
             'source_title'   => 'required',
             'country_id'     => 'required|integer',
-            // 'category_id'    => 'required|integer',
             'abstract'       => 'required',
             'author_name'    => 'required',
             'publisher_name' => 'required',
             'published_year' => 'required|date_format:"Y"',
             'issn_no'        => 'required',
             'citition_no'    => 'required',
-            'eid_no'         => 'required',
             'keywords'       => 'required',
-            'link'           => 'required|url',
-            'long'           => 'required',
-            'lat'            => 'required',
+            'link'           => 'nullable|url',
+            'long'           => 'nullable',
+            'lat'            => 'nullable',
         ];
     }
 
