@@ -108,7 +108,7 @@ class ReportComponent extends Component
                 if ($this->chartPatentsCount->has($lineChartYears[$i])) {
                     $tempChartPatentsCount[$lineChartYears[$i]] = $this->chartPatentsCount[$lineChartYears[$i]];
                 } else {
-                    // $tempChartPatentsCount[$lineChartYears[$i]] = null;
+                    $tempChartPatentsCount[$lineChartYears[$i]] = null;
                 }
             } catch (\Throwable $th) {
                 //throw $th;
@@ -121,7 +121,7 @@ class ReportComponent extends Component
                 if ($this->chartJournalsCount->has($lineChartYears[$i])) {
                     $tempChartJournalsCount[$lineChartYears[$i]] = $this->chartJournalsCount[$lineChartYears[$i]];
                 } else {
-                    // $tempChartPatentsCount[$lineChartYears[$i]] = null;
+                    $tempChartJournalsCount[$lineChartYears[$i]] = null;
                 }
             } catch (\Throwable $th) {
                 //throw $th;
@@ -129,13 +129,15 @@ class ReportComponent extends Component
         }
 
         $tempChartBusinessCount = [];
+        $tempChartBusinessCountForForecast = [];
         for ($i = 0; $i < count($lineChartYears); $i++) {
             try {
                 if ($this->chartBusinessCount->has($lineChartYears[$i])) {
                     $tempChartBusinessCount[$lineChartYears[$i]] = $this->chartBusinessCount[$lineChartYears[$i]];
+                    $tempChartBusinessCountForForecast[$lineChartYears[$i]] = $this->chartBusinessCount[$lineChartYears[$i]];
                 } else if ($lineChartYears[$i] == "" || $lineChartYears[$i] == null) {
                 } else {
-                    // $tempChartBusinessCount[$lineChartYears[$i]] = null;
+                    $tempChartBusinessCount[$lineChartYears[$i]] = null;
                 }
             } catch (\Throwable $th) {
                 //throw $th;
@@ -145,7 +147,7 @@ class ReportComponent extends Component
         //forecast
         // dd($tempChartBusinessCount);
 
-        $this->tempForcastData = $this->predict(collect($tempChartBusinessCount)->keys(), collect($tempChartBusinessCount)->values());
+        $this->tempForcastData = $this->predict(collect($tempChartBusinessCountForForecast)->keys(), collect($tempChartBusinessCountForForecast)->values());
 
         if ($this->isFirstLoad) {
             $this->emit("reportsFirstLoad", [
@@ -185,7 +187,7 @@ class ReportComponent extends Component
         if ($forcastDates->count() != 0 && $nL != 0 && $pL != 0) {
             $r = pow($pL / $pF, 1 / $nL) - 1;
 
-            for ($i = 0; $i < 5; $i++) {
+            for ($i = 0; $i < 10; $i++) {
                 $forecastedDates->push($last + $i + 1);
                 $forecastedData->push(intval((pow(1 + $r, $nL + $i + 1)) * $pF));
             }

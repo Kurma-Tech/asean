@@ -314,6 +314,9 @@
             //     }
             // ]);
 
+            console.log(data.forcastData);
+            console.log(data.forcastDates);
+
             lineChart.updateOptions({
                 series: [{
                         name: "Business",

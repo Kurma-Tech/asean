@@ -68,6 +68,20 @@
             width: max-content;
             padding-top: 18px;
         }
+
+        .mapboxgl-ctrl-center {
+            bottom: 72px;
+            left: 50%;
+            position:absolute; 
+            pointer-events:none; 
+            z-index:2;
+        }
+
+        .mapboxgl-ctrl-center .mapboxgl-ctrl-group {
+            display: flex;
+            margin-bottom: 5px;
+        }
+
     </style>
 @endpush
 
@@ -202,6 +216,13 @@
                     [141.79211516906793, 27.60302090835848]
                 ] // Set the map's geographical boundaries.
             });
+
+            // var nav = map.addControl(new mapboxgl.AttributionControl(), 'bottom-left');
+
+            var nav = new mapboxgl.NavigationControl(); // position is optional
+            map.addControl(nav, 'bottom-left');
+
+            nav._container.parentNode.className="mapboxgl-ctrl-center"
 
             map.loadImage(
                 '/light-bulb.png',
