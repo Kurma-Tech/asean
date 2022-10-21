@@ -68,8 +68,8 @@
                             <div class="card-body">
                                 <input type="hidden" wire:model="hiddenId">
                                 <div class="form-group">
-                                    <label for="kind">Patent Kind</label>
-                                    <input type="text" class="form-control" id="kind" placeholder="Enter Patent Kind" wire:model='kind' wire:keyup.debounce.300ms="generateslug">
+                                    <label for="kind">Kind</label>
+                                    <input type="text" class="form-control" id="kind" placeholder="Enter Kind" wire:model='kind' wire:keyup.debounce.300ms="generateslug">
                                     @error('kind')
                                     <div class="error">{{ $message }}</div>
                                     @enderror

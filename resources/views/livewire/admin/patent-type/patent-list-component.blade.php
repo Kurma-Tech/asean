@@ -67,8 +67,8 @@
                         <form wire:submit.prevent="storePatentType">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="type">Patent Type</label>
-                                    <input type="text" class="form-control" id="type" placeholder="Enter Patent type" wire:model='type' wire:keyup.debounce.300ms="generateslug">
+                                    <label for="type">Type</label>
+                                    <input type="text" class="form-control" id="type" placeholder="Enter type" wire:model='type' wire:keyup.debounce.300ms="generateslug">
                                     @error('type')
                                     <div class="error">{{ $message }}</div>
                                     @enderror
