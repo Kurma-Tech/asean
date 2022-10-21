@@ -53,6 +53,7 @@ class JournalsListComponent extends Component
             'title'          => 'required',
             'source_title'   => 'required',
             'country_id'     => 'required|integer',
+            'category_id'    => 'required|integer',
             'abstract'       => 'required',
             'author_name'    => 'required',
             'publisher_name' => 'required',
@@ -110,7 +111,9 @@ class JournalsListComponent extends Component
             $journal->country_id     = $this->country_id;
             $journal->category_id    = $this->category_id;
             $journal->abstract       = $this->abstract;
-            $journal->author_name    = $this->author_name;
+            $authorsToArray          = explode(',', $this->author_name);
+            $authorsJson             = json_encode($authorsToArray);
+            $journal->author_name    = $this->authorsJson;
             $journal->publisher_name = $this->publisher_name;
             $journal->source_title   = $this->source_title;
             $journal->issn_no        = $this->issn_no;
@@ -152,7 +155,7 @@ class JournalsListComponent extends Component
         $this->published_year = $singleJournal->published_year;
         $this->country_id     = $singleJournal->country_id;
         $this->abstract       = $singleJournal->abstract;
-        $this->author_name    = $singleJournal->author_name;
+        $this->author_name    = json_decode($singleJournal->author_name);
         $this->publisher_name = $singleJournal->publisher_name;
         $this->source_title   = $singleJournal->source_title;
         $this->issn_no        = $singleJournal->issn_no;
