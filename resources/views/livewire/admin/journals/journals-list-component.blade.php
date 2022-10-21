@@ -135,17 +135,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-12 col-sm-12">
-                                        <div class="form-group">
-                                            <label for="link">Sourse Url*</label>
-                                            <input type="text" class="form-control" id="link"
-                                                placeholder="Enter Sourse Url" wire:model='link'>
-                                            @error('link')
-                                                <div class="error">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label for="issn_no">ISSN No*</label>
@@ -163,17 +152,6 @@
                                             <input type="text" class="form-control" id="citition_no"
                                                 placeholder="Enter Publisher Name" wire:model='citition_no'>
                                             @error('citition_no')
-                                                <div class="error">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 col-sm-12">
-                                        <div class="form-group">
-                                            <label for="eid_no">EID No*</label>
-                                            <input type="text" class="form-control" id="eid_no"
-                                                placeholder="Enter EID No" wire:model='eid_no'>
-                                            @error('eid_no')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -226,7 +204,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="long">Longitude*</label>
+                                            <label for="long">Longitude</label>
                                             <input type="text" class="form-control" id="long"
                                                 placeholder="Enter Longitude" wire:model='long'>
                                             @error('long')
@@ -237,7 +215,7 @@
 
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="lat">Latitude*</label>
+                                            <label for="lat">Latitude</label>
                                             <input type="text" class="form-control" id="lat"
                                                 placeholder="Enter Latitude" wire:model='lat'>
                                             @error('lat')
@@ -287,7 +265,6 @@
                                         <th>PublishedYear</th>
                                         <th>ISSN.No</th>
                                         <th>Citition.No</th>
-                                        <th>EID.No</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -301,7 +278,6 @@
                                             <td>{{ $journal->published_year ?? 'N/A' }}</td>
                                             <td>{{ $journal->issn_no ?? 'N/A' }}</td>
                                             <td>{{ $journal->citition_no ?? 'N/A' }}</td>
-                                            <td>{{ $journal->eid_no ?? 'N/A' }}</td>
                                             <td>
                                                 @if ($journal->deleted_at)
                                                     <a href="#" class="btn btn-xs bg-success"
@@ -373,19 +349,13 @@
                                                                 Keywords
                                                             </div>
                                                             <a href="javascript:void(0)" class="product-title">
-                                                                @php $keywords = json_decode($journal->keywords) @endphp 
-                                                                @foreach ($keywords as $key)
-                                                                <span class="badge badge-secondary">{{$key}}</span>
-                                                                @endforeach
+                                                                @if($journal->keywords)
+                                                                    @php $keywords = json_decode($journal->keywords) @endphp 
+                                                                    @foreach ($keywords as $key)
+                                                                    <span class="badge badge-secondary">{{$key}}</span>
+                                                                    @endforeach
+                                                                @endif
                                                             </a>
-                                                        </div>
-                                                    </li>
-                                                    <li class="item">
-                                                        <div class="product-info">
-                                                            <div class="product-title">
-                                                                Sourse Url
-                                                            </div>
-                                                            <a href="javascript:void(0)" class="product-title">{{$journal->link ?? 'N/A'}}</a>
                                                         </div>
                                                     </li>
                                                     <li class="item">

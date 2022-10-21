@@ -20,4 +20,19 @@ class Patent extends Model
                 ->orWhere('c_code', 'like', '%'.$search.'%')
                 ->orWhere('short_code', 'like', '%'.$search.'%');
     }
+
+    public function patentType()
+    {
+        return $this->belongsTo(PatentType::class, 'type_id', 'id');
+    }
+
+    public function patentKind()
+    {
+        return $this->belongsTo(PatentKind::class, 'kind_id', 'id');
+    }
+
+    public function patentCategories()
+    {
+        return $this->belongsTo(PatentCategory::class);
+    }
 }

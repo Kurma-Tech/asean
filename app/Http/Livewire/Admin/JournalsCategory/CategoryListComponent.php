@@ -33,7 +33,8 @@ class CategoryListComponent extends Component
     {
         if ($this->is_parent) {
             return [
-                'category'  => 'required'
+                'category'  => 'required',
+                'acjs_code' => 'required'
             ];
         } else {
             return [
@@ -47,7 +48,8 @@ class CategoryListComponent extends Component
     protected $messages = [
         'parent_id.required' => 'Please select parent category',
         'parent_id.integer'  => 'You must select parent category from drop down',
-        'category.required'  => 'Please enter category title'
+        'category.required'  => 'Please enter category title',
+        'acjs_code.required' => 'Please enter category code',
     ];
 
     public function mount()

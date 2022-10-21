@@ -25,9 +25,9 @@ class JournalCategoryImport implements ToModel, WithHeadingRow, WithChunkReading
         }
         
         return new JournalCategory([
-            "parent_id"       => ($journalCategory != null) ? $journalCategory->id : null,
-            "category" => $row['category'] ?? null,
-            "acjs_code"       => $row['acjs_code'] ?? null,
+            "parent_id" => ($journalCategory != null) ? $journalCategory->id : null,
+            "category"  => $row['category'] ?? null,
+            "acjs_code" => $row['code'] ?? null,
         ]);
     }
 

@@ -24,15 +24,13 @@
                                 published_year,
                                 abstract,
                                 author_name,
-                                acjs_code,
+                                category_code,
                                 country_short_code,
                                 publisher_name,
                                 source_title,
                                 issn_no,
                                 citition_no,
-                                eid_no,
                                 keywords,
-                                link,
                                 long,
                                 lat
                             </code>

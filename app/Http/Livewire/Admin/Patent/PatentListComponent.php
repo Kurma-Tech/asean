@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin\Patent;
 
 use App\Models\Country;
 use App\Models\Patent;
+use App\Models\PatentCategory;
 use App\Models\PatentKind;
 use App\Models\PatentType;
 use Illuminate\Support\Facades\DB;
@@ -24,15 +25,23 @@ class PatentListComponent extends Component
     public 
         $countries = [],
         $patentKinds = [],
-        $patentTypes = [];
+        $patentTypes = [],
+        $categories = [];
 
     public $hiddenId = 0;
     public $title;
-    public $patent_id;
+    public $abstract;
+    public $filing_no;
+    public $applicant_company;
+    public $inventor_name;
+    public $regirstration_no;
+    public $regirstration_date;
+    public $publication_date;
+    public $filing_date;
     public $country_id;
     public $kind_id;
     public $type_id;
-    public $date;
+    public $categories_id = [];
     public $long;
     public $lat;
     public $btnType = 'Create';
@@ -67,6 +76,7 @@ class PatentListComponent extends Component
     public function mount()
     {
         $this->countries   = Country::select('id', 'name')->get();
+        $this->categories  = PatentCategory::select('id', 'classification_category')->get();
         $this->patentKinds = PatentKind::select('id', 'kind')->get();
         $this->patentTypes = PatentType::select('id', 'type')->get();
     }
@@ -96,21 +106,29 @@ class PatentListComponent extends Component
                 $patent = new Patent(); // create Patent
             }
 
-            $patent->title      = $this->title;
-            $patent->patent_id  = $this->patent_id;
-            $patent->country_id = $this->country_id;
-            $patent->kind_id    = $this->kind_id;
-            $patent->type_id    = $this->type_id;
-            $patent->date       = $this->date;
-            $patent->long       = $this->long;
-            $patent->lat        = $this->lat;
+            $patent->title             = $this->title;
+            $patent->filing_no         = $this->filing_no;
+            $patent->registration_no   = $this->registration_no;
+            $patent->country_id        = $this->country_id;
+            $patent->categories_id     = $this->categories_id;
+            $patent->kind_id           = $this->kind_id;
+            $patent->type_id           = $this->type_id;
+            $patent->registration_date = $this->registration_date;
+            $patent->publication_date  = $this->publication_date;
+            $patent->filing_date       = $this->filing_date;
+            $namesToArray              = explode(',', $this->inventor_name);
+            $namesJson                 = json_encode($namesToArray);
+            $patent->inventor_name     = $namesJson;
+            $patent->long              = $this->long;
+            $patent->lat               = $this->lat;
+            $patent->abstract          = $this->abstract;
             $patent->save();
 
             DB::commit();
 
             $this->dispatchBrowserEvent('success-message', ['message' => 'Patent has been ' . $this->btnType . '.']);
 
-            $this->reset('title', 'patent_id', 'country_id', 'kind_id', 'type_id', 'date', 'long', 'lat', 'hiddenId', 'btnType');
+            $this->reset('title', 'filing_no', 'registration_no', 'country_id', 'categories_id', 'kind_id', 'type_id', 'registration_date', 'publication_date', 'filing_date', 'inventor_name', 'long', 'lat', 'abstract', 'hiddenId', 'btnType');
         } catch (\Throwable $th) {
             DB::rollback();
             $this->error = $th->getMessage();
@@ -182,6 +200,6 @@ class PatentListComponent extends Component
     // reset fields
     public function resetFields()
     {
-        $this->reset('title', 'patent_id', 'country_id', 'kind_id', 'type_id', 'date', 'long', 'lat', 'hiddenId', 'btnType');
+        $this->reset('title', 'filing_no', 'registration_no', 'country_id', 'categories_id', 'kind_id', 'type_id', 'registration_date', 'publication_date', 'filing_date', 'inventor_name', 'long', 'lat', 'abstract', 'hiddenId', 'btnType');
     }
 }

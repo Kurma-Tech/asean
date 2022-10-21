@@ -84,7 +84,7 @@
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.patent*')) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>
-                                    Patent
+                                    Intellectual Property
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
@@ -114,7 +114,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-header">GENERAL</li>
+                        <li class="nav-header">BUSINESS GENERAL</li>
                         <li class="nav-item">
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.classification*')) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-copy"></i>
@@ -149,8 +149,9 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item {{ (request()->routeIs('admin.patentCategory*')) ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ (request()->routeIs('admin.patentCategory*')) ? 'active' : '' }}">
+                        <li class="nav-header">INTELLECTUAL PROPERTY GENERAL</li>
+                        <li class="nav-item {{ (request()->routeIs('admin.categoryPatent*')) ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ (request()->routeIs('admin.categoryPatent*')) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>
                                     Patent Category
@@ -159,7 +160,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{route('admin.patentCategory.list')}}" class="nav-link {{ (request()->routeIs('admin.patentCategory.list')) ? 'active' : '' }}">
+                                    <a href="{{route('admin.categoryPatent.list')}}" class="nav-link {{ (request()->routeIs('admin.categoryPatent.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-info"></i>
                                         <p>View All</p>
                                     </a>
@@ -170,7 +171,7 @@
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.typePatent*')) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>
-                                    Patent Types
+                                    I.P. Types
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
@@ -187,7 +188,7 @@
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.kindPatent*')) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>
-                                    Patent Kinds
+                                    I.P. Kinds
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
@@ -200,6 +201,7 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-header">JOURNALS GENERAL</li>
                         <li class="nav-item {{ (request()->routeIs('admin.journalCategory*')) ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.journalCategory*')) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-copy"></i>
@@ -219,10 +221,10 @@
                         </li>
                         <li class="nav-header">SETTINGS</li>
                         <li class="nav-item">
-                            <a href="{{ route('admin.manpower.list') }}" class="nav-link">
+                            <a href="" class="nav-link">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>
-                                    Man Power
+                                    
                                 </p>
                             </a>
                         </li>

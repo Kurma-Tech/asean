@@ -17,9 +17,7 @@ class ClassificationList extends Component
     public $orderBy = 'id';
     public $sortBy = false;
 
-    public // Manpower Asign Array
-           $inputs = [], $manpowers = [], $classificationManpowers = [],
-           // Classification Array
+    public // Classification Array
            $parentClassifications = [];
 
     public $hiddenId = 0;
@@ -27,10 +25,6 @@ class ClassificationList extends Component
     public $parent_id;
     public $psic_code;
     public $classifications;
-    // manpower assign
-    public $manpower_id;
-    public $seats;
-    public $i = 1;
 
     public $btnType = 'Create';
     public $error;
@@ -47,11 +41,7 @@ class ClassificationList extends Component
             return [
                 'classifications' => 'required',
                 'parent_id'       => 'required|integer',
-                'psic_code'       => 'required',
-                'manpower_id.0'   => 'required',
-                'seats.0'         => 'required',
-                'manpower_id.*'   => 'required',
-                'seats.*'         => 'required|integer'
+                'psic_code'       => 'required'
             ];
         }
     }
@@ -59,18 +49,11 @@ class ClassificationList extends Component
     protected $messages = [
         'parent_id.required'       => 'Please select parent classification',
         'parent_id.integer'        => 'You must select parent classification from drop down',
-        'classifications.required' => 'Please enter classification title',
-        'manpower_id.0.required'   => 'Manpower field is required',
-        'seats.0.required'         => 'Seats field is required',
-        'seats.0.integer'          => 'The seats must be a integer.',
-        'manpower_id.*.required'   => 'Manpower field is required',
-        'seats.*.required'         => 'Seats field is required',
-        'seats.*.integer'          => 'The seats must be a integer.'
+        'classifications.required' => 'Please enter classification title'
     ];
 
     public function mount()
     {
-        $this->manpowers = Manpower::select('id', 'title', 'skilled')->get();
         $this->parentClassifications = IndustryClassification::where('parent_id', null)->select('id', 'classifications')->get();
     }
 
@@ -104,13 +87,6 @@ class ClassificationList extends Component
             $industryClassification->psic_code       = $this->psic_code;
             $industryClassification->save();
 
-            $manpowers = [];
-            foreach($this->manpower_id as $key => $value)
-            {
-                $manpowers[$value] = ['seats' => $this->seats[$key]];
-            }
-
-            $industryClassification->manpowers()->sync($manpowers);
             DB::commit();
 
             $this->dispatchBrowserEvent('success-message', ['message' => 'Industry Classification has been ' . $this->btnType . '.']);
@@ -134,13 +110,6 @@ class ClassificationList extends Component
         $this->psic_code               = $singleData->psic_code;
         $this->is_parent               = $singleData->parent_id ? 0 : 1;
         $this->btnType                 = 'Update';
-        $this->classificationManpowers = $singleData->manpowers;
-        
-        // foreach($this->classificationManpowers as $key => $value)
-        // {
-        //     $this->manpower_id.'.'.$key = $value->id;
-        //     $this->seats.'.'.$key = $value->pivot->seats;
-        // }
     }
 
     // softDelete
@@ -187,18 +156,5 @@ class ClassificationList extends Component
     public function resetFields()
     {
         $this->reset('classifications', 'parent_id', 'psic_code', 'hiddenId', 'btnType', 'is_parent');
-        $this->reset('manpower_id', 'seets', 'inputs');
-    }
-
-    public function addFields($i)
-    {
-        $i = $i + 1;
-        $this->i = $i;
-        array_push($this->inputs, $i);
-    }
-
-    public function removeFields($i)
-    {
-        unset($this->inputs[$i]);
     }
 }

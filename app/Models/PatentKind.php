@@ -31,4 +31,9 @@ class PatentKind extends Model
             : static::query()->where('id', 'like', '%'.$search.'%')
                 ->orWhere('kind', 'like', '%'.$search.'%');
     }
+
+    public function patent()
+    {
+        return $this->hasMany(Patent::class);
+    }
 }
