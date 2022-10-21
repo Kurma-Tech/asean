@@ -113,7 +113,7 @@ class JournalsListComponent extends Component
             $journal->abstract       = $this->abstract;
             $authorsToArray          = explode(',', $this->author_name);
             $authorsJson             = json_encode($authorsToArray);
-            $journal->author_name    = $this->authorsJson;
+            $journal->author_name    = $authorsJson;
             $journal->publisher_name = $this->publisher_name;
             $journal->source_title   = $this->source_title;
             $journal->issn_no        = $this->issn_no;
@@ -140,8 +140,8 @@ class JournalsListComponent extends Component
             );
         } catch (\Throwable $th) {
             DB::rollback();
-            // $this->error = $th->getMessage();
-            $this->error = 'Ops! looks like we had some problem';
+            $this->error = $th->getMessage();
+            // $this->error = 'Ops! looks like we had some problem';
             $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);
         }
     }
