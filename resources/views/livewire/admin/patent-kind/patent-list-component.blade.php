@@ -1,4 +1,4 @@
-@section('title', 'Patent Kind List')
+@section('title', 'Intellectual Property Kind List')
 
 <div>
     <!-- Main content -->
@@ -33,8 +33,7 @@
                                         <select class="form-control" style="width: 100%;" wire:model="orderBy">
                                             <option hidden>Choose Order By</option>
                                             <option value="id">By ID</option>
-                                            <option value="name">name</option>
-                                            <option value="isDeactivated">Activated</option>
+                                            <option value="kind">Kind</option>
                                         </select>
                                     </div>
                                 </div>
@@ -59,7 +58,7 @@
                 <div class="col-4 col-md-4 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">{{ $btnType }} Patent Kind</h3>
+                            <h3 class="card-title">{{ $btnType }} I.P. Kind</h3>
                             <button type="button" class="btn btn-xs btn-info pull-right" data-toggle="modal" data-target="#modal-default">
                                 <i class="fa fa-file-import"></i> Import CSV
                             </button>
@@ -96,7 +95,7 @@
                 <div class="col-8 col-md-8 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">All Patent Kind List</h3>
+                            <h3 class="card-title">All Intellectual Property Kind List</h3>
                         </div>
                         <!-- ./card-header -->
                         <div class="card-body">
