@@ -140,13 +140,13 @@
                             <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th style="width:2.5%;">#</th>
-                                        <th style="width:2.5%;">ID</th>
-                                        <th style="width:30%;">Title</th>
-                                        <th style="width:30%;">Parent Category</th>
-                                        <th style="width:10%;">IPC Code</th>
-                                        <th style="width:15%;">Type</th>
-                                        <th style="width:10%;">Action</th>
+                                        <th>#</th>
+                                        <th>ID</th>
+                                        <th>Title</th>
+                                        <th>Parent Category</th>
+                                        <th>IPC Code</th>
+                                        <th>Type</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
