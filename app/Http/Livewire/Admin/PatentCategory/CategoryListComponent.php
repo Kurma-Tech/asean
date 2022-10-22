@@ -33,7 +33,8 @@ class CategoryListComponent extends Component
     {
         if ($this->is_parent) {
             return [
-                'classification_category' => 'required'
+                'classification_category' => 'required',
+                'ipc_code'                => 'required',
             ];
         } else {
             return [
@@ -50,18 +51,15 @@ class CategoryListComponent extends Component
         'classification_category.required' => 'Please enter classification category title'
     ];
 
-    public function mount()
-    {
-        $this->parentCategories = PatentCategory::where('parent_id', null)->select('id', 'classification_category')->get();
-    }
-
     public function render()
     {
+        $this->parentCategories = PatentCategory::where('parent_id', null)->whereNot('id', $this->hiddenId)->select('id', 'classification_category')->get();
         return view('livewire.admin.patent-category.category-list-component', [
             'patentCategories' => PatentCategory::search($this->search)
                 ->withTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc' : 'desc')
                 ->paginate($this->perPage),
+            'parentCategories' => $this->parentCategories,
         ])->layout('layouts/admin');
     }
 

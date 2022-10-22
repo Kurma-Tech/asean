@@ -41,7 +41,7 @@ class PatentListComponent extends Component
     public $country_id;
     public $kind_id;
     public $type_id;
-    public $categories_id = [];
+    public $category_id = [];
     public $long;
     public $lat;
     public $btnType = 'Create';
@@ -57,7 +57,7 @@ class PatentListComponent extends Component
             'inventor_name'     => 'required',
             'applicant_company' => 'required',
             'country_id'        => 'required|integer',
-            'categories_id'     => 'required|integer',
+            'category_id'       => 'required',
             'kind_id'           => 'required|integer',
             'type_id'           => 'required|integer',
             'registration_no'   => 'required',
@@ -72,8 +72,7 @@ class PatentListComponent extends Component
     protected $messages = [
         'country_id.required'    => 'Country field is required',
         'country_id.integer'     => 'You must select country from drop down',
-        'categories_id.required' => 'Category field is required',
-        'categories_id.integer'  => 'You must select category from drop down',
+        'category_id.required'   => 'Category field is required',
         'kind_id.required'       => 'Patent kind field is required',
         'kind_id.integer'        => 'You must select patent kind from drop down',
         'type_id.required'       => 'Patent type field is required',
@@ -118,7 +117,7 @@ class PatentListComponent extends Component
             $patent->applicant_company = $this->applicant_company;
             $patent->registration_no   = $this->registration_no;
             $patent->country_id        = $this->country_id;
-            $patent->categories_id     = json_encode($this->categories_id);
+            $patent->category_id       = json_encode($this->category_id);
             $patent->kind_id           = $this->kind_id;
             $patent->type_id           = $this->type_id;
             $patent->registration_date = $this->registration_date;
@@ -136,7 +135,7 @@ class PatentListComponent extends Component
 
             $this->dispatchBrowserEvent('success-message', ['message' => 'Intellectual Property Has Been ' . $this->btnType . '.']);
 
-            $this->reset('title', 'filing_no', 'registration_no', 'country_id', 'categories_id', 'kind_id', 'type_id', 'registration_date', 'publication_date', 'filing_date', 'inventor_name', 'long', 'lat', 'abstract', 'hiddenId', 'btnType');
+            $this->reset('title', 'filing_no', 'registration_no', 'country_id', 'category_id', 'kind_id', 'type_id', 'registration_date', 'publication_date', 'filing_date', 'inventor_name', 'long', 'lat', 'abstract', 'hiddenId', 'btnType');
         } catch (\Throwable $th) {
             DB::rollback();
             $this->error = $th->getMessage();
@@ -152,7 +151,7 @@ class PatentListComponent extends Component
         $this->hiddenId           = $singlePatent->id;
         $this->title              = $singlePatent->title;
         $this->country_id         = $singlePatent->country_id;
-        $this->categories_id      = $singlePatent->category_id;
+        $this->category_id        = $singlePatent->category_id;
         $this->kind_id            = $singlePatent->kind_id;
         $this->type_id            = $singlePatent->type_id;
         $this->registration_no    = $singlePatent->registration_no;
@@ -214,6 +213,6 @@ class PatentListComponent extends Component
     // reset fields
     public function resetFields()
     {
-        $this->reset('title', 'filing_no', 'registration_no', 'country_id', 'categories_id', 'kind_id', 'type_id', 'registration_date', 'publication_date', 'filing_date', 'inventor_name', 'long', 'lat', 'abstract', 'hiddenId', 'btnType');
+        $this->reset('title', 'filing_no', 'registration_no', 'country_id', 'category_id', 'kind_id', 'type_id', 'registration_date', 'publication_date', 'filing_date', 'inventor_name', 'long', 'lat', 'abstract', 'hiddenId', 'btnType');
     }
 }
