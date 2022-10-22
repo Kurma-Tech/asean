@@ -33,4 +33,9 @@ class Business extends Model
     {
         return $this->belongsTo(BusinessType::class);
     }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
 }

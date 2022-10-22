@@ -94,17 +94,17 @@
                                                 @enderror
                                             </div>
                                         </div>
-
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="ipc_code">IPC Code*</label>
-                                                <input type="text" class="form-control" id="ipc_code" placeholder="Enter IPC Code" wire:model='ipc_code'>
-                                                @error('ipc_code')
-                                                <div class="error">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
                                     @endif
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="ipc_code">IPC Code*</label>
+                                            <input type="text" class="form-control" id="ipc_code" placeholder="Enter IPC Code" wire:model='ipc_code'>
+                                            @error('ipc_code')
+                                            <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
 
                                     <div class="col-md-12 m-2">
 

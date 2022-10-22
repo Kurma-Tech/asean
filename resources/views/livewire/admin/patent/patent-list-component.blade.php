@@ -165,13 +165,13 @@
                                         <div class="form-group">
                                             <label for="category-dropdown">Patent Category*</label>
                                             <div class="select2-purple" wire:ignore>
-                                                <select class="form-control select2" multiple="multiple" data-placeholder="Choose Categories" data-dropdown-css-class="select2-purple" id="category-dropdown" wire:model="categories_id">
+                                                <select class="form-control select2" multiple="multiple" data-placeholder="Choose Categories" data-dropdown-css-class="select2-purple" id="category-dropdown" wire:model="category_id">
                                                     @foreach($categories as $category)
                                                     <option value="{{ $category->id }}">{{ $category->classification_category }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            @error('categories_id')
+                                            @error('category_id')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -271,7 +271,7 @@
                 <div class="col-8 col-md-8 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">All Patent List</h3>
+                            <h3 class="card-title">All Intellectual Property List</h3>
                         </div>
                         <!-- ./card-header -->
                         <div class="card-body">
@@ -392,6 +392,29 @@
                                                 <li class="item">
                                                     <div class="product-info">
                                                         <div class="product-title">
+                                                            Patent Category
+                                                        </div>
+                                                        <a href="javascript:void(0)" class="product-title">
+                                                            @if($patent->category_id)
+                                                                @php $categories = json_decode($patent->category_id) @endphp 
+                                                                @foreach ($categories as $c)
+                                                                <span class="badge badge-secondary">{{$c}}</span>
+                                                                @endforeach
+                                                            @endif
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Applicant Company
+                                                        </div>
+                                                        <a href="javascript:void(0)" class="product-title">{{$patent->applicant_company ?? 'N/A'}}</a>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
                                                             Country Name
                                                         </div>
                                                         <a href="javascript:void(0)" class="product-title">{{$patent->country->name ?? 'N/A'}}</a>
@@ -483,7 +506,7 @@
         $('#category-dropdown').select2();
         $('#category-dropdown').on('change', function (e) {
             let data = $(this).val();
-                @this.set('categories_id', data);
+                @this.set('category_id', data);
         });
         window.livewire.on('productStore', () => {
             $('#category-dropdown').select2();
