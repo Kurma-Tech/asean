@@ -217,9 +217,9 @@
                                                 <li class="item">
                                                     <div class="product-info">
                                                         <div class="product-title">
-                                                            Category
+                                                            IPC Code
                                                         </div>
-                                                        <span class="badge badge-primary">{{ $category->ipc_code ?? 'N/A' }}</span>
+                                                        <span class="badge badge-secondary">{{ $category->ipc_code ?? 'N/A' }}</span>
                                                     </div>
                                                 </li>
                                                 <li class="item">
