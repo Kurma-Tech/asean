@@ -22,8 +22,7 @@ return new class extends Migration
             $table->json('inventor_name')->nullable();
             $table->text('applicant_company')->nullable();
             $table->text('abstract')->nullable();
-            $table->bigInteger('category_id')->unsigned()->nullable();
-            $table->foreign('category_id')->references('id')->on('patent_categories')->onDelete('CASCADE')->onUpdate('CASCADE');
+            $table->json('category_id');
         });
     }
 
@@ -37,7 +36,6 @@ return new class extends Migration
         Schema::table('patents', function (Blueprint $table) {
             $table->renameColumn('filing_no', 'patent_id');
             $table->renameColumn('registration_date', 'date');
-            $table->dropForeign('patents_category_id_foreign');
             $table->dropColumn('category_id');
             $table->dropColumn('abstract');
             $table->dropColumn('filing_date');

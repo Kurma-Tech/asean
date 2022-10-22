@@ -14,7 +14,6 @@ return new class extends Migration
     public function up()
     {
         Schema::table('journals', function (Blueprint $table) {
-            $table->json('keywords')->nullable()->change();
             $table->json('author_name')->nullable()->change();
         });
     }
@@ -28,7 +27,6 @@ return new class extends Migration
     {
         Schema::table('journals', function (Blueprint $table) {
             $table->text('author_name')->nullable()->change();
-            $table->text('keywords')->nullable()->change();
         });
     }
 };
