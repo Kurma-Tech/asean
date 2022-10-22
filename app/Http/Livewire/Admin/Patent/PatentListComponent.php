@@ -118,7 +118,7 @@ class PatentListComponent extends Component
             $patent->applicant_company = $this->applicant_company;
             $patent->registration_no   = $this->registration_no;
             $patent->country_id        = $this->country_id;
-            $patent->categories_id     = $this->categories_id;
+            $patent->categories_id     = json_encode($this->categories_id);
             $patent->kind_id           = $this->kind_id;
             $patent->type_id           = $this->type_id;
             $patent->registration_date = $this->registration_date;
