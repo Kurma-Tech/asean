@@ -161,12 +161,11 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12">
+                                    <div class="col-md-12 col-sm-12">
                                         <div class="form-group">
-                                            <label for="category_name">Patent Category*</label>
-                                            <div wire:ignore>
-                                                <select class="form-control select2 select2bs4" id="category_name" wire:model="categories_id" style="width: 100%;">
-                                                    <option hidden>Choose Category</option>
+                                            <label for="category-dropdown">Patent Category*</label>
+                                            <div class="select2-purple" wire:ignore>
+                                                <select class="form-control select2" multiple="multiple" data-placeholder="Choose Categories" data-dropdown-css-class="select2-purple" id="category-dropdown" wire:model="categories_id">
                                                     @foreach($categories as $category)
                                                     <option value="{{ $category->id }}">{{ $category->classification_category }}</option>
                                                     @endforeach
@@ -195,7 +194,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="registration_date">Registration Date*</label>
                                             <input type="text" class="form-control" name="registration_date" id="registration_date" wire:model="registration_date" onchange="this.dispatchEvent(new InputEvent('input'))"/>
@@ -205,7 +204,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="publication_date">Publication Date*</label>
                                             <input type="text" class="form-control" name="publication_date" id="publication_date" wire:model="publication_date" onchange="this.dispatchEvent(new InputEvent('input'))"/>
@@ -215,7 +214,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="filing_date">Filing Date*</label>
                                             <input type="text" class="form-control" name="filing_date" id="filing_date" wire:model="filing_date" onchange="this.dispatchEvent(new InputEvent('input'))"/>
@@ -480,6 +479,17 @@
 <!-- Summernote -->
 <script src="{{ asset('plugins/summernote/summernote-bs4.min.js') }}"></script>
 <script>
+    $(document).ready(function () {
+        $('#category-dropdown').select2();
+        $('#category-dropdown').on('change', function (e) {
+            let data = $(this).val();
+                @this.set('categories_id', data);
+        });
+        window.livewire.on('productStore', () => {
+            $('#category-dropdown').select2();
+        });
+    });  
+
     $(function () {
         //Initialize Select2 Elements
         $('.select2').select2();

@@ -37,6 +37,14 @@ return new class extends Migration
         Schema::table('patents', function (Blueprint $table) {
             $table->renameColumn('filing_no', 'patent_id');
             $table->renameColumn('registration_date', 'date');
+            $table->dropForeign('patents_category_id_foreign');
+            $table->dropColumn('category_id');
+            $table->dropColumn('abstract');
+            $table->dropColumn('filing_date');
+            $table->dropColumn('registration_no');
+            $table->dropColumn('inventor_name');
+            $table->dropColumn('applicant_company');
+            $table->dropColumn('publication_date');
         });
     }
 };
