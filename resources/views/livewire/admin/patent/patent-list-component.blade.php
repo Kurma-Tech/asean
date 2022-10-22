@@ -508,7 +508,7 @@
             let data = $(this).val();
                 @this.set('category_id', data);
         });
-        window.livewire.on('productStore', () => {
+        window.livewire.on('categories', () => {
             $('#category-dropdown').select2();
         });
     });  

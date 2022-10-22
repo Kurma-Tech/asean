@@ -53,7 +53,7 @@ class CategoryListComponent extends Component
 
     public function render()
     {
-        $this->parentCategories = PatentCategory::where('parent_id', null)->whereNot('id', $this->hiddenId)->select('id', 'classification_category')->get();
+        $this->parentCategories = PatentCategory::whereNot('id', $this->hiddenId)->select('id', 'classification_category')->get();
         return view('livewire.admin.patent-category.category-list-component', [
             'patentCategories' => PatentCategory::search($this->search)
                 ->withTrashed()
@@ -106,6 +106,8 @@ class CategoryListComponent extends Component
         $this->ipc_code                = $singleData->ipc_code;
         $this->is_parent               = $singleData->parent_id ? 0 : 1;
         $this->btnType                 = 'Update';
+
+        $this->emit('category', $this->parent_id);
     }
 
     // softDelete

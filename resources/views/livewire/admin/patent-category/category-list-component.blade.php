@@ -82,13 +82,14 @@
                                     @if(!$is_parent)
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="parent_id">Parent Category*</label>
-                                                <select class="form-control" id="parent_id" wire:model="parent_id">
-                                                    <option hidden>Choose Parent Category</option>
-                                                    @foreach($parentCategories as $parent)
-                                                    <option value="{{ $parent->id }}">{{ $parent->classification_category }}</option>
-                                                    @endforeach
-                                                </select>
+                                                <label for="category-dropdown">Category*</label>
+                                                <div class="select2-purple" wire:ignore>
+                                                    <select class="form-control" id="category-dropdown" data-placeholder="Choose Categories" data-dropdown-css-class="select2-purple" wire:model="parent_id">
+                                                        @foreach($parentCategories as $parent)
+                                                        <option value="{{ $parent->id }}">{{ $parent->classification_category }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                                 @error('parent_id')
                                                     <div class="error">{{ $message }}</div>
                                                 @enderror
@@ -205,7 +206,27 @@
 </div>
 
 @push('extra-styles')
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <style>
         .has-error {border: 1px solid #ff7e7e;}
     </style>
+@endpush
+
+@push('extra-scripts')
+<!-- Select2 -->
+<script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+<script>
+$(document).ready(function () {
+    $('#category-dropdown').select2();
+    $('#category-dropdown').on('change', function (e) {
+        let data = $(this).val();
+            @this.set('parent_id', data);
+    });
+    window.livewire.on('category', () => {
+        $('#category-dropdown').select2();
+    });
+});  
+</script>
 @endpush
