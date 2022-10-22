@@ -14,7 +14,6 @@ class PatentCategoryImport implements ToModel, WithHeadingRow, WithChunkReading,
     public function model(array $row)
     {
         if (isset($row['parent_ipc_code'])) {
-
             $patentCategory = DB::table('patent_categories')
                 ->select('id')
                 ->where('ipc_code', $row['parent_ipc_code'])

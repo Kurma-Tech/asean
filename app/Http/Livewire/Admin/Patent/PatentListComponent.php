@@ -168,6 +168,7 @@ class PatentListComponent extends Component
         $this->emit('countryEvent', $this->country_id);
         $this->emit('typeEvent', $this->kind_id);
         $this->emit('kindEvent', $this->kind_id);
+        $this->emit('categories', $this->category_id);
     }
 
     // softDelete
