@@ -141,9 +141,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>ID</th>
                                         <th>Title</th>
-                                        <th>Parent Category</th>
                                         <th>IPC Code</th>
                                         <th>Type</th>
                                         <th>Action</th>
@@ -153,11 +151,7 @@
                                     @foreach ($patentCategories as $category)
                                     <tr data-widget="expandable-table" aria-expanded="false">
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $category->id }}</td>
                                         <td>{{ $category->classification_category }}</td>
-                                        <td>
-                                            <span class="badge badge-primary">{{ $category->parent->classification_category ?? 'Self' }}</span>
-                                        </td>
                                         <td>{{ $category->ipc_code }}</td>
                                         <td>
                                             @if($category->parent_id)
@@ -182,6 +176,78 @@
                                                     <i class="far fa-trash-alt"></i>
                                                 </a>
                                             @endif
+                                        </td>
+                                    </tr>
+                                    <tr class="expandable-body d-none">
+                                        <td colspan="8">
+                                            <ul class="products-list product-list-in-card pl-2 pr-2">
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Action
+                                                        </div>
+                                                        @if ($category->deleted_at)
+                                                            <a href="#" class="btn btn-xs bg-success"
+                                                                wire:click="restore({{ $category->id }})"
+                                                                data-toggle="tooltip" data-placement="top" title="Restore">
+                                                                <i class="fas fa-trash-restore"></i>
+                                                            </a>
+                                                        @else
+                                                            <a href="javascript:void(0)" class="btn btn-xs bg-warning"
+                                                                wire:click="editForm({{ $category->id }})"
+                                                                data-toggle="tooltip" data-placement="top" title="Edit">
+                                                                <i class="fas fa-edit"></i>
+                                                            </a>
+                                                            <a href="#" class="btn btn-xs bg-danger"
+                                                                wire:click="softDelete({{ $category->id }})"
+                                                                data-toggle="tooltip" data-placement="top" title="Delete">
+                                                                <i class="far fa-trash-alt"></i>
+                                                            </a>
+                                                        @endif
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Category
+                                                        </div>
+                                                        <span class="badge badge-primary">{{ $category->parent->classification_category ?? 'Self' }}</span>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Category
+                                                        </div>
+                                                        <span class="badge badge-primary">{{ $category->ipc_code ?? 'N/A' }}</span>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Action
+                                                        </div>
+                                                        @if ($category->deleted_at)
+                                                            <a href="#" class="btn btn-xs bg-success"
+                                                                wire:click="restore({{ $category->id }})"
+                                                                data-toggle="tooltip" data-placement="top" title="Restore">
+                                                                <i class="fas fa-trash-restore"></i>
+                                                            </a>
+                                                        @else
+                                                            <a href="javascript:void(0)" class="btn btn-xs bg-warning"
+                                                                wire:click="editForm({{ $category->id }})"
+                                                                data-toggle="tooltip" data-placement="top" title="Edit">
+                                                                <i class="fas fa-edit"></i>
+                                                            </a>
+                                                            <a href="#" class="btn btn-xs bg-danger"
+                                                                wire:click="softDelete({{ $category->id }})"
+                                                                data-toggle="tooltip" data-placement="top" title="Delete">
+                                                                <i class="far fa-trash-alt"></i>
+                                                            </a>
+                                                        @endif
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </td>
                                     </tr>
                                     @endforeach
