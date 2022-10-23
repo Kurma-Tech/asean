@@ -12,11 +12,11 @@ use App\Http\Livewire\Admin\Country\CountryListComponent;
 use App\Http\Livewire\Admin\DashboardComponent;
 use App\Http\Livewire\Admin\Journals\JournalsListComponent;
 use App\Http\Livewire\Admin\JournalsCategory\CategoryListComponent;
-use App\Http\Livewire\Admin\Manpower\ManpowerListComponent;
 use App\Http\Livewire\Admin\Patent\PatentListComponent;
 use App\Http\Livewire\Admin\PatentCategory\CategoryListComponent as PatentCategoryCategoryListComponent;
 use App\Http\Livewire\Admin\PatentKind\PatentListComponent as PatentKindPatentListComponent;
 use App\Http\Livewire\Admin\PatentType\PatentListComponent as PatentTypePatentListComponent;
+use App\Http\Livewire\Admin\User\UserListComponent;
 use App\Http\Livewire\Client\DashboardComponent as ClientDashboardComponent;
 use App\Http\Livewire\Client\HomeComponent;
 use App\Http\Livewire\Client\Report\ReportComponent;
@@ -66,6 +66,8 @@ Route::prefix('admin')->name('admin.')->group(function() {
         Route::get('journals/category', CategoryListComponent::class)->name('journalCategory.list');
         // Classification
         Route::get('classification', ClassificationList::class)->name('classification.list');
+        // User
+        Route::get('users', UserListComponent::class)->name('users.list');
     });
 });
 

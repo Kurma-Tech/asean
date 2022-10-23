@@ -35,7 +35,7 @@
                         <li class="nav-header">ASEAN COUNTRIES</li>
                         <li class="nav-item {{ (request()->routeIs('admin.countries*')) ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.countries*')) ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-copy"></i>
+                                <i class="nav-icon fas fa-globe-asia text-primary"></i>
                                 <p>
                                     Countries
                                     <i class="fas fa-angle-left right"></i>
@@ -53,7 +53,7 @@
                         <li class="nav-header">DATA</li>
                         <li class="nav-item {{ (request()->routeIs('admin.business*')) ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.business*')) ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-copy"></i>
+                                <i class="nav-icon fas fa-building text-danger"></i>
                                 <p>
                                     Business
                                     <i class="fas fa-angle-left right"></i>
@@ -82,7 +82,7 @@
                         </li>
                         <li class="nav-item {{ (request()->routeIs('admin.patent*')) ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.patent*')) ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-copy"></i>
+                                <i class="nav-icon fas fa-certificate text-warning"></i>
                                 <p>
                                     Intellectual Property
                                     <i class="fas fa-angle-left right"></i>
@@ -99,7 +99,7 @@
                         </li>
                         <li class="nav-item {{ (request()->routeIs('admin.journals*')) ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.journals*')) ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-copy"></i>
+                                <i class="nav-icon fas fa-book text-info"></i>
                                 <p>
                                     Journals
                                     <i class="fas fa-angle-left right"></i>
@@ -221,19 +221,18 @@
                         </li>
                         <li class="nav-header">SETTINGS</li>
                         <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-copy"></i>
+                            <a href="{{ route('admin.users.list') }}" class="nav-link">
+                                <i class="nav-icon fas fa-users text-info"></i>
                                 <p>
-                                    
+                                    Users
                                 </p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-copy"></i>
+                                <i class="nav-icon fas fa-cogs text-warning"></i>
                                 <p>
                                     Site Settings
-                                    <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
                         </li>
