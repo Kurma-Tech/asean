@@ -14,13 +14,27 @@
                             </button>
                         </div>
                         <!-- ./card-header -->
-                        <form wire:submit.prevent="storeUser">
+                        <form wire:submit.prevent="storeRole">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="name">Name</label>
+                                    <label for="name">Name*</label>
                                     <input type="text" class="form-control" id="name" placeholder="Enter Role Name" wire:model='name'>
-                                    @error('type')
+                                    @error('name')
                                     <div class="error">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="permission-dropdown">Assing Permission</label>
+                                    <div class="select2-purple" wire:ignore>
+                                        <select class="form-control select2" multiple="multiple" data-placeholder="Choose Permissions" data-dropdown-css-class="select2-purple" id="permission-dropdown" wire:model="permissions">
+                                            @foreach($permissionList as $list)
+                                            <option value="{{ $list->id }}">{{ $list->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @error('permissions')
+                                        <div class="error">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -47,7 +61,8 @@
                                         <th>#</th>
                                         <th>Name</th>
                                         <th>Guard</th>
-                                        <th>Created Date</th>
+                                        <th>Permissions</th>
+                                        <th>Created At</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -57,7 +72,12 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $role->name }}</td>
                                         <td>{{ $role->guard_name }}</td>
-                                        <td>{{ $role->created_at }}</td>
+                                        <td>
+                                            @foreach($role->permissions as $rolePermission)
+                                                <span class="badge badge-primary">{{ $rolePermission->name }}</span>
+                                            @endforeach
+                                        </td>
+                                        <td>{{ $role->created_at->diffForHumans() }}</td>
                                         <td>
                                             @if($role->deleted_at)
                                             <a href="#" class="btn btn-xs bg-success" wire:click="restore({{$role->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
@@ -91,3 +111,31 @@
     </div>
     <!-- /.content -->
 </div>
+
+@push('extra-styles')
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
+@endpush
+
+@push('extra-scripts')
+    <!-- Select2 -->
+    <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#permission-dropdown').select2();
+            $('#permission-dropdown').on('change', function (e) {
+                let data = $(this).val();
+                    @this.set('permissions', data);
+            });
+        });
+        window.loadSelect2 = () => {
+            $('.select2').select2().on('change',function () {
+                livewire.emitTo('permissions','selectedItem',$(this).val());
+
+                // or
+
+                // @this.set('propertyName',$(this).val());
+            });
+        }
+    </script>
+@endpush

@@ -17,8 +17,6 @@ class PermissionComponent extends Component
     public $name;
     public $btnType = 'Create';
 
-    protected $listeners = ['refreshUserListComponent' => '$refresh'];
-
     protected function rules()
     {
         return [
@@ -29,14 +27,14 @@ class PermissionComponent extends Component
     public function render()
     {
         return view('livewire.admin.user.permission-component', [
-            'permission' => Permission::orderBy('created_at', 'desc')->paginate(10),
+            'permissions' => Permission::orderBy('created_at', 'desc')->paginate(10),
         ])->layout('layouts.admin');
     }
 
     // Store
-    public function storeUser()
+    public function storePermission()
     {
-        $this->validate(); // validate User form
+        $this->validate(); // validate Permission form
 
         DB::beginTransaction();
 
@@ -44,18 +42,18 @@ class PermissionComponent extends Component
             $updateId = $this->hiddenId;
             if($updateId > 0)
             {
-                $role = Role::find($updateId); // update Role
+                $permission = Permission::find($updateId); // update Permission
             }
             else{
-                $role = new Role(); // create Role
+                $permission = new Permission(); // create Permission
             }
             
-            $role->name  = $this->name;
-            $role->save();
+            $permission->name  = $this->name;
+            $permission->save();
 
             DB::commit();
 
-            $this->dispatchBrowserEvent('success-message',['message' => 'Role has been ' . $this->btnType . '.']);
+            $this->dispatchBrowserEvent('success-message',['message' => 'Permission has been ' . $this->btnType . '.']);
 
             $this->reset('name', 'hiddenId', 'btnType');
             
@@ -70,20 +68,20 @@ class PermissionComponent extends Component
     // Update Form
     public function editForm($id)
     {
-        $singleRole     = Role::find($id);
-        $this->hiddenId = $singleRole->id;
-        $this->name     = $singleRole->name;
-        $this->btnType  = 'Update';
+        $singlePermission = Permission::find($id);
+        $this->hiddenId   = $singlePermission->id;
+        $this->name       = $singlePermission->name;
+        $this->btnType    = 'Update';
     }
 
     // softDelete
     public function softDelete($id)
     {
         try {
-            $data = Role::find($id);
+            $data = Permission::find($id);
             if ($data != null) {
                 $data->delete();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Role Deleted Successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Permission Deleted Successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -100,10 +98,10 @@ class PermissionComponent extends Component
     public function restore($id)
     {
         try {
-            $data = Role::onlyTrashed()->find($id);
+            $data = Permission::onlyTrashed()->find($id);
             if ($data != null) {
                 $data->restore();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Role Restored Successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Permission Restored Successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);

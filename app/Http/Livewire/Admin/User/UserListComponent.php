@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Spatie\Permission\Models\Permission;
 
 class UserListComponent extends Component
 {
@@ -37,6 +38,7 @@ class UserListComponent extends Component
     {
         return view('livewire.admin.user.user-list-component', [
             'users' => User::search($this->search)
+                ->where('is_admin', '!=', 1)
                 ->withTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
                 ->paginate($this->perPage),

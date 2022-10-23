@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Admin\User;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleComponent extends Component
@@ -14,16 +15,24 @@ class RoleComponent extends Component
     public $error;
 
     public $hiddenId = 0;
+    public $permissions;
     public $name;
     public $btnType = 'Create';
 
-    protected $listeners = ['refreshUserListComponent' => '$refresh'];
+    // in component
+    protected $listeners = ['selectedItem'];
 
     protected function rules()
     {
         return [
-            'name' => 'required|unique:roles,name',
+            'name' => 'required|unique:roles,name,'.$this->hiddenId,
+            'permissions' => 'required'
         ];
+    }
+
+    public function mount()
+    {
+        $this->permissionList = Permission::all();
     }
 
     public function render()
@@ -34,7 +43,7 @@ class RoleComponent extends Component
     }
 
     // Store
-    public function storeUser()
+    public function storeRole()
     {
         $this->validate(); // validate User form
 
@@ -53,16 +62,20 @@ class RoleComponent extends Component
             $role->name  = $this->name;
             $role->save();
 
+            $role->syncPermissions($this->permissions);
+
             DB::commit();
 
             $this->dispatchBrowserEvent('success-message',['message' => 'Role has been ' . $this->btnType . '.']);
 
-            $this->reset('name', 'hiddenId', 'btnType');
+            $this->reset('name', 'permissions', 'hiddenId', 'btnType');
+
+            $this->emit('permissionEvent', $this->permissions);
             
         } catch (\Throwable $th) {
             DB::rollback();
-            // $this->error = $th->getMessage();
-            $this->error = 'Ops! looks like we had some problem';
+            $this->error = $th->getMessage();
+            // $this->error = 'Ops! looks like we had some problem';
             $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
         }
     }
@@ -70,10 +83,11 @@ class RoleComponent extends Component
     // Update Form
     public function editForm($id)
     {
-        $singleRole     = Role::find($id);
-        $this->hiddenId = $singleRole->id;
-        $this->name     = $singleRole->name;
-        $this->btnType  = 'Update';
+        $singleRole        = Role::find($id);
+        $this->hiddenId    = $singleRole->id;
+        $this->name        = $singleRole->name;
+        $this->permissions = $singleRole->permissions;
+        $this->btnType     = 'Update';
     }
 
     // softDelete
@@ -119,6 +133,6 @@ class RoleComponent extends Component
     // reset fields
     public function resetFields()
     {
-        $this->reset('name', 'hiddenId', 'btnType');
+        $this->reset('name', 'permissions', 'hiddenId', 'btnType');
     }
 }
