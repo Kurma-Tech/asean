@@ -167,7 +167,7 @@
                                             <div class="select2-purple" wire:ignore>
                                                 <select class="form-control select2" multiple="multiple" data-placeholder="Choose Categories" data-dropdown-css-class="select2-purple" id="category-dropdown" wire:model="category_id">
                                                     @foreach($categories as $category)
-                                                    <option value="{{ $category->id }}">{{ $category->classification_category }}</option>
+                                                    <option value="{{ $category->ipc_code }}">{{ $category->classification_category }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -366,42 +366,30 @@
                                                         <a href="javascript:void(0)" class="product-title">{{ $patent->registration_no  ?? 'N/A'}}</a>
                                                     </div>
                                                 </li>
-                                                <li class="item" style="{{ $patent->patentCategories  ?? 'display:none'}}">
+                                                @if($patent->category_id)
+                                                <li class="item">
                                                     <div class="product-info">
                                                         <div class="product-title">
                                                             Patent Category
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{ $patent->patentCategories  ?? 'N/A'}}</a>
+                                                        @php $ipc_code = json_decode($patent->category_id) @endphp
+                                                        @foreach ($ipc_code as $code)
+                                                            <span class="badge badge-secondary">{{$code}}</span>
+                                                        @endforeach
                                                     </div>
                                                 </li>
+                                                @endif
                                                 <li class="item">
                                                     <div class="product-info">
                                                         <div class="product-title">
                                                             Inventor Name
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">
-                                                            @if($patent->inventor_name)
-                                                                @php $inventor_name = json_decode($patent->inventor_name) @endphp 
-                                                                @foreach ($inventor_name as $key)
-                                                                <span class="badge badge-secondary">{{$key}}</span>
-                                                                @endforeach
-                                                            @endif
-                                                        </a>
-                                                    </div>
-                                                </li>
-                                                <li class="item">
-                                                    <div class="product-info">
-                                                        <div class="product-title">
-                                                            Patent Category
-                                                        </div>
-                                                        <a href="javascript:void(0)" class="product-title">
-                                                            @if($patent->category_id)
-                                                                @php $categories = json_decode($patent->category_id) @endphp 
-                                                                @foreach ($categories as $c)
-                                                                <span class="badge badge-secondary">{{$c}}</span>
-                                                                @endforeach
-                                                            @endif
-                                                        </a>
+                                                        @if($patent->inventor_name)
+                                                            @php $inventor_name = json_decode($patent->inventor_name) @endphp 
+                                                            @foreach ($inventor_name as $key)
+                                                            <span class="badge badge-secondary">{{$key}}</span>
+                                                            @endforeach
+                                                        @endif
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -508,7 +496,7 @@
             let data = $(this).val();
                 @this.set('category_id', data);
         });
-        window.livewire.on('categories', () => {
+        window.livewire.on('categoryEvent', () => {
             $('#category-dropdown').select2();
         });
     });  
