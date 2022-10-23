@@ -2,25 +2,19 @@
 
 namespace App\Http\Livewire\Admin\User;
 
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Spatie\Permission\Models\Role;
 
-class UserListComponent extends Component
+class RoleComponent extends Component
 {
     use WithPagination;
-
-    public $perPage = 5;
-    public $search = '';
-    public $orderBy = 'id';
-    public $sortBy = false;
 
     public $error;
 
     public $hiddenId = 0;
     public $name;
-    public $email;
     public $btnType = 'Create';
 
     protected $listeners = ['refreshUserListComponent' => '$refresh'];
@@ -28,18 +22,14 @@ class UserListComponent extends Component
     protected function rules()
     {
         return [
-            'name'  => 'required',
-            'email' => 'required|unique:users,email',
+            'name' => 'required|unique:roles,name',
         ];
     }
 
     public function render()
     {
-        return view('livewire.admin.user.user-list-component', [
-            'users' => User::search($this->search)
-                ->withTrashed()
-                ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
-                ->paginate($this->perPage),
+        return view('livewire.admin.user.role-component', [
+            'roles' => Role::orderBy('created_at', 'desc')->paginate(10),
         ])->layout('layouts.admin');
     }
 
@@ -54,21 +44,20 @@ class UserListComponent extends Component
             $updateId = $this->hiddenId;
             if($updateId > 0)
             {
-                $user = User::find($updateId); // update User
+                $role = Role::find($updateId); // update Role
             }
             else{
-                $user = new User(); // create User
+                $role = new Role(); // create Role
             }
             
-            $user->name  = $this->name;
-            $user->email  = $this->email;
-            $user->save();
+            $role->name  = $this->name;
+            $role->save();
 
             DB::commit();
 
-            $this->dispatchBrowserEvent('success-message',['message' => 'User has been ' . $this->btnType . '.']);
+            $this->dispatchBrowserEvent('success-message',['message' => 'Role has been ' . $this->btnType . '.']);
 
-            $this->reset('name', 'email', 'hiddenId', 'btnType');
+            $this->reset('name', 'hiddenId', 'btnType');
             
         } catch (\Throwable $th) {
             DB::rollback();
@@ -81,10 +70,9 @@ class UserListComponent extends Component
     // Update Form
     public function editForm($id)
     {
-        $singleUser     = User::find($id);
-        $this->hiddenId = $singleUser->id;
-        $this->name     = $singleUser->name;
-        $this->email    = $singleUser->email;
+        $singleRole     = Role::find($id);
+        $this->hiddenId = $singleRole->id;
+        $this->name     = $singleRole->name;
         $this->btnType  = 'Update';
     }
 
@@ -92,10 +80,10 @@ class UserListComponent extends Component
     public function softDelete($id)
     {
         try {
-            $data = User::find($id);
+            $data = Role::find($id);
             if ($data != null) {
                 $data->delete();
-                $this->dispatchBrowserEvent('success-message',['message' => 'User Deleted Successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Role Deleted Successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -112,10 +100,10 @@ class UserListComponent extends Component
     public function restore($id)
     {
         try {
-            $data = User::onlyTrashed()->find($id);
+            $data = Role::onlyTrashed()->find($id);
             if ($data != null) {
                 $data->restore();
-                $this->dispatchBrowserEvent('success-message',['message' => 'User Restored Successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Role Restored Successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -131,6 +119,6 @@ class UserListComponent extends Component
     // reset fields
     public function resetFields()
     {
-        $this->reset('name', 'email', 'hiddenId', 'btnType');
+        $this->reset('name', 'hiddenId', 'btnType');
     }
 }

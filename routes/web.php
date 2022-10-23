@@ -16,6 +16,8 @@ use App\Http\Livewire\Admin\Patent\PatentListComponent;
 use App\Http\Livewire\Admin\PatentCategory\CategoryListComponent as PatentCategoryCategoryListComponent;
 use App\Http\Livewire\Admin\PatentKind\PatentListComponent as PatentKindPatentListComponent;
 use App\Http\Livewire\Admin\PatentType\PatentListComponent as PatentTypePatentListComponent;
+use App\Http\Livewire\Admin\User\PermissionComponent;
+use App\Http\Livewire\Admin\User\RoleComponent;
 use App\Http\Livewire\Admin\User\UserListComponent;
 use App\Http\Livewire\Client\DashboardComponent as ClientDashboardComponent;
 use App\Http\Livewire\Client\HomeComponent;
@@ -40,7 +42,7 @@ Route::get('/', function () {
 
 // Admin
 Route::prefix('admin')->name('admin.')->group(function() {
-    Route::middleware(['checkAuth', 'is_admin'])->group(function() {
+    Route::middleware(['checkAuth', 'is_admin', 'role:admin'])->group(function() {
         Route::get('dashboard', DashboardComponent::class)->name('dashboard');
         // Countries
         Route::get('countries', CountryListComponent::class)->name('countries.list');
@@ -68,6 +70,10 @@ Route::prefix('admin')->name('admin.')->group(function() {
         Route::get('classification', ClassificationList::class)->name('classification.list');
         // User
         Route::get('users', UserListComponent::class)->name('users.list');
+        // Role
+        Route::get('roles', RoleComponent::class)->name('roles.list');
+        // Permission
+        Route::get('permission', PermissionComponent::class)->name('permissions.list');
     });
 });
 

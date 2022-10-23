@@ -32,6 +32,31 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-header">USER</li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.users.list') }}" class="nav-link {{ (request()->routeIs('admin.users*')) ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-users text-default"></i>
+                                <p>
+                                    Users
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.roles.list') }}" class="nav-link {{ (request()->routeIs('admin.roles*')) ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-user-shield text-warning"></i>
+                                <p>
+                                    Roles
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.permissions.list') }}" class="nav-link {{ (request()->routeIs('admin.permissions*')) ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-user-lock text-danger"></i>
+                                <p>
+                                    Permissions
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-header">ASEAN COUNTRIES</li>
                         <li class="nav-item {{ (request()->routeIs('admin.countries*')) ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.countries*')) ? 'active' : '' }}">
@@ -220,14 +245,6 @@
                             </ul>
                         </li>
                         <li class="nav-header">SETTINGS</li>
-                        <li class="nav-item">
-                            <a href="{{ route('admin.users.list') }}" class="nav-link">
-                                <i class="nav-icon fas fa-users text-info"></i>
-                                <p>
-                                    Users
-                                </p>
-                            </a>
-                        </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-cogs text-warning"></i>

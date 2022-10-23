@@ -27,15 +27,10 @@
                             </div>
                         </div>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                            @if (Auth::user()->is_admin)
-                                <a href="{{ route('admin.dashboard') }}" class="dropdown-item">
-                                    <i class="fa fa-user mr-2"></i> {{ GoogleTranslate::trans('Dashboard', app()->getLocale()) }}
-                                </a>
-                            @else
-                                <a href="{{ route('client.dashboard') }}" class="dropdown-item">
-                                    <i class="fa fa-user mr-2"></i> {{ GoogleTranslate::trans('Dashboard', app()->getLocale()) }}
-                                </a>
-                            @endif
+                            <a href="{{ route('admin.dashboard') }}" class="dropdown-item">
+                                <i class="fa fa-user mr-2"></i> {{ GoogleTranslate::trans('Dashboard', app()->getLocale()) }}
+                            </a>
+                            
                             <div class="dropdown-divider"></div>
 
                             <form method="POST" action="{{ route('logout') }}">

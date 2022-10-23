@@ -16,12 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(1)->create();
-
-        \App\Models\User::factory()->create([
-            'name' => 'Asean Admin',
-            'email' => 'admin@aseana.com',
-            'password' => Hash::make('password'),
-            'is_admin' => 1
-        ]);
+        $this->call(RoleSeeder::class);
+        $this->call(AdminSeeder::class);
     }
 }
