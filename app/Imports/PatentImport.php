@@ -27,8 +27,8 @@ class PatentImport implements ToModel, WithHeadingRow, WithChunkReading, WithBat
 
     public function model(array $row)
     {
-        $patentType     = $this->patentType->where('id', $row['ip_type_id'])->first();
-        $patentKind     = $this->patentKind->where('id', $row['ip_kind_id'])->first();
+        $patentType     = $this->patentType->where('type', $row['ip_type_name'])->first();
+        $patentKind     = $this->patentKind->where('kind', $row['ip_kind_name'])->first();
         $country        = $this->country->where('short_code', $row['country_short_code'])->first();
 
         $inventorToArray = explode(',', $row['inventor_name']);

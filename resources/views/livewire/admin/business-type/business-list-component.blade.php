@@ -83,7 +83,7 @@
                             <!-- /.card-body -->
                         
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-success">{{ $btnType }}</button>
+                                <button type="submit" class="btn btn-success btn-sm">{{ $btnType }}</button>
                                 <div class="btn btn-sm btn-danger pull-right" data-toggle="tooltip" data-placement="top" title="Reset Form Fields" wire:click="resetFields()"><i class="fas fa-redo-alt"></i> Reset Fields</div>
                             </div>
                         </form>

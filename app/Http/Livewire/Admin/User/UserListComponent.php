@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Livewire\Admin\PatentType;
+namespace App\Http\Livewire\Admin\User;
 
-use App\Models\PatentType;
-use Cviebrock\EloquentSluggable\Services\SlugService;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class PatentListComponent extends Component
+class UserListComponent extends Component
 {
     use WithPagination;
 
@@ -20,29 +19,24 @@ class PatentListComponent extends Component
     public $error;
 
     public $hiddenId = 0;
-    public $type;
-    public $slug;
+    public $name;
+    public $email;
     public $btnType = 'Create';
 
-    protected $listeners = ['refreshPatentTypeListComponent' => '$refresh'];
-
-    public function generateslug()
-    {
-        $this->slug = SlugService::createSlug(PatentType::class, 'slug', $this->type);
-    }
+    protected $listeners = ['refreshUserListComponent' => '$refresh'];
 
     protected function rules()
     {
         return [
-            'type' => 'required',
-            'slug' => 'required|unique:patent_types,slug',
+            'name'  => 'required',
+            'email' => 'required|unique:users,email',
         ];
     }
 
     public function render()
     {
-        return view('livewire.admin.patent-type.patent-list-component', [
-            'patentTypes' => PatentType::search($this->search)
+        return view('livewire.admin.user.user-list-component', [
+            'users' => User::search($this->search)
                 ->withTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
                 ->paginate($this->perPage),
@@ -50,9 +44,9 @@ class PatentListComponent extends Component
     }
 
     // Store
-    public function storePatentType()
+    public function storeUser()
     {
-        $this->validate(); // validate PatentType form
+        $this->validate(); // validate User form
 
         DB::beginTransaction();
 
@@ -60,37 +54,37 @@ class PatentListComponent extends Component
             $updateId = $this->hiddenId;
             if($updateId > 0)
             {
-                $pType = PatentType::find($updateId); // update PatentType
+                $user = User::find($updateId); // update User
             }
             else{
-                $pType = new PatentType(); // create PatentType
+                $user = new User(); // create User
             }
             
-            $pType->type  = $this->type;
-            $pType->slug  = $this->slug;
-            $pType->save();
+            $user->name  = $this->name;
+            $user->email  = $this->email;
+            $user->save();
 
             DB::commit();
 
-            $this->dispatchBrowserEvent('success-message',['message' => 'Intellectual Property Type has been ' . $this->btnType . '.']);
+            $this->dispatchBrowserEvent('success-message',['message' => 'User has been ' . $this->btnType . '.']);
 
-            $this->reset('type', 'slug', 'hiddenId', 'btnType');
+            $this->reset('name', 'email', 'hiddenId', 'btnType');
             
         } catch (\Throwable $th) {
             DB::rollback();
-            $this->error = $th->getMessage();
-            // $this->error = 'Ops! looks like we had some problem';
+            // $this->error = $th->getMessage();
+            $this->error = 'Ops! looks like we had some problem';
             $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
         }
     }
 
     // Update Form
-    public function editForm($type_id)
+    public function editForm($id)
     {
-        $singleType     = PatentType::find($type_id);
-        $this->hiddenId = $singleType->id;
-        $this->type     = $singleType->type;
-        $this->slug     = $singleType->slug;
+        $singleUser     = User::find($id);
+        $this->hiddenId = $singleUser->id;
+        $this->name     = $singleUser->name;
+        $this->email    = $singleUser->email;
         $this->btnType  = 'Update';
     }
 
@@ -98,10 +92,10 @@ class PatentListComponent extends Component
     public function softDelete($id)
     {
         try {
-            $data = PatentType::find($id);
+            $data = User::find($id);
             if ($data != null) {
                 $data->delete();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Intellectual Property Type Deleted Successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'User Deleted Successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -118,10 +112,10 @@ class PatentListComponent extends Component
     public function restore($id)
     {
         try {
-            $data = PatentType::onlyTrashed()->find($id);
+            $data = User::onlyTrashed()->find($id);
             if ($data != null) {
                 $data->restore();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Intellectual Property Type Restored Successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'User Restored Successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -137,6 +131,6 @@ class PatentListComponent extends Component
     // reset fields
     public function resetFields()
     {
-        $this->reset('type', 'slug', 'hiddenId', 'btnType');
+        $this->reset('name', 'email', 'hiddenId', 'btnType');
     }
 }

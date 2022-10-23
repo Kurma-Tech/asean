@@ -132,4 +132,10 @@ class CountryListComponent extends Component
             $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
         }
     }
+
+    // reset fields
+    public function resetFields()
+    {
+        $this->reset('name', 'c_code', 'short_code', 'status', 'hiddenId', 'btnType');
+    }
 }
