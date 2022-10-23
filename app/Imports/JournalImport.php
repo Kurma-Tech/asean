@@ -21,15 +21,17 @@ class JournalImport implements ToModel, WithHeadingRow, WithChunkReading, WithBa
         } else {
             $category = null;
         }
-        $country = DB::table('countries')->select('id', 'short_code')->where('short_code', $row['country_short_code'])->first();
-        $keywordsToArray = explode(',', $row['keywords']);
-        $keywordsJson = json_encode($keywordsToArray);
+        $country         = DB::table('countries')->select('id', 'short_code')->where('short_code', $row['country_short_code'])->first();
+        $keywordsToArray = explode(',', $row['keywords']); // Keywords explode with ,
+        $keywordsJson    = json_encode($keywordsToArray);  // Keywords to json
+        $authorToArray   = explode(',', $row['author_name']); // Author name explode with ,
+        $namesJson       = json_encode($authorToArray);       // Author names to json
         
         return new Journal([
             "title"          => $row['title'],
             "published_year" => $row['published_year'],
             "abstract"       => $row['abstract'],
-            "author_name"    => $row['author_name'],
+            "author_name"    => $namesJson,
             "category_id"    => ($category != null) ? $category->id : null,
             "country_id"     => $country->id ?? NULL,
             "publisher_name" => $row['publisher_name'],

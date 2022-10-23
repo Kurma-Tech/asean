@@ -82,7 +82,7 @@ class PatentListComponent extends Component
     public function mount()
     {
         $this->countries   = Country::select('id', 'name')->get();
-        $this->categories  = PatentCategory::select('id', 'classification_category')->get();
+        $this->categories  = PatentCategory::select('ipc_code', 'classification_category')->get();
         $this->patentKinds = PatentKind::select('id', 'kind')->get();
         $this->patentTypes = PatentType::select('id', 'type')->get();
     }
@@ -154,7 +154,7 @@ class PatentListComponent extends Component
         $this->category_id        = $singlePatent->category_id;
         $this->kind_id            = $singlePatent->kind_id;
         $this->type_id            = $singlePatent->type_id;
-        $this->registration_no    = $singlePatent->registration_no;
+        $this->registration_date  = $singlePatent->registration_date;
         $this->publication_date   = $singlePatent->publication_date;
         $this->filing_date        = $singlePatent->filing_date;
         $this->filing_no          = $singlePatent->filing_no;
@@ -168,7 +168,7 @@ class PatentListComponent extends Component
         $this->emit('countryEvent', $this->country_id);
         $this->emit('typeEvent', $this->kind_id);
         $this->emit('kindEvent', $this->kind_id);
-        $this->emit('categories', $this->category_id);
+        $this->emit('categoryEvent', $this->category_id);
     }
 
     // softDelete
