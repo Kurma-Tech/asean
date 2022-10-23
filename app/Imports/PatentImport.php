@@ -34,7 +34,7 @@ class PatentImport implements ToModel, WithHeadingRow, WithChunkReading, WithBat
         $inventorToArray = explode(',', $row['inventor_name']);
         $inventorJson = json_encode($inventorToArray);
 
-        $codeToArray = explode(',', $row['category_id']);
+        $codeToArray = explode(',', $row['ipc_code']);
         $codeJson = json_encode($codeToArray);
         
         return new Patent([
