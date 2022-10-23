@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\User;
 
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\Permission\Models\Permission;
