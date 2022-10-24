@@ -504,18 +504,20 @@
                 'id': 'business-point' + sourceId,
                 'type': 'circle',
                 'source': sourceId,
-                'minzoom': 7,
+                'minzoom': 0,
                 'paint': {
                     'circle-radius': {
                         'base': 1.75,
                         'stops': [
-                            [12, 5],
-                            [15, 12]
+                            [0, 1.5],
+                            [12, 2.5],
+                            [15, 8],
+                            [18, 12]
                         ]
                     },
-                    'circle-color': "rgba(183, 28, 28, 0.85)",
-                    'circle-stroke-color': 'white',
-                    'circle-stroke-width': 1
+                    'circle-color': "rgba(242, 94, 94, 1)",
+                    // 'circle-stroke-color': 'white',
+                    // 'circle-stroke-width': 0.5
                 }
             }, );
 
@@ -565,11 +567,31 @@
 
         function addPatentPoint() {
             map.addLayer({
+                'id': 'patent-heat-point',
+                'type': 'circle',
+                'source': 'patent',
+                'minzoom': 0,
+                'paint': {
+                    'circle-radius': {
+                        'base': 1.75,
+                        'stops': [
+                            [0, 2],
+                            [12, 3],
+                            [15, 8],
+                            [16, 0],
+                        ]
+                    },
+                    'circle-color': "rgba(242, 210, 46, 1)",
+                    // 'circle-stroke-color': 'white',
+                    // 'circle-stroke-width': 1
+                },
+            }, );
+            map.addLayer({
                 'id': 'patent-point',
                 // 'type': 'circle',
                 'type': 'symbol',
                 'source': 'patent',
-                'minzoom': 7,
+                'minzoom': 15,
                 // 'paint': {
                 //     'circle-radius': 8,
                 //     'circle-color': "rgba(183, 28, 28, 0.85)",
@@ -578,7 +600,7 @@
                 // },
                 'layout': {
                     'icon-image': 'custom-marker',
-                    'icon-size': 0.4
+                    'icon-size': 0.4,
                 }
             }, );
 
@@ -609,11 +631,31 @@
 
         function addJournalPoint() {
             map.addLayer({
+                'id': 'journal-heat-point',
+                'type': 'circle',
+                'source': 'journal',
+                'minzoom': 0,
+                'paint': {
+                    'circle-radius': {
+                        'base': 1.75,
+                        'stops': [
+                            [0, 3],
+                            [12, 3],
+                            [15, 8],
+                            [16, 0],
+                        ]
+                    },
+                    'circle-color': "rgba(82, 136, 242, 1)",
+                    // 'circle-stroke-color': 'white',
+                    // 'circle-stroke-width': 1
+                },
+            }, );
+            map.addLayer({
                 'id': 'journal-point',
                 // 'type': 'circle',
                 'type': 'symbol',
                 'source': 'journal',
-                'minzoom': 7,
+                'minzoom': 15,
                 // 'paint': {
                 //     'circle-radius': 8,
                 //     'circle-color': "rgba(183, 28, 28, 0.85)",
@@ -704,14 +746,14 @@
             changePage(1);
 
             if (data.geoJson != null) {
-                map.addSource('businessHeatData', {
-                    'type': 'geojson',
-                    'data': {
-                        'type': 'FeatureCollection',
-                        'features': mergedDataBusiness
-                    }
-                });
-                addBusinessHeat('businessHeatData');
+                // map.addSource('businessHeatData', {
+                //     'type': 'geojson',
+                //     'data': {
+                //         'type': 'FeatureCollection',
+                //         'features': mergedDataBusiness
+                //     }
+                // });
+                // addBusinessHeat('businessHeatData');
                 for (let index = 0; index < data.geoJson.length; index++) {
                     map.addSource('business' + index, {
                         'type': 'geojson',
@@ -726,7 +768,7 @@
                     'type': 'geojson',
                     'data': data.patentJson
                 });
-                addPatentHeat();
+                // addPatentHeat();
                 addPatentPoint();
             }
 
@@ -735,7 +777,7 @@
                     'type': 'geojson',
                     'data': data.journalJson
                 });
-                addJournalHeat();
+                // addJournalHeat();
                 addJournalPoint();
             }
         });
