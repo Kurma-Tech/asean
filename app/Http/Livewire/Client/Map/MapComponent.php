@@ -273,7 +273,7 @@ class MapComponent extends Component
             'id' => $patent->id,
             'patent_id' => $patent->patent_id,
             'title' => $patent->title ?? 'No Data',
-            'date_registerd' => $patent->date ?? 'No Data'
+            'date_registerd' => $patent->registration_date ?? 'No Data'
         ];
     }
 
