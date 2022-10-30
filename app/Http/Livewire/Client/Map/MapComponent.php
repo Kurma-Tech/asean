@@ -90,7 +90,7 @@ class MapComponent extends Component
         /* Model Queries */
         DB::enableQueryLog();
         $businessQuery =  DB::table('businesses')->select('id', 'lat', 'long', 'year', 'company_name');
-        $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'date', 'title');
+        $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'registration_date', 'title');
         $journalQuery =  DB::table('journals')->select('id', 'lat', 'long', 'title');
         /* Model Queries End */
 
@@ -273,7 +273,7 @@ class MapComponent extends Component
             'id' => $patent->id,
             'patent_id' => $patent->patent_id,
             'title' => $patent->title ?? 'No Data',
-            'date_registerd' => $patent->date ?? 'No Data'
+            'date_registerd' => $patent->registration_date ?? 'No Data'
         ];
     }
 

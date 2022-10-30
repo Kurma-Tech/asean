@@ -47,7 +47,7 @@ class ReportComponent extends Component
     {
         ini_set('memory_limit', '-1');
         $businessQuery =  DB::table('businesses')->select('id', 'year', 'date_registered', 'industry_classification_id');
-        $patentQuery =  DB::table('patents')->select('id', 'date');
+        $patentQuery =  DB::table('patents')->select('id', 'registration_date');
         $journalQuery =  DB::table('journals')->select('id', 'published_year');
 
 
