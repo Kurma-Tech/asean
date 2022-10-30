@@ -19,7 +19,6 @@ class ClassificationImport implements ToModel, WithHeadingRow, WithChunkReading,
 
             $industryClassification = DB::table('industry_classifications')
                 ->select('id')
-                ->where('parent_id', null)
                 ->where('classifications', $row['parent_name'])
                 ->first();
         } else {
