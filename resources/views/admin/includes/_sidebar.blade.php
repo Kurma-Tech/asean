@@ -73,6 +73,12 @@
                                         <p>View All</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.countries.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.countries.trashed.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-danger"></i>
+                                        <p>View Trashed</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-header">DATA</li>
@@ -120,6 +126,12 @@
                                         <p>View All</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.patent.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.patent.trashed.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-danger"></i>
+                                        <p>View Trashed</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item {{ (request()->routeIs('admin.journals*')) ? 'menu-open' : '' }}">
@@ -135,6 +147,12 @@
                                     <a href="{{route('admin.journals.list')}}" class="nav-link {{ (request()->routeIs('admin.journals.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-info"></i>
                                         <p>View All</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.journals.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.journals.trashed.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-danger"></i>
+                                        <p>View Trashed</p>
                                     </a>
                                 </li>
                             </ul>
@@ -240,6 +258,12 @@
                                     <a href="{{route('admin.journalCategory.list')}}" class="nav-link {{ (request()->routeIs('admin.journalCategory.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-info"></i>
                                         <p>View All</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.journalCategory.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.journalCategory.trashed.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-danger"></i>
+                                        <p>View Trashed</p>
                                     </a>
                                 </li>
                             </ul>

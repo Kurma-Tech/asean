@@ -41,8 +41,7 @@
                                             <option value="author_name">Author Name</option>
                                             <option value="publisher_name">Publisher Name</option>
                                             <option value="issn_no">ISSN No</option>
-                                            <option value="citition_no">Citition No</option>
-                                            <option value="eid_no">EID No</option>
+                                            <option value="cited_score">Cited Score</option>
                                             <option value="published_year">Published Year</option>
                                         </select>
                                     </div>
@@ -106,7 +105,7 @@
                                             <label for="author_name">Author Name*</label>
                                             <input type="text" class="form-control" id="author_name"
                                                 placeholder="Enter Author Name" wire:model='author_name'>
-                                            <small class="form-text text-muted">Separate keywords with a comma</small>
+                                            <small class="form-text text-muted">Separate keywords with a semicolon (;)</small>
                                             @error('author_name')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
@@ -129,8 +128,35 @@
                                             <label for="keywords">Keywords*</label>
                                             <input type="text" class="form-control" name="input" id="keywords"
                                                 placeholder="Enter Keywords" wire:model='keywords'>
-                                            <small class="form-text text-muted">Separate keywords with a comma</small>
+                                            <small class="form-text text-muted">Separate keywords with a semicolon (;)</small>
                                             @error('keywords')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="link">Source Link</label>
+                                            <input type="url" class="form-control" id="link"
+                                                placeholder="Enter url of source document" wire:model='link'>
+                                            @error('link')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="category-dropdown">Category*</label>
+                                            <div class="select2-purple" wire:ignore>
+                                                <select class="form-control select2" multiple="multiple" data-placeholder="Choose Categories" data-dropdown-css-class="select2-purple" id="category-dropdown" wire:model="categories">
+                                                    @foreach($categories_data as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->category }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            @error('categories')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -149,10 +175,10 @@
 
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="citition_no">Citition No*</label>
-                                            <input type="text" class="form-control" id="citition_no"
-                                                placeholder="Enter Publisher Name" wire:model='citition_no'>
-                                            @error('citition_no')
+                                            <label for="cited_score">Cited Score*</label>
+                                            <input type="text" class="form-control" id="cited_score"
+                                                placeholder="Enter Cited Score" wire:model='cited_score'>
+                                            @error('cited_score')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -165,23 +191,6 @@
                                                 id="published_year" wire:model="published_year" placeholder="YYYY"
                                                 onchange="this.dispatchEvent(new InputEvent('input'))" />
                                             @error('published_year')
-                                                <div class="error">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 col-sm-12">
-                                        <div class="form-group">
-                                            <label for="category_name">Category*</label>
-                                            <div wire:ignore>
-                                                <select class="form-control select2 select2bs4" id="category_name" wire:model="category_id" style="width: 100%;">
-                                                    <option hidden>Choose Category</option>
-                                                    @foreach ($categories as $category)
-                                                        <option value="{{ $category->id }}">{{ $category->category }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            @error('category_id')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -268,7 +277,7 @@
                                         <th>AuthorName</th>
                                         <th>PublishedYear</th>
                                         <th>ISSN.No</th>
-                                        <th>Citition.No</th>
+                                        <th>CitedScore</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -287,26 +296,19 @@
                                             </td>
                                             <td>{{ $journal->published_year ?? 'N/A' }}</td>
                                             <td>{{ $journal->issn_no ?? 'N/A' }}</td>
-                                            <td>{{ $journal->citition_no ?? 'N/A' }}</td>
+                                            <td>{{ $journal->cited_score ?? 'N/A' }}</td>
                                             <td>
-                                                @if ($journal->deleted_at)
-                                                    <a href="#" class="btn btn-xs bg-success"
-                                                        wire:click="restore({{ $journal->id }})"
-                                                        data-toggle="tooltip" data-placement="top" title="Restore">
-                                                        <i class="fas fa-trash-restore"></i>
-                                                    </a>
-                                                @else
-                                                    <a href="javascript:void(0)" class="btn btn-xs bg-warning"
-                                                        wire:click="editForm({{ $journal->id }})"
-                                                        data-toggle="tooltip" data-placement="top" title="Edit">
-                                                        <i class="fas fa-edit"></i>
-                                                    </a>
-                                                    <a href="#" class="btn btn-xs bg-danger"
-                                                        wire:click="softDelete({{ $journal->id }})"
-                                                        data-toggle="tooltip" data-placement="top" title="Delete">
-                                                        <i class="far fa-trash-alt"></i>
-                                                    </a>
-                                                @endif
+                                                <a href="javascript:void(0)" class="btn btn-xs bg-warning"
+                                                    wire:click="editForm({{ $journal->id }})"
+                                                    data-toggle="tooltip" data-placement="top" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="javascript:void(0)" onclick="confirm('Do you want to restore?') || event.stopImmediatePropagation()"
+                                                    class="btn btn-xs bg-danger"
+                                                    wire:click="softDelete({{ $journal->id }})"
+                                                    data-toggle="tooltip" data-placement="top" title="Delete">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                         <tr class="expandable-body d-none">
@@ -317,24 +319,17 @@
                                                             <div class="product-title">
                                                                 Action
                                                             </div>
-                                                            @if ($journal->deleted_at)
-                                                                <a href="#" class="btn btn-xs bg-success"
-                                                                    wire:click="restore({{ $journal->id }})"
-                                                                    data-toggle="tooltip" data-placement="top" title="Restore">
-                                                                    <i class="fas fa-trash-restore"></i>
-                                                                </a>
-                                                            @else
-                                                                <a href="javascript:void(0)" class="btn btn-xs bg-warning"
-                                                                    wire:click="editForm({{ $journal->id }})"
-                                                                    data-toggle="tooltip" data-placement="top" title="Edit">
-                                                                    <i class="fas fa-edit"></i>
-                                                                </a>
-                                                                <a href="#" class="btn btn-xs bg-danger"
-                                                                    wire:click="softDelete({{ $journal->id }})"
-                                                                    data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                    <i class="far fa-trash-alt"></i>
-                                                                </a>
-                                                            @endif
+                                                            <a href="javascript:void(0)" class="btn btn-xs bg-warning"
+                                                                wire:click="editForm({{ $journal->id }})"
+                                                                data-toggle="tooltip" data-placement="top" title="Edit">
+                                                                <i class="fas fa-edit"></i>
+                                                            </a>
+                                                            <a href="javascript:void(0)" onclick="confirm('Do you want to restore?') || event.stopImmediatePropagation()"
+                                                                class="btn btn-xs bg-danger"
+                                                                wire:click="softDelete({{ $journal->id }})"
+                                                                data-toggle="tooltip" data-placement="top" title="Delete">
+                                                                <i class="far fa-trash-alt"></i>
+                                                            </a>
                                                         </div>
                                                     </li>
                                                     <li class="item">
@@ -343,6 +338,14 @@
                                                                 Source Title
                                                             </div>
                                                             <a href="javascript:void(0)" class="product-title">{{ $journal->source_title  ?? 'N/A'}}</a>
+                                                        </div>
+                                                    </li>
+                                                    <li class="item">
+                                                        <div class="product-info">
+                                                            <div class="product-title">
+                                                                Source Link
+                                                            </div>
+                                                            <a href="{{ $journal->link ?? 'javascript:void(0)'}}" class="product-title">{{ $journal->link ?? 'N/A'}}</a>
                                                         </div>
                                                     </li>
                                                     <li class="item">
@@ -373,7 +376,14 @@
                                                             <div class="product-title">
                                                                 Category Name
                                                             </div>
-                                                            <a href="javascript:void(0)" class="product-title">{{$journal->journalCategory->category ?? 'N/A'}}</a>
+                                                            <a href="javascript:void(0)" class="product-title">
+                                                                @if($journal->categories)
+                                                                    @php $categories_id = json_decode($journal->categories) @endphp
+                                                                    @foreach ($categories_id as $cat_id)
+                                                                        <span class="badge badge-secondary">{{ $categories_data->where('id', $cat_id)->first()->category ?? 'N/A' }}</span>
+                                                                    @endforeach
+                                                                @endif    
+                                                            </a>
                                                         </div>
                                                     </li>
                                                     <li class="item">
@@ -405,24 +415,17 @@
                                                             <div class="product-title">
                                                                 Action
                                                             </div>
-                                                            @if ($journal->deleted_at)
-                                                                <a href="#" class="btn btn-xs bg-success"
-                                                                    wire:click="restore({{ $journal->id }})"
-                                                                    data-toggle="tooltip" data-placement="top" title="Restore">
-                                                                    <i class="fas fa-trash-restore"></i>
-                                                                </a>
-                                                            @else
-                                                                <a href="javascript:void(0)" class="btn btn-xs bg-warning"
-                                                                    wire:click="editForm({{ $journal->id }})"
-                                                                    data-toggle="tooltip" data-placement="top" title="Edit">
-                                                                    <i class="fas fa-edit"></i>
-                                                                </a>
-                                                                <a href="#" class="btn btn-xs bg-danger"
-                                                                    wire:click="softDelete({{ $journal->id }})"
-                                                                    data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                    <i class="far fa-trash-alt"></i>
-                                                                </a>
-                                                            @endif
+                                                            <a href="javascript:void(0)" class="btn btn-xs bg-warning"
+                                                                wire:click="editForm({{ $journal->id }})"
+                                                                data-toggle="tooltip" data-placement="top" title="Edit">
+                                                                <i class="fas fa-edit"></i>
+                                                            </a>
+                                                            <a href="javascript:void(0)" onclick="confirm('Do you want to restore?') || event.stopImmediatePropagation()"
+                                                                class="btn btn-xs bg-danger"
+                                                                wire:click="softDelete({{ $journal->id }})"
+                                                                data-toggle="tooltip" data-placement="top" title="Delete">
+                                                                <i class="far fa-trash-alt"></i>
+                                                            </a>
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -467,7 +470,17 @@
     <script src="{{ asset('plugins/summernote/summernote-bs4.min.js') }}"></script>
     
     <script>
-        "use strict";
+        $(document).ready(function () {
+            $('#category-dropdown').select2();
+            $('#category-dropdown').on('change', function (e) {
+                let data = $(this).val();
+                    @this.set('categories', data);
+            });
+            window.livewire.on('categoryEvent', () => {
+                $('#category-dropdown').select2();
+            });
+        });  
+
         $(function() {
             //Initialize Select2 Elements
             $('.select2').select2();
@@ -482,9 +495,9 @@
                 @this.set('country_id', data);
             });
 
-            $('#category_name').on('change', function(e) {
+            $('#category-dropdown').on('change', function(e) {
                 let data = $(this).val();
-                @this.set('category_id', data);
+                @this.set('categories', data);
             });
 
             Livewire.on('countryEvent', (data) => {
@@ -492,7 +505,7 @@
             });
 
             Livewire.on('categoryEvent', (data) => {
-                $('#category_name').val(data).trigger('change');
+                $('#category-dropdown').val(data).trigger('change');
             });
 
             Livewire.on('abstractEvent', (data) => {

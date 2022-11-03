@@ -39,7 +39,6 @@ class CountryListComponent extends Component
     {
         return view('livewire.admin.country.country-list-component', [
             'countries' => Country::search($this->search)
-                ->withTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
                 ->paginate($this->perPage),
         ])->layout('layouts.admin');

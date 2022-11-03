@@ -22,22 +22,25 @@ class JournalImport implements ToModel, WithHeadingRow, WithChunkReading, WithBa
             $category = null;
         }
         $country         = DB::table('countries')->select('id', 'short_code')->where('short_code', $row['country_short_code'])->first();
-        $keywordsToArray = explode(',', $row['keywords']); // Keywords explode with ,
-        $keywordsJson    = json_encode($keywordsToArray);  // Keywords to json
-        $authorToArray   = explode(',', $row['author_name']); // Author name explode with ,
-        $namesJson       = json_encode($authorToArray);       // Author names to json
+        $keywordsToArray = explode(';', $row['keywords']);      // Keywords explode with ,
+        $keywordsJson    = json_encode($keywordsToArray);       // Keywords to json
+        $authorToArray   = explode(';', $row['author_name']);   // Author name explode with ,
+        $namesJson       = json_encode($authorToArray);         // Author names to json
+        $categoryToArray = explode(';', $row['categories']);    // Category name explode with ,
+        $categoriesJson  = json_encode($categoryToArray);       // Category names to json
         
         return new Journal([
             "title"          => $row['title'],
             "published_year" => $row['published_year'],
             "abstract"       => $row['abstract'],
             "author_name"    => $namesJson,
-            "category_id"    => ($category != null) ? $category->id : null,
+            "categories"     => $categoriesJson,
             "country_id"     => $country->id ?? NULL,
             "publisher_name" => $row['publisher_name'],
             "source_title"   => $row['source_title'],
             "issn_no"        => $row['issn_no'],
-            "citition_no"    => $row['citition_no'],
+            "cited_score"    => $row['cited_score'],
+            "link"           => $row['link'],
             "keywords"       => $keywordsJson,
             "long"           => $row['long'],
             "lat"            => $row['lat']

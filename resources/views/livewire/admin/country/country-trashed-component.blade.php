@@ -1,4 +1,4 @@
-@section('title', 'Business List')
+@section('title', 'Countries Trashed List')
 
 <div>
     <!-- Main content -->
@@ -23,10 +23,8 @@
                                         <select class="form-control" style="width: 100%;" wire:model="orderBy">
                                             <option hidden>Choose Order By</option>
                                             <option value="id">By ID</option>
-                                            <option value="company_name">Name</option>
-                                            <option value="status">Status</option>
-                                            <option value="date_registered">Date Registered</option>
-                                            <option value="sec_no">SEC Number</option>
+                                            <option value="name">Name</option>
+                                            <option value="short_code">Short Code</option>
                                         </select>
                                     </div>
                                 </div>
@@ -46,9 +44,7 @@
                                         <select class="form-control" style="width: 100%;" wire:model="perPage">
                                             <option selected>5</option>
                                             <option value="10">10</option>
-                                            <option value="50">50</option>
                                             <option value="100">100</option>
-                                            <option value="500">500</option>
                                         </select>
                                     </div>
                                 </div>
@@ -58,10 +54,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12">
+                <div class="col-12 col-md-12 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">All Trashed Business List</h3>
+                            <h3 class="card-title">All Trashed Countries List</h3>
                         </div>
                         <!-- ./card-header -->
                         <div class="card-body">
@@ -71,40 +67,32 @@
                                         <th>#</th>
                                         <th>ID</th>
                                         <th>Name</th>
-                                        <th>Registered Year</th>
-                                        <th>SEC No.</th>
-                                        <th>Type</th>
-                                        <th>Classification</th>
-                                        <th>Status</th>
+                                        <th>Country Code</th>
+                                        <th>Short Code</th>
+                                        <th>Trashed</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($businesses->where('deleted_at', '!=', Null) as $business)
+                                    @foreach ($countries->where('deleted_at', '!=', Null) as $country)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $business->id }}</td>
-                                        <td>{{ $business->company_name ?? 'NULL' }}</td>
-                                        <td>{{ $business->year ?? 'NULL' }}</td>
+                                        <td>{{ $country->id }}</td>
+                                        <td>{{ $country->name ?? 'NULL' }}</td>
+                                        <td>{{ $country->c_code ?? 'NULL' }}</td>
                                         <td>
-                                            {{ $business->sec_no ?? 'NULL' }}
+                                            {{ $country->short_code ?? 'NULL' }}
                                         </td>
                                         <td>
-                                            <span class="badge badge-primary">{{ $business->businessType->type ?? 'N/A' }}</span>
+                                            <span class="badge {{ ($country->deleted_at) ? 'bg-danger':'bg-success' }}">{{ ($country->deleted_at) ? 'Deleted':'Available' }}</span>
                                         </td>
                                         <td>
-                                            <span class="badge badge-info">{{ $business->industryClassification->classifications ?? 'N/A' }}</span>
-                                        </td>
-                                        <td>
-                                            <span class="badge {{($business->status == 'REGISTERED') ? 'badge-success':'badge-danger'}}">{{$business->status ?? 'NULL'}}</span>
-                                        </td>
-                                        <td>
-                                            <a href="javascript:void(0)" onclick="confirm('Do you want to restore?') || event.stopImmediatePropagation()" class="btn btn-xs bg-success" wire:click="restore({{$business->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
+                                            <a href="javascript:void(0)" onclick="confirm('Do you want to restore {{$country->name}} in database?') || event.stopImmediatePropagation()" class="btn btn-xs bg-success" wire:click="restore({{$country->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
                                                 <i class="fas fa-trash-restore"></i>
                                             </a>
                                             <a href="javascript:void(0)" onclick="confirm('Do you want to permantely remove?') || event.stopImmediatePropagation()"
                                                 class="btn btn-xs bg-danger"
-                                                wire:click="delete({{ $business->id }})"
+                                                wire:click="delete({{ $country->id }})"
                                                 data-toggle="tooltip" data-placement="top" title="Permanently Remove">
                                                 <i class="far fa-trash-alt"></i>
                                             </a>
@@ -116,15 +104,13 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer clearfix">
-                            {{$businesses->links('admin.render.admin-pagination-links')}}
+                            {{$countries->links('admin.render.admin-pagination-links')}}
                         </div>
                     </div>
                     <!-- /.card -->
                 </div>
             </div>
             <!-- /.row -->
-
-            @livewire('admin.business.import-component')
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->

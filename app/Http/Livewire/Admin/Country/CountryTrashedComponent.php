@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Livewire\Admin\Business;
+namespace App\Http\Livewire\Admin\Country;
 
-use App\Models\Business;
+use App\Models\Country;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
+use SebastianBergmann\Type\NullType;
 
-class BusinessTrashedComponent extends Component
+class CountryTrashedComponent extends Component
 {
     use WithPagination;
 
@@ -20,8 +21,8 @@ class BusinessTrashedComponent extends Component
 
     public function render()
     {
-        return view('livewire.admin.business.business-trashed-component', [
-            'businesses' => Business::search($this->search)
+        return view('livewire.admin.country.country-trashed-component', [
+            'countries' => Country::search($this->search)
                 ->onlyTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
                 ->paginate($this->perPage),
@@ -32,10 +33,10 @@ class BusinessTrashedComponent extends Component
     public function delete($id)
     {
         try {
-            $data = Business::where('id', $id);
+            $data = Country::where('id', $id);
             if ($data != null) {
                 $data->forceDelete();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Business permanently deleted successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Country permanently deleted successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -52,18 +53,18 @@ class BusinessTrashedComponent extends Component
     public function restore($id)
     {
         try {
-            $data = Business::onlyTrashed()->find($id);
+            $data = Country::onlyTrashed()->find($id);
             if ($data != null) {
                 $data->restore();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Business restored successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Country restored successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
             }
         } catch (\Throwable $th) {
             DB::rollback();
-            // $this->error = $th->getMessage();
-            $this->error = 'Ops! looks like we had some problem';
+            $this->error = $th->getMessage();
+            // $this->error = 'Ops! looks like we had some problem';
             $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
         }
     }

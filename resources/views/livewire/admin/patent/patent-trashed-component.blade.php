@@ -1,4 +1,4 @@
-@section('title', 'Business List')
+@section('title', 'Intellectual Property List')
 
 <div>
     <!-- Main content -->
@@ -19,24 +19,29 @@
                                 </div>
                                 <div class="col-md-3 col-sm-6 col-xs-12">
                                     <div class="form-group">
-                                        <label>Order By:</label>
-                                        <select class="form-control" style="width: 100%;" wire:model="orderBy">
-                                            <option hidden>Choose Order By</option>
-                                            <option value="id">By ID</option>
-                                            <option value="company_name">Name</option>
-                                            <option value="status">Status</option>
-                                            <option value="date_registered">Date Registered</option>
-                                            <option value="sec_no">SEC Number</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6 col-xs-12">
-                                    <div class="form-group">
                                         <label>Sort Order:</label>
                                         <select class="form-control" style="width: 100%;" wire:model="sortBy">
                                             <option hidden>Choose Sort By</option>
                                             <option value="1">ASC</option>
                                             <option value="0">DESC</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Order By:</label>
+                                        <select class="form-control" style="width: 100%;" wire:model="orderBy">
+                                            <option hidden>Choose Order By</option>
+                                            <option value="id">By ID</option>
+                                            <option value="title">Title</option>
+                                            <option value="filing_no
+                                            ">Filing Number</option>
+                                            <option value="registration_date
+                                            ">Registration Date</option>
+                                            <option value="publication_date
+                                            ">Publication Date</option>
+                                            <option value="filing_date
+                                            ">Filing Date</option>
                                         </select>
                                     </div>
                                 </div>
@@ -58,17 +63,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12">
+                <div class="col-12 col-md-12 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">All Business List</h3>
-                            <span class="pull-right">
-                                <button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-default">
-                                    <i class="fa fa-file-import"></i> Import Business
-                                </button>
-                                <a href="{{route('admin.business.add')}}" class="btn btn-xs bg-primary"><i class="fa fa-plus"></i> Add Business</a>
-                            </span>
-                            <div class="clear-fix"></div>
+                            <h3 class="card-title">All Trashed Intellectual Property List</h3>
                         </div>
                         <!-- ./card-header -->
                         <div class="card-body">
@@ -76,35 +74,38 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Registered Year</th>
-                                        <th>SEC No.</th>
-                                        <th>Type</th>
-                                        <th>Classification</th>
-                                        <th>Status</th>
+                                        <th>FilingNo</th>
+                                        <th>Title</th>
+                                        <th>RegistrationNo.</th>
+                                        <th>I.P.Type</th>
+                                        <th>I.P.Kind</th>
+                                        <th>PublicationDate</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($businesses as $business)
+                                    @foreach($patents->where('deleted_at', '!=', Null) as $patent)
                                     <tr data-widget="expandable-table" aria-expanded="false">
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $business->id }}</td>
-                                        <td>{{ $business->company_name ?? 'NULL' }}</td>
-                                        <td>{{ $business->year ?? 'NULL' }}</td>
+                                        <td>{{ $patent->filing_no }}</td>
+                                        <td>{{ $patent->title }}</td>
+                                        <td>{{ $patent->registration_no }}</td>
+                                        <td><span class="badge badge-info">{{ $patent->patentType->type ?? 'N/A' }}</span></td>
+                                        <td><span class="badge badge-primary">{{ $patent->patentKind->kind ?? 'N/A' }}</span></td>
+                                        <td>{{ $patent->publication_date }}</td>
                                         <td>
-                                            {{ $business->sec_no ?? 'NULL' }}
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-primary">{{ $business->businessType->type ?? 'N/A' }}</span>
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-info">{{ $business->industryClassification->classifications ?? 'N/A' }}</span>
-                                        </td>
-                                        <td>
-                                            <span class="badge {{($business->status == 'REGISTERED') ? 'badge-success':'badge-danger'}}">{{$business->status ?? 'NULL'}}</span>
+                                            <a href="javascript:void(0)" onclick="confirm('Do you want to restore?') || event.stopImmediatePropagation()" class="btn btn-xs bg-success" wire:click="restore({{$patent->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
+                                                <i class="fas fa-trash-restore"></i>
+                                            </a>
+                                            <a href="javascript:void(0)" onclick="confirm('Do you want to permantely remove?') || event.stopImmediatePropagation()"
+                                                class="btn btn-xs bg-danger"
+                                                wire:click="delete({{ $patent->id }})"
+                                                data-toggle="tooltip" data-placement="top" title="Permanently Remove">
+                                                <i class="far fa-trash-alt"></i>
+                                            </a>
                                         </td>
                                     </tr>
+
                                     <tr class="expandable-body d-none">
                                         <td colspan="8">
                                             <ul class="products-list product-list-in-card pl-2 pr-2">
@@ -113,66 +114,84 @@
                                                         <div class="product-title">
                                                             Action
                                                         </div>
-                                                        @if($business->deleted_at)
-                                                        <a href="javascript:void(0)" class="btn btn-xs bg-success" wire:click="restore({{$business->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
+                                                        <a href="javascript:void(0)" onclick="confirm('Do you want to restore?') || event.stopImmediatePropagation()"
+                                                            class="btn btn-xs bg-success"
+                                                            wire:click="restore({{ $patent->id }})"
+                                                            data-toggle="tooltip" data-placement="top" title="Restore">
                                                             <i class="fas fa-trash-restore"></i>
                                                         </a>
-                                                        @else
-                                                        <a href="{{ route('admin.business.update', ['key' => $business->id]) }}" class="btn btn-xs bg-warning" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                            <i class="fas fa-edit"></i>
-                                                        </a>
-                                                        <a href="javascript:void(0)" onclick="confirm('Are you sure? Do you want to delete?') || event.stopImmediatePropagation()" class="btn btn-xs bg-danger" wire:click="softDelete({{$business->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <a href="javascript:void(0)" onclick="confirm('Do you want to permantely remove?') || event.stopImmediatePropagation()"
+                                                            class="btn btn-xs bg-danger"
+                                                            wire:click="delete({{ $patent->id }})"
+                                                            data-toggle="tooltip" data-placement="top" title="Permanently Remove">
                                                             <i class="far fa-trash-alt"></i>
                                                         </a>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Registration Date
+                                                        </div>
+                                                        <a href="javascript:void(0)" class="product-title">{{ $patent->registration_date  ?? 'N/A'}}</a>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Filing Date
+                                                        </div>
+                                                        <a href="javascript:void(0)" class="product-title">{{ $patent->filing_date  ?? 'N/A'}}</a>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Registration Number
+                                                        </div>
+                                                        <a href="javascript:void(0)" class="product-title">{{ $patent->registration_no  ?? 'N/A'}}</a>
+                                                    </div>
+                                                </li>
+                                                @if($patent->category_id)
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Patent Category
+                                                        </div>
+                                                        @php $ipc_code = json_decode($patent->category_id) @endphp
+                                                        @foreach ($ipc_code as $code)
+                                                            <span class="badge badge-secondary">{{$code}}</span>
+                                                        @endforeach
+                                                    </div>
+                                                </li>
+                                                @endif
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Inventor Name
+                                                        </div>
+                                                        @if($patent->inventor_name)
+                                                            @php $inventor_name = json_decode($patent->inventor_name) @endphp 
+                                                            @foreach ($inventor_name as $key)
+                                                            <span class="badge badge-secondary">{{$key}}</span>
+                                                            @endforeach
                                                         @endif
                                                     </div>
                                                 </li>
                                                 <li class="item">
                                                     <div class="product-info">
                                                         <div class="product-title">
-                                                            Date Registered
+                                                            Applicant Company
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{ $business->date_registered ?? 'NULL' }}</a>
+                                                        <a href="javascript:void(0)" class="product-title">{{$patent->applicant_company ?? 'N/A'}}</a>
                                                     </div>
                                                 </li>
                                                 <li class="item">
                                                     <div class="product-info">
                                                         <div class="product-title">
-                                                            Address
+                                                            Country Name
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{ $business->address  ?? 'NULL'}}</a>
-                                                    </div>
-                                                </li>
-                                                <li class="item">
-                                                    <div class="product-info">
-                                                        <div class="product-title">
-                                                            PSIC Code
-                                                        </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{ $business->industryClassification->psic_code ?? 'N/A' }}</a>
-                                                    </div>
-                                                </li>
-                                                <li class="item">
-                                                    <div class="product-info">
-                                                        <div class="product-title">
-                                                            NGC Code
-                                                        </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{$business->ngc_code ?? 'NULL'}}</a>
-                                                    </div>
-                                                </li>
-                                                <li class="item">
-                                                    <div class="product-info">
-                                                        <div class="product-title">
-                                                            Industry Code
-                                                        </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{$business->industry_code ?? 'NULL'}}</a>
-                                                    </div>
-                                                </li>
-                                                <li class="item">
-                                                    <div class="product-info">
-                                                        <div class="product-title">
-                                                            Geographic Code
-                                                        </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{$business->geo_code ?? 'NULL'}}</a>
+                                                        <a href="javascript:void(0)" class="product-title">{{$patent->country->name ?? 'N/A'}}</a>
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -180,23 +199,15 @@
                                                         <div class="product-title">
                                                             Geo Location
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{$business->long ?? 'NULL'}} (long), {{$business->lat ?? 'NULL'}} (Lat)</a>
+                                                        <a href="javascript:void(0)" class="product-title">{{$patent->long ?? 'N/A'}} (long), {{$patent->lat ?? 'N/A'}} (Lat)</a>
                                                     </div>
                                                 </li>
                                                 <li class="item">
                                                     <div class="product-info">
                                                         <div class="product-title">
-                                                            Industry Description
+                                                            Abstract
                                                         </div>
-                                                        <p>
-                                                            {{$business->industry_description ?? 'NULL'}}
-                                                        </p>
-                                                        <div class="product-title">
-                                                            Geo Description
-                                                        </div>
-                                                        <p>
-                                                            {{$business->geo_description ?? 'NULL'}}
-                                                        </p>
+                                                        <p class="product-title">{!! $patent->abstract ?? 'N/A' !!}</p>
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -204,18 +215,18 @@
                                                         <div class="product-title">
                                                             Action
                                                         </div>
-                                                        @if($business->deleted_at)
-                                                        <a href="javascript:void(0)" class="btn btn-xs bg-success" wire:click="restore({{$business->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
+                                                        <a href="javascript:void(0)" onclick="confirm('Do you want to restore?') || event.stopImmediatePropagation()"
+                                                            class="btn btn-xs bg-success"
+                                                            wire:click="restore({{ $patent->id }})"
+                                                            data-toggle="tooltip" data-placement="top" title="Restore">
                                                             <i class="fas fa-trash-restore"></i>
                                                         </a>
-                                                        @else
-                                                        <a href="{{ route('admin.business.update', ['key' => $business->id]) }}" class="btn btn-xs bg-warning" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                            <i class="fas fa-edit"></i>
-                                                        </a>
-                                                        <a href="javascript:void(0)" class="btn btn-xs bg-danger" wire:click="softDelete({{$business->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <a href="javascript:void(0)" onclick="confirm('Do you want to permantely remove?') || event.stopImmediatePropagation()"
+                                                            class="btn btn-xs bg-danger"
+                                                            wire:click="delete({{ $patent->id }})"
+                                                            data-toggle="tooltip" data-placement="top" title="Permanently Remove">
                                                             <i class="far fa-trash-alt"></i>
                                                         </a>
-                                                        @endif
                                                     </div>
                                                 </li>
                                             </ul>
@@ -227,15 +238,12 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer clearfix">
-                            {{$businesses->links('admin.render.admin-pagination-links')}}
+                            {{$patents->links('admin.render.admin-pagination-links')}}
                         </div>
                     </div>
                     <!-- /.card -->
                 </div>
             </div>
-            <!-- /.row -->
-
-            @livewire('admin.business.import-component')
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
