@@ -16,7 +16,7 @@ class CategoryListComponent extends Component
     public $orderBy = 'id';
     public $sortBy = false;
 
-    public $parentCategories = []; // Categories Array
+    // public $parentCategories = []; // Categories Array
 
     public $hiddenId = 0;
     public $category;
@@ -28,16 +28,9 @@ class CategoryListComponent extends Component
 
     protected function rules()
     {
-        if ($this->is_parent) {
-            return [
-                'category'  => 'required'
-            ];
-        } else {
-            return [
-                'category'  => 'required',
-                'parent_id' => 'required|integer'
-            ];
-        }
+        return [
+            'category'  => 'required'
+        ];
     }
 
     protected $messages = [
@@ -48,7 +41,7 @@ class CategoryListComponent extends Component
 
     public function mount()
     {
-        $this->parentCategories = JournalCategory::where('parent_id', null)->select('id', 'category')->get();
+        // $this->parentCategories = JournalCategory::where('parent_id', null)->select('id', 'category')->get();
     }
 
     public function render()

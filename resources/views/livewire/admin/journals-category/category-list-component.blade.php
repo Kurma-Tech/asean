@@ -148,12 +148,12 @@
                             <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>ID</th>
+                                        <th style="width: 5%;">#</th>
+                                        <th style="width: 5%;">ID</th>
                                         <th>Category</th>
                                         {{-- <th>Parent Category</th> --}}
                                         {{-- <th>Code</th> --}}
-                                        <th>Action</th>
+                                        <th style="width: 10%;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
