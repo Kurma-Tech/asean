@@ -13,21 +13,20 @@ class JournalCategoryImport implements ToModel, WithHeadingRow, WithChunkReading
 {
     public function model(array $row)
     {
-        if (isset($row['parent_name'])) {
+        // if (isset($row['parent_name'])) {
 
-            $journalCategory = DB::table('journal_categories')
-                ->select('id')
-                ->where('parent_id', null)
-                ->where('category', $row['parent_name'])
-                ->first();
-        } else {
-            $journalCategory = null;
-        }
+        //     $journalCategory = DB::table('journal_categories')
+        //         ->select('id')
+        //         ->where('parent_id', null)
+        //         ->where('category', $row['parent_name'])
+        //         ->first();
+        // } else {
+        //     $journalCategory = null;
+        // }
         
         return new JournalCategory([
-            "parent_id" => ($journalCategory != null) ? $journalCategory->id : null,
-            "category"  => $row['category'] ?? null,
-            "acjs_code" => $row['code'] ?? null,
+            // "parent_id" => ($journalCategory != null) ? $journalCategory->id : null,
+            "category"  => $row['category'] ?? null
         ]);
     }
 
