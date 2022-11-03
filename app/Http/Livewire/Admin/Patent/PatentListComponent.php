@@ -91,7 +91,6 @@ class PatentListComponent extends Component
     {
         return view('livewire.admin.patent.patent-list-component', [
             'patents' => Patent::search($this->search)
-                ->withTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc' : 'desc')
                 ->paginate($this->perPage),
         ])->layout('layouts.admin');
@@ -138,8 +137,8 @@ class PatentListComponent extends Component
             $this->reset('title', 'filing_no', 'registration_no', 'country_id', 'category_id', 'kind_id', 'type_id', 'registration_date', 'publication_date', 'filing_date', 'inventor_name', 'long', 'lat', 'abstract', 'hiddenId', 'btnType');
         } catch (\Throwable $th) {
             DB::rollback();
-            $this->error = $th->getMessage();
-            // $this->error = 'Ops! looks like we had some problem';
+            // $this->error = $th->getMessage();
+            $this->error = 'Ops! looks like we had some problem';
             $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);
         }
     }
@@ -185,8 +184,8 @@ class PatentListComponent extends Component
             }
         } catch (\Throwable $th) {
             DB::rollback();
-            // $this->error = 'Ops! looks like we had some problem';
-            $this->error = $th->getMessage();
+            $this->error = 'Ops! looks like we had some problem';
+            // $this->error = $th->getMessage();
             $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);
         }
     }

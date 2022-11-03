@@ -28,11 +28,6 @@ class Journal extends Model
                 ->orWhere('author_name', 'like', '%'.$search.'%');
     }
 
-    public function journalCategory()
-    {
-        return $this->belongsTo(JournalCategory::class, 'category_id');
-    }
-
     public function country()
     {
         return $this->belongsTo(Country::class, 'country_id');

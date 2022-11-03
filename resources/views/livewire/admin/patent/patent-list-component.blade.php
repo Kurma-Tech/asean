@@ -307,7 +307,7 @@
                                             <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$patent->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <a href="#" class="btn btn-xs bg-danger" wire:click="softDelete({{$patent->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
+                                            <a href="javascript:void(0)" onclick="confirm('Are you sure? Do you want to delete?') || event.stopImmediatePropagation()" class="btn btn-xs bg-danger" wire:click="softDelete({{$patent->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
                                                 <i class="far fa-trash-alt"></i>
                                             </a>
                                             @endif
@@ -322,24 +322,17 @@
                                                         <div class="product-title">
                                                             Action
                                                         </div>
-                                                        @if ($patent->deleted_at)
-                                                            <a href="#" class="btn btn-xs bg-success"
-                                                                wire:click="restore({{ $patent->id }})"
-                                                                data-toggle="tooltip" data-placement="top" title="Restore">
-                                                                <i class="fas fa-trash-restore"></i>
-                                                            </a>
-                                                        @else
-                                                            <a href="javascript:void(0)" class="btn btn-xs bg-warning"
-                                                                wire:click="editForm({{ $patent->id }})"
-                                                                data-toggle="tooltip" data-placement="top" title="Edit">
-                                                                <i class="fas fa-edit"></i>
-                                                            </a>
-                                                            <a href="#" class="btn btn-xs bg-danger"
-                                                                wire:click="softDelete({{ $patent->id }})"
-                                                                data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                <i class="far fa-trash-alt"></i>
-                                                            </a>
-                                                        @endif
+                                                        <a href="javascript:void(0)" class="btn btn-xs bg-warning"
+                                                            wire:click="editForm({{ $patent->id }})"
+                                                            data-toggle="tooltip" data-placement="top" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <a href="javascript:void(0)" onclick="confirm('Are you sure? Do you want to delete?') || event.stopImmediatePropagation()"
+                                                            class="btn btn-xs bg-danger"
+                                                            wire:click="softDelete({{ $patent->id }})"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </a>
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -429,24 +422,17 @@
                                                         <div class="product-title">
                                                             Action
                                                         </div>
-                                                        @if ($patent->deleted_at)
-                                                            <a href="#" class="btn btn-xs bg-success"
-                                                                wire:click="restore({{ $patent->id }})"
-                                                                data-toggle="tooltip" data-placement="top" title="Restore">
-                                                                <i class="fas fa-trash-restore"></i>
-                                                            </a>
-                                                        @else
-                                                            <a href="javascript:void(0)" class="btn btn-xs bg-warning"
-                                                                wire:click="editForm({{ $patent->id }})"
-                                                                data-toggle="tooltip" data-placement="top" title="Edit">
-                                                                <i class="fas fa-edit"></i>
-                                                            </a>
-                                                            <a href="#" class="btn btn-xs bg-danger"
-                                                                wire:click="softDelete({{ $patent->id }})"
-                                                                data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                <i class="far fa-trash-alt"></i>
-                                                            </a>
-                                                        @endif
+                                                        <a href="javascript:void(0)" class="btn btn-xs bg-warning"
+                                                            wire:click="editForm({{ $patent->id }})"
+                                                            data-toggle="tooltip" data-placement="top" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <a href="javascript:void(0)" onclick="confirm('Are you sure? Do you want to delete?') || event.stopImmediatePropagation()"
+                                                            class="btn btn-xs bg-danger"
+                                                            wire:click="softDelete({{ $patent->id }})"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </a>
                                                     </div>
                                                 </li>
                                             </ul>

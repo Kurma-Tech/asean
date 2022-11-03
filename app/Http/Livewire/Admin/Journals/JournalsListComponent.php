@@ -22,20 +22,21 @@ class JournalsListComponent extends Component
 
     public
         $countries = [],
-        $categories = [];
+        $categories_data = [];
 
     public $hiddenId = 0;
     public $title,
            $published_year,
-           $category_id,
+           $categories,
            $country_id,
            $abstract,
            $author_name,
            $publisher_name,
            $source_title,
            $issn_no,
-           $citition_no,
+           $cited_score,
            $keywords,
+           $link,
            $long,
            $lat;
     public $btnType = 'Create';
@@ -53,14 +54,15 @@ class JournalsListComponent extends Component
             'title'          => 'required',
             'source_title'   => 'required',
             'country_id'     => 'required|integer',
-            'category_id'    => 'required|integer',
+            'categories'     => 'required',
             'abstract'       => 'nullable',
             'author_name'    => 'required',
             'publisher_name' => 'required',
             'published_year' => 'required|date_format:"Y"',
             'issn_no'        => 'required',
-            'citition_no'    => 'required',
+            'cited_score'    => 'required',
             'keywords'       => 'required',
+            'link'           => 'nullable|url',
             'long'           => 'nullable',
             'lat'            => 'nullable',
         ];
@@ -69,23 +71,23 @@ class JournalsListComponent extends Component
     protected $messages = [
         'country_id.required'  => 'Country field is required',
         'country_id.integer'   => 'You must select country from drop down',
-        'category_id.required' => 'Journals category field is required',
-        'category_id.integer'  => 'You must select journals category from drop down',
+        'categories.required'  => 'Journals categories field is required',
+        'link.url'             => 'You must enter the correct url format ex: https://www.wikipedia.org',
+        'cited_score.required' => 'Cited score field is required',
         'long.required'        => 'Longitude field is required',
         'lat.required'         => 'Latitude field is required',
     ];
 
     public function mount()
     {
-        $this->countries  = Country::select('id', 'name')->get();
-        $this->categories = JournalCategory::where('parent_id', '=', null)->select('id', 'category')->get();
+        $this->countries       = Country::select('id', 'name')->get();
+        $this->categories_data = JournalCategory::select('id', 'category')->get();
     }
 
     public function render()
     {
         return view('livewire.admin.journals.journals-list-component', [
             'journals' => Journal::search($this->search)
-                ->withTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc' : 'desc')
                 ->paginate($this->perPage),
         ])->layout('layouts.admin');
@@ -94,7 +96,6 @@ class JournalsListComponent extends Component
     // Store
     public function storeJournal()
     {
-        // dd($this->author_name);
         $this->validate(); // validate Journals form
 
         DB::beginTransaction();
@@ -110,18 +111,19 @@ class JournalsListComponent extends Component
             $journal->title          = $this->title;
             $journal->published_year = $this->published_year;
             $journal->country_id     = $this->country_id;
-            $journal->category_id    = $this->category_id;
+            $journal->categories     = json_encode($this->categories);
             $journal->abstract       = $this->abstract;
-            $authorsToArray          = explode(',', $this->author_name);
+            $authorsToArray          = explode(';', $this->author_name);
             $authorsJson             = json_encode($authorsToArray);
             $journal->author_name    = $authorsJson;
             $journal->publisher_name = $this->publisher_name;
             $journal->source_title   = $this->source_title;
             $journal->issn_no        = $this->issn_no;
-            $journal->citition_no    = $this->citition_no;
-            $keywordsToArray         = explode(',', $this->keywords);
+            $journal->cited_score    = $this->cited_score;
+            $keywordsToArray         = explode(';', $this->keywords);
             $keywordsJson            = json_encode($keywordsToArray);
             $journal->keywords       = $keywordsJson;
+            $journal->link           = $this->link;
             $journal->long           = $this->long;
             $journal->lat            = $this->lat;
             $journal->save();
@@ -132,12 +134,12 @@ class JournalsListComponent extends Component
 
             $this->reset(
                 'title', 'published_year', 
-                'country_id', 'category_id', 
+                'country_id', 'categories', 
                 'abstract', 'author_name', 
                 'publisher_name', 'long', 'lat', 
                 'source_title', 'issn_no', 
-                'citition_no', 'keywords', 
-                'hiddenId', 'btnType'
+                'cited_score', 'keywords', 
+                'hiddenId', 'btnType', 'link'
             );
         } catch (\Throwable $th) {
             DB::rollback();
@@ -155,20 +157,21 @@ class JournalsListComponent extends Component
         $this->title          = $singleJournal->title;
         $this->published_year = $singleJournal->published_year;
         $this->country_id     = $singleJournal->country_id;
-        $this->category_id    = $singleJournal->category_id;
-        $this->abstract       = $singleJournal->abstract;
+        $this->categories     = $singleJournal->categories;
+        $this->abstract       = json_decode($singleJournal->abstract);
         $this->author_name    = implode(',',json_decode($singleJournal->author_name));
         $this->publisher_name = $singleJournal->publisher_name;
         $this->source_title   = $singleJournal->source_title;
         $this->issn_no        = $singleJournal->issn_no;
-        $this->citition_no    = $singleJournal->citition_no;
-        $this->keywords       = implode(',',json_decode($singleJournal->author_name));
+        $this->cited_score    = $singleJournal->cited_score;
+        $this->keywords       = implode(',',json_decode($singleJournal->keywords));
+        $this->link           = $singleJournal->link;
         $this->long           = $singleJournal->long;
         $this->lat            = $singleJournal->lat;
         $this->btnType        = 'Update';
 
         $this->emit('countryEvent', $this->country_id);
-        $this->emit('categoryEvent', $this->category_id);
+        $this->emit('categoryEvent', $this->categories);
         $this->emit('abstractEvent', $this->abstract);
     }
 
@@ -217,12 +220,12 @@ class JournalsListComponent extends Component
     {
         $this->reset( 
             'title', 'published_year', 
-            'country_id', 'category_id', 
+            'country_id', 'categories', 
             'abstract', 'author_name', 
             'publisher_name', 'long', 'lat', 
             'source_title', 'issn_no', 
-            'citition_no', 'keywords', 
-            'hiddenId', 'btnType'
+            'cited_score', 'keywords', 
+            'hiddenId', 'btnType', 'link'
         );
     }
 }

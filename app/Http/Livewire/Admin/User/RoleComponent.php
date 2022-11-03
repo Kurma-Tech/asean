@@ -38,7 +38,9 @@ class RoleComponent extends Component
     public function render()
     {
         return view('livewire.admin.user.role-component', [
-            'roles' => Role::orderBy('created_at', 'desc')->paginate(10),
+            'roles' => Role::whereNot(function ($query) {
+                           $query->where('name', 'admin');
+                       })->orderBy('created_at', 'desc')->paginate(10),
         ])->layout('layouts.admin');
     }
 

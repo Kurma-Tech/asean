@@ -9,10 +9,13 @@ use App\Http\Livewire\Admin\Business\BusinessUpdateComponent;
 use App\Http\Livewire\Admin\BusinessType\BusinessListComponent as BusinessTypeBusinessListComponent;
 use App\Http\Livewire\Admin\Classification\ClassificationList;
 use App\Http\Livewire\Admin\Country\CountryListComponent;
+use App\Http\Livewire\Admin\Country\CountryTrashedComponent;
 use App\Http\Livewire\Admin\DashboardComponent;
 use App\Http\Livewire\Admin\Journals\JournalsListComponent;
+use App\Http\Livewire\Admin\Journals\JournalsTrashedComponent;
 use App\Http\Livewire\Admin\JournalsCategory\CategoryListComponent;
 use App\Http\Livewire\Admin\Patent\PatentListComponent;
+use App\Http\Livewire\Admin\Patent\PatentTrashedComponent;
 use App\Http\Livewire\Admin\PatentCategory\CategoryListComponent as PatentCategoryCategoryListComponent;
 use App\Http\Livewire\Admin\PatentKind\PatentListComponent as PatentKindPatentListComponent;
 use App\Http\Livewire\Admin\PatentType\PatentListComponent as PatentTypePatentListComponent;
@@ -46,6 +49,7 @@ Route::prefix('admin')->name('admin.')->group(function() {
         Route::get('dashboard', DashboardComponent::class)->name('dashboard');
         // Countries
         Route::get('countries', CountryListComponent::class)->name('countries.list');
+        Route::get('countries/trashed', CountryTrashedComponent::class)->name('countries.trashed.list');
         // Business
         Route::get('business', BusinessListComponent::class)->name('business.list');
         Route::get('business/add', BusinessAddComponent::class)->name('business.add');
@@ -56,6 +60,7 @@ Route::prefix('admin')->name('admin.')->group(function() {
         Route::get('business/types', BusinessTypeBusinessListComponent::class)->name('typeBusiness.list');
         // Patent
         Route::get('intellectual-property', PatentListComponent::class)->name('patent.list');
+        Route::get('intellectual-property/trashed', PatentTrashedComponent::class)->name('patent.trashed.list');
         // PatentCategory
         Route::get('intellectual-property/category', PatentCategoryCategoryListComponent::class)->name('categoryPatent.list');
         // PatentType
@@ -64,8 +69,10 @@ Route::prefix('admin')->name('admin.')->group(function() {
         Route::get('intellectual-property/kinds', PatentKindPatentListComponent::class)->name('kindPatent.list');
         // Journals
         Route::get('journals', JournalsListComponent::class)->name('journals.list');
+        Route::get('journals/trashed', JournalsTrashedComponent::class)->name('journals.trashed.list');
         // JournalCategory
         Route::get('journals/category', CategoryListComponent::class)->name('journalCategory.list');
+        Route::get('journals/category/trashed', CategoryListComponent::class)->name('journalCategory.trashed.list');
         // Classification
         Route::get('classification', ClassificationList::class)->name('classification.list');
         // User

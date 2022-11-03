@@ -9,9 +9,6 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">{{ $btnType }} Role</h3>
-                            <button type="button" class="btn btn-xs btn-info pull-right" data-toggle="modal" data-target="#modal-default">
-                                <i class="fa fa-file-import"></i> Import CSV
-                            </button>
                         </div>
                         <!-- ./card-header -->
                         <form wire:submit.prevent="storeRole">
