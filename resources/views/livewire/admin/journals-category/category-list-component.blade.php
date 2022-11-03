@@ -23,7 +23,6 @@
                                         <select class="form-control" style="width: 100%;" wire:model="orderBy">
                                             <option hidden>Choose Order By</option>
                                             <option value="id">By ID</option>
-                                            <option value="acjs_code">Code</option>
                                             <option value="category">Category</option>
                                         </select>
                                     </div>
@@ -79,7 +78,7 @@
                                         </div>
                                     </div>
 
-                                    @if(!$is_parent)
+                                    {{-- @if(!$is_parent)
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="parent_id">Parent Category*</label>
@@ -104,9 +103,9 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                    @endif
+                                    @endif --}}
 
-                                    <div class="col-md-12">
+                                    {{-- <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="acjs_code">Code*</label>
                                             <input type="text" class="form-control" id="acjs_code" placeholder="Enter Code" wire:model='acjs_code'>
@@ -114,7 +113,7 @@
                                             <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     {{-- <div class="col-md-12 m-2">
 
@@ -149,13 +148,12 @@
                             <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th style="width:2.5%;">#</th>
-                                        <th style="width:2.5%;">ID</th>
-                                        <th style="width:30%;">Category</th>
-                                        {{-- <th style="width:30%;">Parent Category</th> --}}
-                                        <th style="width:10%;">Code</th>
-                                        <th style="width:15%;">Trashed</th>
-                                        <th style="width:10%;">Action</th>
+                                        <th style="width: 5%;">#</th>
+                                        <th style="width: 5%;">ID</th>
+                                        <th>Category</th>
+                                        {{-- <th>Parent Category</th> --}}
+                                        {{-- <th>Code</th> --}}
+                                        <th style="width: 10%;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -167,32 +165,14 @@
                                         {{-- <td>
                                             <span class="badge badge-primary">{{ $category->parent->category ?? 'Self' }}</span>
                                         </td> --}}
-                                        <td>{{ $category->acjs_code }}</td>
+                                        {{-- <td>{{ $category->acjs_code }}</td> --}}
                                         <td>
-                                            {{-- @if($category->parent_id)
-                                            <span class="badge badge-success badge-sm">Child Category</span>
-                                            @else
-                                            <span class="badge badge-info badge-sm">Parent Category</span>
-                                            @endif --}}
-                                            @if($category->deleted_at)
-                                            <span class="badge badge-danger badge-sm">Trashed</span>
-                                            @else
-                                            <span class="badge badge-success badge-sm">Available</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($category->deleted_at)
-                                                <a href="#" class="btn btn-xs bg-success" wire:click="restore({{$category->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
-                                                    <i class="fas fa-trash-restore"></i>
-                                                </a>
-                                                @else
-                                                <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$category->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <a href="#" class="btn btn-xs bg-danger" wire:click="softDelete({{$category->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                    <i class="far fa-trash-alt"></i>
-                                                </a>
-                                            @endif
+                                            <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$category->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="#" class="btn btn-xs bg-danger" wire:click="softDelete({{$category->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                <i class="far fa-trash-alt"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                     @endforeach

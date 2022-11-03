@@ -16,12 +16,9 @@ class CategoryListComponent extends Component
     public $orderBy = 'id';
     public $sortBy = false;
 
-    public $parentCategories = []; // Categories Array
+    // public $parentCategories = []; // Categories Array
 
     public $hiddenId = 0;
-    public $is_parent = 1;
-    public $parent_id;
-    public $acjs_code;
     public $category;
 
     public $btnType = 'Create';
@@ -31,37 +28,26 @@ class CategoryListComponent extends Component
 
     protected function rules()
     {
-        if ($this->is_parent) {
-            return [
-                'category'  => 'required',
-                'acjs_code' => 'required'
-            ];
-        } else {
-            return [
-                'category'  => 'required',
-                'parent_id' => 'required|integer',
-                'acjs_code' => 'required',
-            ];
-        }
+        return [
+            'category'  => 'required'
+        ];
     }
 
     protected $messages = [
         'parent_id.required' => 'Please select parent category',
         'parent_id.integer'  => 'You must select parent category from drop down',
         'category.required'  => 'Please enter category title',
-        'acjs_code.required' => 'Please enter category code',
     ];
 
     public function mount()
     {
-        $this->parentCategories = JournalCategory::where('parent_id', null)->select('id', 'category')->get();
+        // $this->parentCategories = JournalCategory::where('parent_id', null)->select('id', 'category')->get();
     }
 
     public function render()
     {
         return view('livewire.admin.journals-category.category-list-component', [
             'journalsCategories' => JournalCategory::search($this->search)
-                ->withTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc' : 'desc')
                 ->paginate($this->perPage),
         ])->layout('layouts/admin');
@@ -83,15 +69,14 @@ class CategoryListComponent extends Component
             }
 
             $journalCategory->category  = $this->category;
-            $journalCategory->parent_id = $this->parent_id;
-            $journalCategory->acjs_code = $this->acjs_code;
+            // $journalCategory->parent_id = $this->parent_id;
             $journalCategory->save();
 
             DB::commit();
 
             $this->dispatchBrowserEvent('success-message', ['message' => 'Category has been ' . $this->btnType . '.']);
 
-            $this->reset('category', 'parent_id', 'acjs_code', 'hiddenId', 'btnType', 'is_parent');
+            $this->reset('category', 'hiddenId', 'btnType');
         } catch (\Throwable $th) {
             DB::rollback();
             // $this->error = $th->getMessage();
@@ -106,9 +91,6 @@ class CategoryListComponent extends Component
         $singleData      = JournalCategory::find($id);
         $this->hiddenId  = $singleData->id;
         $this->category  = $singleData->category;
-        $this->parent_id = $singleData->parent_id;
-        $this->acjs_code = $singleData->acjs_code;
-        $this->is_parent = $singleData->parent_id ? 0 : 1;
         $this->btnType   = 'Update';
     }
 
@@ -155,6 +137,6 @@ class CategoryListComponent extends Component
     // reset fields
     public function resetFields()
     {
-        $this->reset('category', 'parent_id', 'acjs_code', 'hiddenId', 'btnType', 'is_parent');
+        $this->reset('category', 'hiddenId', 'btnType');
     }
 }
