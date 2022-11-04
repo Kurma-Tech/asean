@@ -16,8 +16,7 @@ class JournalCategory extends Model
     public static function search($search){
         return empty($search) ? static::query()
             : static::query()->where('id', 'like', '%'.$search.'%')
-                ->orWhere('category', 'like', '%'.$search.'%')
-                ->orWhere('acjs_code', 'like', '%'.$search.'%');
+                ->orWhere('category', 'like', '%'.$search.'%');
     }
 
     public function journals()

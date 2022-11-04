@@ -28,7 +28,7 @@ class ClassificationImport implements ToModel, WithHeadingRow, WithChunkReading,
         return new IndustryClassification([
             "parent_id"       => ($industryClassification != null) ? $industryClassification->id : null,
             "classifications" => $row['classifications'] ?? null,
-            "psic_code"       => $row['psic_code'] ?? null,
+            "code"            => $row['code'] ?? null,
         ]);
     }
 

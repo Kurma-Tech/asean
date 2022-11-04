@@ -151,26 +151,21 @@
                                         <th style="width: 5%;">#</th>
                                         <th style="width: 5%;">ID</th>
                                         <th>Category</th>
-                                        {{-- <th>Parent Category</th> --}}
-                                        {{-- <th>Code</th> --}}
                                         <th style="width: 10%;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($journalsCategories as $category)
-                                    <tr data-widget="expandable-table" aria-expanded="false">
+                                    <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $category->id }}</td>
-                                        <td>{{ $category->category }}</td>
-                                        {{-- <td>
-                                            <span class="badge badge-primary">{{ $category->parent->category ?? 'Self' }}</span>
-                                        </td> --}}
-                                        {{-- <td>{{ $category->acjs_code }}</td> --}}
+                                        <td>{{ $category->category ?? 'N/A' }}</td>
                                         <td>
                                             <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$category->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <a href="#" class="btn btn-xs bg-danger" wire:click="softDelete({{$category->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
+                                            <a href="javascript:void(0)" onclick="confirm('Are you sure? Do you want to delete?') || event.stopImmediatePropagation()" 
+                                                class="btn btn-xs bg-danger" wire:click="softDelete({{$category->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
                                                 <i class="far fa-trash-alt"></i>
                                             </a>
                                         </td>

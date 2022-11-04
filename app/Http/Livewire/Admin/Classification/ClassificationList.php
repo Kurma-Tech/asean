@@ -23,7 +23,7 @@ class ClassificationList extends Component
     public $hiddenId = 0;
     public $is_parent = 1;
     public $parent_id;
-    public $psic_code;
+    public $code;
     public $classifications;
 
     public $btnType = 'Create';
@@ -41,7 +41,7 @@ class ClassificationList extends Component
             return [
                 'classifications' => 'required',
                 'parent_id'       => 'required|integer',
-                'psic_code'       => 'required'
+                'code'       => 'required'
             ];
         }
     }
@@ -61,7 +61,6 @@ class ClassificationList extends Component
     {
         return view('livewire.admin.classification.classification-list', [
             'industryClassificationsList' => IndustryClassification::search($this->search)
-                ->withTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc' : 'desc')
                 ->paginate($this->perPage),
         ])->layout('layouts/admin');
@@ -84,18 +83,18 @@ class ClassificationList extends Component
 
             $industryClassification->classifications = $this->classifications;
             $industryClassification->parent_id       = $this->parent_id;
-            $industryClassification->psic_code       = $this->psic_code;
+            $industryClassification->code            = $this->code;
             $industryClassification->save();
 
             DB::commit();
 
             $this->dispatchBrowserEvent('success-message', ['message' => 'Industry Classification has been ' . $this->btnType . '.']);
 
-            $this->reset('classifications', 'parent_id', 'psic_code', 'hiddenId', 'btnType', 'is_parent');
+            $this->reset('classifications', 'parent_id', 'code', 'hiddenId', 'btnType', 'is_parent');
         } catch (\Throwable $th) {
             DB::rollback();
-            $this->error = $th->getMessage();
-            // $this->error = 'Ops! looks like we had some problem';
+            // $this->error = $th->getMessage();
+            $this->error = 'Ops! looks like we had some problem';
             $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);
         }
     }
@@ -103,13 +102,13 @@ class ClassificationList extends Component
     // Update Form
     public function editForm($id)
     {
-        $singleData                    = IndustryClassification::find($id);
-        $this->hiddenId                = $singleData->id;
-        $this->classifications         = $singleData->classifications;
-        $this->parent_id               = $singleData->parent_id;
-        $this->psic_code               = $singleData->psic_code;
-        $this->is_parent               = $singleData->parent_id ? 0 : 1;
-        $this->btnType                 = 'Update';
+        $singleData            = IndustryClassification::find($id);
+        $this->hiddenId        = $singleData->id;
+        $this->classifications = $singleData->classifications;
+        $this->parent_id       = $singleData->parent_id;
+        $this->code            = $singleData->code;
+        $this->is_parent       = $singleData->parent_id ? 0 : 1;
+        $this->btnType         = 'Update';
     }
 
     // softDelete
@@ -155,6 +154,6 @@ class ClassificationList extends Component
     // reset fields
     public function resetFields()
     {
-        $this->reset('classifications', 'parent_id', 'psic_code', 'hiddenId', 'btnType', 'is_parent');
+        $this->reset('classifications', 'parent_id', 'code', 'hiddenId', 'btnType', 'is_parent');
     }
 }

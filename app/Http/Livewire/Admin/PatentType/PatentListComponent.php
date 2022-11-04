@@ -43,7 +43,6 @@ class PatentListComponent extends Component
     {
         return view('livewire.admin.patent-type.patent-list-component', [
             'patentTypes' => PatentType::search($this->search)
-                ->withTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
                 ->paginate($this->perPage),
         ])->layout('layouts.admin');
