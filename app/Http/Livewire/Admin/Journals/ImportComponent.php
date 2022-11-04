@@ -32,14 +32,14 @@ class ImportComponent extends Component
     public function journalImport()
     {
         $this->validate();
-
-        // DB::beginTransaction();
+        ini_set('memory_limit', -1);
+        DB::beginTransaction();
 
         try {
-
+            set_time_limit(0);
             Excel::import(new JournalImport, $this->file);
 
-            // DB::commit();
+            DB::commit();
             
             $this->reset();
             $this->success = 'Journal Imported Successfully';
