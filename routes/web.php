@@ -7,18 +7,24 @@ use App\Http\Livewire\Admin\Business\BusinessListComponent;
 use App\Http\Livewire\Admin\Business\BusinessTrashedComponent;
 use App\Http\Livewire\Admin\Business\BusinessUpdateComponent;
 use App\Http\Livewire\Admin\BusinessType\BusinessListComponent as BusinessTypeBusinessListComponent;
+use App\Http\Livewire\Admin\BusinessType\TrashedComponent as BusinessTypeTrashedComponent;
 use App\Http\Livewire\Admin\Classification\ClassificationList;
+use App\Http\Livewire\Admin\Classification\TrashedComponent as ClassificationTrashedComponent;
 use App\Http\Livewire\Admin\Country\CountryListComponent;
 use App\Http\Livewire\Admin\Country\CountryTrashedComponent;
 use App\Http\Livewire\Admin\DashboardComponent;
 use App\Http\Livewire\Admin\Journals\JournalsListComponent;
 use App\Http\Livewire\Admin\Journals\JournalsTrashedComponent;
 use App\Http\Livewire\Admin\JournalsCategory\CategoryListComponent;
+use App\Http\Livewire\Admin\JournalsCategory\TrashedComponent as JournalsCategoryTrashedComponent;
 use App\Http\Livewire\Admin\Patent\PatentListComponent;
 use App\Http\Livewire\Admin\Patent\PatentTrashedComponent;
 use App\Http\Livewire\Admin\PatentCategory\CategoryListComponent as PatentCategoryCategoryListComponent;
+use App\Http\Livewire\Admin\PatentCategory\TrashedComponent as PatentCategoryTrashedComponent;
 use App\Http\Livewire\Admin\PatentKind\PatentListComponent as PatentKindPatentListComponent;
+use App\Http\Livewire\Admin\PatentKind\TrashedComponent as PatentKindTrashedComponent;
 use App\Http\Livewire\Admin\PatentType\PatentListComponent as PatentTypePatentListComponent;
+use App\Http\Livewire\Admin\PatentType\TrashedComponent;
 use App\Http\Livewire\Admin\User\PermissionComponent;
 use App\Http\Livewire\Admin\User\RoleComponent;
 use App\Http\Livewire\Admin\User\UserListComponent;
@@ -58,23 +64,28 @@ Route::prefix('admin')->name('admin.')->group(function() {
         Route::get('business/import/sample-download', BusinessTrashedComponent::class)->name('business.download.sample');
         // BusinessType
         Route::get('business/types', BusinessTypeBusinessListComponent::class)->name('typeBusiness.list');
+        Route::get('business/types/trashed', BusinessTypeTrashedComponent::class)->name('typeBusiness.trashed.list');
         // Patent
         Route::get('intellectual-property', PatentListComponent::class)->name('patent.list');
         Route::get('intellectual-property/trashed', PatentTrashedComponent::class)->name('patent.trashed.list');
         // PatentCategory
         Route::get('intellectual-property/category', PatentCategoryCategoryListComponent::class)->name('categoryPatent.list');
+        Route::get('intellectual-property/category/trashed', PatentCategoryTrashedComponent::class)->name('categoryPatent.trashed.list');
         // PatentType
         Route::get('intellectual-property/types', PatentTypePatentListComponent::class)->name('typePatent.list');
+        Route::get('intellectual-property/types/trashed', TrashedComponent::class)->name('typePatent.trashed.list');
         // PatentKind
         Route::get('intellectual-property/kinds', PatentKindPatentListComponent::class)->name('kindPatent.list');
+        Route::get('intellectual-property/kinds/trashed', PatentKindTrashedComponent::class)->name('kindPatent.trashed.list');
         // Journals
         Route::get('journals', JournalsListComponent::class)->name('journals.list');
         Route::get('journals/trashed', JournalsTrashedComponent::class)->name('journals.trashed.list');
         // JournalCategory
         Route::get('journals/category', CategoryListComponent::class)->name('journalCategory.list');
-        Route::get('journals/category/trashed', CategoryListComponent::class)->name('journalCategory.trashed.list');
+        Route::get('journals/category/trashed', JournalsCategoryTrashedComponent::class)->name('journalCategory.trashed.list');
         // Classification
         Route::get('classification', ClassificationList::class)->name('classification.list');
+        Route::get('classification/trashed', ClassificationTrashedComponent::class)->name('classification.trashed.list');
         // User
         Route::get('users', UserListComponent::class)->name('users.list');
         // Role

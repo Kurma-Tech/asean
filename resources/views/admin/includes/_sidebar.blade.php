@@ -173,6 +173,12 @@
                                         <p>View All</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.classification.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.classification.trashed.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-danger"></i>
+                                        <p>View Trashed</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item {{ (request()->routeIs('admin.typeBusiness*')) ? 'menu-open' : '' }}">
@@ -188,6 +194,12 @@
                                     <a href="{{route('admin.typeBusiness.list')}}" class="nav-link {{ (request()->routeIs('admin.typeBusiness.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-info"></i>
                                         <p>View All</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.typeBusiness.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.typeBusiness.trashed.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-danger"></i>
+                                        <p>View Trashed</p>
                                     </a>
                                 </li>
                             </ul>
@@ -208,6 +220,12 @@
                                         <p>View All</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.categoryPatent.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.categoryPatent.trashed.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-danger"></i>
+                                        <p>View Trashed</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item {{ (request()->routeIs('admin.typePatent*')) ? 'menu-open' : '' }}">
@@ -225,6 +243,12 @@
                                         <p>View All</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.typePatent.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.typePatent.trashed.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-danger"></i>
+                                        <p>View Trashed</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item {{ (request()->routeIs('admin.kindPatent*')) ? 'menu-open' : '' }}">
@@ -240,6 +264,12 @@
                                     <a href="{{route('admin.kindPatent.list')}}" class="nav-link {{ (request()->routeIs('admin.kindPatent.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-info"></i>
                                         <p>View All</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.kindPatent.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.kindPatent.trashed.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-danger"></i>
+                                        <p>View Trashed</p>
                                     </a>
                                 </li>
                             </ul>
