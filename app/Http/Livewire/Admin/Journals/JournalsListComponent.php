@@ -159,12 +159,12 @@ class JournalsListComponent extends Component
         $this->country_id     = $singleJournal->country_id;
         $this->categories     = $singleJournal->categories;
         $this->abstract       = json_decode($singleJournal->abstract);
-        $this->author_name    = implode(',',json_decode($singleJournal->author_name));
+        $this->author_name    = implode(';',json_decode($singleJournal->author_name));
         $this->publisher_name = $singleJournal->publisher_name;
         $this->source_title   = $singleJournal->source_title;
         $this->issn_no        = $singleJournal->issn_no;
         $this->cited_score    = $singleJournal->cited_score;
-        $this->keywords       = implode(',',json_decode($singleJournal->keywords));
+        $this->keywords       = implode(';',json_decode($singleJournal->keywords));
         $this->link           = $singleJournal->link;
         $this->long           = $singleJournal->long;
         $this->lat            = $singleJournal->lat;

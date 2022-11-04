@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Journal;
+use App\Models\JournalCategory;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
@@ -26,15 +27,24 @@ class JournalImport implements ToModel, WithHeadingRow, WithChunkReading, WithBa
         $keywordsJson    = json_encode($keywordsToArray);       // Keywords to json
         $authorToArray   = explode(';', $row['author_name']);   // Author name explode with ,
         $namesJson       = json_encode($authorToArray);         // Author names to json
-        $categoryToArray = explode(';', $row['categories']);    // Category name explode with ,
-        $categoriesJson  = json_encode($categoryToArray);       // Category names to json
+        $categoryToArray = array_map('trim', explode(';', $row['categories']));    // Category name explode with ,
+        // $categoriesJson  = json_encode($categoryToArray);       // Category names to json
+// dd($categoryToArray);
+        if($categoryToArray)
+        {
+            $category_collection = [];
+            foreach ($categoryToArray as $name)
+            {
+                $category_collection[] = JournalCategory::where('category', $name)->first()->id;
+            }
+        }
         
         return new Journal([
             "title"          => $row['title'],
             "published_year" => $row['published_year'],
             "abstract"       => $row['abstract'],
             "author_name"    => $namesJson,
-            "categories"     => $categoriesJson,
+            "categories"     => json_encode($category_collection),
             "country_id"     => $country->id ?? NULL,
             "publisher_name" => $row['publisher_name'],
             "source_title"   => $row['source_title'],
