@@ -28,15 +28,15 @@ class JournalImport implements ToModel, WithHeadingRow, WithChunkReading, WithBa
         $authorToArray   = explode(';', $row['author_name']);   // Author name explode with ,
         $namesJson       = json_encode($authorToArray);         // Author names to json
         $categoryToArray = array_map('trim', explode(';', $row['categories']));    // Category name explode with ,
-        // $categoriesJson  = json_encode($categoryToArray);       // Category names to json
-// dd($categoryToArray);
+        
         if($categoryToArray)
         {
             $category_collection = [];
             foreach ($categoryToArray as $name)
             {
-                $category_collection[] = JournalCategory::where('category', $name)->first()->id;
+                $category_collection[] = JournalCategory::where('category', $name)->first()->id ?? null;
             }
+            
         }
         
         return new Journal([
