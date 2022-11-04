@@ -158,7 +158,7 @@
                             </ul>
                         </li>
                         <li class="nav-header">BUSINESS GENERAL</li>
-                        <li class="nav-item">
+                        <li class="nav-item {{ (request()->routeIs('admin.classification*')) ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.classification*')) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>

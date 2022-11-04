@@ -39,10 +39,10 @@ class CategoryListComponent extends Component
         'category.required'  => 'Please enter category title',
     ];
 
-    public function mount()
-    {
-        // $this->parentCategories = JournalCategory::where('parent_id', null)->select('id', 'category')->get();
-    }
+    // public function mount()
+    // {
+    //     // $this->parentCategories = JournalCategory::where('parent_id', null)->select('id', 'category')->get();
+    // }
 
     public function render()
     {
