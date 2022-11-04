@@ -33,13 +33,13 @@ class ImportComponent extends Component
     {
         $this->validate();
 
-        DB::beginTransaction();
+        // DB::beginTransaction();
 
         try {
 
             Excel::import(new JournalImport, $this->file);
 
-            DB::commit();
+            // DB::commit();
             
             $this->reset();
             $this->success = 'Journal Imported Successfully';
