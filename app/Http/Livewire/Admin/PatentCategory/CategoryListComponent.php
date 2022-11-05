@@ -146,9 +146,6 @@ class CategoryListComponent extends Component
 
         $this->updatedSelectedSection($this->selectedSection);
         $this->updatedSelectedDivision($this->selectedDivision);
-        $this->updatedSelectedGroup($this->selectedGroup);
-
-        // $this->emit('category', $this->parent_id);
     }
 
     // softDelete
