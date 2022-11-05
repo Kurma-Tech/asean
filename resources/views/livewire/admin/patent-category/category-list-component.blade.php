@@ -210,13 +210,13 @@
                                         <td>{{ $category->classification_category }}</td>
                                         <td>{{ $category->ipc_code }}</td>
                                         <td>
-                                            @if(is_null($section_id))
+                                            @if(is_null($selectedSection))
                                             <span class="badge badge-success badge-sm">Section Category</span>
-                                            @elseif(!is_null($section_id) && is_null($division_id))
+                                            @elseif(!is_null($selectedSection) && is_null($selectedDivision))
                                             <span class="badge badge-primary badge-sm">Division Category</span>
-                                            @elseif(!is_null($section_id) && !is_null($division_id) && is_null($group_id))
+                                            @elseif(!is_null($selectedSection) && !is_null($selectedDivision) && is_null($selectedGroup))
                                             <span class="badge badge-info badge-sm">Division Category</span>
-                                            @elseif(!is_null($section_id) && !is_null($division_id) && !is_null($group_id) && is_null($class_id))
+                                            @elseif(!is_null($selectedSection) && !is_null($selectedDivision) && !is_null($selectedGroup) && is_null($selectedClass))
                                             <span class="badge badge-warning badge-sm">Group Category</span>
                                             @else
                                             <span class="badge badge-default badge-sm">Child Category</span>

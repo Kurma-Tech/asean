@@ -37,7 +37,7 @@ class ImportComponent extends Component
             $this->reset();
             $this->success = 'Category data imported successfully';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
-            $this->emit('refreshJournalCategoryListComponent');
+            $this->emit('refreshClassificationListComponent');
 
         } catch (\Throwable $th) {
             DB::rollback();
