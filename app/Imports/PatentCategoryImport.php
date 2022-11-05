@@ -15,41 +15,33 @@ class PatentCategoryImport implements ToModel, WithHeadingRow, WithChunkReading,
 
     public function model(array $row)
     {
-        if (isset($row['section_ipc_code'])) {
-            $sectionCategory = DB::table('patent_categories')
-                ->select('id')
-                ->where('ipc_code', $row['section_ipc_code'])
-                ->first();
-            $this->parent_id = $sectionCategory->id;
-        } else {
-            $sectionCategory = null;
-        }
+        if (isset($row['parent_ipc_code'])) {
+            $parentCategory = PatentCategory::where('ipc_code', $row['parent_ipc_code'])
+            ->select('id')
+            ->first();
 
-        if (isset($row['division_ipc_code'])) {
-            $divisionCategory = DB::table('patent_categories')
-                ->select('id')
-                ->where('ipc_code', $row['division_ipc_code'])
-                ->first();
-            $this->parent_id = $divisionCategory->id;
+            if (!is_null($parentCategory->group_id)) {
+                $group_id    = $parentCategory->group_id;
+                $division_id = $parentCategory->division_id;
+                $section_id  = $parentCategory->section_id;
+            } elseif (!is_null($parentCategory->division_id)) {
+                $division_id = $parentCategory->division_id;
+                $section_id  = $parentCategory->section_id;
+            } elseif (!is_null($parentCategory->section_id)) {
+                $section_id  = $parentCategory->section_id;
+            }
         } else {
-            $divisionCategory = null;
-        }
-
-        if (isset($row['group_ipc_code'])) {
-            $groupCategory = DB::table('patent_categories')
-                ->select('id')
-                ->where('ipc_code', $row['group_ipc_code'])
-                ->first();
-            $this->parent_id = $groupCategory->id;
-        } else {
-            $groupCategory = null;
+            $parentCategory = null;
+            $section_id     = null;
+            $division_id    = null;
+            $group_id      = null;
         }
         
         return new PatentCategory([
-            "parent_id"               => $this->parent_id ?? null,
-            "section_id"              => ($sectionCategory != null) ? $sectionCategory->id : null,
-            "division_id"             => ($divisionCategory != null) ? $divisionCategory->id : null,
-            "group_id"                => ($groupCategory != null) ? $groupCategory->id : null,
+            "parent_id"               => ($parentCategory != null) ? $parentCategory->id : null,
+            "section_id"              => ($section_id != null) ? $section_id : null,
+            "division_id"             => ($division_id != null) ? $division_id : null,
+            "group_id"                => ($group_id != null) ? $group_id : null,
             "classification_category" => $row['category_title'] ?? null,
             "ipc_code"                => $row['ipc_code'] ?? null,
         ]);
