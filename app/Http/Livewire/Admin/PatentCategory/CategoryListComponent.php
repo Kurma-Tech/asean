@@ -91,6 +91,14 @@ class CategoryListComponent extends Component
                 $patentCategory = new PatentCategory(); // create PatentCategory
             }
 
+            if($this->is_parent == 0)
+            {
+                $this->reset(
+                    'selectedSection', 'selectedDivision', 
+                    'selectedGroup', 'divisions', 'groups'
+                );
+            }
+
             if(is_null($this->selectedSection))
             {
                 $this->parent_id = Null;
@@ -193,7 +201,7 @@ class CategoryListComponent extends Component
     {
         $this->reset(
             'classification_category', 'ipc_code', 'is_parent', 
-            'selectedSection', 'selectedDivision', 'selectedGroup', 'selectedClass', 
+            'selectedSection', 'selectedDivision', 'selectedGroup', 
             'hiddenId', 'btnType', 'divisions', 'groups'
         );
     }
