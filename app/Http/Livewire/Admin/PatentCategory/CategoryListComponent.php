@@ -26,6 +26,7 @@ class CategoryListComponent extends Component
     public $selectedSection = Null;
     public $selectedDivision = Null;
     public $selectedGroup = Null;
+    public $selectedClass = Null;
     public $ipc_code;
     public $classification_category;
 
@@ -65,6 +66,7 @@ class CategoryListComponent extends Component
 
         $this->divisions = collect();
         $this->groups = collect();
+        $this->classes = collect();
     }
 
     public function render()
@@ -94,25 +96,36 @@ class CategoryListComponent extends Component
             if(is_null($this->selectedSection))
             {
                 $this->parent_id = Null;
-            }elseif(!is_null($this->selectedSection) && is_null($this->selectedDivision))
+            }
+            elseif(!is_null($this->selectedSection) && is_null($this->selectedDivision))
             {
                 $this->parent_id = $this->selectedSection;
-            }elseif(!is_null($this->selectedSection) && !is_null($this->selectedDivision) && is_null($this->selectedGroup))
+            }
+            elseif(!is_null($this->selectedSection) && !is_null($this->selectedDivision) && is_null($this->selectedGroup))
             {
                 $this->parent_id = $this->selectedDivision;
-            }elseif(!is_null($this->selectedSection) && !is_null($this->selectedDivision) && !is_null($this->selectedGroup) && is_null($this->selectedClass))
+            }
+            elseif(!is_null($this->selectedSection) && !is_null($this->selectedDivision) && !is_null($this->selectedGroup) && is_null($this->selectedClass))
             {
                 $this->parent_id = $this->selectedGroup;
+            }
+            elseif(!is_null($this->selectedSection) && !is_null($this->selectedDivision) && !is_null($this->selectedGroup) && !is_null($this->selectedClass))
+            {
+                $this->parent_id = $this->selectedClass;
             }
 
             $patentCategory->classification_category = $this->classification_category;
             $patentCategory->parent_id               = $this->parent_id ?? Null;
             if($this->is_parent == false) {
-                $patentCategory->section_id              = $this->selectedSection;
-                $patentCategory->division_id             = $this->selectedDivision;
-                $patentCategory->group_id                = $this->selectedGroup;
+                $patentCategory->section_id          = $this->selectedSection;
+                $patentCategory->division_id         = $this->selectedDivision;
+                $patentCategory->group_id            = $this->selectedGroup;
+                $patentCategory->class_id            = $this->selectedClass;
             }else{
-                $this->reset('selectedDivision', 'selectedGroup');
+                $patentCategory->section_id          = Null;
+                $patentCategory->division_id         = Null;
+                $patentCategory->group_id            = Null;
+                $patentCategory->class_id            = Null;
             }
             $patentCategory->ipc_code                = $this->ipc_code;
             $patentCategory->save();
@@ -196,7 +209,7 @@ class CategoryListComponent extends Component
     {
         $this->reset(
             'classification_category', 'ipc_code', 'is_parent', 
-            'selectedSection', 'selectedDivision', 'selectedGroup', 
+            'selectedSection', 'selectedDivision', 'selectedGroup', 'selectedClass', 
             'hiddenId', 'btnType', 'divisions', 'groups'
         );
     }
@@ -216,6 +229,16 @@ class CategoryListComponent extends Component
     {
         if (!is_null($divisionID)) {
             $this->groups = PatentCategory::where('parent_id', $divisionID)
+            ->whereNot('id', $this->hiddenId)
+            ->get();
+        }
+    }
+
+    // update Class
+    public function updatedSelectedGroup($groupID)
+    {
+        if (!is_null($groupID)) {
+            $this->classes = PatentCategory::where('parent_id', $groupID)
             ->whereNot('id', $this->hiddenId)
             ->get();
         }

@@ -24,7 +24,7 @@
                                             <option hidden>Choose Order By</option>
                                             <option value="id">By ID</option>
                                             <option value="ipc_code">IPC Code</option>
-                                            <option value="title">Title</option>
+                                            <option value="classification_category">Title</option>
                                         </select>
                                     </div>
                                 </div>
@@ -126,12 +126,29 @@
                                             <div class="form-group">
                                                 <label for="category-dropdown-group">Group Category</label>
                                                 <select class="form-control" id="category-dropdown-group" wire:model="selectedGroup">
-                                                    <option value="" {{ $selectedSection == Null ?? 'selected' }}>Select Group Category</option>
+                                                    <option value="">Select Group Category</option>
                                                     @foreach($groups as $gCategory)
                                                     <option value="{{ $gCategory->id }}">{{ $gCategory->classification_category }}</option>
                                                     @endforeach
                                                 </select>
                                                 @error('selectedGroup')
+                                                    <div class="error">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        @endif
+
+                                        @if(!is_null($selectedGroup))
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="category-dropdown-class">Class Category</label>
+                                                <select class="form-control" id="category-dropdown-class" wire:model="selectedClass">
+                                                    <option value="">Select Class Category</option>
+                                                    @foreach($classes as $cCategory)
+                                                    <option value="{{ $cCategory->id }}">{{ $cCategory->classification_category }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('selectedClass')
                                                     <div class="error">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -197,8 +214,10 @@
                                             <span class="badge badge-primary badge-sm">Division Category</span>
                                             @elseif(!is_null($category->section_id) && !is_null($category->division_id) && is_null($category->group_id))
                                             <span class="badge badge-info badge-sm">Group Category</span>
+                                            @elseif(!is_null($category->section_id) && !is_null($category->division_id) && !is_null($category->group_id) && is_null($category->class_id))
+                                            <span class="badge badge-warning badge-sm">Class Category</span>
                                             @else
-                                            <span class="badge badge-warning badge-sm">Child Category</span>
+                                            <span class="badge badge-default badge-sm">SubClass Category</span>
                                             @endif
                                         </td>
                                         <td>
