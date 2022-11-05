@@ -91,13 +91,6 @@ class CategoryListComponent extends Component
                 $patentCategory = new PatentCategory(); // create PatentCategory
             }
 
-            if($this->is_parent == 0)
-            {
-                $this->selectedSection = Null;
-                $this->selectedDivision = Null;
-                $this->selectedGroup = Null;
-            }
-
             if(is_null($this->selectedSection))
             {
                 $this->parent_id = Null;
@@ -114,9 +107,15 @@ class CategoryListComponent extends Component
 
             $patentCategory->classification_category = $this->classification_category;
             $patentCategory->parent_id               = $this->parent_id ?? Null;
-            $patentCategory->section_id              = $this->selectedSection ?? Null;
-            $patentCategory->division_id             = $this->selectedDivision ?? Null;
-            $patentCategory->group_id                = $this->selectedGroup ?? Null;
+            if($this->is_parent == false) {
+                $patentCategory->section_id              = $this->selectedSection;
+                $patentCategory->division_id             = $this->selectedDivision;
+                $patentCategory->group_id                = $this->selectedGroup;
+            }else{
+                $patentCategory->section_id              = Null;
+                $patentCategory->division_id             = Null;
+                $patentCategory->group_id                = Null;
+            }
             $patentCategory->ipc_code                = $this->ipc_code;
             $patentCategory->save();
 
