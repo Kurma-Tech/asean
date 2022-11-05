@@ -26,7 +26,7 @@
                                 year, 
                                 company_name, 
                                 business_type, 
-                                psic_code,
+                                classification_code,
                                 country_short_code i.e IND for Indonesia,
                                 sec_no, 
                                 date_registered, 

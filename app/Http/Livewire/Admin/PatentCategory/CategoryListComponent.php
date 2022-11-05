@@ -56,7 +56,6 @@ class CategoryListComponent extends Component
         $this->parentCategories = PatentCategory::whereNot('id', $this->hiddenId)->select('id', 'classification_category')->get();
         return view('livewire.admin.patent-category.category-list-component', [
             'patentCategories' => PatentCategory::search($this->search)
-                ->withTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc' : 'desc')
                 ->paginate($this->perPage),
             'parentCategories' => $this->parentCategories,
