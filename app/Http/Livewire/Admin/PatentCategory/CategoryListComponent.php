@@ -93,6 +93,20 @@ class CategoryListComponent extends Component
                 $patentCategory = new PatentCategory(); // create PatentCategory
             }
 
+            if(is_null($this->selectedSection))
+            {
+                $this->parent_id = Null;
+            }elseif(is_null($this->selectedDivision))
+            {
+                $this->parent_id = $this->selectedSection;
+            }elseif(is_null($this->selectedGroup))
+            {
+                $this->parent_id = $this->selectedDivision;
+            }elseif(is_null($this->selectedClass))
+            {
+                $this->parent_id = $this->selectedGroup;
+            }
+
             $patentCategory->classification_category = $this->classification_category;
             $patentCategory->parent_id               = $this->parent_id;
             $patentCategory->section_id              = $this->selectedSection;
