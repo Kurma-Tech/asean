@@ -26,7 +26,6 @@ class CategoryListComponent extends Component
     public $selectedSection = Null;
     public $selectedDivision = Null;
     public $selectedGroup = Null;
-    public $selectedClass = Null;
     public $ipc_code;
     public $classification_category;
 
@@ -66,7 +65,6 @@ class CategoryListComponent extends Component
 
         $this->divisions = collect();
         $this->groups = collect();
-        $this->classes = collect();
     }
 
     public function render()
@@ -199,7 +197,7 @@ class CategoryListComponent extends Component
         $this->reset(
             'classification_category', 'ipc_code', 'is_parent', 
             'selectedSection', 'selectedDivision', 'selectedGroup', 'selectedClass', 
-            'hiddenId', 'btnType', 'divisions', 'groups', 'classes'
+            'hiddenId', 'btnType', 'divisions', 'groups'
         );
     }
 
@@ -218,16 +216,6 @@ class CategoryListComponent extends Component
     {
         if (!is_null($divisionID)) {
             $this->groups = PatentCategory::where('parent_id', $divisionID)
-            ->whereNot('id', $this->hiddenId)
-            ->get();
-        }
-    }
-
-    // update Class
-    public function updatedSelectedGroup($groupID)
-    {
-        if (!is_null($groupID)) {
-            $this->classes = PatentCategory::where('parent_id', $groupID)
             ->whereNot('id', $this->hiddenId)
             ->get();
         }

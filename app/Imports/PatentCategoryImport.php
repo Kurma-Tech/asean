@@ -20,7 +20,7 @@ class PatentCategoryImport implements ToModel, WithHeadingRow, WithChunkReading,
 
         if (isset($row['parent_ipc_code'])) {
             $parentCategory = PatentCategory::where('ipc_code', $row['parent_ipc_code'])
-            ->select('id','parent_id','section_id','division_id','group_id')
+            ->select('id','parent_id','section_id','division_id')
             ->first();
 
             if (is_null($parentCategory->parent_id)) {

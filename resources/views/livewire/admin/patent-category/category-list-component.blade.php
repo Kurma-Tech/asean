@@ -138,25 +138,6 @@
                                         </div>
                                         @endif
 
-                                        @if(!is_null($selectedGroup))
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="category-dropdown-class">Class Category</label>
-                                                <div class="select2-purple">
-                                                    <select class="form-control" id="category-dropdown-class" wire:model="selectedClass">
-                                                        <option value="" selected="true">Select Class Category</option>
-                                                        @foreach($classes as $cCategory)
-                                                        <option value="{{ $cCategory->id }}">{{ $cCategory->classification_category }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                @error('selectedClass')
-                                                    <div class="error">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        @endif
-
                                     @endif
 
                                     <div class="col-md-12 m-2">
