@@ -96,13 +96,13 @@ class CategoryListComponent extends Component
             if(is_null($this->selectedSection))
             {
                 $this->parent_id = Null;
-            }elseif(is_null($this->selectedDivision))
+            }elseif(!is_null($this->selectedSection) && is_null($this->selectedDivision))
             {
                 $this->parent_id = $this->selectedSection;
-            }elseif(is_null($this->selectedGroup))
+            }elseif(!is_null($this->selectedSection) && !is_null($this->selectedDivision) && is_null($this->selectedGroup))
             {
                 $this->parent_id = $this->selectedDivision;
-            }elseif(is_null($this->selectedClass))
+            }elseif(!is_null($this->selectedSection) && !is_null($this->selectedDivision) && !is_null($this->selectedGroup) && is_null($this->selectedClass))
             {
                 $this->parent_id = $this->selectedGroup;
             }

@@ -199,7 +199,7 @@
                                         <th>#</th>
                                         <th>Title</th>
                                         <th>IPC Code</th>
-                                        <th>Type</th>
+                                        <th>Level</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -210,13 +210,16 @@
                                         <td>{{ $category->classification_category }}</td>
                                         <td>{{ $category->ipc_code }}</td>
                                         <td>
-                                            @if($category->parent_id)
-                                            <span class="badge badge-success badge-sm">Child Category</span>
+                                            @if(is_null($section_id))
+                                            <span class="badge badge-success badge-sm">Section Category</span>
+                                            @elseif(!is_null($section_id) && is_null($division_id))
+                                            <span class="badge badge-primary badge-sm">Division Category</span>
+                                            @elseif(!is_null($section_id) && !is_null($division_id) && is_null($group_id))
+                                            <span class="badge badge-info badge-sm">Division Category</span>
+                                            @elseif(!is_null($section_id) && !is_null($division_id) && !is_null($group_id) && is_null($class_id))
+                                            <span class="badge badge-warning badge-sm">Group Category</span>
                                             @else
-                                            <span class="badge badge-info badge-sm">Parent Category</span>
-                                            @endif
-                                            @if($category->deleted_at)
-                                            <span class="badge badge-danger badge-sm">Trashed</span>
+                                            <span class="badge badge-default badge-sm">Child Category</span>
                                             @endif
                                         </td>
                                         <td>
