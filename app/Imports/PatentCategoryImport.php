@@ -11,6 +11,8 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class PatentCategoryImport implements ToModel, WithHeadingRow, WithChunkReading, WithBatchInserts
 {
+    public $parent_id;
+
     public function model(array $row)
     {
         if (isset($row['section_ipc_code'])) {
@@ -18,7 +20,7 @@ class PatentCategoryImport implements ToModel, WithHeadingRow, WithChunkReading,
                 ->select('id')
                 ->where('ipc_code', $row['section_ipc_code'])
                 ->first();
-            $parent_id = $sectionCategory->id;
+            $this->parent_id = $sectionCategory->id;
         } else {
             $sectionCategory = null;
         }
@@ -28,7 +30,7 @@ class PatentCategoryImport implements ToModel, WithHeadingRow, WithChunkReading,
                 ->select('id')
                 ->where('ipc_code', $row['division_ipc_code'])
                 ->first();
-            $parent_id = $divisionCategory->id;
+            $this->parent_id = $divisionCategory->id;
         } else {
             $divisionCategory = null;
         }
@@ -38,27 +40,16 @@ class PatentCategoryImport implements ToModel, WithHeadingRow, WithChunkReading,
                 ->select('id')
                 ->where('ipc_code', $row['group_ipc_code'])
                 ->first();
-            $parent_id = $groupCategory->id;
+            $this->parent_id = $groupCategory->id;
         } else {
             $groupCategory = null;
         }
-
-        if (isset($row['class_ipc_code'])) {
-            $classCategory = DB::table('patent_categories')
-                ->select('id')
-                ->where('ipc_code', $row['class_ipc_code'])
-                ->first();
-            $parent_id = Null;
-        } else {
-            $classCategory = null;
-        }
         
         return new PatentCategory([
-            "parent_id"               => $parent_id,
+            "parent_id"               => $this->parent_id ?? null,
             "section_id"              => ($sectionCategory != null) ? $sectionCategory->id : null,
             "division_id"             => ($divisionCategory != null) ? $divisionCategory->id : null,
             "group_id"                => ($groupCategory != null) ? $groupCategory->id : null,
-            "class_id"                => ($classCategory != null) ? $classCategory->id : null,
             "classification_category" => $row['category_title'] ?? null,
             "ipc_code"                => $row['ipc_code'] ?? null,
         ]);

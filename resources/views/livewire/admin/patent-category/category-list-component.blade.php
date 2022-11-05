@@ -205,18 +205,18 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($patentCategories as $category)
-                                    <tr data-widget="expandable-table" aria-expanded="false">
+                                    <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $category->classification_category }}</td>
                                         <td>{{ $category->ipc_code }}</td>
                                         <td>
-                                            @if(is_null($selectedSection))
+                                            @if(is_null($category->section_id))
                                             <span class="badge badge-success badge-sm">Section Category</span>
-                                            @elseif(!is_null($selectedSection) && is_null($selectedDivision))
+                                            @elseif(!is_null($category->section_id) && is_null($category->division_id))
                                             <span class="badge badge-primary badge-sm">Division Category</span>
-                                            @elseif(!is_null($selectedSection) && !is_null($selectedDivision) && is_null($selectedGroup))
+                                            @elseif(!is_null($category->section_id) && !is_null($category->division_id) && is_null($category->group_id))
                                             <span class="badge badge-info badge-sm">Division Category</span>
-                                            @elseif(!is_null($selectedSection) && !is_null($selectedDivision) && !is_null($selectedGroup) && is_null($selectedClass))
+                                            @elseif(!is_null($category->section_id) && !is_null($category->division_id) && !is_null($category->group_id) && is_null($category->class_id))
                                             <span class="badge badge-warning badge-sm">Group Category</span>
                                             @else
                                             <span class="badge badge-default badge-sm">Child Category</span>
@@ -230,56 +230,6 @@
                                                 class="btn btn-xs bg-danger" wire:click="softDelete({{$category->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
                                                 <i class="far fa-trash-alt"></i>
                                             </a>
-                                        </td>
-                                    </tr>
-                                    <tr class="expandable-body d-none">
-                                        <td colspan="8">
-                                            <ul class="products-list product-list-in-card pl-2 pr-2">
-                                                <li class="item">
-                                                    <div class="product-info">
-                                                        <div class="product-title">
-                                                            Action
-                                                        </div>
-                                                        <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$category->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
-                                                            <i class="fas fa-edit"></i>
-                                                        </a>
-                                                        <a href="javascript:void(0)" onclick="confirm('Are you sure? Do you want to delete?') || event.stopImmediatePropagation()"
-                                                            class="btn btn-xs bg-danger" wire:click="softDelete({{$category->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                            <i class="far fa-trash-alt"></i>
-                                                        </a>
-                                                    </div>
-                                                </li>
-                                                <li class="item">
-                                                    <div class="product-info">
-                                                        <div class="product-title">
-                                                            Category
-                                                        </div>
-                                                        <span class="badge badge-primary">{{ $category->parent->classification_category ?? 'Self' }}</span>
-                                                    </div>
-                                                </li>
-                                                <li class="item">
-                                                    <div class="product-info">
-                                                        <div class="product-title">
-                                                            IPC Code
-                                                        </div>
-                                                        <span class="badge badge-secondary">{{ $category->ipc_code ?? 'N/A' }}</span>
-                                                    </div>
-                                                </li>
-                                                <li class="item">
-                                                    <div class="product-info">
-                                                        <div class="product-title">
-                                                            Action
-                                                        </div>
-                                                        <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$category->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
-                                                            <i class="fas fa-edit"></i>
-                                                        </a>
-                                                        <a href="javascript:void(0)" onclick="confirm('Are you sure? Do you want to delete?') || event.stopImmediatePropagation()"
-                                                            class="btn btn-xs bg-danger" wire:click="softDelete({{$category->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                            <i class="far fa-trash-alt"></i>
-                                                        </a>
-                                                    </div>
-                                                </li>
-                                            </ul>
                                         </td>
                                     </tr>
                                     @endforeach
