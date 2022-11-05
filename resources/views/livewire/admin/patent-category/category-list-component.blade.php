@@ -215,11 +215,9 @@
                                             @elseif(!is_null($category->section_id) && is_null($category->division_id))
                                             <span class="badge badge-primary badge-sm">Division Category</span>
                                             @elseif(!is_null($category->section_id) && !is_null($category->division_id) && is_null($category->group_id))
-                                            <span class="badge badge-info badge-sm">Division Category</span>
-                                            @elseif(!is_null($category->section_id) && !is_null($category->division_id) && !is_null($category->group_id) && is_null($category->class_id))
-                                            <span class="badge badge-warning badge-sm">Group Category</span>
+                                            <span class="badge badge-info badge-sm">Group Category</span>
                                             @else
-                                            <span class="badge badge-default badge-sm">Child Category</span>
+                                            <span class="badge badge-warning badge-sm">Child Category</span>
                                             @endif
                                         </td>
                                         <td>
