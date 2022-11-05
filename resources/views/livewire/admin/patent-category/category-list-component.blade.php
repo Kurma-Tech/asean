@@ -205,7 +205,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($patentCategories as $category)
-                                    <tr>
+                                    <tr data-widget="expandable-table" aria-expanded="false">
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $category->classification_category }}</td>
                                         <td>{{ $category->ipc_code }}</td>
@@ -230,6 +230,20 @@
                                                 class="btn btn-xs bg-danger" wire:click="softDelete({{$category->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
                                                 <i class="far fa-trash-alt"></i>
                                             </a>
+                                        </td>
+                                    </tr>
+                                    <tr class="expandable-body d-none">
+                                        <td colspan="8">
+                                            <ul class="products-list product-list-in-card pl-2 pr-2">
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Category
+                                                        </div>
+                                                        <span class="badge badge-primary">{{ $category->parent->classification_category ?? 'Self' }}</span>
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </td>
                                     </tr>
                                     @endforeach
