@@ -13,6 +13,11 @@ class PatentCategoryImport implements ToModel, WithHeadingRow, WithChunkReading,
 {
     public function model(array $row)
     {
+        $parentCategory = null;
+        $section_id     = null;
+        $division_id    = null;
+        $group_id       = null;
+
         if (isset($row['parent_ipc_code'])) {
             $parentCategory = PatentCategory::where('ipc_code', $row['parent_ipc_code'])
             ->select('id','section_id','division_id','group_id')
@@ -27,11 +32,6 @@ class PatentCategoryImport implements ToModel, WithHeadingRow, WithChunkReading,
             if (!is_null($parentCategory->group_id)) {
                 $group_id    = $parentCategory->group_id;
             }
-        } else {
-            $parentCategory = null;
-            $section_id     = null;
-            $division_id    = null;
-            $group_id       = null;
         }
         
         return new PatentCategory([
