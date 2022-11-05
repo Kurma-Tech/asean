@@ -11,8 +11,6 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class PatentCategoryImport implements ToModel, WithHeadingRow, WithChunkReading, WithBatchInserts
 {
-    public $parent_id;
-
     public function model(array $row)
     {
         if (isset($row['parent_ipc_code'])) {
@@ -20,18 +18,20 @@ class PatentCategoryImport implements ToModel, WithHeadingRow, WithChunkReading,
             ->select('id','section_id','division_id','group_id')
             ->first();
 
-            dd($parentCategory);
-
+            if (!is_null($parentCategory->section_id)) {
+                $section_id  = $parentCategory->section_id;
+            }
+            if (!is_null($parentCategory->division_id)) {
+                $division_id = $parentCategory->division_id;
+            }
             if (!is_null($parentCategory->group_id)) {
                 $group_id    = $parentCategory->group_id;
-                $division_id = $parentCategory->division_id;
-                $section_id  = $parentCategory->section_id;
             }
         } else {
             $parentCategory = null;
             $section_id     = null;
             $division_id    = null;
-            $group_id      = null;
+            $group_id       = null;
         }
         
         return new PatentCategory([
