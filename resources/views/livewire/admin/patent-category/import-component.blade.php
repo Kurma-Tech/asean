@@ -25,9 +25,7 @@
                             <code class="text-xs text-info-400">
                                 category_title,
                                 ipc_code,
-                                section_ipc_code (opt. if category is a division),
-                                division_ipc_code (opt. if categoryis a group),
-                                group_ipc_code (opt. if category is a class)
+                                parent_ipc_code (optional if category is a child)
                             </code>
                         </div>
                     </div>
