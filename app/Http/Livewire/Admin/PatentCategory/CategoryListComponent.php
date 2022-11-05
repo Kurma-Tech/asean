@@ -108,11 +108,13 @@ class CategoryListComponent extends Component
             $patentCategory->classification_category = $this->classification_category;
             $patentCategory->parent_id               = $this->parent_id ?? Null;
             if($this->is_parent == false) {
-                $patentCategory->section_id              = $this->selectedSection;
-                $patentCategory->division_id             = $this->selectedDivision;
-                $patentCategory->group_id                = $this->selectedGroup;
+                $patentCategory->section_id          = $this->selectedSection;
+                $patentCategory->division_id         = $this->selectedDivision;
+                $patentCategory->group_id            = $this->selectedGroup;
             }else{
-                $this->reset('selectedDivision', 'selectedGroup');
+                $patentCategory->section_id          = Null;
+                $patentCategory->division_id         = Null;
+                $patentCategory->group_id            = Null;
             }
             $patentCategory->ipc_code                = $this->ipc_code;
             $patentCategory->save();
