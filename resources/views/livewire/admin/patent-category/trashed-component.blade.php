@@ -24,7 +24,7 @@
                                             <option hidden>Choose Order By</option>
                                             <option value="id">By ID</option>
                                             <option value="ipc_code">IPC Code</option>
-                                            <option value="title">Title</option>
+                                            <option value="classification_category">Title</option>
                                         </select>
                                     </div>
                                 </div>
