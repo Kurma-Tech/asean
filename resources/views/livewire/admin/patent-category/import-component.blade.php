@@ -23,11 +23,11 @@
                         </blockquote>
                         <div class="mt-1 p-1"><strong class="text-red-400" style="font-size: 12px;display:block;">Colums accepted:</strong>
                             <code class="text-xs text-info-400">
-                                section_ipc_code,
-                                division_ipc_code,
-                                group_ipc_code,
                                 category_title,
-                                ipc_code
+                                ipc_code,
+                                section_ipc_code (opt. if category is a division),
+                                division_ipc_code (opt. if categoryis a group),
+                                group_ipc_code (opt. if category is a class)
                             </code>
                         </div>
                     </div>
