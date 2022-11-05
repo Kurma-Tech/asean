@@ -71,9 +71,19 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="classification_category">Category Title*</label>
+                                            <label for="classification_category">Category Title<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="classification_category" placeholder="Enter Category Title" wire:model='classification_category'>
                                             @error('classification_category')
+                                            <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="ipc_code">IPC Code<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="ipc_code" placeholder="Enter IPC Code" wire:model='ipc_code'>
+                                            @error('ipc_code')
                                             <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -82,30 +92,72 @@
                                     @if(!$is_parent)
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="category-dropdown">Category*</label>
-                                                <div class="select2-purple" wire:ignore>
-                                                    <select class="form-control" id="category-dropdown" data-placeholder="Choose Categories" data-dropdown-css-class="select2-purple" wire:model="parent_id">
-                                                        @foreach($parentCategories as $parent)
-                                                        <option value="{{ $parent->id }}">{{ $parent->classification_category }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                @error('parent_id')
+                                                <label for="category-dropdown-section">Section Category<span class="text-danger">*</span></label>
+                                                <select class="form-control" id="category-dropdown-section" wire:model="selectedSection">
+                                                    <option value="" {{ $selectedSection == Null ?? 'selected' }}>Select Section Category</option>
+                                                    @foreach($sections as $sCategory)
+                                                    <option value="{{ $sCategory->id }}">{{ $sCategory->classification_category }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('selectedSection')
                                                     <div class="error">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
-                                    @endif
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="ipc_code">IPC Code*</label>
-                                            <input type="text" class="form-control" id="ipc_code" placeholder="Enter IPC Code" wire:model='ipc_code'>
-                                            @error('ipc_code')
-                                            <div class="error">{{ $message }}</div>
-                                            @enderror
+                                        @if(!is_null($selectedSection))
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="category-dropdown-division">Division Category</label>
+                                                <select class="form-control" id="category-dropdown-division" wire:model="selectedDivision">
+                                                    <option value="" {{ $selectedSection == Null ?? 'selected' }}>Select Division Category</option>
+                                                    @foreach($divisions as $dCategory)
+                                                    <option value="{{ $dCategory->id }}">{{ $dCategory->classification_category }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('selectedDivision')
+                                                    <div class="error">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
+                                        @endif
+
+                                        @if(!is_null($selectedDivision))
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="category-dropdown-group">Group Category</label>
+                                                <select class="form-control" id="category-dropdown-group" wire:model="selectedGroup">
+                                                    <option value="" {{ $selectedSection == Null ?? 'selected' }}>Select Group Category</option>
+                                                    @foreach($groups as $gCategory)
+                                                    <option value="{{ $gCategory->id }}">{{ $gCategory->classification_category }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('selectedGroup')
+                                                    <div class="error">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        @endif
+
+                                        @if(!is_null($selectedGroup))
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="category-dropdown-class">Class Category</label>
+                                                <div class="select2-purple">
+                                                    <select class="form-control" id="category-dropdown-class" wire:model="selectedClass">
+                                                        <option value="" selected="true">Select Class Category</option>
+                                                        @foreach($classes as $cCategory)
+                                                        <option value="{{ $cCategory->id }}">{{ $cCategory->classification_category }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                @error('selectedClass')
+                                                    <div class="error">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        @endif
+
+                                    @endif
 
                                     <div class="col-md-12 m-2">
 
@@ -118,6 +170,10 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <blockquote class="blockquote">
+                                        <p class="mb-0"><span class="text-red-400">Note*</span>: Fields with <span class="text-danger">*</span> sign are mendatory.</p>
+                                    </blockquote>
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -164,18 +220,13 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($category->deleted_at)
-                                                <a href="#" class="btn btn-xs bg-success" wire:click="restore({{$category->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
-                                                    <i class="fas fa-trash-restore"></i>
-                                                </a>
-                                                @else
-                                                <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$category->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <a href="#" class="btn btn-xs bg-danger" wire:click="softDelete({{$category->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                    <i class="far fa-trash-alt"></i>
-                                                </a>
-                                            @endif
+                                            <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$category->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="javascript:void(0)" onclick="confirm('Are you sure? Do you want to delete?') || event.stopImmediatePropagation()"
+                                                class="btn btn-xs bg-danger" wire:click="softDelete({{$category->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                <i class="far fa-trash-alt"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr class="expandable-body d-none">
@@ -186,24 +237,13 @@
                                                         <div class="product-title">
                                                             Action
                                                         </div>
-                                                        @if ($category->deleted_at)
-                                                            <a href="#" class="btn btn-xs bg-success"
-                                                                wire:click="restore({{ $category->id }})"
-                                                                data-toggle="tooltip" data-placement="top" title="Restore">
-                                                                <i class="fas fa-trash-restore"></i>
-                                                            </a>
-                                                        @else
-                                                            <a href="javascript:void(0)" class="btn btn-xs bg-warning"
-                                                                wire:click="editForm({{ $category->id }})"
-                                                                data-toggle="tooltip" data-placement="top" title="Edit">
-                                                                <i class="fas fa-edit"></i>
-                                                            </a>
-                                                            <a href="#" class="btn btn-xs bg-danger"
-                                                                wire:click="softDelete({{ $category->id }})"
-                                                                data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                <i class="far fa-trash-alt"></i>
-                                                            </a>
-                                                        @endif
+                                                        <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$category->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <a href="javascript:void(0)" onclick="confirm('Are you sure? Do you want to delete?') || event.stopImmediatePropagation()"
+                                                            class="btn btn-xs bg-danger" wire:click="softDelete({{$category->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </a>
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -227,24 +267,13 @@
                                                         <div class="product-title">
                                                             Action
                                                         </div>
-                                                        @if ($category->deleted_at)
-                                                            <a href="#" class="btn btn-xs bg-success"
-                                                                wire:click="restore({{ $category->id }})"
-                                                                data-toggle="tooltip" data-placement="top" title="Restore">
-                                                                <i class="fas fa-trash-restore"></i>
-                                                            </a>
-                                                        @else
-                                                            <a href="javascript:void(0)" class="btn btn-xs bg-warning"
-                                                                wire:click="editForm({{ $category->id }})"
-                                                                data-toggle="tooltip" data-placement="top" title="Edit">
-                                                                <i class="fas fa-edit"></i>
-                                                            </a>
-                                                            <a href="#" class="btn btn-xs bg-danger"
-                                                                wire:click="softDelete({{ $category->id }})"
-                                                                data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                <i class="far fa-trash-alt"></i>
-                                                            </a>
-                                                        @endif
+                                                        <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$category->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <a href="javascript:void(0)" onclick="confirm('Are you sure? Do you want to delete?') || event.stopImmediatePropagation()"
+                                                            class="btn btn-xs bg-danger" wire:click="softDelete({{$category->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </a>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -278,21 +307,4 @@
     <style>
         .has-error {border: 1px solid #ff7e7e;}
     </style>
-@endpush
-
-@push('extra-scripts')
-<!-- Select2 -->
-<script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
-<script>
-$(document).ready(function () {
-    $('#category-dropdown').select2();
-    $('#category-dropdown').on('change', function (e) {
-        let data = $(this).val();
-            @this.set('parent_id', data);
-    });
-    window.livewire.on('category', () => {
-        $('#category-dropdown').select2();
-    });
-});  
-</script>
 @endpush

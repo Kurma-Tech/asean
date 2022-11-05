@@ -13,17 +13,47 @@ class PatentCategoryImport implements ToModel, WithHeadingRow, WithChunkReading,
 {
     public function model(array $row)
     {
-        if (isset($row['parent_ipc_code'])) {
-            $patentCategory = DB::table('patent_categories')
+        if (isset($row['section_ipc_code'])) {
+            $sectionCategory = DB::table('patent_categories')
                 ->select('id')
-                ->where('ipc_code', $row['parent_ipc_code'])
+                ->where('ipc_code', $row['section_ipc_code'])
                 ->first();
         } else {
-            $patentCategory = null;
+            $sectionCategory = null;
+        }
+
+        if (isset($row['division_ipc_code'])) {
+            $divisionCategory = DB::table('patent_categories')
+                ->select('id')
+                ->where('ipc_code', $row['division_ipc_code'])
+                ->first();
+        } else {
+            $divisionCategory = null;
+        }
+
+        if (isset($row['group_ipc_code'])) {
+            $groupCategory = DB::table('patent_categories')
+                ->select('id')
+                ->where('ipc_code', $row['group_ipc_code'])
+                ->first();
+        } else {
+            $groupCategory = null;
+        }
+
+        if (isset($row['class_ipc_code'])) {
+            $classCategory = DB::table('patent_categories')
+                ->select('id')
+                ->where('ipc_code', $row['class_ipc_code'])
+                ->first();
+        } else {
+            $classCategory = null;
         }
         
         return new PatentCategory([
-            "parent_id"               => ($patentCategory != null) ? $patentCategory->id : null,
+            "section_id"              => ($sectionCategory != null) ? $sectionCategory->id : null,
+            "division_id"             => ($divisionCategory != null) ? $divisionCategory->id : null,
+            "group_id"                => ($groupCategory != null) ? $groupCategory->id : null,
+            "class_id"                => ($classCategory != null) ? $classCategory->id : null,
             "classification_category" => $row['category_title'] ?? null,
             "ipc_code"                => $row['ipc_code'] ?? null,
         ]);

@@ -16,11 +16,17 @@ class CategoryListComponent extends Component
     public $orderBy = 'id';
     public $sortBy = false;
 
-    public $parentCategories = []; // Categories Array
+    public $sections; // Categories Array
+    public $divisions; // Categories Array
+    public $groups; // Categories Array
+    public $classes; // Categories Array
 
     public $hiddenId = 0;
     public $is_parent = 1;
-    public $parent_id;
+    public $selectedSection = Null;
+    public $selectedDivision = Null;
+    public $selectedGroup = Null;
+    public $selectedClass = Null;
     public $ipc_code;
     public $classification_category;
 
@@ -39,27 +45,36 @@ class CategoryListComponent extends Component
         } else {
             return [
                 'classification_category' => 'required',
-                'parent_id'               => 'required|integer',
+                'selectedSection'         => 'required|integer',
                 'ipc_code'                => 'required',
             ];
         }
     }
 
     protected $messages = [
-        'parent_id.required'               => 'Please select parent classification category',
-        'parent_id.integer'                => 'You must select parent classification category from drop down',
+        'selectedSection.required'         => 'Please select section category',
+        'selectedSection.integer'          => 'You must select section category from drop down',
         'classification_category.required' => 'Please enter classification category title'
     ];
 
+    public function mount()
+    {
+        $this->sections = PatentCategory::where('parent_id', Null)
+            ->whereNot('id', $this->hiddenId)
+            ->select('id', 'classification_category')
+            ->get();
+
+        $this->divisions = collect();
+        $this->groups = collect();
+        $this->classes = collect();
+    }
+
     public function render()
     {
-        $this->parentCategories = PatentCategory::whereNot('id', $this->hiddenId)->select('id', 'classification_category')->get();
         return view('livewire.admin.patent-category.category-list-component', [
             'patentCategories' => PatentCategory::search($this->search)
-                ->withTrashed()
-                ->orderBy($this->orderBy, $this->sortBy ? 'asc' : 'desc')
-                ->paginate($this->perPage),
-            'parentCategories' => $this->parentCategories,
+            ->orderBy($this->orderBy, $this->sortBy ? 'asc' : 'desc')
+            ->paginate($this->perPage),
         ])->layout('layouts/admin');
     }
 
@@ -80,6 +95,10 @@ class CategoryListComponent extends Component
 
             $patentCategory->classification_category = $this->classification_category;
             $patentCategory->parent_id               = $this->parent_id;
+            $patentCategory->section_id              = $this->selectedSection;
+            $patentCategory->division_id             = $this->selectedDivision;
+            $patentCategory->group_id                = $this->selectedGroup;
+            $patentCategory->class_id                = $this->selectedClass;
             $patentCategory->ipc_code                = $this->ipc_code;
             $patentCategory->save();
 
@@ -87,11 +106,12 @@ class CategoryListComponent extends Component
 
             $this->dispatchBrowserEvent('success-message', ['message' => 'Category has been ' . $this->btnType . '.']);
 
-            $this->reset('classification_category', 'parent_id', 'ipc_code', 'hiddenId', 'btnType', 'is_parent');
+            $this->resetFields();
+
         } catch (\Throwable $th) {
             DB::rollback();
-            $this->error = $th->getMessage();
-            // $this->error = 'Ops! looks like we had some problem';
+            // $this->error = $th->getMessage();
+            $this->error = 'Ops! looks like we had some problem';
             $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);
         }
     }
@@ -99,15 +119,24 @@ class CategoryListComponent extends Component
     // Update Form
     public function editForm($id)
     {
+        // $this->resetFields();
+
         $singleData                    = PatentCategory::find($id);
         $this->hiddenId                = $singleData->id;
         $this->classification_category = $singleData->classification_category;
-        $this->parent_id               = $singleData->parent_id;
+        $this->selectedSection         = $singleData->section_id;
+        $this->selectedDivision        = $singleData->division_id;
+        $this->selectedGroup           = $singleData->group_id;
+        $this->selectedClass           = $singleData->class_id;
         $this->ipc_code                = $singleData->ipc_code;
         $this->is_parent               = $singleData->parent_id ? 0 : 1;
         $this->btnType                 = 'Update';
 
-        $this->emit('category', $this->parent_id);
+        $this->updatedSelectedSection($this->selectedSection);
+        $this->updatedSelectedDivision($this->selectedDivision);
+        $this->updatedSelectedGroup($this->selectedGroup);
+
+        // $this->emit('category', $this->parent_id);
     }
 
     // softDelete
@@ -153,6 +182,40 @@ class CategoryListComponent extends Component
     // reset fields
     public function resetFields()
     {
-        $this->reset('classification_category', 'parent_id', 'ipc_code', 'hiddenId', 'btnType', 'is_parent');
+        $this->reset(
+            'classification_category', 'ipc_code', 'is_parent', 
+            'selectedSection', 'selectedDivision', 'selectedGroup', 'selectedClass', 
+            'hiddenId', 'btnType', 'divisions', 'groups', 'classes'
+        );
+    }
+
+    // update division
+    public function updatedSelectedSection($sectionID)
+    {
+        if (!is_null($sectionID)) {
+            $this->divisions = PatentCategory::where('parent_id', $sectionID)
+            ->whereNot('id', $this->hiddenId)
+            ->get();
+        }
+    }
+
+    // update Group
+    public function updatedSelectedDivision($divisionID)
+    {
+        if (!is_null($divisionID)) {
+            $this->groups = PatentCategory::where('parent_id', $divisionID)
+            ->whereNot('id', $this->hiddenId)
+            ->get();
+        }
+    }
+
+    // update Class
+    public function updatedSelectedGroup($groupID)
+    {
+        if (!is_null($groupID)) {
+            $this->classes = PatentCategory::where('parent_id', $groupID)
+            ->whereNot('id', $this->hiddenId)
+            ->get();
+        }
     }
 }
