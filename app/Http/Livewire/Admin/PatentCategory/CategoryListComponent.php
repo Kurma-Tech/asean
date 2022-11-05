@@ -93,10 +93,9 @@ class CategoryListComponent extends Component
 
             if($this->is_parent == 0)
             {
-                $this->reset(
-                    'selectedSection', 'selectedDivision', 
-                    'selectedGroup', 'divisions', 'groups'
-                );
+                $this->selectedSection = Null;
+                $this->selectedDivision = Null;
+                $this->selectedGroup = Null;
             }
 
             if(is_null($this->selectedSection))
