@@ -207,6 +207,7 @@ class CategoryListComponent extends Component
     public function updatedSelectedSection($sectionID)
     {
         if (!is_null($sectionID)) {
+            $this->reset('selectedDivision', 'selectedGroup');
             $this->divisions = PatentCategory::where('parent_id', $sectionID)
             ->whereNot('id', $this->hiddenId)
             ->get();
@@ -217,6 +218,7 @@ class CategoryListComponent extends Component
     public function updatedSelectedDivision($divisionID)
     {
         if (!is_null($divisionID)) {
+            $this->reset('selectedGroup');
             $this->groups = PatentCategory::where('parent_id', $divisionID)
             ->whereNot('id', $this->hiddenId)
             ->get();
