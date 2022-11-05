@@ -20,6 +20,8 @@ class PatentCategoryImport implements ToModel, WithHeadingRow, WithChunkReading,
             ->select('id')
             ->first();
 
+            dd($parentCategory);
+
             if (!is_null($parentCategory->group_id)) {
                 $group_id    = $parentCategory->group_id;
                 $division_id = $parentCategory->division_id;
