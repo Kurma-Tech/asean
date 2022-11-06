@@ -141,7 +141,15 @@
                                                             <div class="product-title">
                                                                 Source Title
                                                             </div>
-                                                            <a href="javascript:void(0)" class="product-title">{{ $journal->source_title  ?? 'N/A'}}</a>
+                                                            <p class="product-title">{{ $journal->source_title  ?? 'N/A'}}</p>
+                                                        </div>
+                                                    </li>
+                                                    <li class="item">
+                                                        <div class="product-info">
+                                                            <div class="product-title">
+                                                                Source Link
+                                                            </div>
+                                                            <a href="{{ $journal->link ?? 'javascript:void(0)'}}" class="product-title">{{ $journal->link ?? 'N/A'}}</a>
                                                         </div>
                                                     </li>
                                                     <li class="item">
@@ -149,7 +157,7 @@
                                                             <div class="product-title">
                                                                 Publisher Name
                                                             </div>
-                                                            <a href="javascript:void(0)" class="product-title">{{ $journal->publisher_name  ?? 'N/A'}}</a>
+                                                            <p class="product-title">{{ $journal->publisher_name  ?? 'N/A'}}</p>
                                                         </div>
                                                     </li>
                                                     <li class="item">
@@ -157,14 +165,14 @@
                                                             <div class="product-title">
                                                                 Keywords
                                                             </div>
-                                                            <a href="javascript:void(0)" class="product-title">
+                                                            <p class="product-title">
                                                                 @if($journal->keywords)
                                                                     @php $keywords = json_decode($journal->keywords) @endphp 
                                                                     @foreach ($keywords as $key)
                                                                     <span class="badge badge-secondary">{{$key}}</span>
                                                                     @endforeach
                                                                 @endif
-                                                            </a>
+                                                            </p>
                                                         </div>
                                                     </li>
                                                     <li class="item">
@@ -172,7 +180,13 @@
                                                             <div class="product-title">
                                                                 Category Name
                                                             </div>
-                                                            <a href="javascript:void(0)" class="product-title">{{$journal->journalCategory->category ?? 'N/A'}}</a>
+                                                            <p class="product-title">
+                                                                @isset($journal->journalCategories)
+                                                                    @foreach ($journal->journalCategories as $jCategories)
+                                                                        <span class="badge badge-secondary">{{ $jCategories->category }}</span>
+                                                                    @endforeach
+                                                                @endisset
+                                                            </p>
                                                         </div>
                                                     </li>
                                                     <li class="item">
@@ -180,7 +194,7 @@
                                                             <div class="product-title">
                                                                 Country Name
                                                             </div>
-                                                            <a href="javascript:void(0)" class="product-title">{{$journal->country->name ?? 'N/A'}}</a>
+                                                            <p class="product-title">{{$journal->country->name ?? 'N/A'}}</p>
                                                         </div>
                                                     </li>
                                                     <li class="item">
@@ -188,7 +202,7 @@
                                                             <div class="product-title">
                                                                 Geo Location
                                                             </div>
-                                                            <a href="javascript:void(0)" class="product-title">{{$journal->long ?? 'N/A'}} (long), {{$journal->lat ?? 'N/A'}} (Lat)</a>
+                                                            <p class="product-title">{{$journal->long ?? 'N/A'}} (long), {{$journal->lat ?? 'N/A'}} (Lat)</p>
                                                         </div>
                                                     </li>
                                                     <li class="item">

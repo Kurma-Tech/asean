@@ -337,7 +337,7 @@
                                                             <div class="product-title">
                                                                 Source Title
                                                             </div>
-                                                            <a href="javascript:void(0)" class="product-title">{{ $journal->source_title  ?? 'N/A'}}</a>
+                                                            <p class="product-title">{{ $journal->source_title  ?? 'N/A'}}</p>
                                                         </div>
                                                     </li>
                                                     <li class="item">
@@ -353,7 +353,7 @@
                                                             <div class="product-title">
                                                                 Publisher Name
                                                             </div>
-                                                            <a href="javascript:void(0)" class="product-title">{{ $journal->publisher_name  ?? 'N/A'}}</a>
+                                                            <p class="product-title">{{ $journal->publisher_name  ?? 'N/A'}}</p>
                                                         </div>
                                                     </li>
                                                     <li class="item">
@@ -361,14 +361,14 @@
                                                             <div class="product-title">
                                                                 Keywords
                                                             </div>
-                                                            <a href="javascript:void(0)" class="product-title">
+                                                            <p class="product-title">
                                                                 @if($journal->keywords)
                                                                     @php $keywords = json_decode($journal->keywords) @endphp 
                                                                     @foreach ($keywords as $key)
                                                                     <span class="badge badge-secondary">{{$key}}</span>
                                                                     @endforeach
                                                                 @endif
-                                                            </a>
+                                                            </p>
                                                         </div>
                                                     </li>
                                                     <li class="item">
@@ -376,14 +376,13 @@
                                                             <div class="product-title">
                                                                 Category Name
                                                             </div>
-                                                            <a href="javascript:void(0)" class="product-title">
-                                                                @if($journal->categories)
-                                                                    @php $categories_id = json_decode($journal->categories) @endphp
-                                                                    @foreach ($categories_id as $cat_id)
-                                                                        <span class="badge badge-secondary">{{ $categories_data->where('id', $cat_id)->first()->category ?? 'N/A' }}</span>
+                                                            <p class="product-title">
+                                                                @isset($journal->journalCategories)
+                                                                    @foreach ($journal->journalCategories as $jCategories)
+                                                                        <span class="badge badge-secondary">{{ $jCategories->category }}</span>
                                                                     @endforeach
-                                                                @endif    
-                                                            </a>
+                                                                @endisset
+                                                            </p>
                                                         </div>
                                                     </li>
                                                     <li class="item">
@@ -391,7 +390,7 @@
                                                             <div class="product-title">
                                                                 Country Name
                                                             </div>
-                                                            <a href="javascript:void(0)" class="product-title">{{$journal->country->name ?? 'N/A'}}</a>
+                                                            <p class="product-title">{{$journal->country->name ?? 'N/A'}}</p>
                                                         </div>
                                                     </li>
                                                     <li class="item">
@@ -399,7 +398,7 @@
                                                             <div class="product-title">
                                                                 Geo Location
                                                             </div>
-                                                            <a href="javascript:void(0)" class="product-title">{{$journal->long ?? 'N/A'}} (long), {{$journal->lat ?? 'N/A'}} (Lat)</a>
+                                                            <p class="product-title">{{$journal->long ?? 'N/A'}} (long), {{$journal->lat ?? 'N/A'}} (Lat)</p>
                                                         </div>
                                                     </li>
                                                     <li class="item">

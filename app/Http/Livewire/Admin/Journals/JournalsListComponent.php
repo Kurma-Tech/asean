@@ -111,7 +111,6 @@ class JournalsListComponent extends Component
             $journal->title          = $this->title;
             $journal->published_year = $this->published_year;
             $journal->country_id     = $this->country_id;
-            $journal->categories     = json_encode($this->categories);
             $journal->abstract       = $this->abstract;
             $authorsToArray          = explode(';', $this->author_name);
             $authorsJson             = json_encode($authorsToArray);
@@ -127,6 +126,8 @@ class JournalsListComponent extends Component
             $journal->long           = $this->long;
             $journal->lat            = $this->lat;
             $journal->save();
+
+            $journal->journalCategories()->sync($this->categories);
 
             DB::commit();
 
@@ -157,7 +158,7 @@ class JournalsListComponent extends Component
         $this->title          = $singleJournal->title;
         $this->published_year = $singleJournal->published_year;
         $this->country_id     = $singleJournal->country_id;
-        $this->categories     = $singleJournal->categories;
+        $this->categories     = $singleJournal->journalCategories;
         $this->abstract       = json_decode($singleJournal->abstract);
         $this->author_name    = implode(';',json_decode($singleJournal->author_name));
         $this->publisher_name = $singleJournal->publisher_name;

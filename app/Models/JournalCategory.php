@@ -19,12 +19,12 @@ class JournalCategory extends Model
                 ->orWhere('category', 'like', '%'.$search.'%');
     }
 
-    public function journals()
-    {
-        return $this->hasMany(Journal::class);
-    }
-
     public function parent(){
         return $this->hasOne(JournalCategory::class, "id", "parent_id");
+    }
+
+    public function journals()
+    {
+        return $this->belongsToMany(Journal::class, 'journal_pivot_journal_category', 'category_id', 'journal_id');
     }
 }

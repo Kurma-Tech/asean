@@ -14,12 +14,21 @@
         <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
 
         <style>
-                .elevation-2 {box-shadow: 0 0px 6px rgba(0,0,0,0.16),0 3px 3px rgba(0,0,0,.23)!important;}
-                .pull-right{float: right;}
-                .clear-fix{content: '';display: table;clear: both;}
-                .error{color: #bd2130;}
-                .blockquote{font-size: 15px;border-left: 0.2rem solid #17a2b8;margin: 0.5em 0rem;padding: 0.5em 0.7rem;}
-                .strong-code{font-size: 12px;display:block;}
+                .elevation-2{box-shadow:0 0px 6px rgba(0,0,0,0.16),0 3px 3px rgba(0,0,0,.23)!important;}
+                .pull-right{float:right;}
+                .clear-fix{content:'';display:table;clear:both;}
+                .error{color:#bd2130;}
+                .blockquote{font-size: 15px;border-left:0.2rem solid#17a2b8;margin:0.5em 0rem;padding:0.5em 0.7rem;}
+                .strong-code{font-size:12px;display:block;}
+                .nav-header {font-size:12px!important;font-weight:600;color:#fff!important;border-top:1px solid #707070;}
+                [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link {
+                color: #ffffff;
+                background-color: rgba(255,255,255,.1);
+                }
+                [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link:hover {
+                background-color: #607d8b;
+                color: #fff;
+                }
         </style>
 
         @livewireStyles
