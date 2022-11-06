@@ -412,6 +412,8 @@
             document.getElementById('business-count').innerHTML = data.businessCount;
             document.getElementById('patent-count').innerHTML = data.patentCount;
             document.getElementById('journal-count').innerHTML = data.journalCount;
+            console.log(data.patentCountByYears);
+            console.log(data.journalCountByYears);
 
             lineChart.updateOptions({
                 series: [{
