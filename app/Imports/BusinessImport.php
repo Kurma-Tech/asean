@@ -16,6 +16,8 @@ class BusinessImport implements ToModel, WithHeadingRow, WithChunkReading, WithB
         $businessType = DB::table('business_types')->select('id', 'type')->where('type', $row['business_type'])->first();
         $industryClassification = DB::table('industry_classifications')->select('id', 'classification_code')->where('code', $row['classification_code'])->first();
         $country = DB::table('countries')->select('id', 'short_code')->where('short_code', $row['country_short_code'])->first();
+
+        $date = explode('/', $row['date_registered']);
         
         return new Business([
             "year"                       => $row['year'],
@@ -33,7 +35,9 @@ class BusinessImport implements ToModel, WithHeadingRow, WithChunkReading, WithB
             "geo_code"                   => $row['geo_code'],
             "geo_description"            => $row['geo_description'],
             "lat"                        => $row['lat'],
-            "long"                       => $row['long']
+            "long"                       => $row['long'],
+            "month"                      => $date[0],
+            "day"                        => $date[1],
         ]);
     }
 
