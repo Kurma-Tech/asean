@@ -359,19 +359,20 @@
                                                         <a href="javascript:void(0)" class="product-title">{{ $patent->registration_no  ?? 'N/A'}}</a>
                                                     </div>
                                                 </li>
-                                                @if($patent->category_id)
+                                                @if(!is_null($patent->patentCategories))
                                                 <li class="item">
                                                     <div class="product-info">
                                                         <div class="product-title">
-                                                            Patent Category
+                                                            Category Name
                                                         </div>
-                                                        @php $ipc_code = json_decode($patent->category_id) @endphp
-                                                        @foreach ($ipc_code as $code)
-                                                            <span class="badge badge-secondary">{{$code}}</span>
-                                                        @endforeach
+                                                        <p class="product-title">
+                                                            @foreach ($patent->patentCategories as $pCategories)
+                                                                <span class="badge badge-secondary">{{ $pCategories->category }}</span>
+                                                            @endforeach
+                                                        </p>
                                                     </div>
                                                 </li>
-                                                @endif
+                                                @endisset
                                                 <li class="item">
                                                     <div class="product-info">
                                                         <div class="product-title">

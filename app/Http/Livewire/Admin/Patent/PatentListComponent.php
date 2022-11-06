@@ -41,7 +41,6 @@ class PatentListComponent extends Component
     public $country_id;
     public $kind_id;
     public $type_id;
-    public $category_id = [];
     public $long;
     public $lat;
     public $btnType = 'Create';
@@ -57,7 +56,7 @@ class PatentListComponent extends Component
             'inventor_name'     => 'required',
             'applicant_company' => 'required',
             'country_id'        => 'required|integer',
-            'category_id'       => 'required',
+            'categories'        => 'required|integer',
             'kind_id'           => 'required|integer',
             'type_id'           => 'required|integer',
             'registration_no'   => 'required',
@@ -72,7 +71,8 @@ class PatentListComponent extends Component
     protected $messages = [
         'country_id.required'    => 'Country field is required',
         'country_id.integer'     => 'You must select country from drop down',
-        'category_id.required'   => 'Category field is required',
+        'categories.required'    => 'Category field is required',
+        'categories.integer'     => 'You must select country from drop down',
         'kind_id.required'       => 'Patent kind field is required',
         'kind_id.integer'        => 'You must select patent kind from drop down',
         'type_id.required'       => 'Patent type field is required',
@@ -81,10 +81,10 @@ class PatentListComponent extends Component
 
     public function mount()
     {
-        $this->countries   = Country::select('id', 'name')->get();
-        $this->categories  = PatentCategory::where('class_id', '!=', Null)->select('ipc_code')->get();
-        $this->patentKinds = PatentKind::select('id', 'kind')->get();
-        $this->patentTypes = PatentType::select('id', 'type')->get();
+        $this->countries        = Country::select('id', 'name')->get();
+        $this->patentCategories = PatentCategory::where('class_id', '!=', Null)->select('ipc_code')->get();
+        $this->patentKinds      = PatentKind::select('id', 'kind')->get();
+        $this->patentTypes      = PatentType::select('id', 'type')->get();
     }
 
     public function render()
@@ -118,7 +118,6 @@ class PatentListComponent extends Component
             $patent->applicant_company = $this->applicant_company;
             $patent->registration_no   = $this->registration_no;
             $patent->country_id        = $this->country_id;
-            $patent->category_id       = json_encode($this->category_id);
             $patent->kind_id           = $this->kind_id;
             $patent->type_id           = $this->type_id;
             $patent->registration_date = $this->registration_date;
@@ -134,11 +133,13 @@ class PatentListComponent extends Component
             $patent->year              = $date[2];
             $patent->save();
 
+            $patent->patentCategories()->sync($this->patents);
+
             DB::commit();
 
             $this->dispatchBrowserEvent('success-message', ['message' => 'Intellectual Property Has Been ' . $this->btnType . '.']);
 
-            $this->reset('title', 'filing_no', 'registration_no', 'country_id', 'category_id', 'kind_id', 'type_id', 'registration_date', 'publication_date', 'filing_date', 'inventor_name', 'long', 'lat', 'abstract', 'hiddenId', 'btnType');
+            $this->resetFields();
         } catch (\Throwable $th) {
             DB::rollback();
             // $this->error = $th->getMessage();
@@ -154,7 +155,7 @@ class PatentListComponent extends Component
         $this->hiddenId           = $singlePatent->id;
         $this->title              = $singlePatent->title;
         $this->country_id         = $singlePatent->country_id;
-        $this->category_id        = $singlePatent->category_id;
+        $this->patents            = $singlePatent->patents;
         $this->kind_id            = $singlePatent->kind_id;
         $this->type_id            = $singlePatent->type_id;
         $this->registration_date  = $singlePatent->registration_date;
@@ -217,6 +218,6 @@ class PatentListComponent extends Component
     // reset fields
     public function resetFields()
     {
-        $this->reset('title', 'filing_no', 'registration_no', 'country_id', 'category_id', 'kind_id', 'type_id', 'registration_date', 'publication_date', 'filing_date', 'inventor_name', 'long', 'lat', 'abstract', 'hiddenId', 'btnType');
+        $this->reset('title', 'filing_no', 'registration_no', 'country_id', 'patents', 'kind_id', 'type_id', 'registration_date', 'publication_date', 'filing_date', 'inventor_name', 'long', 'lat', 'abstract', 'hiddenId', 'btnType');
     }
 }

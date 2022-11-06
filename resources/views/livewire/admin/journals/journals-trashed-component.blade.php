@@ -175,20 +175,20 @@
                                                             </p>
                                                         </div>
                                                     </li>
+                                                    @if(!is_null($journal->journalCategories)) 
                                                     <li class="item">
                                                         <div class="product-info">
                                                             <div class="product-title">
                                                                 Category Name
                                                             </div>
                                                             <p class="product-title">
-                                                                @isset($journal->journalCategories)
-                                                                    @foreach ($journal->journalCategories as $jCategories)
-                                                                        <span class="badge badge-secondary">{{ $jCategories->category }}</span>
-                                                                    @endforeach
-                                                                @endisset
+                                                                @foreach ($journal->journalCategories as $jCategories)
+                                                                    <span class="badge badge-secondary">{{ $jCategories->category }}</span>
+                                                                @endforeach
                                                             </p>
                                                         </div>
                                                     </li>
+                                                    @endisset
                                                     <li class="item">
                                                         <div class="product-info">
                                                             <div class="product-title">
