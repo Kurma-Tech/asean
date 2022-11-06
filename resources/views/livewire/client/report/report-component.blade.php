@@ -433,71 +433,71 @@
             });
 
             // Forcast
-            var forcastChartOptions = {
-                series: [{
-                        name: 'Business Forcast',
-                        // data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 17, 2, 7, 5]
-                        data: data.forcastData
-                    },
-                    {
-                        name: 'Patent Forcast',
-                        // data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 17, 2, 7, 5]
-                        data: data.forcastData
-                    }
-                ],
-                chart: {
-                    id: "forcast-chart",
-                    height: 350,
-                    type: 'line',
-                    foreColor: '#fff',
-                },
-                forecastDataPoints: {
-                    count: data.forecastedFrom
-                },
-                stroke: {
-                    width: 5,
-                    curve: 'smooth'
-                },
-                xaxis: {
-                    // type: 'datetime',
-                    categories: data.forcastDates,
-                    tickAmount: 10,
-                    // labels: {
-                    //     formatter: function(value, timestamp, opts) {
-                    //         console.log(timestamp);
-                    //         return opts.dateFormatter(new Date(timestamp), 'dd MMM')
-                    //     }
-                    // }
-                },
-                title: {
-                    text: 'Business Forecast',
-                    align: 'left',
-                    style: {
-                        fontSize: "16px",
-                        color: '#fff'
-                    }
-                },
-                colors: ['#b71c1c', '#ffd600', '#01579b'],
-                // fill: {
-                //     type: 'gradient',
-                //     gradient: {
-                //         shade: 'dark',
-                //         gradientToColors: ['#FDD835'],
-                //         shadeIntensity: 1,
-                //         type: 'horizontal',
-                //         opacityFrom: 1,
-                //         opacityTo: 1,
-                //         stops: [0, 100, 100, 100]
-                //     },
-                // },
-                yaxis: {
-                    min: 0,
-                    max: 60000
-                }
-            };
+            // var forcastChartOptions = {
+            //     series: [{
+            //             name: 'Business Forcast',
+            //             // data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 17, 2, 7, 5]
+            //             data: data.forcastData
+            //         },
+            //         {
+            //             name: 'Patent Forcast',
+            //             // data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 17, 2, 7, 5]
+            //             data: data.forcastData
+            //         }
+            //     ],
+            //     chart: {
+            //         id: "forcast-chart",
+            //         height: 350,
+            //         type: 'line',
+            //         foreColor: '#fff',
+            //     },
+            //     forecastDataPoints: {
+            //         count: data.forecastedFrom
+            //     },
+            //     stroke: {
+            //         width: 5,
+            //         curve: 'smooth'
+            //     },
+            //     xaxis: {
+            //         // type: 'datetime',
+            //         categories: data.forcastDates,
+            //         tickAmount: 10,
+            //         // labels: {
+            //         //     formatter: function(value, timestamp, opts) {
+            //         //         console.log(timestamp);
+            //         //         return opts.dateFormatter(new Date(timestamp), 'dd MMM')
+            //         //     }
+            //         // }
+            //     },
+            //     title: {
+            //         text: 'Business Forecast',
+            //         align: 'left',
+            //         style: {
+            //             fontSize: "16px",
+            //             color: '#fff'
+            //         }
+            //     },
+            //     colors: ['#b71c1c', '#ffd600', '#01579b'],
+            //     // fill: {
+            //     //     type: 'gradient',
+            //     //     gradient: {
+            //     //         shade: 'dark',
+            //     //         gradientToColors: ['#FDD835'],
+            //     //         shadeIntensity: 1,
+            //     //         type: 'horizontal',
+            //     //         opacityFrom: 1,
+            //     //         opacityTo: 1,
+            //     //         stops: [0, 100, 100, 100]
+            //     //     },
+            //     // },
+            //     yaxis: {
+            //         min: 0,
+            //         max: 60000
+            //     }
+            // };
 
-            var forcastChart = new ApexCharts(document.querySelector("#forcast-chart"), forcastChartOptions);
-            forcastChart.render();
+            // var forcastChart = new ApexCharts(document.querySelector("#forcast-chart"), forcastChartOptions);
+            // forcastChart.render();
 
             var emergingData = data.emergingBusiness.sort(function(x, y) {
                 return y.value - x.value;
@@ -545,16 +545,16 @@
         }
 
         Livewire.on('reportsUpdated', (data) => {
-            ApexCharts.exec('forcast-chart', 'updateOptions', {
-                xaxis: {
-                    categories: data.forcastDates,
-                    tickAmount: 10,
-                },
-            }, false, true);
+            // ApexCharts.exec('forcast-chart', 'updateOptions', {
+            //     xaxis: {
+            //         categories: data.forcastDates,
+            //         tickAmount: 10,
+            //     },
+            // }, false, true);
 
-            ApexCharts.exec('forcast-chart', 'updateSeries', [{
-                data: data.forcastData
-            }], true);
+            // ApexCharts.exec('forcast-chart', 'updateSeries', [{
+            //     data: data.forcastData
+            // }], true);
             // var emergingData = data.emergingBusiness.sort(function(x, y) {
             //     return y.value - x.value;
             // });
