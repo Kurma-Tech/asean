@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use App\Models\Country;
 use App\Models\IndustryClassification;
+use App\Models\PatentKind;
 
 class ReportComponent extends Component
 {
@@ -15,6 +16,9 @@ class ReportComponent extends Component
         $chartJournalsCount,
         $country,
         $classification,
+        $topLimitBusiness = 10,
+        $topLimitPatent = 10,
+        $topLimitJournal = 10,
         $isFirstLoad = true;
 
     protected
@@ -43,11 +47,73 @@ class ReportComponent extends Component
         $this->filterData();
     }
 
+    public function updatedTopLimitBusiness($topLimitBusiness)
+    {
+        $this->topLimitBusiness = $topLimitBusiness;
+        $this->updateTopBusiness();
+    }
+
+    public function updatedTopLimitPatent($topLimitPatent)
+    {
+        $this->topLimitPatent = $topLimitPatent;
+        $this->updateTopPatent();
+    }
+
+    // public function updatedTopLimitJournal($topLimitJournal)
+    // {
+    //     $this->topLimitJournal = $topLimitJournal;
+    //     $this->updateTopJournal();
+    // }
+
+    public function updateTopBusiness(){
+        ini_set('memory_limit', '-1');
+        $businessQuery =  DB::table('businesses')->select('id', 'year', 'date_registered', 'industry_classification_id');
+
+        $business = $businessQuery->get();
+
+        $emergingBusinessData = [];
+
+        $emergingBusiness = collect($business)->pluck('industry_classification_id')->countBy()->sortByDesc(null)->take($this->topLimitBusiness);
+
+        foreach ($emergingBusiness as $key => $value) {
+            array_push($emergingBusinessData, [
+                "key" => IndustryClassification::find($key)->classifications,
+                "value" => $value
+            ]);
+        }
+
+        $this->emit("updateTopBusiness", [
+            "emergingBusiness" => $emergingBusinessData
+        ]);
+    }
+
+    public function updateTopPatent(){
+        ini_set('memory_limit', '-1');
+        $patentQuery =  DB::table('patents')->select('id', 'registration_date', 'kind_id');
+
+        $patents = $patentQuery->get();
+
+        $emergingPatentData = [];
+
+        $emergingPatents = collect($patents)->pluck('kind_id')->countBy()->sortByDesc(null)->take(10);
+
+        foreach ($emergingPatents as $key => $value) {
+            array_push($emergingPatentData, [
+                "key" => PatentKind::find($key)->kind,
+                "value" => $value
+            ]);
+        }
+
+        $this->emit("updateTopPatent", [
+            "emergingPatents" => $emergingPatentData
+        ]);
+    }
+
     public function filterData()
     {
         ini_set('memory_limit', '-1');
         $businessQuery =  DB::table('businesses')->select('id', 'year', 'date_registered', 'industry_classification_id');
-        $patentQuery =  DB::table('patents')->select('id', 'registration_date');
+        $patentQuery =  DB::table('patents')->select('id', 'registration_date', 'kind_id');
         $journalQuery =  DB::table('journals')->select('id', 'published_year');
 
 
@@ -86,6 +152,17 @@ class ReportComponent extends Component
             ]);
         }
 
+        $emergingPatentData = [];
+
+        $emergingPatents = collect($patents)->pluck('kind_id')->countBy()->sortByDesc(null)->take(10);
+
+        foreach ($emergingPatents as $key => $value) {
+            array_push($emergingPatentData, [
+                "key" => PatentKind::find($key)->kind,
+                "value" => $value
+            ]);
+        }
+
         $this->chartPatentsCount = collect($patents)->pluck('date')->countBy(function ($date) {
             $tempDate = substr(strchr($date, "/", 0), 4);
             if(strlen($tempDate) == 4){
@@ -96,9 +173,10 @@ class ReportComponent extends Component
         }); // Count of filtered patents with year extraction
 
         $this->chartJournalsCount = collect($journals)->pluck('published_year')->countBy();
+        // dd();
 
         /* Default data for Charts End*/
-        $lineChartYears = array_unique($this->chartBusinessCount->keys()->concat($this->chartPatentsCount->keys())->toArray());
+        $lineChartYears = array_unique($this->chartBusinessCount->keys()->concat($this->chartPatentsCount->keys()->concat($this->chartJournalsCount->keys()))->toArray());
         sort($lineChartYears);
         $lineChartYears = array_values(array_diff($lineChartYears,[0]));
         // dd($lineChartYears);
@@ -151,6 +229,9 @@ class ReportComponent extends Component
 
         if ($this->isFirstLoad) {
             $this->emit("reportsFirstLoad", [
+                "businessCount" => collect($business)->count(),
+                "patentCount" => collect($patents)->count(),
+                "journalCount" => collect($journals)->count(),
                 "businessCountByYears" => collect($tempChartBusinessCount)->values(),
                 "patentCountByYears" => collect($tempChartPatentsCount)->values(),
                 "journalCountByYears" => collect($tempChartJournalsCount)->values(),
@@ -158,7 +239,8 @@ class ReportComponent extends Component
                 "forecastedFrom" =>  $this->tempForcastData["forecastedDates"]->count() - collect($tempChartBusinessCount)->keys()->count(),
                 "forcastDates" => $this->tempForcastData["forecastedDates"],
                 "forcastData" => $this->tempForcastData["forecastedData"],
-                "emergingBusiness" => $emergingBusinessData
+                "emergingBusiness" => $emergingBusinessData,
+                "emergingPatents" => $emergingPatentData
             ]);
             $this->isFirstLoad = false;
         } else {

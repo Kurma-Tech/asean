@@ -1,27 +1,186 @@
 <div>
-    <div class="content">
+    <div class="content bg-background-black">
         <div class="container-fluid">
-            <div class="row" style="margin-top: 60px;">
+            {{-- <div class="row" style="margin-top: 60px;">
                 <div class="col-12 col-sm-12 p-3">
                     <h3>{{ GoogleTranslate::trans('Current Report', app()->getLocale()) }}</h3>
                 </div>
-            </div>
-            <div class="row">
-
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="col-md-12 col-sm-12" wire:ignore>
-                        <div class="card">
+            </div> --}}
+            <div class="row"></div>
+            <div class="row" style="margin-top: 72px;">
+                <div class="col-md-12">
+                    <div class="col-md-12" wire:ignore>
+                        <div class="card bg-card-black">
                             <div class="card-body">
-                                <div id="line-chart"></div>
+                                <div class="row">
+                                    <div class="col-md-10 remove-padding">
+                                        <div id="line-chart"></div>
+                                    </div>
+                                    <div class="col-md-2 pl-4">
+                                        <h2>Totals</h2>
+                                        <div class="info-box bg-danger">
+                                            <div class="info-box-content">
+                                                <span class="info-box-text">Businesses</span>
+                                                <span class="info-box-number" id="business-count">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="info-box bg-warning">
+                                            <div class="info-box-content">
+                                                <span class="info-box-text">Intellectual properties</span>
+                                                <span class="info-box-number" id="patent-count">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="info-box bg-info">
+                                            <div class="info-box-content">
+                                                <span class="info-box-text">Journals</span>
+                                                <span class="info-box-number" id="journal-count">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card bg-card-black">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Popular Businesses</h3>
+                                        <div class="card-tools">
+                                            <div class="input-group input-group-sm" style="width: 150px;">
+                                                <select class="form-control" wire:model="topLimitBusiness">
+                                                    <option hidden>
+                                                        {{ GoogleTranslate::trans('Select', app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="10">
+                                                        {{ GoogleTranslate::trans('Top 10', app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="20">
+                                                        {{ GoogleTranslate::trans('Top 20', app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="30">
+                                                        {{ GoogleTranslate::trans('Top 30', app()->getLocale()) }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body table-responsive overlay-scroll p-0" style="height: 300px;">
+                                        <table class="table table-head-fixed" id="business-emerging">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.N</th>
+                                                    <th>Industry Type</th>
+                                                    <th>Count</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card bg-card-black">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Popular Intellectual properties</h3>
+                                        <div class="card-tools">
+                                            <div class="input-group input-group-sm" style="width: 150px;">
+                                                <select class="form-control" wire:model="topLimitPatent">
+                                                    <option hidden>
+                                                        {{ GoogleTranslate::trans('Select', app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="10">
+                                                        {{ GoogleTranslate::trans('Top 10', app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="20">
+                                                        {{ GoogleTranslate::trans('Top 20', app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="30">
+                                                        {{ GoogleTranslate::trans('Top 20', app()->getLocale()) }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body table-responsive overlay-scroll p-0" style="height: 300px;">
+                                        <table class="table table-head-fixed" id="patent-emerging">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.N</th>
+                                                    <th>Patent Kind</th>
+                                                    <th>Count</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card bg-card-black">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Popular Journals</h3>
+                                        <div class="card-tools">
+                                            <div class="input-group input-group-sm" style="width: 150px;">
+                                                <select class="form-control" wire:model="topLimitJournal">
+                                                    <option hidden>
+                                                        {{ GoogleTranslate::trans('Select', app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="10">
+                                                        {{ GoogleTranslate::trans('Top 10', app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="20">
+                                                        {{ GoogleTranslate::trans('Top 20', app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="30">
+                                                        {{ GoogleTranslate::trans('Top 20', app()->getLocale()) }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body table-responsive overlay-scroll p-0" style="height: 300px;">
+                                        <table class="table table-head-fixed" id="journal-emerging">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.N</th>
+                                                    <th>Industry Type</th>
+                                                    <th>Count</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+            {{-- <div class="row">
+                <div class="col-md-6">
+                    <div class="col-md-12 col-sm-12">
+
                     </div>
                     <div class="col-md-12 col-sm-12" wire:ignore>
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">{{ GoogleTranslate::trans('Business Manpower', app()->getLocale()) }}</h3>
+                                <h3 class="card-title">
+                                    {{ GoogleTranslate::trans('Business Manpower', app()->getLocale()) }}</h3>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -29,9 +188,15 @@
                                         <div class="form-group">
                                             <label>{{ GoogleTranslate::trans('Skill Type', app()->getLocale()) }}:</label>
                                             <select class="form-control">
-                                                <option hidden>{{ GoogleTranslate::trans('Choose Skill Type', app()->getLocale()) }}</option>
-                                                <option value="1">{{ GoogleTranslate::trans('Professional', app()->getLocale()) }}</option>
-                                                <option value="2">{{ GoogleTranslate::trans('Tradesman', app()->getLocale()) }}</option>
+                                                <option hidden>
+                                                    {{ GoogleTranslate::trans('Choose Skill Type', app()->getLocale()) }}
+                                                </option>
+                                                <option value="1">
+                                                    {{ GoogleTranslate::trans('Professional', app()->getLocale()) }}
+                                                </option>
+                                                <option value="2">
+                                                    {{ GoogleTranslate::trans('Tradesman', app()->getLocale()) }}
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
@@ -39,8 +204,11 @@
                                         <div class="form-group">
                                             <label>{{ GoogleTranslate::trans('Sort by Classifications', app()->getLocale()) }}:</label>
                                             <select class="form-control">
-                                                <option hidden>{{ GoogleTranslate::trans('Choose Industry', app()->getLocale()) }}</option>
-                                                <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                <option hidden>
+                                                    {{ GoogleTranslate::trans('Choose Industry', app()->getLocale()) }}
+                                                </option>
+                                                <option value="">
+                                                    {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                                 @foreach ($classifications as $classification)
                                                     <option value="{{ $classification->id }}">
                                                         {{ $classification->classifications }}</option>
@@ -48,14 +216,6 @@
                                             </select>
                                         </div>
                                     </div>
-                                    {{-- <div class="col-md-3 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            <label>Sub Classifications</label>
-                                            <select class="form-control" style="width: 100%;" wire:model="perPage">
-                                                <option hidden>Select Sub-Classifications</option>
-                                            </select>
-                                        </div>
-                                    </div> --}}
                                 </div>
                                 <table class="table table-bordered table-hover" id="business-manpower">
                                     <tbody>
@@ -89,7 +249,9 @@
                                         <div class="form-group">
                                             <label>{{ GoogleTranslate::trans('Sort by Country', app()->getLocale()) }}:</label>
                                             <select class="form-control" wire:model="country">
-                                                <option hidden>{{ GoogleTranslate::trans('Choose Countries', app()->getLocale()) }}</option>
+                                                <option hidden>
+                                                    {{ GoogleTranslate::trans('Choose Countries', app()->getLocale()) }}
+                                                </option>
                                                 @foreach ($countries as $country)
                                                     <option value="{{ $country->id }}">{{ $country->name }}</option>
                                                 @endforeach
@@ -100,8 +262,11 @@
                                         <div class="form-group">
                                             <label>{{ GoogleTranslate::trans('Sort by Classifications', app()->getLocale()) }}:</label>
                                             <select class="form-control" wire:model="classification">
-                                                <option hidden>{{ GoogleTranslate::trans('Choose Classifications', app()->getLocale()) }}</option>
-                                                <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                <option hidden>
+                                                    {{ GoogleTranslate::trans('Choose Classifications', app()->getLocale()) }}
+                                                </option>
+                                                <option value="">
+                                                    {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                                 @foreach ($classifications as $classification)
                                                     <option value="{{ $classification->id }}">
                                                         {{ $classification->classifications }}</option>
@@ -109,14 +274,6 @@
                                             </select>
                                         </div>
                                     </div>
-                                    {{-- <div class="col-md-3 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            <label>Sub Classifications</label>
-                                            <select class="form-control" style="width: 100%;" wire:model="perPage">
-                                                <option hidden>Select Sub-Classifications</option>
-                                            </select>
-                                        </div>
-                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -128,68 +285,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-sm-12" wire:ignore>
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">{{ GoogleTranslate::trans('Popular Business', app()->getLocale()) }}</h3>
-                            </div>
-                            <div class="card-body">
-                                <table class="table table-bordered table-hover" id="business-emerging">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>{{ GoogleTranslate::trans('Year', app()->getLocale()) }}</th>
-                                            <th>{{ GoogleTranslate::trans('No. Business Data', app()->getLocale()) }}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {{-- @foreach ($allData as $key => $value)
-                                            <tr data-widget="expandable-table" aria-expanded="false">
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $key }}</td>
-                                                <td>{{ $value }}</td>
-                                            </tr> --}}
-                                        {{-- <tr class="expandable-body d-none">
-                                            <td colspan="8">
-                                                <ul class="products-list product-list-in-card pl-2 pr-2">
-                                                    <li class="item">
-                                                        <div class="product-info">
-                                                            <div class="product-title">
-                                                                Professional Manpower
-                                                            </div>
-                                                            <span class="badge badge-info badge-xs">40 Software Engineer</span>
-                                                            <span class="badge badge-info badge-xs">3 Quality Assurance</span>
-                                                            <span class="badge badge-info badge-xs">6 Human Resources</span>
-                                                        </div>
-                                                    </li>
-                                                    <li class="item">
-                                                        <div class="product-info">
-                                                            <div class="product-title">
-                                                                Skill Manpower
-                                                            </div>
-                                                            <span class="badge badge-primary badge-xs">2 Cook</span>
-                                                            <span class="badge badge-primary badge-xs">2 Cleaner</span>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr> --}}
-                                        {{-- @endforeach --}}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-
-                {{-- <div class="col-md-12 col-sm-12" wire:ignore>
-                    <div class="card">
-                        <div class="card-body">
-                            <div id="country-wise-chart"></div>
-                        </div>
-                    </div>
-                </div> --}}
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>
@@ -198,6 +295,19 @@
     <style>
         body {
             overflow: auto !important;
+        }
+        .bg-background-black {
+            background-color: #202124 !important;
+            color: white;
+        }
+
+        .bg-card-black {
+            background-color: #303134 !important;
+            color: white;
+        }
+
+        .remove-padding {
+            padding: 0px !important;
         }
     </style>
 @endpush
@@ -218,7 +328,7 @@
                         data: []
                     },
                     {
-                        name: "Patent",
+                        name: "Intellectual property",
                         data: []
                     },
                     {
@@ -243,7 +353,7 @@
                     dashArray: [0, 0, 0]
                 },
                 title: {
-                    text: 'Total Reporting of Businesses, Patents and Journals',
+                    text: 'Total Reporting of Businesses, Intellectual properties and Journals',
                     align: 'left'
                 },
                 legend: {
@@ -298,24 +408,12 @@
             var lineChart = new ApexCharts(document.querySelector("#line-chart"), lineChartOptions);
             lineChart.render();
 
-            // Replace data to existing Chart
-            // lineChart.updateSeries([
-            //     {
-            //         name: "Business",
-            //         data: data.businessCountByYears
-            //     },
-            //     {
-            //         name: "Patent",
-            //         data: data.patentCountByYears
-            //     },
-            //     {
-            //         name: 'Journal',
-            //         data: []
-            //     }
-            // ]);
-
-            console.log(data.forcastData);
-            console.log(data.forcastDates);
+            // Business, Intellectual Property and Journal Counts
+            document.getElementById('business-count').innerHTML = data.businessCount;
+            document.getElementById('patent-count').innerHTML = data.patentCount;
+            document.getElementById('journal-count').innerHTML = data.journalCount;
+            console.log(data.patentCountByYears);
+            console.log(data.journalCountByYears);
 
             lineChart.updateOptions({
                 series: [{
@@ -323,7 +421,7 @@
                         data: data.businessCountByYears
                     },
                     {
-                        name: "Patent",
+                        name: "Intellectual property",
                         data: data.patentCountByYears
                     },
                     {
@@ -337,135 +435,85 @@
             });
 
             // Forcast
-            var forcastChartOptions = {
-                series: [{
-                    name: 'Business Forcast',
-                    // data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 17, 2, 7, 5]
-                    data: data.forcastData
-                }],
-                chart: {
-                    id: "forcast-chart",
-                    height: 350,
-                    type: 'line',
-                    foreColor: '#fff',
-                },
-                forecastDataPoints: {
-                    count: data.forecastedFrom
-                },
-                stroke: {
-                    width: 5,
-                    curve: 'smooth'
-                },
-                xaxis: {
-                    // type: 'datetime',
-                    categories: data.forcastDates,
-                    tickAmount: 10,
-                    // labels: {
-                    //     formatter: function(value, timestamp, opts) {
-                    //         console.log(timestamp);
-                    //         return opts.dateFormatter(new Date(timestamp), 'dd MMM')
-                    //     }
-                    // }
-                },
-                title: {
-                    text: 'Business Forecast',
-                    align: 'left',
-                    style: {
-                        fontSize: "16px",
-                        color: '#fff'
-                    }
-                },
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        shade: 'dark',
-                        gradientToColors: ['#FDD835'],
-                        shadeIntensity: 1,
-                        type: 'horizontal',
-                        opacityFrom: 1,
-                        opacityTo: 1,
-                        stops: [0, 100, 100, 100]
-                    },
-                },
-                yaxis: {
-                    min: 0,
-                    max: 60000
-                }
-            };
-
-            var forcastChart = new ApexCharts(document.querySelector("#forcast-chart"), forcastChartOptions);
-            forcastChart.render();
-
-            // Country Wise
-            //     var CountryWiseChartOptions = {
-            //         series: [{
-            //             name: 'Business',
-            //             data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-            //             // data: data.businessCountByYears
-            //         }, {
-            //             name: 'Patent',
-            //             data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-            //             // data: data.patentCountByYears
-            //         }, {
-            //             name: 'Journal',
-            //             data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-            //             // data: ['1']
-            //         }],
-            //         chart: {
-            //             type: 'bar',
-            //             foreColor: '#fff',
-            //             height: 350
+            // var forcastChartOptions = {
+            //     series: [{
+            //             name: 'Business Forcast',
+            //             // data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 17, 2, 7, 5]
+            //             data: data.forcastData
             //         },
-            //         plotOptions: {
-            //             bar: {
-            //                 horizontal: false,
-            //                 columnWidth: '55%',
-            //                 endingShape: 'rounded'
-            //             },
-            //         },
-            //         dataLabels: {
-            //             enabled: false
-            //         },
-            //         stroke: {
-            //             show: true,
-            //             width: 2,
-            //             colors: ['transparent']
-            //         },
-            //         xaxis: {
-            //             categories: ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021',
-            //                 '2022'],
-            //             // categories: data.lineChartYears,
-            //         },
-            //         yaxis: {
-            //             title: {
-            //                 text: 'Yearly Growth',
-            //                 color: '#fff'
-            //             }
-            //         },
-            //         fill: {
-            //             opacity: 1
-            //         },
-            //         colors: ['#ffd600', '#b71c1c', '#01579b'],
-            //         tooltip: {
-            //             y: {
-            //                 formatter: function(val) {
-            //                     return "$ " + val + " thousands"
-            //                 }
-            //             }
+            //         {
+            //             name: 'Patent Forcast',
+            //             // data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 17, 2, 7, 5]
+            //             data: data.forcastData
             //         }
-            //     };
+            //     ],
+            //     chart: {
+            //         id: "forcast-chart",
+            //         height: 350,
+            //         type: 'line',
+            //         foreColor: '#fff',
+            //     },
+            //     forecastDataPoints: {
+            //         count: data.forecastedFrom
+            //     },
+            //     stroke: {
+            //         width: 5,
+            //         curve: 'smooth'
+            //     },
+            //     xaxis: {
+            //         // type: 'datetime',
+            //         categories: data.forcastDates,
+            //         tickAmount: 10,
+            //         // labels: {
+            //         //     formatter: function(value, timestamp, opts) {
+            //         //         console.log(timestamp);
+            //         //         return opts.dateFormatter(new Date(timestamp), 'dd MMM')
+            //         //     }
+            //         // }
+            //     },
+            //     title: {
+            //         text: 'Business Forecast',
+            //         align: 'left',
+            //         style: {
+            //             fontSize: "16px",
+            //             color: '#fff'
+            //         }
+            //     },
+            //     colors: ['#b71c1c', '#ffd600', '#01579b'],
+            //     // fill: {
+            //     //     type: 'gradient',
+            //     //     gradient: {
+            //     //         shade: 'dark',
+            //     //         gradientToColors: ['#FDD835'],
+            //     //         shadeIntensity: 1,
+            //     //         type: 'horizontal',
+            //     //         opacityFrom: 1,
+            //     //         opacityTo: 1,
+            //     //         stops: [0, 100, 100, 100]
+            //     //     },
+            //     // },
+            //     yaxis: {
+            //         min: 0,
+            //         max: 60000
+            //     }
+            // };
 
-            //     var CountryWiseChart = new ApexCharts(document.querySelector("#country-wise-chart"),
-            //         CountryWiseChartOptions);
-            //     CountryWiseChart.render();
+            // var forcastChart = new ApexCharts(document.querySelector("#forcast-chart"), forcastChartOptions);
+            // forcastChart.render();
+
             var emergingData = data.emergingBusiness.sort(function(x, y) {
                 return y.value - x.value;
             });
             addEmergingData(emergingData);
+
+            var emergingPatentData = data.emergingPatents.sort(function(x, y) {
+                return y.value - x.value;
+            });
+            addEmergingPatentData(emergingPatentData);
         });
 
         function addEmergingData(data) {
-            $("#business-emerging tr").remove();
+            $("#business-emerging tbody tr").remove();
 
             for (let index = 0; index < data.length; index++) {
                 const element = data[index];
@@ -481,21 +529,52 @@
             }
         }
 
-        Livewire.on('reportsUpdated', (data) => {
-            ApexCharts.exec('forcast-chart', 'updateOptions', {
-                xaxis: {
-                    categories: data.forcastDates,
-                    tickAmount: 10,
-                },
-            }, false, true);
+        function addEmergingPatentData(data) {
+            $("#patent-emerging tbody tr").remove();
 
-            ApexCharts.exec('forcast-chart', 'updateSeries', [{
-                data: data.forcastData
-            }], true);
+            for (let index = 0; index < data.length; index++) {
+                const element = data[index];
+                var myHtmlContent =
+                    `
+                    <td>${index+1}</td>
+                    <td>${element.key}</td>
+                    <td>${element.value}</td>
+                `;
+                var tableRef = document.getElementById('patent-emerging').getElementsByTagName('tbody')[0];
+                var newRow = tableRef.insertRow(tableRef.rows.length);
+                newRow.innerHTML = myHtmlContent;
+            }
+        }
+
+        Livewire.on('reportsUpdated', (data) => {
+            // ApexCharts.exec('forcast-chart', 'updateOptions', {
+            //     xaxis: {
+            //         categories: data.forcastDates,
+            //         tickAmount: 10,
+            //     },
+            // }, false, true);
+
+            // ApexCharts.exec('forcast-chart', 'updateSeries', [{
+            //     data: data.forcastData
+            // }], true);
             // var emergingData = data.emergingBusiness.sort(function(x, y) {
             //     return y.value - x.value;
             // });
             // addEmergingData(emergingData);
+        });
+
+        Livewire.on('updateTopBusiness', (data) => {
+            var emergingData = data.emergingBusiness.sort(function(x, y) {
+                return y.value - x.value;
+            });
+            addEmergingData(emergingData);
+        });
+
+        Livewire.on('updateTopPatent', (data) => {
+            var emergingPatentData = data.emergingPatents.sort(function(x, y) {
+                return y.value - x.value;
+            });
+            addEmergingPatentData(emergingPatentData);
         });
     </script>
 @endpush
