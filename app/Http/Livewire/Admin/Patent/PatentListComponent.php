@@ -122,7 +122,7 @@ class PatentListComponent extends Component
             $patent->registration_date = $this->registration_date;
             $patent->publication_date  = $this->publication_date;
             $patent->filing_date       = $this->filing_date;
-            $namesToArray              = explode(',', $this->inventor_name);
+            $namesToArray              = explode(';', $this->inventor_name);
             $namesJson                 = json_encode($namesToArray);
             $patent->inventor_name     = $namesJson;
             $patent->long              = $this->long;
@@ -158,7 +158,7 @@ class PatentListComponent extends Component
         $this->filing_date        = $singlePatent->filing_date;
         $this->filing_no          = $singlePatent->filing_no;
         $this->regirstration_no   = $singlePatent->regirstration_no;
-        $this->inventor_name      = implode(',',json_decode($singlePatent->inventor_name));
+        $this->inventor_name      = implode(';',json_decode($singlePatent->inventor_name));
         $this->applicant_company  = $singlePatent->applicant_company;
         $this->long               = $singlePatent->long;
         $this->lat                = $singlePatent->lat;

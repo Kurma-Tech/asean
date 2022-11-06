@@ -3,7 +3,6 @@
 namespace App\Imports;
 
 use App\Models\PatentCategory;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
@@ -17,11 +16,11 @@ class PatentCategoryImport implements ToModel, WithHeadingRow, WithChunkReading,
         $section_id     = null;
         $division_id    = null;
         $group_id       = null;
-        $child_id       = null;
+        $class_id       = null;
 
         if (isset($row['parent_ipc_code'])) {
             $parentCategory = PatentCategory::where('ipc_code', $row['parent_ipc_code'])
-            ->select('id','parent_id','section_id','division_id')
+            ->select('id','parent_id','section_id','division_id','group_id')
             ->first();
 
             if (is_null($parentCategory->parent_id)) {
@@ -40,7 +39,8 @@ class PatentCategoryImport implements ToModel, WithHeadingRow, WithChunkReading,
                 $section_id  = $parentCategory->section_id;
                 $division_id = $parentCategory->division_id;
                 $group_id    = $parentCategory->group_id;
-                $child_id    = $parentCategory->id;
+                $class_id    = $parentCategory->id;
+                
             }
         }
         
@@ -49,7 +49,7 @@ class PatentCategoryImport implements ToModel, WithHeadingRow, WithChunkReading,
             "section_id"              => ($section_id != null) ? $section_id : null,
             "division_id"             => ($division_id != null) ? $division_id : null,
             "group_id"                => ($group_id != null) ? $group_id : null,
-            "child_id"                => ($child_id != null) ? $child_id : null,
+            "class_id"                => ($class_id != null) ? $class_id : null,
             "classification_category" => $row['category_title'] ?? null,
             "ipc_code"                => $row['ipc_code'] ?? null,
         ]);
