@@ -110,7 +110,7 @@
                                         <div class="form-group">
                                             <label for="inventor_name">Inventor Name*</label>
                                             <input type="text" class="form-control" id="inventor_name" placeholder="Enter Inventor Number" wire:model='inventor_name'>
-                                            <small class="form-text text-muted">If multiple names separate name with a comma</small>
+                                            <small class="form-text text-muted">If multiple names separate name with a semi-colon (;)</small>
                                             @error('inventor_name')
                                             <div class="error">{{ $message }}</div>
                                             @enderror
@@ -167,7 +167,7 @@
                                             <div class="select2-purple" wire:ignore>
                                                 <select class="form-control select2" multiple="multiple" data-placeholder="Choose Categories" data-dropdown-css-class="select2-purple" id="category-dropdown" wire:model="category_id">
                                                     @foreach($categories as $category)
-                                                    <option value="{{ $category->ipc_code }}">{{ $category->classification_category }}</option>
+                                                    <option value="{{ $category->ipc_code }}">{{ $category->ipc_code }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

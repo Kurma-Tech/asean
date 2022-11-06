@@ -31,7 +31,7 @@
                                 ip_type_name,
                                 ip_kind_name,
                                 country_short_code,
-                                ipc_code (saperate each with comma to add multiple ipc code),
+                                ipc_code (saperate each with semicolon (;) to add multiple ipc code),
                                 abstract,
                                 long,
                                 lat
