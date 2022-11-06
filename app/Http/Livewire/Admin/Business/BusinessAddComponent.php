@@ -89,6 +89,8 @@ class BusinessAddComponent extends Component
 
         DB::beginTransaction();
 
+        $date = explode('/',$this->date_registered);
+
         try {
             $business = new Business(); // Create Business
             $business->company_name               = $this->company_name;
@@ -106,6 +108,8 @@ class BusinessAddComponent extends Component
             $business->long                       = $this->long;
             $business->lat                        = $this->lat;
             $business->address                    = $this->address;
+            $business->month                      = $date[0];
+            $business->day                        = $date[1];
             $business->status                     = 'REGISTERED';
             $business->save();
 

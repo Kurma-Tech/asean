@@ -111,6 +111,8 @@ class PatentListComponent extends Component
                 $patent = new Patent(); // create Patent
             }
 
+            $date = explode('/', $this->filing_date);
+
             $patent->title             = $this->title;
             $patent->filing_no         = $this->filing_no;
             $patent->applicant_company = $this->applicant_company;
@@ -128,6 +130,8 @@ class PatentListComponent extends Component
             $patent->long              = $this->long;
             $patent->lat               = $this->lat;
             $patent->abstract          = $this->abstract;
+            $patent->month             = $date[0];
+            $patent->year              = $date[2];
             $patent->save();
 
             DB::commit();

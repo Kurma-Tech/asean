@@ -49,6 +49,8 @@ class PatentImport implements ToModel, WithHeadingRow, WithChunkReading, WithBat
 
         $codeToArray = explode(';', $row['ipc_code']);
         $codeJson = json_encode($codeToArray);
+
+        $date = explode('/', $row['filing_date']);
         
         return new Patent([
             "title"             => $row['title'],
@@ -66,6 +68,8 @@ class PatentImport implements ToModel, WithHeadingRow, WithChunkReading, WithBat
             "abstract"          => $row['abstract'],
             "long"              => $row['long'],
             "lat"               => $row['lat'],
+            "month"             => $date[0],
+            "year"              => $date[2],
         ]);
     }
 
