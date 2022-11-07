@@ -26,7 +26,7 @@ class ImportComponent extends Component
 
     public function businessImport()
     {
-        $this->validate();
+        // $this->validate();
         ini_set('memory_limit', -1);
         DB::beginTransaction();
 
