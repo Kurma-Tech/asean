@@ -38,6 +38,7 @@ class BusinessImport implements ToModel, WithHeadingRow, WithChunkReading, WithB
             "long"                       => $row['long'],
             "month"                      => $date[0],
             "day"                        => $date[1],
+            "month_and_year"             => $date[2]."-".$date[0]
         ]);
     }
 
