@@ -70,12 +70,16 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="category">Category Title*</label>
+                                            <label for="category">Category Title<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="category" placeholder="Enter Category Title" wire:model='category'>
                                             @error('category')
                                             <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
+
+                                        <blockquote class="blockquote">
+                                            <p class="mb-0"><span class="text-red-400">Note*</span>: Fields with <span class="text-danger">*</span> sign are mendatory.</p>
+                                        </blockquote>
                                     </div>
 
                                     {{-- @if(!$is_parent)

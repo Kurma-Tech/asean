@@ -14,7 +14,7 @@
                         <form wire:submit.prevent="storeRole">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="name">Name*</label>
+                                    <label for="name">Name<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="name" placeholder="Enter Role Name" wire:model='name'>
                                     @error('name')
                                     <div class="error">{{ $message }}</div>
@@ -34,6 +34,10 @@
                                         <div class="error">{{ $message }}</div>
                                     @enderror
                                 </div>
+
+                                <blockquote class="blockquote">
+                                    <p class="mb-0"><span class="text-red-400">Note*</span>: Fields with <span class="text-danger">*</span> sign are mendatory.</p>
+                                </blockquote>
                             </div>
                             <!-- /.card-body -->
                         

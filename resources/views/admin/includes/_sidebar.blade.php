@@ -160,7 +160,7 @@
                         <li class="nav-header">BUSINESS GENERAL <span></span></li>
                         <li class="nav-item {{ (request()->routeIs('admin.classification*')) ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.classification*')) ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-copy"></i>
+                                <img src="{{ asset('admin/dist/img/icons/businessClassIcon.png') }}" alt="bc-icon" style="width:24px;">
                                 <p>
                                     Classification
                                     <i class="fas fa-angle-left right"></i>
@@ -183,7 +183,7 @@
                         </li>
                         <li class="nav-item {{ (request()->routeIs('admin.typeBusiness*')) ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.typeBusiness*')) ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-copy"></i>
+                                <img src="{{ asset('admin/dist/img/icons/businessTypeIcon.png') }}" alt="bc-icon" style="width:24px;">
                                 <p>
                                     Business Type
                                     <i class="fas fa-angle-left right"></i>
@@ -207,7 +207,7 @@
                         <li class="nav-header">INTELLECTUAL PROPERTY GENERAL</li>
                         <li class="nav-item {{ (request()->routeIs('admin.categoryPatent*')) ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.categoryPatent*')) ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-copy"></i>
+                                <img src="{{ asset('admin/dist/img/icons/patentCatIcon.png') }}" alt="bc-icon" style="width:24px;">
                                 <p>
                                     Patent Category
                                     <i class="fas fa-angle-left right"></i>
@@ -230,7 +230,7 @@
                         </li>
                         <li class="nav-item {{ (request()->routeIs('admin.typePatent*')) ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.typePatent*')) ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-copy"></i>
+                                <img src="{{ asset('admin/dist/img/icons/patentTypeIcon.png') }}" alt="bc-icon" style="width:24px;">
                                 <p>
                                     I.P. Types
                                     <i class="fas fa-angle-left right"></i>
@@ -253,7 +253,7 @@
                         </li>
                         <li class="nav-item {{ (request()->routeIs('admin.kindPatent*')) ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.kindPatent*')) ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-copy"></i>
+                                <img src="{{ asset('admin/dist/img/icons/patentKindIcon.png') }}" alt="bc-icon" style="width:24px;">
                                 <p>
                                     I.P. Kinds
                                     <i class="fas fa-angle-left right"></i>
@@ -277,7 +277,7 @@
                         <li class="nav-header">JOURNALS GENERAL</li>
                         <li class="nav-item {{ (request()->routeIs('admin.journalCategory*')) ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ (request()->routeIs('admin.journalCategory*')) ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-copy"></i>
+                                <img src="{{ asset('admin/dist/img/icons/journalCatIcon.png') }}" alt="bc-icon" style="width:24px;">
                                 <p>
                                     Journals Category
                                     <i class="fas fa-angle-left right"></i>

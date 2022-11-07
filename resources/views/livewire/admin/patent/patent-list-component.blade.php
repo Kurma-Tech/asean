@@ -78,7 +78,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="title">Title*</label>
+                                            <label for="title">Title<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="title" placeholder="Enter Intellectual Property Title" wire:model='title'>
                                             @error('title')
                                             <div class="error">{{ $message }}</div>
@@ -88,7 +88,7 @@
 
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="filing_no">Filing Number*</label>
+                                            <label for="filing_no">Filing Number<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="filing_no" placeholder="Enter Filing Number" wire:model='filing_no'>
                                             @error('filing_no')
                                             <div class="error">{{ $message }}</div>
@@ -98,7 +98,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="registration_no">Registration Number*</label>
+                                            <label for="registration_no">Registration Number<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="registration_no" placeholder="Enter Registration Number" wire:model="registration_no"/>
                                             @error('registration_no')
                                                 <div class="error">{{ $message }}</div>
@@ -108,7 +108,7 @@
 
                                     <div class="col-md-12 col-sm-12">
                                         <div class="form-group">
-                                            <label for="inventor_name">Inventor Name*</label>
+                                            <label for="inventor_name">Inventor Name<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="inventor_name" placeholder="Enter Inventor Number" wire:model='inventor_name'>
                                             <small class="form-text text-muted">If multiple names separate name with a semi-colon (;)</small>
                                             @error('inventor_name')
@@ -119,7 +119,7 @@
 
                                     <div class="col-md-12 col-sm-12">
                                         <div class="form-group">
-                                            <label for="applicant_company">Applicant Company*</label>
+                                            <label for="applicant_company">Applicant Company<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="applicant_company" placeholder="Enter Applicant Company" wire:model='applicant_company'>
                                             @error('applicant_company')
                                             <div class="error">{{ $message }}</div>
@@ -129,7 +129,7 @@
 
                                     <div class="col-md-6 col-sm-12" >
                                         <div class="form-group">
-                                            <label for="type_name">Intellectual Property Type*</label>
+                                            <label for="type_name">Intellectual Property Type<span class="text-danger">*</span></label>
                                             <div wire:ignore>
                                                 <select class="form-control select2 select2bs4" id="type_name" wire:model="type_id" style="width: 100%;">
                                                     <option hidden>Choose Type Option</option>
@@ -146,7 +146,7 @@
 
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="kind_name">Intellectual Property Kind*</label>
+                                            <label for="kind_name">Intellectual Property Kind<span class="text-danger">*</span></label>
                                             <div wire:ignore>
                                                 <select class="form-control select2 select2bs4" id="kind_name" wire:model="kind_id" style="width: 100%;">
                                                     <option hidden>Choose Kind Option</option>
@@ -163,7 +163,7 @@
 
                                     <div class="col-md-12 col-sm-12">
                                         <div class="form-group">
-                                            <label for="category-dropdown">Patent Category*</label>
+                                            <label for="category-dropdown">Patent Category<span class="text-danger">*</span></label>
                                             <div class="select2-purple" wire:ignore>
                                                 <select class="form-control select2" multiple="multiple" data-placeholder="Choose Categories" data-dropdown-css-class="select2-purple" id="category-dropdown" wire:model="category_id">
                                                     @foreach($categories as $category)
@@ -179,7 +179,7 @@
 
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="country_name">Country*</label>
+                                            <label for="country_name">Country<span class="text-danger">*</span></label>
                                             <div wire:ignore>
                                                 <select class="form-control select2 select2bs4" id="country_name" wire:model="country_id" style="width: 100%;">
                                                     <option hidden>Choose Country</option>
@@ -196,7 +196,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="registration_date">Registration Date*</label>
+                                            <label for="registration_date">Registration Date<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" name="registration_date" id="registration_date" wire:model="registration_date" onchange="this.dispatchEvent(new InputEvent('input'))"/>
                                             @error('registration_date')
                                                 <div class="error">{{ $message }}</div>
@@ -206,7 +206,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="publication_date">Publication Date*</label>
+                                            <label for="publication_date">Publication Date<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" name="publication_date" id="publication_date" wire:model="publication_date" onchange="this.dispatchEvent(new InputEvent('input'))"/>
                                             @error('publication_date')
                                                 <div class="error">{{ $message }}</div>
@@ -216,7 +216,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="filing_date">Filing Date*</label>
+                                            <label for="filing_date">Filing Date<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" name="filing_date" id="filing_date" wire:model="filing_date" onchange="this.dispatchEvent(new InputEvent('input'))"/>
                                             @error('filing_date')
                                                 <div class="error">{{ $message }}</div>
@@ -257,6 +257,10 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <blockquote class="blockquote">
+                                    <p class="mb-0"><span class="text-red-400">Note*</span>: Fields with <span class="text-danger">*</span> sign are mendatory.</p>
+                                </blockquote>
                             </div>
                             <!-- /.card-body -->
                         

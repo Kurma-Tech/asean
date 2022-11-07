@@ -70,9 +70,19 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="classifications">Classification Title*</label>
+                                            <label for="classifications">Classification Title<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="classifications" placeholder="Enter Classification Title" wire:model='classifications'>
                                             @error('classifications')
+                                            <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="code">Code<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="code" placeholder="Enter Code" wire:model='code'>
+                                            @error('code')
                                             <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -81,28 +91,68 @@
                                     @if(!$is_parent)
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="parent_id">Parent Classification*</label>
-                                                <select class="form-control select2 select2bs4" id="parent_id" wire:model="parent_id">
-                                                    <option hidden>Choose Parent</option>
-                                                    @foreach($parentClassifications as $parent)
-                                                    <option value="{{ $parent->id }}">{{ $parent->classifications }}</option>
+                                                <label for="category-dropdown-section">Section Category<span class="text-danger">*</span></label>
+                                                <select class="form-control" id="category-dropdown-section" wire:model="selectedSection">
+                                                    <option value="" {{ $selectedSection == Null ?? 'selected' }}>Select Section Category</option>
+                                                    @foreach($sections as $sCategory)
+                                                    <option value="{{ $sCategory->id }}">{{ $sCategory->classification_category }}</option>
                                                     @endforeach
                                                 </select>
-                                                @error('parent_id')
+                                                @error('selectedSection')
                                                     <div class="error">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
-
+                                        @if(!is_null($selectedSection))
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="code">Code*</label>
-                                                <input type="text" class="form-control" id="code" placeholder="Enter Code" wire:model='code'>
-                                                @error('code')
-                                                <div class="error">{{ $message }}</div>
+                                                <label for="category-dropdown-division">Division Category</label>
+                                                <select class="form-control" id="category-dropdown-division" wire:model="selectedDivision">
+                                                    <option value="" {{ $selectedSection == Null ?? 'selected' }}>Select Division Category</option>
+                                                    @foreach($divisions as $dCategory)
+                                                    <option value="{{ $dCategory->id }}">{{ $dCategory->classification_category }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('selectedDivision')
+                                                    <div class="error">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
+                                        @endif
+
+                                        @if(!is_null($selectedDivision))
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="category-dropdown-group">Group Category</label>
+                                                <select class="form-control" id="category-dropdown-group" wire:model="selectedGroup">
+                                                    <option value="">Select Group Category</option>
+                                                    @foreach($groups as $gCategory)
+                                                    <option value="{{ $gCategory->id }}">{{ $gCategory->classification_category }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('selectedGroup')
+                                                    <div class="error">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        @endif
+
+                                        @if(!is_null($selectedGroup))
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="category-dropdown-class">Class Category</label>
+                                                <select class="form-control" id="category-dropdown-class" wire:model="selectedClass">
+                                                    <option value="">Select Class Category</option>
+                                                    @foreach($classes as $cCategory)
+                                                    <option value="{{ $cCategory->id }}">{{ $cCategory->classification_category }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('selectedClass')
+                                                    <div class="error">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        @endif
                                     @endif
 
                                     <div class="col-md-12 m-2">
@@ -116,6 +166,10 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <blockquote class="blockquote">
+                                        <p class="mb-0"><span class="text-red-400">Note*</span>: Fields with <span class="text-danger">*</span> sign are mendatory.</p>
+                                    </blockquote>
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -138,33 +192,30 @@
                             <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th style="width: 2.5%;">#</th>
-                                        <th style="width: 2.5%;">ID</th>
+                                        <th>#</th>
                                         <th>Classification</th>
                                         <th style="width: 10%;">Code</th>
-                                        <th>Parent Classification</th>
-                                        <th style="width: 15%;">Type</th>
+                                        <th style="width: 15%;">Level</th>
                                         <th style="width: 10%;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($industryClassificationsList as $industryClassification)
-                                    <tr>
+                                    <tr data-widget="expandable-table" aria-expanded="false">
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $industryClassification->id }}</td>
                                         <td>{{ $industryClassification->classifications }}</td>
                                         <td>{{ $industryClassification->code ?? 'N/A'}}</td>
                                         <td>
-                                            <span class="badge badge-primary">{{ $industryClassification->parent->classifications ?? 'Self' }}</span>
-                                        </td>
-                                        <td>
-                                            @if($industryClassification->parent_id)
-                                            <span class="badge badge-success badge-sm">Child Category</span>
+                                            @if(is_null($category->section_id))
+                                            <span class="badge badge-success badge-sm">Section Category</span>
+                                            @elseif(!is_null($category->section_id) && is_null($category->division_id))
+                                            <span class="badge badge-primary badge-sm">Division Category</span>
+                                            @elseif(!is_null($category->section_id) && !is_null($category->division_id) && is_null($category->group_id))
+                                            <span class="badge badge-info badge-sm">Group Category</span>
+                                            @elseif(!is_null($category->section_id) && !is_null($category->division_id) && !is_null($category->group_id) && is_null($category->class_id))
+                                            <span class="badge badge-warning badge-sm">Class Category</span>
                                             @else
-                                            <span class="badge badge-info badge-sm">Parent Category</span>
-                                            @endif
-                                            @if($industryClassification->deleted_at)
-                                            <span class="badge badge-danger badge-sm">Trashed</span>
+                                            <span class="badge badge-secondary badge-sm">SubClass Category</span>
                                             @endif
                                         </td>
                                         <td>
@@ -175,6 +226,20 @@
                                                 class="btn btn-xs bg-danger" wire:click="softDelete({{$industryClassification->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
                                                 <i class="far fa-trash-alt"></i>
                                             </a>
+                                        </td>
+                                    </tr>
+                                    <tr class="expandable-body d-none">
+                                        <td colspan="8">
+                                            <ul class="products-list product-list-in-card pl-2 pr-2">
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Parent Category
+                                                        </div>
+                                                        <span class="badge badge-primary">{{ $industryClassification->parent->classifications ?? 'Self' }}</span>
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </td>
                                     </tr>
                                     @endforeach

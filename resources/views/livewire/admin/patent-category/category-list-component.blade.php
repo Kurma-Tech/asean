@@ -196,9 +196,9 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Title</th>
-                                        <th>IPC Code</th>
-                                        <th>Level</th>
-                                        <th>Action</th>
+                                        <th style="width: 10%;">IPC Code</th>
+                                        <th style="width: 15%;">Level</th>
+                                        <th style="width: 10%;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -206,7 +206,7 @@
                                     <tr data-widget="expandable-table" aria-expanded="false">
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $category->classification_category }}</td>
-                                        <td>{{ $category->ipc_code }}</td>
+                                        <td>{{ $category->ipc_code ?? 'N/A' }}</td>
                                         <td>
                                             @if(is_null($category->section_id))
                                             <span class="badge badge-success badge-sm">Section Category</span>
@@ -236,7 +236,7 @@
                                                 <li class="item">
                                                     <div class="product-info">
                                                         <div class="product-title">
-                                                            Category
+                                                            Parent Category
                                                         </div>
                                                         <span class="badge badge-primary">{{ $category->parent->classification_category ?? 'Self' }}</span>
                                                     </div>

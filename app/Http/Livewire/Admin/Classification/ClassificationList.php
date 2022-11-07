@@ -17,14 +17,20 @@ class ClassificationList extends Component
     public $orderBy = 'id';
     public $sortBy = false;
 
-    public // Classification Array
-           $parentClassifications = [];
+    public $sections; // Categories Array
+    public $divisions; // Categories Array
+    public $groups; // Categories Array
+    public $classes; // Categories Array
 
     public $hiddenId = 0;
     public $is_parent = 1;
     public $parent_id;
     public $code;
     public $classifications;
+    public $selectedSection = Null;
+    public $selectedDivision = Null;
+    public $selectedGroup = Null;
+    public $selectedClass = Null;
 
     public $btnType = 'Create';
     public $error;
@@ -35,26 +41,34 @@ class ClassificationList extends Component
     {
         if ($this->is_parent) {
             return [
-                'classifications' => 'required'
+                'classifications' => 'required',
+                'code'            => 'required'
             ];
         } else {
             return [
                 'classifications' => 'required',
-                'parent_id'       => 'required|integer',
-                'code'       => 'required'
+                'selectedSection' => 'required|integer',
+                'code'            => 'required'
             ];
         }
     }
 
     protected $messages = [
-        'parent_id.required'       => 'Please select parent classification',
-        'parent_id.integer'        => 'You must select parent classification from drop down',
-        'classifications.required' => 'Please enter classification title'
+        'classifications.required' => 'Please enter classification title',
+        'selectedSection.required' => 'Please select section category',
+        'selectedSection.integer'  => 'You must select section category from drop down',
     ];
 
     public function mount()
     {
-        $this->parentClassifications = IndustryClassification::where('parent_id', null)->select('id', 'classifications')->get();
+        $this->sections = IndustryClassification::where('parent_id', Null)
+            ->whereNot('id', $this->hiddenId)
+            ->select('id', 'classifications')
+            ->get();
+
+        $this->divisions = collect();
+        $this->groups = collect();
+        $this->classes = collect();
     }
 
     public function render()
@@ -81,8 +95,40 @@ class ClassificationList extends Component
                 $industryClassification = new IndustryClassification(); // create IndustryClassification
             }
 
+            if(is_null($this->selectedSection))
+            {
+                $this->parent_id = Null;
+            }
+            elseif(!is_null($this->selectedSection) && is_null($this->selectedDivision))
+            {
+                $this->parent_id = $this->selectedSection;
+            }
+            elseif(!is_null($this->selectedSection) && !is_null($this->selectedDivision) && is_null($this->selectedGroup))
+            {
+                $this->parent_id = $this->selectedDivision;
+            }
+            elseif(!is_null($this->selectedSection) && !is_null($this->selectedDivision) && !is_null($this->selectedGroup) && is_null($this->selectedClass))
+            {
+                $this->parent_id = $this->selectedGroup;
+            }
+            elseif(!is_null($this->selectedSection) && !is_null($this->selectedDivision) && !is_null($this->selectedGroup) && !is_null($this->selectedClass))
+            {
+                $this->parent_id = $this->selectedClass;
+            }
+
             $industryClassification->classifications = $this->classifications;
-            $industryClassification->parent_id       = $this->parent_id;
+            $industryClassification->parent_id       = $this->parent_id ?? Null;
+            if($this->is_parent == false) {
+                $industryClassification->section_id  = $this->selectedSection;
+                $industryClassification->division_id = $this->selectedDivision;
+                $industryClassification->group_id    = $this->selectedGroup;
+                $industryClassification->class_id    = $this->selectedClass;
+            }else{
+                $industryClassification->section_id  = Null;
+                $industryClassification->division_id = Null;
+                $industryClassification->group_id    = Null;
+                $industryClassification->class_id    = Null;
+            }
             $industryClassification->code            = $this->code;
             $industryClassification->save();
 
@@ -90,7 +136,7 @@ class ClassificationList extends Component
 
             $this->dispatchBrowserEvent('success-message', ['message' => 'Industry Classification has been ' . $this->btnType . '.']);
 
-            $this->reset('classifications', 'parent_id', 'code', 'hiddenId', 'btnType', 'is_parent');
+            $this->resetFields();
         } catch (\Throwable $th) {
             DB::rollback();
             // $this->error = $th->getMessage();
@@ -102,13 +148,20 @@ class ClassificationList extends Component
     // Update Form
     public function editForm($id)
     {
-        $singleData            = IndustryClassification::find($id);
-        $this->hiddenId        = $singleData->id;
-        $this->classifications = $singleData->classifications;
-        $this->parent_id       = $singleData->parent_id;
-        $this->code            = $singleData->code;
-        $this->is_parent       = $singleData->parent_id ? 0 : 1;
-        $this->btnType         = 'Update';
+        $singleData             = IndustryClassification::find($id);
+        $this->hiddenId         = $singleData->id;
+        $this->classifications  = $singleData->classifications;
+        $this->selectedSection  = $singleData->section_id;
+        $this->selectedDivision = $singleData->division_id;
+        $this->selectedGroup    = $singleData->group_id;
+        $this->selectedClass    = $singleData->class_id;
+        $this->code             = $singleData->code;
+        $this->is_parent        = $singleData->parent_id ? 0 : 1;
+        $this->btnType          = 'Update';
+
+        $this->updatedSelectedSection($this->selectedSection);
+        $this->updatedSelectedDivision($this->selectedDivision);
+        $this->updatedSelectedGroup($this->selectedGroup);
     }
 
     // softDelete
@@ -154,6 +207,40 @@ class ClassificationList extends Component
     // reset fields
     public function resetFields()
     {
-        $this->reset('classifications', 'parent_id', 'code', 'hiddenId', 'btnType', 'is_parent');
+        $this->reset(
+            'classifications', 'parent_id', 'code', 
+            'selectedSection', 'selectedDivision', 'selectedGroup', 'selectedClass', 
+            'hiddenId', 'btnType', 'divisions', 'groups'
+        );
+    }
+
+    // update division
+    public function updatedSelectedSection($sectionID)
+    {
+        if (!is_null($sectionID)) {
+            $this->divisions = IndustryClassification::where('parent_id', $sectionID)
+            ->whereNot('id', $this->hiddenId)
+            ->get();
+        }
+    }
+
+    // update Group
+    public function updatedSelectedDivision($divisionID)
+    {
+        if (!is_null($divisionID)) {
+            $this->groups = IndustryClassification::where('parent_id', $divisionID)
+            ->whereNot('id', $this->hiddenId)
+            ->get();
+        }
+    }
+
+    // update Class
+    public function updatedSelectedGroup($groupID)
+    {
+        if (!is_null($groupID)) {
+            $this->classes = IndustryClassification::where('parent_id', $groupID)
+            ->whereNot('id', $this->hiddenId)
+            ->get();
+        }
     }
 }

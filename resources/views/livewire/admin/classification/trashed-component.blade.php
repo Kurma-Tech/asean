@@ -65,12 +65,10 @@
                             <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th style="width: 2.5%;">#</th>
-                                        <th style="width: 2.5%;">ID</th>
+                                        <th>#</th>
                                         <th>Classification</th>
                                         <th style="width: 10%;">Code</th>
-                                        <th>Parent Classification</th>
-                                        <th style="width: 15%;">Type</th>
+                                        <th style="width: 15%;">Level</th>
                                         <th style="width: 10%;">Action</th>
                                     </tr>
                                 </thead>
@@ -78,33 +76,32 @@
                                     @foreach ($industryClassificationsList->where('deleted_at', '!=', Null) as $industryClassification)
                                     <tr data-widget="expandable-table" aria-expanded="false">
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $industryClassification->id }}</td>
                                         <td>{{ $industryClassification->classifications }}</td>
+                                        <td>{{ $industryClassification->code ?? 'N/A'}}</td>
                                         <td>
-                                            {{ $industryClassification->code ?? 'N/A'}}
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-primary">{{ $industryClassification->parent->classifications ?? 'Self' }}</span>
-                                        </td>
-                                        <td>
-                                            @if($industryClassification->parent_id)
-                                            <span class="badge badge-success badge-sm">Child Category</span>
+                                            @if(is_null($category->section_id))
+                                            <span class="badge badge-success badge-sm">Section Category</span>
+                                            @elseif(!is_null($category->section_id) && is_null($category->division_id))
+                                            <span class="badge badge-primary badge-sm">Division Category</span>
+                                            @elseif(!is_null($category->section_id) && !is_null($category->division_id) && is_null($category->group_id))
+                                            <span class="badge badge-info badge-sm">Group Category</span>
+                                            @elseif(!is_null($category->section_id) && !is_null($category->division_id) && !is_null($category->group_id) && is_null($category->class_id))
+                                            <span class="badge badge-warning badge-sm">Class Category</span>
                                             @else
-                                            <span class="badge badge-info badge-sm">Parent Category</span>
-                                            @endif
-                                            @if($industryClassification->deleted_at)
-                                            <span class="badge badge-danger badge-sm">Trashed</span>
+                                            <span class="badge badge-secondary badge-sm">SubClass Category</span>
                                             @endif
                                         </td>
-                                        <a href="javascript:void(0)" onclick="confirm('Do you want to restore?') || event.stopImmediatePropagation()" class="btn btn-xs bg-success" wire:click="restore({{$industryClassification->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
-                                            <i class="fas fa-trash-restore"></i>
-                                        </a>
-                                        <a href="javascript:void(0)" onclick="confirm('Do you want to permantely remove?') || event.stopImmediatePropagation()"
-                                            class="btn btn-xs bg-danger"
-                                            wire:click="delete({{ $industryClassification->id }})"
-                                            data-toggle="tooltip" data-placement="top" title="Permanently Remove">
-                                            <i class="far fa-trash-alt"></i>
-                                        </a>
+                                        <td>
+                                            <a href="javascript:void(0)" onclick="confirm('Do you want to restore?') || event.stopImmediatePropagation()" class="btn btn-xs bg-success" wire:click="restore({{$industryClassification->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
+                                                <i class="fas fa-trash-restore"></i>
+                                            </a>
+                                            <a href="javascript:void(0)" onclick="confirm('Do you want to permantely remove?') || event.stopImmediatePropagation()"
+                                                class="btn btn-xs bg-danger"
+                                                wire:click="delete({{ $industryClassification->id }})"
+                                                data-toggle="tooltip" data-placement="top" title="Permanently Remove">
+                                                <i class="far fa-trash-alt"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>

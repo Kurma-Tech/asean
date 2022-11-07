@@ -80,7 +80,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="title">Title*</label>
+                                            <label for="title">Title<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="title"
                                                 placeholder="Enter Journals Title" wire:model='title'>
                                             @error('title')
@@ -91,7 +91,7 @@
 
                                     <div class="col-md-12 col-sm-12">
                                         <div class="form-group">
-                                            <label for="source_title">Source Title*</label>
+                                            <label for="source_title">Source Title<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="source_title"
                                                 placeholder="Enter Source Title" wire:model='source_title'>
                                             @error('source_title')
@@ -102,7 +102,7 @@
 
                                     <div class="col-md-12 col-sm-12">
                                         <div class="form-group">
-                                            <label for="author_name">Author Name*</label>
+                                            <label for="author_name">Author Name<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="author_name"
                                                 placeholder="Enter Author Name" wire:model='author_name'>
                                             <small class="form-text text-muted">Separate keywords with a semicolon (;)</small>
@@ -114,7 +114,7 @@
 
                                     <div class="col-md-12 col-sm-12">
                                         <div class="form-group">
-                                            <label for="publisher_name">Publisher Name*</label>
+                                            <label for="publisher_name">Publisher Name<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="publisher_name"
                                                 placeholder="Enter Publisher Name" wire:model='publisher_name'>
                                             @error('publisher_name')
@@ -125,7 +125,7 @@
 
                                     <div class="col-md-12 col-sm-12">
                                         <div class="form-group">
-                                            <label for="keywords">Keywords*</label>
+                                            <label for="keywords">Keywords<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" name="input" id="keywords"
                                                 placeholder="Enter Keywords" wire:model='keywords'>
                                             <small class="form-text text-muted">Separate keywords with a semicolon (;)</small>
@@ -148,7 +148,7 @@
 
                                     <div class="col-md-12 col-sm-12">
                                         <div class="form-group">
-                                            <label for="category-dropdown">Category*</label>
+                                            <label for="category-dropdown">Category<span class="text-danger">*</span></label>
                                             <div class="select2-purple" wire:ignore>
                                                 <select class="form-control select2" multiple="multiple" data-placeholder="Choose Categories" data-dropdown-css-class="select2-purple" id="category-dropdown" wire:model="categories">
                                                     @foreach($categories_data as $category)
@@ -164,7 +164,7 @@
 
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="issn_no">ISSN No*</label>
+                                            <label for="issn_no">ISSN No<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="issn_no"
                                                 placeholder="Enter ISSN No" wire:model='issn_no'>
                                             @error('issn_no')
@@ -175,7 +175,7 @@
 
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="cited_score">Cited Score*</label>
+                                            <label for="cited_score">Cited Score<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="cited_score"
                                                 placeholder="Enter Cited Score" wire:model='cited_score'>
                                             @error('cited_score')
@@ -186,7 +186,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="published_year">Published Year*</label>
+                                            <label for="published_year">Published Year<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" name="date"
                                                 id="published_year" wire:model="published_year" placeholder="YYYY"
                                                 onchange="this.dispatchEvent(new InputEvent('input'))" />
@@ -198,7 +198,7 @@
 
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="country_name">Country*</label>
+                                            <label for="country_name">Country<span class="text-danger">*</span></label>
                                             <div wire:ignore>
                                                 <select class="form-control select2 select2bs4" id="country_name" wire:model="country_id" style="width: 100%;">
                                                     <option hidden>Choose Country</option>
@@ -235,28 +235,34 @@
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-12 col-sm-12">
-                                    <div class="form-group">
-                                        <label for="abstract_text">Abstract</label>
-                                        <div wire:ignore>
-                                            <textarea id="abstract_text" wire:model="abstract">{{ $abstract }}</textarea>
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="abstract_text">Abstract</label>
+                                            <div wire:ignore>
+                                                <textarea id="abstract_text" wire:model="abstract">{{ $abstract }}</textarea>
+                                            </div>
+                                            @error('abstract')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
                                         </div>
-                                        @error('abstract')
-                                            <div class="error">{{ $message }}</div>
-                                        @enderror
                                     </div>
                                 </div>
+                                
+                                <blockquote class="blockquote">
+                                    <p class="mb-0"><span class="text-red-400">Note*</span>: Fields with <span class="text-danger">*</span> sign are mendatory.</p>
+                                </blockquote>
                             </div>
                             <!-- /.card-body -->
 
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-plus"></i>
-                                    {{ $btnType }}</button>
+                                <button type="submit" class="btn btn-sm btn-success">
+                                    <i class="fas fa-plus"></i> {{ $btnType }}
+                                </button>
                                 <div class="btn btn-sm btn-danger pull-right" data-toggle="tooltip"
-                                    data-placement="top" title="Reset Form Fields" wire:click="resetFields()"><i
-                                        class="fas fa-redo-alt"></i> Reset Fields</div>
+                                    data-placement="top" title="Reset Form Fields" wire:click="resetFields()">
+                                    <i class="fas fa-redo-alt"></i> Reset Fields
+                                </div>
                             </div>
                         </form>
                     </div>

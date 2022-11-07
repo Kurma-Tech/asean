@@ -66,14 +66,14 @@
                         <form wire:submit.prevent="storeUser">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="name">Full Name</label>
+                                    <label for="name">Full Name<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="name" placeholder="Enter Full Name" wire:model='name'>
                                     @error('type')
                                     <div class="error">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="email">E-mail Address</label>
+                                    <label for="email">E-mail Address<span class="text-danger">*</span></label>
                                     <input type="email" class="form-control" id="email" placeholder="Enter E-mail Address" wire:model='email'>
                                     @error('email')
                                     <div class="error">{{ $message }}</div>
@@ -81,7 +81,7 @@
                                 </div>
 
                                 <blockquote class="blockquote">
-                                    <p class="mb-0"><span class="text-red-400">Note*</span>: Password will be sent to user via mailing address.</p>
+                                    <p class="mb-0"><span class="text-red-400">Note<span class="text-danger">*</span></span>: Password will be sent to user via mailing address.</p>
                                 </blockquote>
                             </div>
                             <!-- /.card-body -->

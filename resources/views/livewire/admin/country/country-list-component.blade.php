@@ -63,24 +63,24 @@
                         <form wire:submit.prevent="storeCountry">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="name">Country Name</label>
+                                    <label for="name">Country Name<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="name" placeholder="Enter Country Name" wire:model='name'>
                                     @error('name')
                                     <div class="error">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="c_code">Country Code</label>
-                                    <input type="text" class="form-control" id="c_code" placeholder="Enter Country Code" wire:model='c_code'>
-                                    @error('c_code')
+                                    <label for="short_code">Short Code<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="short_code" placeholder="Ex. IND for Indonesia"
+                                        wire:model='short_code'>
+                                    @error('short_code')
                                     <div class="error">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="short_code">Short Code</label>
-                                    <input type="text" class="form-control" id="short_code" placeholder="Enter Short Code"
-                                        wire:model='short_code'>
-                                    @error('short_code')
+                                    <label for="c_code">Country Code</label>
+                                    <input type="text" class="form-control" id="c_code" placeholder="Ex. +62 for Indonesia" wire:model='c_code'>
+                                    @error('c_code')
                                     <div class="error">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -93,6 +93,10 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                <blockquote class="blockquote">
+                                    <p class="mb-0"><span class="text-red-400">Note*</span>: Fields with <span class="text-danger">*</span> sign are mendatory.</p>
+                                </blockquote>
                             </div>
                             <!-- /.card-body -->
                         

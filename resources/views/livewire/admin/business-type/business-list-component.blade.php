@@ -66,7 +66,7 @@
                             <div class="card-body">
                                 <input type="hidden" wire:model="hiddenId">
                                 <div class="form-group">
-                                    <label for="type">Business Type</label>
+                                    <label for="type">Business Type<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="type" placeholder="Enter Business Type" wire:model='type' wire:keyup.debounce.300ms="generateslug">
                                     @error('type')
                                     <div class="error">{{ $message }}</div>
@@ -79,6 +79,10 @@
                                     <div class="error">{{ $message }}</div>
                                     @enderror
                                 </div>
+
+                                <blockquote class="blockquote">
+                                    <p class="mb-0"><span class="text-red-400">Note*</span>: Fields with <span class="text-danger">*</span> sign are mendatory.</p>
+                                </blockquote>
                             </div>
                             <!-- /.card-body -->
                         

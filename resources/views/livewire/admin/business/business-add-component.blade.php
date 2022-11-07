@@ -17,7 +17,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="company_name">Company Name*</label>
+                                            <label for="company_name">Company Name<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="company_name"
                                                 placeholder="Enter company name here..." wire:model="company_name">
                                             @error('company_name')
@@ -29,7 +29,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="sec_no">SEC Number*</label>
+                                            <label for="sec_no">SEC Number<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="sec_no"
                                                 wire:model="sec_no">
                                             @error('sec_no')
@@ -53,7 +53,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="business_type_name">Business Type*</label>
+                                            <label for="business_type_name">Business Type<span class="text-danger">*</span></label>
                                             <div wire:ignore>
                                                 <select class="form-control select2 select2bs4" id="business_type_name"
                                                     wire:model="business_type_id" style="width: 100%;">
@@ -71,7 +71,7 @@
 
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="industry_classification_name">Industry Classification*</label>
+                                            <label for="industry_classification_name">Industry Classification<span class="text-danger">*</span></label>
                                             <div wire:ignore>
                                                 <select class="form-control select2 select2bs4"
                                                     id="industry_classification_name" wire:model="industry_classification_id"
@@ -92,7 +92,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="year">Business Year*</label>
+                                            <label for="year">Business Year<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" name="year" id="year"
                                                 wire:model="year" onchange="this.dispatchEvent(new InputEvent('input'))"/>
                                             @error('year')
@@ -103,7 +103,7 @@
 
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="date_registered">Full Date Registred*</label>
+                                            <label for="date_registered">Full Date Registred<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" name="date_registered"
                                                 id="date_registered" wire:model="date_registered" onchange="this.dispatchEvent(new InputEvent('input'))"/>
                                             @error('date_registered')
@@ -186,7 +186,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="long">longitude*</label>
+                                            <label for="long">longitude<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="long"
                                                 wire:model="long" disabled>
                                             @error('long')
@@ -197,7 +197,7 @@
 
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="lat">latitude*</label>
+                                            <label for="lat">latitude<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="lat"
                                                 wire:model="lat" disabled>
                                             @error('lat')
@@ -210,7 +210,7 @@
                                 <div class="row">
                                     <div class="col-md-12" wire:ignore>
                                         <div class="form-group">
-                                            <label for="country_name">Country*</label>
+                                            <label for="country_name">Country<span class="text-danger">*</span></label>
                                             <select class="form-control select2 select2bs4"
                                                 id="country_name" wire:model="country_id"
                                                 style="width: 100%;" onchange="this.dispatchEvent(new InputEvent('input'))">
@@ -229,7 +229,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="address">Address*</label>
+                                            <label for="address">Address<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="address"
                                                 wire:model="address">
                                             @error('address')
@@ -238,6 +238,10 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <blockquote class="blockquote">
+                                    <p class="mb-0"><span class="text-red-400">Note*</span>: Fields with <span class="text-danger">*</span> sign are mendatory.</p>
+                                </blockquote>
                             </div>
                             <!-- /.card-body -->
 
