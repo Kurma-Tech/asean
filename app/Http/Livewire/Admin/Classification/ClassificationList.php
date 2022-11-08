@@ -219,6 +219,7 @@ class ClassificationList extends Component
     {
         if (!is_null($sectionID)) {
             $this->divisions = IndustryClassification::where('parent_id', $sectionID)
+            ->select('id', 'classifications')
             ->whereNot('id', $this->hiddenId)
             ->get();
         }
@@ -229,6 +230,7 @@ class ClassificationList extends Component
     {
         if (!is_null($divisionID)) {
             $this->groups = IndustryClassification::where('parent_id', $divisionID)
+            ->select('id', 'classifications')
             ->whereNot('id', $this->hiddenId)
             ->get();
         }
@@ -239,6 +241,7 @@ class ClassificationList extends Component
     {
         if (!is_null($groupID)) {
             $this->classes = IndustryClassification::where('parent_id', $groupID)
+            ->select('id', 'classifications')
             ->whereNot('id', $this->hiddenId)
             ->get();
         }
