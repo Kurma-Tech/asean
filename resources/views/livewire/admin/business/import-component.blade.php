@@ -45,7 +45,7 @@
                     </div>
                     <div class="modal-footer justify-content-end pt-1 pb-1">
                         <button type="button" class="btn btn-sm btn-danger pt-1 pb-1" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-sm btn-info pt-1 pb-1">
+                        <button type="submit" class="btn btn-sm btn-info pt-1 pb-1" @if($file) @else disabled @endif>
                             <small wire:loading wire:target='file' wire:key='file' class="form-text text-muted"><i class="fa fa-spinner fa-spin mt-2 ml-2"></i> </small>
                             Business Import
                         </button>

@@ -12,9 +12,10 @@
                     <div class="modal-body">
                         <div class="input-group">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input @error('file') is-invalid @enderror" id="csv_file" wire:model='file' wire.ignore.self>
-                                <label class="custom-file-label" for="csv_file">{{__('CSV file to import')}}</label>
+                                <input type="file" class="custom-file-input @error('file') is-invalid @enderror" id="csv_file" wire:model='file'>
+                                <label class="custom-file-label" for="csv_file">@if($file) {{ $file->getClientOriginalName() }} @else {{__('CSV file to import')}} @endif</label>
                             </div>
+                            <small wire:loading wire:target='file' wire:key='file' class="form-text text-muted"><i class="fa fa-spinner fa-spin mt-2 ml-2"></i> Uploading...</small>
                         </div>
                         @error('file') <p class="text-red">{{ $message }}</p> @enderror
                         <blockquote class="blockquote" style="font-size: 15px;border-left: 0.2rem solid #17a2b8;margin: 0.5em 0rem;padding: 0.5em 0.7rem;">
@@ -31,7 +32,10 @@
                     </div>
                     <div class="modal-footer justify-content-end pt-1 pb-1">
                         <button type="button" class="btn btn-sm btn-danger pt-1 pb-1" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-sm btn-info pt-1 pb-1">Patent Categories Import</button>
+                        <button type="submit" class="btn btn-sm btn-info pt-1 pb-1" @if($file) @else disabled @endif>
+                            <small wire:loading wire:target='file' wire:key='file' class="form-text text-muted"><i class="fa fa-spinner fa-spin mt-2 ml-2"></i> </small>
+                            Patent Categories Import
+                        </button>
                     </div>
                 </form>
             </div>
@@ -41,14 +45,3 @@
     </div>
     <!-- /.modal -->
 </div>
-
-@push('extra-scripts')
-    <!-- bs-custom-file-input -->
-    <script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
-    <!-- Page specific script -->
-    <script>
-        $(function () {
-            bsCustomFileInput.init();
-        });
-    </script>
-@endpush

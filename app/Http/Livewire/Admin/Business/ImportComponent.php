@@ -20,14 +20,14 @@ class ImportComponent extends Component
     public function updated($fields)
     {
         $this->validateOnly($fields, [
-            'file' => 'required',
+            'file' => 'required'
         ]);
     }
 
     public function businessImport()
     {
-        $this->validate([
-            'file' => 'required',
+        $this->validate([ 
+            'file' => 'required'
         ]);
 
         ini_set('memory_limit', -1);
