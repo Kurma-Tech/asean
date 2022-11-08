@@ -20,7 +20,7 @@ class ImportComponent extends Component
     protected function rules()
     {
         return [
-            'file' => 'required|mimes:xlsx,xls,csv,txt'
+            'file' => 'required|mimes:xlsx,xls,csv,txt|max:102400'
         ];
     }
 
