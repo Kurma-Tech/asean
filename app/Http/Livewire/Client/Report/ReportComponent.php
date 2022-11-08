@@ -147,7 +147,7 @@ class ReportComponent extends Component
 
         foreach ($emergingBusiness as $key => $value) {
             array_push($emergingBusinessData, [
-                "key" => IndustryClassification::find($key)->classifications,
+                "key" => IndustryClassification::find($key)->classifications ?? Null,
                 "value" => $value
             ]);
         }
