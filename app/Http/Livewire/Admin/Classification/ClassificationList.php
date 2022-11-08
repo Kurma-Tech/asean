@@ -63,7 +63,7 @@ class ClassificationList extends Component
     {
         $this->sections = IndustryClassification::where('parent_id', Null)
             ->whereNot('id', $this->hiddenId)
-            ->select('id', 'classifications')
+            ->select('id', 'classification_category')
             ->get();
 
         $this->divisions = collect();
