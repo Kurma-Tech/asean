@@ -212,7 +212,7 @@
                                             <span class="badge badge-primary badge-sm">Division Category</span>
                                             @elseif(!is_null($industryClassification->section_id) && !is_null($industryClassification->division_id) && is_null($industryClassification->group_id))
                                             <span class="badge badge-info badge-sm">Group Category</span>
-                                            @elseif(!is_null($category->section_id) && !is_null($category->division_id) && !is_null($category->group_id) && is_null($category->class_id))
+                                            @elseif(!is_null($industryClassification->section_id) && !is_null($industryClassification->division_id) && !is_null($industryClassification->group_id) && is_null($industryClassification->class_id))
                                             <span class="badge badge-warning badge-sm">Class Category</span>
                                             @else
                                             <span class="badge badge-secondary badge-sm">SubClass Category</span>
