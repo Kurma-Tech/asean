@@ -13,31 +13,9 @@ class BusinessImport implements ToModel, WithHeadingRow, WithChunkReading, WithB
 {
     public function model(array $row)
     {
-        if (isset($row['business_type'])) {
-            $businessType = DB::table('business_types')
-                ->select('id', 'type')
-                ->where('type', $row['business_type'])
-                ->first();
-        } else {
-            $businessType = null;
-        }
-        if (isset($row['classification_code'])) {
-            $industryClassification = DB::table('industry_classifications')
-                ->select('id', 'code')
-                ->where('code', $row['classification_code'])
-                ->first();
-        } else {
-            $industryClassification = null;
-        }
-        if (isset($row['country_short_code'])) {
-            $country = DB::table('countries')
-                ->select('id', 'short_code')
-                ->where('short_code', $row['country_short_code'])
-                ->first();
-        } else {
-            $country = null;
-        }
-        
+        $businessType = DB::table('business_types')->select('id', 'type')->where('type', $row['business_type'])->first();
+        $industryClassification = DB::table('industry_classifications')->select('id', 'code')->where('code', $row['classification_code'])->first();
+        $country = DB::table('countries')->select('id', 'short_code')->where('short_code', $row['country_short_code'])->first();
         $date = explode('/', $row['date_registered']);
         
         return new Business([

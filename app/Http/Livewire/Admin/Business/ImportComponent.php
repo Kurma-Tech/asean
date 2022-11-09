@@ -20,13 +20,13 @@ class ImportComponent extends Component
     protected function rules()
     {
         return [
-            'file' => 'mimes:xlsx,xls,csv,txt'
+            'file' => 'mimes:xlsx,xls,csv,txt|max:5120000'
         ];
     }
 
     public function businessImport()
     {
-        $this->validate();
+        // $this->validate();
         ini_set('memory_limit', -1);
         DB::beginTransaction();
 
