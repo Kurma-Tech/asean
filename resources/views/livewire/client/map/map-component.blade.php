@@ -728,12 +728,12 @@
 
                 var mapLayer = map.getLayer('patent-point');
                 if (typeof mapLayer !== 'undefined') {
-                    map.removeLayer('patent-point').removeSource('patent');
+                    map.removeLayer('patent-heat-point').removeLayer('patent-point').removeSource('patent');
                 }
 
                 var mapLayer = map.getLayer('journal-point');
                 if (typeof mapLayer !== 'undefined') {
-                    map.removeLayer('journal-point').removeSource('journal');
+                    map.removeLayer('patent-heat-point').removeLayer('journal-point').removeSource('journal');
                 }
             } catch (error) {
 
