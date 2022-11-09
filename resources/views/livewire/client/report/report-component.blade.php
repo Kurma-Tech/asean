@@ -1,3 +1,5 @@
+@section('title', 'Report')
+
 <div>
     <div class="content bg-background-black">
         <div class="container-fluid" style="padding-top: 72px;">
@@ -7,45 +9,6 @@
                 </div>
             </div> --}}
             <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-md-3 col-sm-6 col-xs-12">
-                                    <div class="form-group">
-                                        <label>Type:</label>
-                                        <select class="form-control" style="width: 100%;" wire:model="selectedType">
-                                            <option hidden>Select Type</option>
-                                            <option value="all">All</option>
-                                            <option value="business">Business</option>
-                                            <option value="patent">Patent</option>
-                                            <option value="journals">Journals</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6 col-xs-12">
-                                    <div class="form-group">
-                                        <label>Classifications:</label>
-                                        <select class="form-control" style="width: 100%;" wire:model="selectedClassification">
-                                            <option hidden>Select Classification</option>
-                                            
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-2 col-sm-6 col-xs-12">
-                                    <div class="form-group">
-                                        <label>Country:</label>
-                                        <select class="form-control" style="width: 100%;" wire:model="selectedCountry">
-                                            <option hidden>Select Country</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-md-12" wire:ignore>
                     <div class="card bg-card-black">
                         <div class="card-body">
@@ -53,6 +16,7 @@
                                 <div class="col-md-10 remove-padding">
                                     <div id="line-chart"></div>
                                 </div>
+
                                 <div class="col-md-2 pl-4">
                                     <h2>Totals</h2>
                                     <div class="info-box bg-danger">
@@ -82,14 +46,23 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="card bg-card-black">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Popular Businesses</h3>
-                                        <div class="card-tools">
-                                            <div class="input-group input-group-sm" style="width: 150px;">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card bg-card-black">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <h3 class="col-md-12 col-sm-12 card-title mb-2">Popular Businesses</h3>
+                                        <div class="col-md-9 col-sm-12">
+                                            <div class="input-group input-group-sm">
+                                                <select class="form-control" wire:model="selectedCountryBusiness">
+                                                    <option hidden>
+                                                        {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-12">
+                                            <div class="input-group input-group-sm">
                                                 <select class="form-control" wire:model="topLimitBusiness">
                                                     <option hidden>
                                                         {{ GoogleTranslate::trans('Select', app()->getLocale()) }}
@@ -107,28 +80,39 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card-body table-responsive overlay-scroll p-0" style="height: 300px;">
-                                        <table class="table table-head-fixed" id="business-emerging">
-                                            <thead>
-                                                <tr>
-                                                    <th>S.N</th>
-                                                    <th>Industry Type</th>
-                                                    <th>Count</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                </div>
+                                <div class="card-body table-responsive overlay-scroll p-0" style="height: 300px;">
+                                    <table class="table table-head-fixed" id="business-emerging">
+                                        <thead>
+                                            <tr>
+                                                <th>S.N</th>
+                                                <th>Industry Type</th>
+                                                <th>Count</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="col-md-4">
-                                <div class="card bg-card-black">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Popular Intellectual properties</h3>
-                                        <div class="card-tools">
-                                            <div class="input-group input-group-sm" style="width: 150px;">
+                        <div class="col-md-4">
+                            <div class="card bg-card-black">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <h3 class="col-md-12 col-sm-12 card-title mb-2">Popular Intellectual properties</h3>
+                                        <div class="col-md-9 col-sm-12">
+                                            <div class="input-group input-group-sm">
+                                                <select class="form-control" wire:model="selectedCountryIntellectual">
+                                                    <option hidden>
+                                                        {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-12">
+                                            <div class="input-group input-group-sm">
                                                 <select class="form-control" wire:model="topLimitPatent">
                                                     <option hidden>
                                                         {{ GoogleTranslate::trans('Select', app()->getLocale()) }}
@@ -146,28 +130,39 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card-body table-responsive overlay-scroll p-0" style="height: 300px;">
-                                        <table class="table table-head-fixed" id="patent-emerging">
-                                            <thead>
-                                                <tr>
-                                                    <th>S.N</th>
-                                                    <th>Patent Kind</th>
-                                                    <th>Count</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                </div>
+                                <div class="card-body table-responsive overlay-scroll p-0" style="height: 300px;">
+                                    <table class="table table-head-fixed" id="patent-emerging">
+                                        <thead>
+                                            <tr>
+                                                <th>S.N</th>
+                                                <th>Patent Kind</th>
+                                                <th>Count</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="col-md-4">
-                                <div class="card bg-card-black">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Popular Journals</h3>
-                                        <div class="card-tools">
-                                            <div class="input-group input-group-sm" style="width: 150px;">
+                        <div class="col-md-4">
+                            <div class="card bg-card-black">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <h3 class="col-md-12 col-sm-12 card-title mb-2">Popular Journals</h3>
+                                        <div class="col-md-9 col-sm-12">
+                                            <div class="input-group input-group-sm">
+                                                <select class="form-control" wire:model="selectedCountryJournal">
+                                                    <option hidden>
+                                                        {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-12">
+                                            <div class="input-group input-group-sm">
                                                 <select class="form-control" wire:model="topLimitJournal">
                                                     <option hidden>
                                                         {{ GoogleTranslate::trans('Select', app()->getLocale()) }}
@@ -179,25 +174,25 @@
                                                         {{ GoogleTranslate::trans('Top 20', app()->getLocale()) }}
                                                     </option>
                                                     <option value="30">
-                                                        {{ GoogleTranslate::trans('Top 20', app()->getLocale()) }}
+                                                        {{ GoogleTranslate::trans('Top 30', app()->getLocale()) }}
                                                     </option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card-body table-responsive overlay-scroll p-0" style="height: 300px;">
-                                        <table class="table table-head-fixed" id="journal-emerging">
-                                            <thead>
-                                                <tr>
-                                                    <th>S.N</th>
-                                                    <th>Industry Type</th>
-                                                    <th>Count</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                </div>
+                                <div class="card-body table-responsive overlay-scroll p-0" style="height: 300px;">
+                                    <table class="table table-head-fixed" id="journal-emerging">
+                                        <thead>
+                                            <tr>
+                                                <th>S.N</th>
+                                                <th>Industry Type</th>
+                                                <th>Count</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
