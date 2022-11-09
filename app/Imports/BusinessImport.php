@@ -13,9 +13,31 @@ class BusinessImport implements ToModel, WithHeadingRow, WithChunkReading, WithB
 {
     public function model(array $row)
     {
-        $businessType = DB::table('business_types')->select('id', 'type')->where('type', $row['business_type'])->first();
-        $industryClassification = DB::table('industry_classifications')->select('id', 'code')->where('code', $row['classification_code'])->first();
-        $country = DB::table('countries')->select('id', 'short_code')->where('short_code', $row['country_short_code'])->first();
+        if (isset($row['business_type'])) {
+            $businessType = DB::table('business_types')
+                ->select('id', 'type')
+                ->where('type', $row['business_type'])
+                ->first();
+        } else {
+            $businessType = null;
+        }
+        if (isset($row['classification_code'])) {
+            $industryClassification = DB::table('industry_classifications')
+                ->select('id', 'code', 'section_id')
+                ->where('code', $row['classification_code'])
+                ->first();
+        } else {
+            $industryClassification = null;
+        }
+        if (isset($row['country_short_code'])) {
+            $country = DB::table('countries')
+                ->select('id', 'short_code')
+                ->where('short_code', $row['country_short_code'])
+                ->first();
+        } else {
+            $country = null;
+        }
+        
         $date = explode('/', $row['date_registered']);
         
         return new Business([
@@ -35,9 +57,10 @@ class BusinessImport implements ToModel, WithHeadingRow, WithChunkReading, WithB
             "geo_description"            => $row['geo_description'] ?? Null,
             "lat"                        => $row['lat'],
             "long"                       => $row['long'],
-            "month"                      => $date[0],
-            "day"                        => $date[1],
-            "month_and_year"             => $date[2]."-".$date[0]
+            "month"                      => $date[0] ?? Null,
+            "day"                        => $date[1] ?? Null,
+            "month_and_year"             => $date[2] ?? Null ."-".$date[0] ?? Null,
+            "parent_classification_id"   => ($industryClassification != null) ? $industryClassification->section_id : null,
         ]);
     }
 

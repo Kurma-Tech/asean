@@ -20,8 +20,8 @@ class ClassificationImport implements ToModel, WithHeadingRow, WithChunkReading,
         $group_id       = null;
         $class_id       = null;
 
-        if (isset($row['parent_name'])) {
-            $classification = IndustryClassification::where('classifications', $row['parent_name'])
+        if (isset($row['parent_code'])) {
+            $classification = IndustryClassification::where('code', $row['parent_code'])
             ->select('id','parent_id','section_id','division_id','group_id')
             ->first();
 

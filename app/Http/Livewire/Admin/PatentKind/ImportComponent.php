@@ -17,11 +17,11 @@ class ImportComponent extends Component
     public $error;
     public $success;
 
-    protected function rules()
+    public function updated($fields)
     {
-        return [
-            'file' => 'required|mimes:xlsx,xls,csv,txt'
-        ];
+        $this->validateOnly($fields, [
+            'file' => 'required'
+        ]);
     }
 
     public function render()
@@ -31,7 +31,9 @@ class ImportComponent extends Component
 
     public function patentKindImport()
     {
-        $this->validate();
+        $this->validate([ 
+            'file' => 'required'
+        ]);
 
         DB::beginTransaction();
 

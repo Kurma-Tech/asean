@@ -146,9 +146,9 @@
                                                 <li class="item">
                                                     <div class="product-info">
                                                         <div class="product-title">
-                                                            PSIC Code
+                                                            Classification Code
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{ $business->industryClassification->psic_code ?? 'N/A' }}</a>
+                                                        <a href="javascript:void(0)" class="product-title">{{ $business->industryClassification->code ?? 'N/A' }}</a>
                                                     </div>
                                                 </li>
                                                 <li class="item">

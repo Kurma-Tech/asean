@@ -19,7 +19,9 @@ class ReportComponent extends Component
         $topLimitBusiness = 10,
         $topLimitPatent = 10,
         $topLimitJournal = 10,
-        $isFirstLoad = true;
+        $isFirstLoad = true,
+        $popularCountryBusiness,
+        $popularCountryPatent;
 
     protected
         $business = [],
@@ -39,6 +41,18 @@ class ReportComponent extends Component
     {
         $this->country = $country;
         $this->filterData();
+    }
+
+    public function updatedPopularCountryBusiness($country)
+    {
+        $this->popularCountryBusiness = $country;
+        $this->updateTopBusiness();
+    }
+
+    public function updatedPopularCountryPatent($country)
+    {
+        $this->popularCountryPatent = $country;
+        $this->updateTopBusiness();
     }
 
     public function updatedClassification($classification)
@@ -65,9 +79,15 @@ class ReportComponent extends Component
     //     $this->updateTopJournal();
     // }
 
-    public function updateTopBusiness(){
+    public function updateTopBusiness()
+    {
         ini_set('memory_limit', '-1');
         $businessQuery =  DB::table('businesses')->select('id', 'year', 'date_registered', 'industry_classification_id');
+
+        if(!is_null($this->popularCountryBusiness))
+        {
+            $businessQuery = $businessQuery->where('country_id', $this->popularCountryBusiness);
+        }
 
         $business = $businessQuery->get();
 
@@ -87,9 +107,15 @@ class ReportComponent extends Component
         ]);
     }
 
-    public function updateTopPatent(){
+    public function updateTopPatent()
+    {
         ini_set('memory_limit', '-1');
         $patentQuery =  DB::table('patents')->select('id', 'registration_date', 'kind_id');
+
+        if(!is_null($this->popularCountryPatent))
+        {
+            $patentQuery = $patentQuery->where('country_id', $this->popularCountryPatent);
+        }
 
         $patents = $patentQuery->get();
 

@@ -17,16 +17,19 @@ class ImportComponent extends Component
     public $error;
     public $success;
 
-    protected function rules()
+    public function updated($fields)
     {
-        return [
-            'file' => 'mimes:xlsx,xls,csv,txt|max:5120000'
-        ];
+        $this->validateOnly($fields, [
+            'file' => 'required'
+        ]);
     }
 
     public function businessImport()
     {
-        // $this->validate();
+        $this->validate([ 
+            'file' => 'required'
+        ]);
+
         ini_set('memory_limit', -1);
         DB::beginTransaction();
 
