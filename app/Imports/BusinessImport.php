@@ -57,9 +57,9 @@ class BusinessImport implements ToModel, WithHeadingRow, WithChunkReading, WithB
             "geo_description"            => $row['geo_description'] ?? Null,
             "lat"                        => $row['lat'],
             "long"                       => $row['long'],
-            "month"                      => $date[0],
-            "day"                        => $date[1],
-            "month_and_year"             => $date[2]."-".$date[0],
+            "month"                      => $date[0] ?? Null,
+            "day"                        => $date[1] ?? Null,
+            "month_and_year"             => $date[2] ?? Null ."-".$date[0] ?? Null,
             "parent_classification_id"   => ($industryClassification != null) ? $industryClassification->section_id : null,
         ]);
     }
