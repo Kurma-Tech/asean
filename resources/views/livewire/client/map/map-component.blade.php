@@ -726,14 +726,14 @@
                     }
                 }
 
-                var mapLayer = map.getLayer('patent-point');
+                var mapLayer = map.getLayer('patent-heat-point');
                 if (typeof mapLayer !== 'undefined') {
                     map.removeLayer('patent-heat-point').removeLayer('patent-point').removeSource('patent');
                 }
 
-                var mapLayer = map.getLayer('journal-point');
+                var mapLayer = map.getLayer('journal-heat-point');
                 if (typeof mapLayer !== 'undefined') {
-                    map.removeLayer('patent-heat-point').removeLayer('journal-point').removeSource('journal');
+                    map.removeLayer('journal-heat-point').removeLayer('journal-point').removeSource('journal');
                 }
             } catch (error) {
 
