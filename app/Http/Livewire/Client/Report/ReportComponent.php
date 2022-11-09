@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\Country;
 use App\Models\IndustryClassification;
 use App\Models\PatentKind;
+use GuzzleHttp\Client;
 
 class ReportComponent extends Component
 {
@@ -21,7 +22,8 @@ class ReportComponent extends Component
         $topLimitJournal = 10,
         $isFirstLoad = true,
         $popularCountryBusiness,
-        $popularCountryPatent;
+        $popularCountryPatent, 
+        $forecastCountry;
 
     protected
         $business = [],
@@ -43,6 +45,11 @@ class ReportComponent extends Component
         $this->filterData();
     }
 
+    public function updatedForecastCountry($country)
+    {
+        
+    }
+
     public function updatedPopularCountryBusiness($country)
     {
         $this->popularCountryBusiness = $country;
@@ -57,8 +64,8 @@ class ReportComponent extends Component
 
     public function updatedClassification($classification)
     {
-        $this->countclassificationry = $classification;
-        $this->filterData();
+        $this->classification = $classification;
+        $this->updateForecastChart();
     }
 
     public function updatedTopLimitBusiness($topLimitBusiness)
@@ -132,6 +139,15 @@ class ReportComponent extends Component
 
         $this->emit("updateTopPatent", [
             "emergingPatents" => $emergingPatentData
+        ]);
+    }
+
+    public function updateForecastChart(){
+        $tempForcastData = $this->predict();
+        $this->emit("reportsUpdated", [
+            "forecastedFrom" =>  120,
+            "forcastDates" => $tempForcastData["forecastedDates"],
+            "forcastData" => $tempForcastData["forecastedData"]
         ]);
     }
 
@@ -233,12 +249,10 @@ class ReportComponent extends Component
         }
 
         $tempChartBusinessCount = [];
-        $tempChartBusinessCountForForecast = [];
         for ($i = 0; $i < count($lineChartYears); $i++) {
             try {
                 if ($this->chartBusinessCount->has($lineChartYears[$i])) {
                     $tempChartBusinessCount[$lineChartYears[$i]] = $this->chartBusinessCount[$lineChartYears[$i]];
-                    $tempChartBusinessCountForForecast[$lineChartYears[$i]] = $this->chartBusinessCount[$lineChartYears[$i]];
                 } else if ($lineChartYears[$i] == "" || $lineChartYears[$i] == null) {
                 } else {
                     $tempChartBusinessCount[$lineChartYears[$i]] = null;
@@ -251,7 +265,7 @@ class ReportComponent extends Component
         //forecast
         // dd($tempChartBusinessCount);
 
-        $this->tempForcastData = $this->predict(collect($tempChartBusinessCountForForecast)->keys(), collect($tempChartBusinessCountForForecast)->values());
+        $tempForcastData = $this->predict();
 
         if ($this->isFirstLoad) {
             $this->emit("reportsFirstLoad", [
@@ -262,9 +276,9 @@ class ReportComponent extends Component
                 "patentCountByYears" => collect($tempChartPatentsCount)->values(),
                 "journalCountByYears" => collect($tempChartJournalsCount)->values(),
                 "lineChartYears" => collect(($lineChartYears))->values(),
-                "forecastedFrom" =>  $this->tempForcastData["forecastedDates"]->count() - collect($tempChartBusinessCount)->keys()->count(),
-                "forcastDates" => $this->tempForcastData["forecastedDates"],
-                "forcastData" => $this->tempForcastData["forecastedData"],
+                "forecastedFrom" =>  120,
+                "forcastDates" => $tempForcastData["forecastedDates"],
+                "forcastData" => $tempForcastData["forecastedData"],
                 "emergingBusiness" => $emergingBusinessData,
                 "emergingPatents" => $emergingPatentData
             ]);
@@ -282,34 +296,36 @@ class ReportComponent extends Component
         }
     }
 
-    public function predict($forcastDates, $forcastData)
+    public function predict()
     {
-        $nF = 0;
-        $nL = $forcastDates->last() - $forcastDates->first();
-        $pF = $forcastData->first();
-        $pL = $forcastData->last();
-        $last = $forcastDates->last();
-        $forecastedDates = $forcastDates;
-        $forecastedData = $forcastData;
-
-        if ($forcastDates->count() != 0 && $nL != 0 && $pL != 0) {
-            $r = pow($pL / $pF, 1 / $nL) - 1;
-
-            for ($i = 0; $i < 10; $i++) {
-                $forecastedDates->push($last + $i + 1);
-                $forecastedData->push(intval((pow(1 + $r, $nL + $i + 1)) * $pF));
-            }
-        }
+        $client = new Client();
+        $res = $client->post('http://18.136.147.228/api/v1/predict', [
+            'json' => [
+                'country_id' => (!is_null($this->forecastCountry)) ? (int)$this->forecastCountry : null,
+                'classification_id' => (!is_null($this->classification)) ? (int)$this->classification : null,
+            ]
+        ]);
+        $data = json_decode($res->getBody(), true); 
+        // $res->getStatusCode();
+        // 200
+        // echo $res->getHeader('content-type');
+        // 'application/json; charset=utf8'
+        // echo ;
         // $p5 = (pow(1 + $r, 5)) * $pF;
         // dd($forecastedData);
-        return ["forecastedDates" => $forecastedDates, "forecastedData" => $forecastedData];
+        if($data["success"] == true){
+            return ["forecastedDates" => $data['prediction_data']['keys'], "forecastedData" => $data['prediction_data']['values']];
+        }else{
+            return ["forecastedDates" => ['2011-01-01', '2011-02-01'], "forecastedData" => []];
+        }
+        
     }
 
     public function render()
     {
         // dd(DB::table('businesses')->select('id', 'year')->pluck('year')->countBy());
         $countries = Country::select('id', 'status', 'name')->where("status", "1")->get();
-        $classifications = IndustryClassification::select('id', 'classifications')->where('parent_id', '!=', null)->where('classifications', '!=', null)->get();
+        $classifications = IndustryClassification::select('id', 'classifications')->where('parent_id', null)->where('classifications', '!=', null)->get();
         return view('livewire.client.report.report-component', [
             'countries' => $countries,
             'classifications' => $classifications,

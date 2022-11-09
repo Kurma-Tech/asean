@@ -51,7 +51,7 @@ Route::get('/', function () {
 
 // Admin
 Route::prefix('admin')->name('admin.')->group(function() {
-    Route::middleware(['checkAuth', 'is_admin', 'role:admin'])->group(function() {
+    Route::middleware(['checkAuth', 'is_admin'])->group(function() {
         Route::get('dashboard', DashboardComponent::class)->name('dashboard');
         // Countries
         Route::get('countries', CountryListComponent::class)->name('countries.list');
