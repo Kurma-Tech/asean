@@ -715,10 +715,10 @@
 
         Livewire.on('mapUpdated', (data) => {
             try {
-                var mapLayer = map.getLayer('business-heat');
-                if (typeof mapLayer !== "undefined") {
-                    map.removeLayer('business-heat').removeSource('businessHeatData');
-                }
+                // var mapLayer = map.getLayer('business-heat');
+                // if (typeof mapLayer !== "undefined") {
+                //     map.removeLayer('business-heat').removeSource('businessHeatData');
+                // }
                 for (let index = 0; index < businessChunkedData; index++) {
                     var mapLayerTemp = map.getLayer('business-point' + 'business' + index);
                     if (typeof mapLayerTemp !== 'undefined') {
@@ -726,14 +726,14 @@
                     }
                 }
 
-                var mapLayer = map.getLayer('patent-heat');
+                var mapLayer = map.getLayer('patent-point');
                 if (typeof mapLayer !== 'undefined') {
-                    map.removeLayer('patent-heat').removeLayer('patent-point').removeSource('patent');
+                    map.removeLayer('patent-point').removeSource('patent');
                 }
 
-                var mapLayer = map.getLayer('journal-heat');
+                var mapLayer = map.getLayer('journal-point');
                 if (typeof mapLayer !== 'undefined') {
-                    map.removeLayer('journal-heat').removeLayer('journal-point').removeSource('journal');
+                    map.removeLayer('journal-point').removeSource('journal');
                 }
             } catch (error) {
 
