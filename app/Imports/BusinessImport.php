@@ -23,7 +23,7 @@ class BusinessImport implements ToModel, WithHeadingRow, WithChunkReading, WithB
         }
         if (isset($row['classification_code'])) {
             $industryClassification = DB::table('industry_classifications')
-                ->select('id', 'code')
+                ->select('id', 'code', 'section_id')
                 ->where('code', $row['classification_code'])
                 ->first();
         } else {
@@ -59,7 +59,8 @@ class BusinessImport implements ToModel, WithHeadingRow, WithChunkReading, WithB
             "long"                       => $row['long'],
             "month"                      => $date[0],
             "day"                        => $date[1],
-            "month_and_year"             => $date[2]."-".$date[0]
+            "month_and_year"             => $date[2]."-".$date[0],
+            "parent_classification_id"   => ($industryClassification != null) ? $industryClassification->section_id : null,
         ]);
     }
 

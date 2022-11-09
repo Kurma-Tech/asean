@@ -54,10 +54,15 @@
                                         <h3 class="col-md-12 col-sm-12 card-title mb-2">Popular Businesses</h3>
                                         <div class="col-md-9 col-sm-12">
                                             <div class="input-group input-group-sm">
-                                                <select class="form-control" wire:model="selectedCountryBusiness">
+                                                <select class="form-control" wire:model="popularCountryBusiness">
                                                     <option hidden>
                                                         {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
                                                     </option>
+                                                    @foreach ($countries as $country)
+                                                    <option value="{{ $country->id }}">
+                                                        {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                    </option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -104,10 +109,15 @@
                                         <h3 class="col-md-12 col-sm-12 card-title mb-2">Popular Intellectual properties</h3>
                                         <div class="col-md-9 col-sm-12">
                                             <div class="input-group input-group-sm">
-                                                <select class="form-control" wire:model="selectedCountryIntellectual">
+                                                <select class="form-control" wire:model="popularCountryPatent">
                                                     <option hidden>
                                                         {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
                                                     </option>
+                                                    @foreach ($countries as $country)
+                                                    <option value="{{ $country->id }}">
+                                                        {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                    </option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -158,6 +168,11 @@
                                                     <option hidden>
                                                         {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
                                                     </option>
+                                                    @foreach ($countries as $country)
+                                                    <option value="{{ $country->id }}">
+                                                        {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                    </option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
