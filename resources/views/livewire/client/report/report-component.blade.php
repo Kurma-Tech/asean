@@ -1,45 +1,81 @@
 <div>
     <div class="content bg-background-black">
-        <div class="container-fluid">
+        <div class="container-fluid" style="padding-top: 72px;">
             {{-- <div class="row" style="margin-top: 60px;">
                 <div class="col-12 col-sm-12 p-3">
                     <h3>{{ GoogleTranslate::trans('Current Report', app()->getLocale()) }}</h3>
                 </div>
             </div> --}}
-            <div class="row"></div>
-            <div class="row" style="margin-top: 72px;">
+            <div class="row">
                 <div class="col-md-12">
-                    <div class="col-md-12" wire:ignore>
-                        <div class="card bg-card-black">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-10 remove-padding">
-                                        <div id="line-chart"></div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Type:</label>
+                                        <select class="form-control" style="width: 100%;" wire:model="selectedType">
+                                            <option hidden>Select Type</option>
+                                            <option value="all">All</option>
+                                            <option value="business">Business</option>
+                                            <option value="patent">Patent</option>
+                                            <option value="journals">Journals</option>
+                                        </select>
                                     </div>
-                                    <div class="col-md-2 pl-4">
-                                        <h2>Totals</h2>
-                                        <div class="info-box bg-danger">
-                                            <div class="info-box-content">
-                                                <span class="info-box-text">Businesses</span>
-                                                <span class="info-box-number" id="business-count">-</span>
-                                            </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Classifications:</label>
+                                        <select class="form-control" style="width: 100%;" wire:model="selectedClassification">
+                                            <option hidden>Select Classification</option>
+                                            
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Country:</label>
+                                        <select class="form-control" style="width: 100%;" wire:model="selectedCountry">
+                                            <option hidden>Select Country</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" wire:ignore>
+                    <div class="card bg-card-black">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-10 remove-padding">
+                                    <div id="line-chart"></div>
+                                </div>
+                                <div class="col-md-2 pl-4">
+                                    <h2>Totals</h2>
+                                    <div class="info-box bg-danger">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">Businesses</span>
+                                            <span class="info-box-number" id="business-count">-</span>
                                         </div>
-                                        <div class="info-box bg-warning">
-                                            <div class="info-box-content">
-                                                <span class="info-box-text">Intellectual properties</span>
-                                                <span class="info-box-number" id="patent-count">-</span>
-                                            </div>
+                                    </div>
+                                    <div class="info-box bg-warning">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">Intellectual properties</span>
+                                            <span class="info-box-number" id="patent-count">-</span>
                                         </div>
-                                        <div class="info-box bg-info">
-                                            <div class="info-box-content">
-                                                <span class="info-box-text">Journals</span>
-                                                <span class="info-box-number" id="journal-count">-</span>
-                                            </div>
+                                    </div>
+                                    <div class="info-box bg-info">
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">Journals</span>
+                                            <span class="info-box-number" id="journal-count">-</span>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -165,11 +201,8 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-
-
             </div>
             {{-- <div class="row">
                 <div class="col-md-6">

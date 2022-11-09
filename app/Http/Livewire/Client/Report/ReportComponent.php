@@ -65,7 +65,8 @@ class ReportComponent extends Component
     //     $this->updateTopJournal();
     // }
 
-    public function updateTopBusiness(){
+    public function updateTopBusiness()
+    {
         ini_set('memory_limit', '-1');
         $businessQuery =  DB::table('businesses')->select('id', 'year', 'date_registered', 'industry_classification_id');
 
@@ -87,7 +88,8 @@ class ReportComponent extends Component
         ]);
     }
 
-    public function updateTopPatent(){
+    public function updateTopPatent()
+    {
         ini_set('memory_limit', '-1');
         $patentQuery =  DB::table('patents')->select('id', 'registration_date', 'kind_id');
 
