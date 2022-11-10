@@ -126,7 +126,7 @@ class ReportComponent extends Component
     public function updateTopBusinessRate()
     {
         ini_set('memory_limit', '-1');
-
+        $test2 = [];
         if(!is_null($this->emergingCountryIndustry))
         {
             $test = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', 2020)->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
@@ -136,11 +136,16 @@ class ReportComponent extends Component
             $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', 2021)->get())->pluck('parent_classification_id')->countBy();
         }
         $final = [];
-        foreach ($test as $key => $value) {
-            array_push($final, [
-                "key" => IndustryClassification::find($key)->classifications,
-                "value" => (((int)$value - (int)$test2[$key])/(int)$value) * 100
-            ]);
+        foreach ($test as $key => $value){
+            if(array_key_exists($key, $test2)){
+                array_push($final, [
+                    "key" => IndustryClassification::find($key)->classifications,
+                    "value" => (((int)$value - (int)$test2[$key])/(int)$value) * 100
+                ]);
+            }else{
+                continue;
+            }
+           
         }
 
         $this->emit("emergingBusinessRate", [
