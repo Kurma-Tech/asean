@@ -137,7 +137,7 @@ class ReportComponent extends Component
         $final = [];
         
         foreach ($test as $key => $value){
-            if(array_key_exists($key, $test2 ?? [])){
+            if($test2->has($key)){
                 array_push($final, [
                     "key" => IndustryClassification::find($key)->classifications,
                     "value" => (((int)$value - (int)$test2[$key])/(int)$value) * 100
@@ -223,7 +223,7 @@ class ReportComponent extends Component
         $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', 2021)->get())->pluck('parent_classification_id')->countBy();
         $final = [];
         foreach ($test as $key => $value){
-            if(array_key_exists($key, $test2 ?? [])){
+            if($test2->has($key)){
                 array_push($final, [
                     "key" => IndustryClassification::find($key)->classifications,
                     "value" => (((int)$value - (int)$test2[$key])/(int)$value) * 100
