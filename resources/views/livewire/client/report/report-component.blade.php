@@ -352,7 +352,6 @@
                                 </div>
                                 <div class="col-md-3 col-sm-12">
                                     <div class="input-group input-group-sm">
-                                        <label>{{ GoogleTranslate::trans('Sort by Classifications', app()->getLocale()) }}:</label>
                                         <select class="form-control" wire:model="classification">
                                             <option hidden>
                                                 {{ GoogleTranslate::trans('Choose Classifications', app()->getLocale()) }}
