@@ -331,12 +331,12 @@
                 </div>
             </div> --}}
             <div class="row">
-                <div class="col-md-12 col-sm-12" wire:ignore>
+                <div class="col-md-12 col-sm-12">
                     <div class="card bg-card-black">
                         <div class="card-header">
                             <div class="row">
                                 <h3 class="col-md-12 col-sm-12 card-title mb-2">Popular Businesses</h3>
-                                <div class="col-md-3 col-sm-12">
+                                <div class="col-md-3 col-sm-12" wire:ignore>
                                     <div class="input-group input-group-sm">
                                         <select class="form-control" wire:model="forecastCountry">
                                             <option hidden>
@@ -350,7 +350,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-sm-12">
+                                <div class="col-md-3 col-sm-12" wire:ignore>
                                     <div class="input-group input-group-sm">
                                         <select class="form-control" wire:model="forecastClassification">
                                             <option hidden>

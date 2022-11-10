@@ -64,7 +64,7 @@ class ReportComponent extends Component
         $this->updateTopBusiness();
     }
 
-    public function updateForecastClassification($classification)
+    public function updatedForecastClassification($classification)
     {
         $this->forecastClassification = $classification;
         $this->updateForecastChart();
