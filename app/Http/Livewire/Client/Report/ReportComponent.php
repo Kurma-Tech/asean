@@ -148,6 +148,8 @@ class ReportComponent extends Component
            
         }
 
+        rsort($final);
+
         $this->emit("emergingBusinessRate", [
             "emergingRate" => $final
         ]);
@@ -233,6 +235,7 @@ class ReportComponent extends Component
             }
            
         }
+        rsort($final);
         
 
 
