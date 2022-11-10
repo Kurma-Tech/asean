@@ -374,8 +374,8 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-12" wire:ignore>
+            <div class="row" wire:ignore>
+                <div class="col-md-12">
                     <div class="card bg-card-black">
                         <div class="card-header">
                             <div class="row">
@@ -674,6 +674,7 @@
             $("#business-emerging-rate tbody tr").remove();
 
             for (let index = 0; index < data.length; index++) {
+                console.log(data[index]);
                 const element = data[index];
                 var myHtmlContent =
                     `
