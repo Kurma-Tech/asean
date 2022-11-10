@@ -352,7 +352,7 @@
                                 </div>
                                 <div class="col-md-3 col-sm-12">
                                     <div class="input-group input-group-sm">
-                                        <select class="form-control" wire:model="classification">
+                                        <select class="form-control" wire:model="forecastClassification">
                                             <option hidden>
                                                 {{ GoogleTranslate::trans('Choose Classifications', app()->getLocale()) }}
                                             </option>
