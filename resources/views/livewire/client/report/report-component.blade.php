@@ -47,7 +47,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-4" wire:ignore>
                             <div class="card bg-card-black">
                                 <div class="card-header">
                                     <div class="row">
@@ -102,7 +102,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4" wire:ignore>
                             <div class="card bg-card-black">
                                 <div class="card-header">
                                     <div class="row">
@@ -157,7 +157,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4" wire:ignore>
                             <div class="card bg-card-black">
                                 <div class="card-header">
                                     <div class="row">
