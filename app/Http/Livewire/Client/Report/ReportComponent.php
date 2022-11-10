@@ -24,6 +24,7 @@ class ReportComponent extends Component
         $isFirstLoad = true,
         $popularCountryBusiness,
         $popularCountryPatent, 
+        $emergingCountryIndustry,
         $forecastCountry;
 
     protected
@@ -50,6 +51,12 @@ class ReportComponent extends Component
     {
         $this->forecastCountry = $country;
         $this->updateForecastChart();
+    }
+
+    public function updatedEmergingCountryIndustry($country)
+    {
+        $this->emergingCountryIndustry = $country;
+        $this->updateTopBusinessRate();
     }
 
     public function updatedPopularCountryBusiness($country)
@@ -113,6 +120,31 @@ class ReportComponent extends Component
 
         $this->emit("updateTopBusiness", [
             "emergingBusiness" => $emergingBusinessData
+        ]);
+    }
+
+    public function updateTopBusinessRate()
+    {
+        ini_set('memory_limit', '-1');
+
+        if(!is_null($this->emergingCountryIndustry))
+        {
+            $test = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', 2020)->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
+            $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', 2021)->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
+        }else{
+            $test = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', 2020)->get())->pluck('parent_classification_id')->countBy();
+            $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', 2021)->get())->pluck('parent_classification_id')->countBy();
+        }
+        $final = [];
+        foreach ($test as $key => $value) {
+            array_push($final, [
+                "key" => IndustryClassification::find($key)->classifications,
+                "value" => (((int)$value - (int)$test2[$key])/(int)$value) * 100
+            ]);
+        }
+
+        $this->emit("emergingBusinessRate", [
+            "emergingRate" => $final
         ]);
     }
 
@@ -180,6 +212,20 @@ class ReportComponent extends Component
         $patents = $patentQuery->get();
         $journals = $journalQuery->get();
         /* Get Query Data End */
+
+
+        $test = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', 2020)->get())->pluck('parent_classification_id')->countBy();
+        $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', 2021)->get())->pluck('parent_classification_id')->countBy();
+        $final = [];
+        foreach ($test as $key => $value) {
+            array_push($final, [
+                "key" => IndustryClassification::find($key)->classifications,
+                "value" => (((int)$value - (int)$test2[$key])/(int)$value) * 100
+            ]);
+        }
+        
+
+
 
         /* Default data for Charts */
 
@@ -282,7 +328,8 @@ class ReportComponent extends Component
                 "forcastDates" => $tempForcastData["forecastedDates"],
                 "forcastData" => $tempForcastData["forecastedData"],
                 "emergingBusiness" => $emergingBusinessData,
-                "emergingPatents" => $emergingPatentData
+                "emergingPatents" => $emergingPatentData,
+                "emergingRate" => $final
             ]);
             $this->isFirstLoad = false;
         } else {
@@ -315,6 +362,7 @@ class ReportComponent extends Component
         // echo ;
         // $p5 = (pow(1 + $r, 5)) * $pF;
         // dd($forecastedData);
+        
         if($data["success"] == true){
             return ["forecastedDates" => $data['prediction_data']['keys'], "forecastedData" => $data['prediction_data']['values']];
         }else{
