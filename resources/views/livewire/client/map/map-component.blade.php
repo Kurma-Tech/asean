@@ -655,7 +655,7 @@
                 // 'type': 'circle',
                 'type': 'symbol',
                 'source': 'journal',
-                'minzoom': 15,
+                'minzoom': 8,
                 // 'paint': {
                 //     'circle-radius': 8,
                 //     'circle-color': "rgba(183, 28, 28, 0.85)",
