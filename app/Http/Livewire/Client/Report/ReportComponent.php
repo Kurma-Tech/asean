@@ -17,6 +17,7 @@ class ReportComponent extends Component
         $chartJournalsCount,
         $country,
         $classification,
+        $forecastClassification,
         $topLimitBusiness = 10,
         $topLimitPatent = 10,
         $topLimitJournal = 10,
@@ -47,7 +48,8 @@ class ReportComponent extends Component
 
     public function updatedForecastCountry($country)
     {
-        
+        $this->forecastCountry = $country;
+        $this->updateForecastChart();
     }
 
     public function updatedPopularCountryBusiness($country)
@@ -62,9 +64,9 @@ class ReportComponent extends Component
         $this->updateTopBusiness();
     }
 
-    public function updatedClassification($classification)
+    public function updateForecastsClassification($classification)
     {
-        $this->classification = $classification;
+        $this->forecastClassification = $classification;
         $this->updateForecastChart();
     }
 
@@ -302,7 +304,7 @@ class ReportComponent extends Component
         $res = $client->post('http://18.136.147.228/api/v1/predict', [
             'json' => [
                 'country_id' => (!is_null($this->forecastCountry)) ? (int)$this->forecastCountry : null,
-                'classification_id' => (!is_null($this->classification)) ? (int)$this->classification : null,
+                'classification_id' => (!is_null($this->forecastClassification)) ? (int)$this->forecastClassification : null,
             ]
         ]);
         $data = json_decode($res->getBody(), true); 
