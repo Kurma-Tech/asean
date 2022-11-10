@@ -642,6 +642,7 @@
         }
 
         Livewire.on('reportsUpdated', (data) => {
+            console.log(data);
             ApexCharts.exec('forcast-chart', 'updateOptions', [{
                 xaxis: {
                     categories: data.forcastDates,
