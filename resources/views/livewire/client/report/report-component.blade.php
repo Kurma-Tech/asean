@@ -164,7 +164,7 @@
                                         <h3 class="col-md-12 col-sm-12 card-title mb-2">Popular Journals</h3>
                                         <div class="col-md-9 col-sm-12">
                                             <div class="input-group input-group-sm">
-                                                <select class="form-control" wire:model="selectedCountryJournal">
+                                                <select class="form-control">
                                                     <option hidden>
                                                         {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
                                                     </option>
@@ -178,7 +178,7 @@
                                         </div>
                                         <div class="col-md-3 col-sm-12">
                                             <div class="input-group input-group-sm">
-                                                <select class="form-control" wire:model="topLimitJournal">
+                                                <select class="form-control">
                                                     <option hidden>
                                                         {{ GoogleTranslate::trans('Select', app()->getLocale()) }}
                                                     </option>
@@ -335,7 +335,7 @@
                     <div class="card bg-card-black">
                         <div class="card-header">
                             <div class="row">
-                                <h3 class="col-md-12 col-sm-12 card-title mb-2">Popular Businesses</h3>
+                                <h3 class="col-md-12 col-sm-12 card-title mb-2">Industry Forecast</h3>
                                 <div class="col-md-3 col-sm-12" wire:ignore>
                                     <div class="input-group input-group-sm">
                                         <select class="form-control" wire:model="forecastCountry">
