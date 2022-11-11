@@ -96,6 +96,7 @@ class JournalsListComponent extends Component
     // Store
     public function storeJournal()
     {
+        // $this->mapCategories($this->categories);
         $this->validate(); // validate Journals form
 
         DB::beginTransaction();
@@ -127,7 +128,16 @@ class JournalsListComponent extends Component
             $journal->lat            = $this->lat;
             $journal->save();
 
-            $journal->journalCategories()->sync($this->categories);
+            $collection = [];
+            foreach($this->categories as $key => $value)
+            {
+                $country = ['country_id' => $this->country_id];
+                $collection[$key] = [
+                    $value => $country
+                ];
+            }
+            
+            $journal->journalCategories()->sync($this->mapCategories($collection));
 
             DB::commit();
 
@@ -174,6 +184,13 @@ class JournalsListComponent extends Component
         $this->emit('countryEvent', $this->country_id);
         $this->emit('categoryEvent', $this->categories);
         $this->emit('abstractEvent', $this->abstract);
+    }
+
+    private function mapCategories($categories)
+    {
+        return collect($categories)->map(function ($c) {
+            return ['country_id' => $c];
+        });
     }
 
     // softDelete

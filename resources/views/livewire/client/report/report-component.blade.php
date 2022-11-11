@@ -402,7 +402,6 @@
                                     <tr>
                                         <th>S.N</th>
                                         <th>Industry</th>
-                                        <th>Rate</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -680,7 +679,6 @@
                     `
                     <td>${index+1}</td>
                     <td>${element.key}</td>
-                    <td>${element.value} %</td>
                 `;
                 var tableRef = document.getElementById('business-emerging-rate').getElementsByTagName('tbody')[0];
                 var newRow = tableRef.insertRow(tableRef.rows.length);

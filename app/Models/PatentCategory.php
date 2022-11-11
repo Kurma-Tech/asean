@@ -22,7 +22,7 @@ class PatentCategory extends Model
 
     public function patents()
     {
-        return $this->belongsToMany(Patent::class, 'patent_pivot_patent_category', 'category_id', 'patent_id');
+        return $this->belongsToMany(Patent::class, 'patent_pivot_patent_category', 'category_id', 'patent_id')->withPivot('country_id');
     }
 
     public function parent(){

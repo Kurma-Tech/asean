@@ -34,6 +34,6 @@ class Journal extends Model
 
     public function journalCategories()
     {
-        return $this->belongsToMany(JournalCategory::class, 'journal_pivot_journal_category', 'journal_id', 'category_id');
+        return $this->belongsToMany(JournalCategory::class, 'journal_pivot_journal_category', 'journal_id', 'category_id')->withPivot('country_id');
     }
 }
