@@ -165,8 +165,8 @@
                                         <div class="form-group">
                                             <label for="category-dropdown">Patent Category<span class="text-danger">*</span></label>
                                             <div class="select2-purple" wire:ignore>
-                                                <select class="form-control select2" multiple="multiple" data-placeholder="Choose Categories" data-dropdown-css-class="select2-purple" id="category-dropdown" wire:model="category_id">
-                                                    @foreach($categories as $category)
+                                                <select class="form-control select2" multiple="multiple" data-placeholder="Choose Categories" data-dropdown-css-class="select2-purple" id="category-dropdown" wire:model="categories">
+                                                    @foreach($patentCategories as $category)
                                                     <option value="{{ $category->ipc_code }}">{{ $category->ipc_code }}</option>
                                                     @endforeach
                                                 </select>

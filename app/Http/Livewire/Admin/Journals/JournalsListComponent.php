@@ -132,12 +132,10 @@ class JournalsListComponent extends Component
             foreach($this->categories as $key => $value)
             {
                 $country = ['country_id' => $this->country_id];
-                $collection[$key] = [
-                    $value => $country
-                ];
+                $collection[$value] =  $country;
             }
             
-            $journal->journalCategories()->sync($this->mapCategories($collection));
+            $journal->journalCategories()->sync($collection);
 
             DB::commit();
 

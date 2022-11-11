@@ -26,7 +26,7 @@ class PatentListComponent extends Component
         $countries = [],
         $patentKinds = [],
         $patentTypes = [],
-        $categories = [];
+        $categories;
 
     public $hiddenId = 0;
     public $title;
@@ -82,7 +82,7 @@ class PatentListComponent extends Component
     public function mount()
     {
         $this->countries        = Country::select('id', 'name')->get();
-        $this->patentCategories = PatentCategory::where('class_id', '!=', Null)->select('ipc_code')->get();
+        $this->patentCategories = PatentCategory::where('group_id', '!=', Null)->select('ipc_code', 'classification_category')->get();
         $this->patentKinds      = PatentKind::select('id', 'kind')->get();
         $this->patentTypes      = PatentType::select('id', 'type')->get();
     }
@@ -133,7 +133,14 @@ class PatentListComponent extends Component
             $patent->year              = $date[2];
             $patent->save();
 
-            $patent->patentCategories()->sync($this->patents);
+            $collection = [];
+            foreach($this->categories as $key => $value)
+            {
+                $country = ['country_id' => $this->categories];
+                $collection[$value] =  $country;
+            }
+
+            $patent->patentCategories()->sync($collection);
 
             DB::commit();
 

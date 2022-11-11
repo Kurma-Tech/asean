@@ -36,7 +36,9 @@ class JournalImport implements ToCollection, WithHeadingRow, WithChunkReading, W
                 $category_collection = [];
                 foreach ($categoryToArray as $name)
                 {
-                    $category_collection[] = $this->journalCategories->where('category', $name)->first()->id ?? Null;
+                    $country = ['country_id' => $country->id ?? NULL];
+                    $category = $this->journalCategories->where('category', $name)->first()->id ?? Null;
+                    $category_collection[$category->id] = $country;
                 }
             }
             
