@@ -10,8 +10,12 @@ use App\Http\Livewire\Admin\BusinessType\BusinessListComponent as BusinessTypeBu
 use App\Http\Livewire\Admin\BusinessType\TrashedComponent as BusinessTypeTrashedComponent;
 use App\Http\Livewire\Admin\Classification\ClassificationList;
 use App\Http\Livewire\Admin\Classification\TrashedComponent as ClassificationTrashedComponent;
+use App\Http\Livewire\Admin\Country\Area\AreaComponent;
+use App\Http\Livewire\Admin\Country\Area\AreaTrashedComponent;
 use App\Http\Livewire\Admin\Country\CountryListComponent;
 use App\Http\Livewire\Admin\Country\CountryTrashedComponent;
+use App\Http\Livewire\Admin\Country\Zip\ZipComponent;
+use App\Http\Livewire\Admin\Country\Zip\ZipTrashedComponent;
 use App\Http\Livewire\Admin\DashboardComponent;
 use App\Http\Livewire\Admin\Journals\JournalsListComponent;
 use App\Http\Livewire\Admin\Journals\JournalsTrashedComponent;
@@ -56,6 +60,12 @@ Route::prefix('admin')->name('admin.')->group(function() {
         // Countries
         Route::get('countries', CountryListComponent::class)->name('countries.list');
         Route::get('countries/trashed', CountryTrashedComponent::class)->name('countries.trashed.list');
+        // Area
+        Route::get('countries/areas', AreaComponent::class)->name('areas.list');
+        Route::get('countries/areas/trashed', AreaTrashedComponent::class)->name('areas.trashed.list');
+        // Zip
+        Route::get('countries/zips', ZipComponent::class)->name('zips.list');
+        Route::get('countries/zips/trashed', ZipTrashedComponent::class)->name('zips.trashed.list');
         // Business
         Route::get('business', BusinessListComponent::class)->name('business.list');
         Route::get('business/add', BusinessAddComponent::class)->name('business.add');

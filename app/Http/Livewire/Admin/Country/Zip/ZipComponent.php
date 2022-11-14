@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Livewire\Admin\Country;
+namespace App\Http\Livewire\Admin\Country\Zip;
 
+use App\Models\Area;
 use App\Models\Country;
+use App\Models\Zip;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class CountryListComponent extends Component
+class ZipComponent extends Component
 {
     use WithPagination;
 
@@ -17,36 +19,54 @@ class CountryListComponent extends Component
     public $sortBy = false;
 
     public $error;
+    public $countries = [];
+    public $areas;
 
     public $hiddenId = 0;
-    public $name;
-    public $c_code;
-    public $short_code;
-    public $status = true;
+    public $zip_code;
+    public $area_id;
+
+    public $selectedCountry = Null;
     public $btnType = 'Create';
+
+    protected $listeners = ['refreshZipCodelListComponent' => '$refresh'];
 
     protected function rules()
     {
         return [
-            'name'       => 'required|min:3',
-            'c_code'     => 'nullable|min:2|max:5',
-            'short_code' => 'required|min:2|max:3',
-            'status'     => 'boolean',
+            'zip_code'  => 'required',
+            'area_id' => 'required'
         ];
+    }
+
+    public function mount()
+    {
+        $this->countries = Country::select('id', 'name')->get();
+        $this->areas = collect();
+    }
+
+    // update division
+    public function updatedSelectedCountry($id)
+    {
+        if (!is_null($id)) {
+            $this->areas = Area::where('country_id', $id)
+            ->select('id', 'area_name', 'area_code')
+            ->get();
+        }
     }
 
     public function render()
     {
-        return view('livewire.admin.country.country-list-component', [
-            'countries' => Country::search($this->search)
+        return view('livewire.admin.country.zip.zip-component', [
+            'zips' => Zip::search($this->search)
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
                 ->paginate($this->perPage),
         ])->layout('layouts.admin');
     }
 
-    public function storeCountry()
+    public function storeArea()
     {
-        $this->validate(); // validate country form
+        $this->validate(); // validate zip form
 
         DB::beginTransaction();
 
@@ -54,23 +74,21 @@ class CountryListComponent extends Component
             $updateId = $this->hiddenId;
             if($updateId > 0)
             {
-                $country = Country::find($updateId); // Update Country
+                $zip = Zip::find($updateId); // Update Zip
             }
             else{
-                $country = new Country(); // Create Country
+                $zip = new Zip(); // Create Zip
             }
             
-            $country->name         = $this->name;
-            $country->c_code       = $this->c_code;
-            $country->short_code   = $this->short_code;
-            $country->status       = $this->status;
-            $country->save();
+            $zip->zip_code = $this->zip_code;
+            $zip->area_id  = $this->area_id;
+            $zip->save();
 
             DB::commit();
             
-            $this->reset('name', 'c_code', 'short_code', 'status', 'hiddenId', 'btnType');
+            $this->resetFields();
 
-            $this->dispatchBrowserEvent('success-message',['message' => 'Country has been created.']);
+            $this->dispatchBrowserEvent('success-message',['message' => 'Zip code has been created.']);
             
         } catch (\Throwable $th) {
             DB::rollback();
@@ -81,25 +99,23 @@ class CountryListComponent extends Component
     }
 
     // Update Form
-    public function editForm($country_id)
+    public function editForm($id)
     {
-        $singleCountry    = Country::find($country_id);
-        $this->hiddenId   = $singleCountry->id;
-        $this->name       = $singleCountry->name;
-        $this->c_code     = $singleCountry->c_code;
-        $this->short_code = $singleCountry->short_code;
-        $this->status     = $singleCountry->status;
-        $this->btnType    = 'Update';
+        $singleZip      = Zip::find($id);
+        $this->hiddenId = $singleZip->id;
+        $this->zip_code = $singleZip->zip_code;
+        $this->area_id  = $singleZip->area_id;
+        $this->btnType  = 'Update';
     }
 
     // softDelete
     public function softDelete($id)
     {
         try {
-            $data = Country::find($id);
+            $data = Zip::find($id);
             if ($data != null) {
                 $data->delete();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Country deleted successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Zip code deleted successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -116,10 +132,10 @@ class CountryListComponent extends Component
     public function restore($id)
     {
         try {
-            $data = Country::onlyTrashed()->find($id);
+            $data = Zip::onlyTrashed()->find($id);
             if ($data != null) {
                 $data->restore();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Country restored successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Zip code restored successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -135,6 +151,6 @@ class CountryListComponent extends Component
     // reset fields
     public function resetFields()
     {
-        $this->reset('name', 'c_code', 'short_code', 'status', 'hiddenId', 'btnType');
+        $this->reset('zip_code', 'area_id', 'hiddenId', 'btnType', 'selectedCountry');
     }
 }

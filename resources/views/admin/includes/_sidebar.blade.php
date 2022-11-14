@@ -2,7 +2,7 @@
             <!-- Brand Logo -->
             <a href="{{ route('admin.dashboard') }}" class="brand-link">
                 <img src="{{asset('admin/dist/img/asean-favicon.png')}}" alt="Asean Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">ASEAN</span>
+                <span class="brand-text font-weight-light">ASEANA</span>
             </a>
 
             <!-- Sidebar -->
@@ -75,6 +75,52 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route('admin.countries.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.countries.trashed.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-danger"></i>
+                                        <p>View Trashed</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item {{ (request()->routeIs('admin.areas*')) ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ (request()->routeIs('admin.areas*')) ? 'active' : '' }}">
+                                <i class="nav-icon fa fa-location-arrow text-warning"></i>
+                                <p>
+                                    Area Code
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route('admin.areas.list')}}" class="nav-link {{ (request()->routeIs('admin.areas.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-info"></i>
+                                        <p>View All</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.areas.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.areas.trashed.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-danger"></i>
+                                        <p>View Trashed</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item {{ (request()->routeIs('admin.zips*')) ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ (request()->routeIs('admin.zips*')) ? 'active' : '' }}">
+                                <i class="nav-icon fa fa-mail-bulk text-secondary"></i>
+                                <p>
+                                    Zip Code
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route('admin.zips.list')}}" class="nav-link {{ (request()->routeIs('admin.zips.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-info"></i>
+                                        <p>View All</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.zips.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.zips.trashed.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-danger"></i>
                                         <p>View Trashed</p>
                                     </a>

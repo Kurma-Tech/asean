@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Livewire\Admin\Country;
+namespace App\Http\Livewire\Admin\Country\Zip;
 
-use App\Models\Country;
+use App\Models\Zip;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
-use SebastianBergmann\Type\NullType;
 
-class CountryTrashedComponent extends Component
+class ZipTrashedComponent extends Component
 {
     use WithPagination;
 
@@ -21,8 +20,8 @@ class CountryTrashedComponent extends Component
 
     public function render()
     {
-        return view('livewire.admin.country.country-trashed-component', [
-            'countries' => Country::search($this->search)
+        return view('livewire.admin.country.zip.zip-trashed-component', [
+            'zips' => Zip::search($this->search)
                 ->onlyTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
                 ->paginate($this->perPage),
@@ -33,10 +32,10 @@ class CountryTrashedComponent extends Component
     public function delete($id)
     {
         try {
-            $data = Country::where('id', $id);
+            $data = Zip::where('id', $id);
             if ($data != null) {
                 $data->forceDelete();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Country permanently deleted successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Zip code permanently deleted successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -53,10 +52,10 @@ class CountryTrashedComponent extends Component
     public function restore($id)
     {
         try {
-            $data = Country::onlyTrashed()->find($id);
+            $data = Zip::onlyTrashed()->find($id);
             if ($data != null) {
                 $data->restore();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Country restored successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Zip code restored successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);

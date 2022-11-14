@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Livewire\Admin\Country;
+namespace App\Http\Livewire\Admin\Country\Area;
 
-use App\Models\Country;
+use App\Models\Area;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
-use SebastianBergmann\Type\NullType;
 
-class CountryTrashedComponent extends Component
+class AreaTrashedComponent extends Component
 {
     use WithPagination;
 
@@ -21,8 +20,8 @@ class CountryTrashedComponent extends Component
 
     public function render()
     {
-        return view('livewire.admin.country.country-trashed-component', [
-            'countries' => Country::search($this->search)
+        return view('livewire.admin.country.area.area-trashed-component', [
+            'areas' => Area::search($this->search)
                 ->onlyTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
                 ->paginate($this->perPage),
@@ -33,10 +32,10 @@ class CountryTrashedComponent extends Component
     public function delete($id)
     {
         try {
-            $data = Country::where('id', $id);
+            $data = Area::where('id', $id);
             if ($data != null) {
                 $data->forceDelete();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Country permanently deleted successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Area code permanently deleted successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -53,10 +52,10 @@ class CountryTrashedComponent extends Component
     public function restore($id)
     {
         try {
-            $data = Country::onlyTrashed()->find($id);
+            $data = Area::onlyTrashed()->find($id);
             if ($data != null) {
                 $data->restore();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Country restored successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Area code restored successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Livewire\Admin\Journals;
+namespace App\Http\Livewire\Admin\Country\Area;
 
-use App\Imports\JournalImport;
+use App\Imports\AreaImport;
+use App\Models\Area;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -26,10 +27,10 @@ class ImportComponent extends Component
 
     public function render()
     {
-        return view('livewire.admin.journals.import-component');
+        return view('livewire.admin.country.area.import-component');
     }
 
-    public function journalImport()
+    public function areaCodeImport()
     {
         $this->validate([ 
             'file' => 'required'
@@ -39,14 +40,14 @@ class ImportComponent extends Component
 
         try {
             set_time_limit(0);
-            Excel::import(new JournalImport, $this->file);
+            Excel::import(new AreaImport, $this->file);
 
             DB::commit();
             
             $this->reset();
-            $this->success = 'Journal Imported Successfully';
+            $this->success = 'Area Code Imported Successfully';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
-            $this->emit('refreshJournalListComponent');
+            $this->emit('refreshAreaCodeListComponent');
 
         } catch (\Throwable $th) {
             DB::rollback();
@@ -60,7 +61,7 @@ class ImportComponent extends Component
     {
         try{
             return response()->download(storage_path("app\public\journal-import-sample.csv"));
-            $this->success = 'Journal Sample Downloaded';
+            $this->success = 'Area Code Sample Downloaded';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
         } catch (\Throwable $th) {
             DB::rollback();

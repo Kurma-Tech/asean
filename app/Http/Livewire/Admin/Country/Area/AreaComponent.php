@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Livewire\Admin\Country;
+namespace App\Http\Livewire\Admin\Country\Area;
 
+use App\Models\Area;
 use App\Models\Country;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class CountryListComponent extends Component
+class AreaComponent extends Component
 {
     use WithPagination;
 
@@ -17,36 +18,42 @@ class CountryListComponent extends Component
     public $sortBy = false;
 
     public $error;
+    public $countries = [];
 
     public $hiddenId = 0;
-    public $name;
-    public $c_code;
-    public $short_code;
-    public $status = true;
+    public $area_name;
+    public $area_code;
+    public $country_id;
     public $btnType = 'Create';
+
+    protected $listeners = ['refreshAreaCodelListComponent' => '$refresh'];
 
     protected function rules()
     {
         return [
-            'name'       => 'required|min:3',
-            'c_code'     => 'nullable|min:2|max:5',
-            'short_code' => 'required|min:2|max:3',
-            'status'     => 'boolean',
+            'area_name'  => 'required',
+            'area_code'  => 'required',
+            'country_id' => 'required'
         ];
+    }
+
+    public function mount()
+    {
+        $this->countries = Country::select('id', 'name')->get();
     }
 
     public function render()
     {
-        return view('livewire.admin.country.country-list-component', [
-            'countries' => Country::search($this->search)
+        return view('livewire.admin.country.area.area-component', [
+            'areas' => Area::search($this->search)
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
                 ->paginate($this->perPage),
         ])->layout('layouts.admin');
     }
 
-    public function storeCountry()
+    public function storeArea()
     {
-        $this->validate(); // validate country form
+        $this->validate(); // validate area form
 
         DB::beginTransaction();
 
@@ -54,23 +61,22 @@ class CountryListComponent extends Component
             $updateId = $this->hiddenId;
             if($updateId > 0)
             {
-                $country = Country::find($updateId); // Update Country
+                $area = Area::find($updateId); // Update Area
             }
             else{
-                $country = new Country(); // Create Country
+                $area = new Area(); // Create Area
             }
             
-            $country->name         = $this->name;
-            $country->c_code       = $this->c_code;
-            $country->short_code   = $this->short_code;
-            $country->status       = $this->status;
-            $country->save();
+            $area->area_name  = $this->area_name;
+            $area->area_code  = $this->area_code;
+            $area->country_id = $this->country_id;
+            $area->save();
 
             DB::commit();
             
-            $this->reset('name', 'c_code', 'short_code', 'status', 'hiddenId', 'btnType');
+            $this->resetFields();
 
-            $this->dispatchBrowserEvent('success-message',['message' => 'Country has been created.']);
+            $this->dispatchBrowserEvent('success-message',['message' => 'Area code has been created.']);
             
         } catch (\Throwable $th) {
             DB::rollback();
@@ -81,14 +87,13 @@ class CountryListComponent extends Component
     }
 
     // Update Form
-    public function editForm($country_id)
+    public function editForm($id)
     {
-        $singleCountry    = Country::find($country_id);
-        $this->hiddenId   = $singleCountry->id;
-        $this->name       = $singleCountry->name;
-        $this->c_code     = $singleCountry->c_code;
-        $this->short_code = $singleCountry->short_code;
-        $this->status     = $singleCountry->status;
+        $singleArea       = Area::find($id);
+        $this->hiddenId   = $singleArea->id;
+        $this->area_name  = $singleArea->area_name;
+        $this->area_code  = $singleArea->area_code;
+        $this->country_id = $singleArea->country_id;
         $this->btnType    = 'Update';
     }
 
@@ -96,10 +101,10 @@ class CountryListComponent extends Component
     public function softDelete($id)
     {
         try {
-            $data = Country::find($id);
+            $data = Area::find($id);
             if ($data != null) {
                 $data->delete();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Country deleted successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Area code deleted successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -116,10 +121,10 @@ class CountryListComponent extends Component
     public function restore($id)
     {
         try {
-            $data = Country::onlyTrashed()->find($id);
+            $data = Area::onlyTrashed()->find($id);
             if ($data != null) {
                 $data->restore();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Country restored successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Area code restored successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -135,6 +140,6 @@ class CountryListComponent extends Component
     // reset fields
     public function resetFields()
     {
-        $this->reset('name', 'c_code', 'short_code', 'status', 'hiddenId', 'btnType');
+        $this->reset('area_name', 'area_code', 'country_id', 'hiddenId', 'btnType');
     }
 }

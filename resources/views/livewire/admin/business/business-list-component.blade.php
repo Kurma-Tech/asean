@@ -132,7 +132,15 @@
                                                         <div class="product-title">
                                                             Date Registered
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{ $business->date_registered ?? 'NULL' }}</a>
+                                                        <p class="product-title">{{ $business->date_registered ?? 'NULL' }}</p>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Country
+                                                        </div>
+                                                        <p class="product-title">{{ $business->country  ?? 'NULL'}}</p>
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -140,7 +148,7 @@
                                                         <div class="product-title">
                                                             Address
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{ $business->address  ?? 'NULL'}}</a>
+                                                        <p class="product-title">{{ $business->address  ?? 'NULL'}}</p>
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -148,7 +156,7 @@
                                                         <div class="product-title">
                                                             Classification Code
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{ $business->industryClassification->code ?? 'N/A' }}</a>
+                                                        <p class="product-title">{{ $business->industryClassification->code ?? 'N/A' }}</p>
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -156,7 +164,7 @@
                                                         <div class="product-title">
                                                             NGC Code
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{$business->ngc_code ?? 'NULL'}}</a>
+                                                        <p class="product-title">{{$business->ngc_code ?? 'NULL'}}</p>
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -164,7 +172,7 @@
                                                         <div class="product-title">
                                                             Industry Code
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{$business->industry_code ?? 'NULL'}}</a>
+                                                        <p class="product-title">{{$business->industry_code ?? 'NULL'}}</p>
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -172,7 +180,7 @@
                                                         <div class="product-title">
                                                             Geographic Code
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{$business->geo_code ?? 'NULL'}}</a>
+                                                        <p class="product-title">{{$business->geo_code ?? 'NULL'}}</p>
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -180,7 +188,7 @@
                                                         <div class="product-title">
                                                             Geo Location
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{$business->long ?? 'NULL'}} (long), {{$business->lat ?? 'NULL'}} (Lat)</a>
+                                                        <p class="product-title">{{$business->long ?? 'NULL'}} (long), {{$business->lat ?? 'NULL'}} (Lat)</p>
                                                     </div>
                                                 </li>
                                                 <li class="item">

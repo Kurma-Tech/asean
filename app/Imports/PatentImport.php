@@ -87,10 +87,6 @@ class PatentImport implements ToCollection, WithHeadingRow, WithChunkReading, Wi
                 "year"              => $date[2],
             ])->patentCategories()->sync($category_collection);
         }
-        
-        return new Patent([
-            
-        ]);
     }
 
     public function batchSize(): int
