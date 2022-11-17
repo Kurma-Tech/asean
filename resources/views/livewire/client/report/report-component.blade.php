@@ -706,7 +706,7 @@
                     `
                     <td>${index+1}</td>
                     <td>${element.key}</td>
-                    <td>${element.value}</td>
+                    <td>${element.value} % </td>
                 `;
                 var tableRef = document.getElementById('business-emerging-rate').getElementsByTagName('tbody')[0];
                 var newRow = tableRef.insertRow(tableRef.rows.length);

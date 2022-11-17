@@ -130,11 +130,11 @@ class ReportComponent extends Component
         
         if(!is_null($this->emergingCountryIndustry) && $this->emergingCountryIndustry != "")
         {
-            $test = collect(DB::table('businesses')->select('id', 'year', 'country_id', 'parent_classification_id')->where('year', 2020)->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
-            $test2 = collect(DB::table('businesses')->select('id', 'year', 'country_id', 'parent_classification_id')->where('year', 2021)->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
+            $test = collect(DB::table('businesses')->select('id', 'year', 'country_id', 'parent_classification_id')->where('year', 2019)->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
+            $test2 = collect(DB::table('businesses')->select('id', 'year', 'country_id', 'parent_classification_id')->where('year', 2020)->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
         }else{
-            $test = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', 2020)->get())->pluck('parent_classification_id')->countBy();
-            $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', 2021)->get())->pluck('parent_classification_id')->countBy();
+            $test = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', 2019)->get())->pluck('parent_classification_id')->countBy();
+            $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', 2020)->get())->pluck('parent_classification_id')->countBy();
         }
         $final = [];
         
