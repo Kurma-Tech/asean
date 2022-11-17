@@ -61,9 +61,9 @@
                                                     <option value="">
                                                         {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                                     @foreach ($countries as $country)
-                                                    <option value="{{ $country->id }}">
-                                                        {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
-                                                    </option>
+                                                        <option value="{{ $country->id }}">
+                                                            {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -108,7 +108,8 @@
                             <div class="card bg-card-black">
                                 <div class="card-header">
                                     <div class="row">
-                                        <h3 class="col-md-12 col-sm-12 card-title mb-2">Popular Intellectual properties</h3>
+                                        <h3 class="col-md-12 col-sm-12 card-title mb-2">Popular Intellectual properties
+                                        </h3>
                                         <div class="col-md-9 col-sm-12">
                                             <div class="input-group input-group-sm">
                                                 <select class="form-control" wire:model="popularCountryPatent">
@@ -118,9 +119,9 @@
                                                     <option value="">
                                                         {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                                     @foreach ($countries as $country)
-                                                    <option value="{{ $country->id }}">
-                                                        {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
-                                                    </option>
+                                                        <option value="{{ $country->id }}">
+                                                            {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -173,11 +174,12 @@
                                                         {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
                                                     </option>
                                                     <option value="">
-                                                        {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
-                                                    @foreach ($countries as $country)
-                                                    <option value="{{ $country->id }}">
-                                                        {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                        {{ GoogleTranslate::trans('All', app()->getLocale()) }}
                                                     </option>
+                                                    @foreach ($countries as $country)
+                                                        <option value="{{ $country->id }}">
+                                                            {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -351,9 +353,9 @@
                                             <option value="">
                                                 {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                             @foreach ($countries as $country)
-                                            <option value="{{ $country->id }}">
-                                                {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
-                                            </option>
+                                                <option value="{{ $country->id }}">
+                                                    {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -397,9 +399,9 @@
                                             <option value="">
                                                 {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                             @foreach ($countries as $country)
-                                            <option value="{{ $country->id }}">
-                                                {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
-                                            </option>
+                                                <option value="{{ $country->id }}">
+                                                    {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -432,6 +434,7 @@
         body {
             overflow: auto !important;
         }
+
         .bg-background-black {
             background-color: #202124 !important;
             color: white;
@@ -480,6 +483,12 @@
                     zoom: {
                         enabled: false
                     },
+                    toolbar: {
+                        show: true,
+                        tools: {
+                            download: false // <== line to add
+                        }
+                    }
                 },
                 dataLabels: {
                     enabled: false
@@ -589,6 +598,12 @@
                     height: 600,
                     type: 'line',
                     foreColor: '#fff',
+                    toolbar: {
+                        show: true,
+                        tools: {
+                            download: false // <== line to add
+                        }
+                    }
                 },
                 forecastDataPoints: {
                     count: data.forecastedFrom
