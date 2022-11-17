@@ -439,6 +439,7 @@
 
 @push('extra-scripts')
     <script>
+        var forcastChart;
         document.addEventListener("livewire:load", handleLivewireLoad, true);
 
         function handleLivewireLoad() {
@@ -628,11 +629,11 @@
                 // },
                 yaxis: {
                     min: 0,
-                    max: 6500
+                    max: data.forecastGraphLimit
                 }
             };
 
-            var forcastChart = new ApexCharts(document.querySelector("#forcast-chart"), forcastChartOptions);
+            forcastChart = new ApexCharts(document.querySelector("#forcast-chart"), forcastChartOptions);
             forcastChart.render();
 
             var emergingData = data.emergingBusiness.sort(function(x, y) {
@@ -705,12 +706,17 @@
 
         Livewire.on('reportsUpdated', (data) => {
             console.log(data);
-            ApexCharts.exec('forcast-chart', 'updateOptions', [{
+
+            forcastChart.updateOptions({
                 xaxis: {
                     categories: data.forcastDates,
                     tickAmount: 10,
                 },
-            }], false, true);
+                yaxis: {
+                    min: 0,
+                    max: data.forecastGraphLimit
+                }
+            });
 
             ApexCharts.exec('forcast-chart', 'updateSeries', [{
                 data: data.forcastData

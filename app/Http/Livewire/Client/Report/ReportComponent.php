@@ -24,6 +24,7 @@ class ReportComponent extends Component
         $isFirstLoad = true,
         $popularCountryBusiness,
         $popularCountryPatent, 
+        $popularCountryJournals,
         $emergingCountryIndustry,
         $forecastCountry;
 
@@ -184,12 +185,42 @@ class ReportComponent extends Component
         ]);
     }
 
+    // public function updateTopJournal()
+    // {
+    //     ini_set('memory_limit', '-1');
+    //     $patentQuery =  DB::table('journals')->select('id', 'registration_date', 'kind_id');
+
+    //     if(!is_null($this->popularCountryJournals))
+    //     {
+    //         $patentQuery = $patentQuery->where('country_id', $this->popularCountryJournals);
+    //     }
+
+    //     $patents = $patentQuery->get();
+
+    //     $emergingPatentData = [];
+
+    //     $emergingPatents = collect($patents)->pluck('kind_id')->countBy()->sortByDesc(null)->take(10);
+
+    //     foreach ($emergingPatents as $key => $value) {
+    //         array_push($emergingPatentData, [
+    //             "key" => PatentKind::find($key)->kind,
+    //             "value" => $value
+    //         ]);
+    //     }
+
+    //     $this->emit("updateTopPatent", [
+    //         "emergingPatents" => $emergingPatentData
+    //     ]);
+    // }
+
     public function updateForecastChart(){
         $tempForcastData = $this->predict();
+
         $this->emit("reportsUpdated", [
-            "forecastedFrom" =>  120,
+            "forecastedFrom" =>  10,
             "forcastDates" => $tempForcastData["forecastedDates"],
-            "forcastData" => $tempForcastData["forecastedData"]
+            "forcastData" => $tempForcastData["forecastedData"],
+            "forecastGraphLimit" => $tempForcastData["forecastGraphLimit"]
         ]);
     }
 
@@ -335,9 +366,10 @@ class ReportComponent extends Component
                 "patentCountByYears" => collect($tempChartPatentsCount)->values(),
                 "journalCountByYears" => collect($tempChartJournalsCount)->values(),
                 "lineChartYears" => collect(($lineChartYears))->values(),
-                "forecastedFrom" =>  120,
+                "forecastedFrom" =>  10,
                 "forcastDates" => $tempForcastData["forecastedDates"],
                 "forcastData" => $tempForcastData["forecastedData"],
+                "forecastGraphLimit" => $tempForcastData["forecastGraphLimit"],
                 "emergingBusiness" => $emergingBusinessData,
                 "emergingPatents" => $emergingPatentData,
                 "emergingRate" => $final
@@ -351,7 +383,8 @@ class ReportComponent extends Component
                 "lineChartYears" => collect($lineChartYears)->values(),
                 "forecastedFrom" =>  $this->tempForcastData["forecastedDates"]->count() - collect($tempChartBusinessCount)->keys()->count(),
                 "forcastDates" => $this->tempForcastData["forecastedDates"],
-                "forcastData" => $this->tempForcastData["forecastedData"]
+                "forcastData" => $this->tempForcastData["forecastedData"],
+                "forecastGraphLimit" => $tempForcastData["forecastGraphLimit"]
             ]);
         }
     }
@@ -363,6 +396,7 @@ class ReportComponent extends Component
             'json' => [
                 'country_id' => (!is_null($this->forecastCountry)) ? (int)$this->forecastCountry : null,
                 'classification_id' => (!is_null($this->forecastClassification)) ? (int)$this->forecastClassification : null,
+                'type' => "businesses"
             ]
         ]);
         $data = json_decode($res->getBody(), true); 
@@ -375,9 +409,9 @@ class ReportComponent extends Component
         // dd($forecastedData);
         
         if($data["success"] == true){
-            return ["forecastedDates" => $data['prediction_data']['keys'], "forecastedData" => $data['prediction_data']['values']];
+            return ["forecastedDates" => $data['prediction_data']['keys'], "forecastedData" => $data['prediction_data']['values'], "forecastGraphLimit" => max($data['prediction_data']['values']) + 1000];
         }else{
-            return ["forecastedDates" => ['2011-01-01', '2011-02-01'], "forecastedData" => []];
+            return ["forecastedDates" => ['2011-01-01', '2011-02-01'], "forecastedData" => [], "forecastGraphLimit" => 1000];
         }
         
     }

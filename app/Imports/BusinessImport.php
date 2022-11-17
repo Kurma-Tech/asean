@@ -59,7 +59,7 @@ class BusinessImport implements ToModel, WithHeadingRow, WithChunkReading, WithB
             "long"                       => $row['long'],
             "month"                      => $date[0] ?? Null,
             "day"                        => $date[1] ?? Null,
-            "month_and_year"             => $date[2] ?? Null ."-".$date[0] ?? Null,
+            "month_and_year"             => ($date[0] != null && $date[2] != null) ? $date[2] ."-".$date[0] : null,
             "parent_classification_id"   => ($industryClassification != null) ? $industryClassification->section_id : null,
         ]);
     }
