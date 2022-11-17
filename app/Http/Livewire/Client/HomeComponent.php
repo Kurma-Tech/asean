@@ -7,6 +7,8 @@ use App\Models\Business;
 use App\Models\Journal;
 use App\Models\Patent;
 use App\Models\IndustryClassification;
+use App\Models\JournalCategory;
+use App\Models\PatentCategory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -100,14 +102,18 @@ class HomeComponent extends Component
         $this->emit('updateReport');
 
         $countries = Country::select('id', 'status', 'name')->where("status", "1")->get();
-        $classifications = [];
+        $categories = [];
         if ($this->type == "business") {
-            $classifications = IndustryClassification::select('id', 'classifications')->where('parent_id', '!=' , null)->get();
+            $categories = IndustryClassification::select('id', 'classifications')->where('parent_id', '!=', null)->get();
+        }elseif($this->type == "patent") {
+            $categories = PatentCategory::select('id', 'classification_category')->where('parent_id', '!=', null)->get();
+        }elseif($this->type == "journals") {
+            $categories = JournalCategory::select('id', 'category')->where('parent_id', '!=', null)->get();
         }
 
         return view('livewire.client.home-component', [
             'countries' => $countries,
-            'classifications' => $classifications
+            'classifications'  => $categories,
         ])->layout('layouts.client');
     }
 }

@@ -13,18 +13,7 @@
                             <h3 class="search-title">{{ GoogleTranslate::trans('Search', app()->getLocale()) }}</h3>
 
                             <div class="row">
-                                <div class="form-group col-md-4">
-                                    <div class="input-group input-group-sm">
-                                        <select class="form-control" wire:model="type">
-                                            <option hidden>{{ GoogleTranslate::trans('Choose Data Type', app()->getLocale()) }}</option>
-                                            <option value="all">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
-                                            <option value="business">{{ GoogleTranslate::trans('Business', app()->getLocale()) }}</option>
-                                            <option value="patent">{{ GoogleTranslate::trans('Patent', app()->getLocale()) }}</option>
-                                            <option value="journal">{{ GoogleTranslate::trans('Journals', app()->getLocale()) }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-8">
+                                <div class="form-group col-md-12">
                                     <div class="input-group input-group-sm">
                                         <input type="text" class="form-control" id="search"
                                             placeholder="{{ GoogleTranslate::trans('Search', app()->getLocale()) }}..." wire:model="search">
@@ -36,19 +25,34 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="filter-inputs mt-0">
-                                <div class="form-group">
-                                    <label>{{ GoogleTranslate::trans('Sort by Countries', app()->getLocale()) }}:</label>
+                            <div class="row">
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label>{{ GoogleTranslate::trans('Sort by Type', app()->getLocale()) }}:</label>
                                     <div class="input-group input-group-sm">
-                                        <select class="form-control" wire:model="country">
-                                            <option hidden>{{ GoogleTranslate::trans('Choose Countries', app()->getLocale()) }}</option>
-                                            @foreach ($countries as $country)
-                                                <option value="{{ $country->id }}">{{ GoogleTranslate::trans( $country->name, app()->getLocale()) }}</option>
-                                            @endforeach
+                                        <select class="form-control" wire:model="type">
+                                            <option hidden>{{ GoogleTranslate::trans('Choose Data Type', app()->getLocale()) }}</option>
+                                            <option value="all">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                            <option value="business">{{ GoogleTranslate::trans('Business', app()->getLocale()) }}</option>
+                                            <option value="patent">{{ GoogleTranslate::trans('Patent', app()->getLocale()) }}</option>
+                                            <option value="journal">{{ GoogleTranslate::trans('Journals', app()->getLocale()) }}</option>
                                         </select>
                                     </div>
                                 </div>
-                                @if ($type == 'business')
+                                <div class="filter-inputs mt-0 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label>{{ GoogleTranslate::trans('Sort by Countries', app()->getLocale()) }}:</label>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="country">
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Countries', app()->getLocale()) }}</option>
+                                                @foreach ($countries as $country)
+                                                    <option value="{{ $country->id }}">{{ GoogleTranslate::trans( $country->name, app()->getLocale()) }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    @if ($type == 'business')
                                     <div class="form-group">
                                         <label>{{ GoogleTranslate::trans('Sort by Classifications', app()->getLocale()) }}:</label>
                                         <div class="input-group input-group-sm">
@@ -62,7 +66,38 @@
                                             </select>
                                         </div>
                                     </div>
-                                @endif
+                                    @endif
+                                    @if ($type == 'patent')
+                                    <div class="form-group">
+                                        <label>{{ GoogleTranslate::trans('Sort by Category', app()->getLocale()) }}:</label>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="classification">
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Category', app()->getLocale()) }}</option>
+                                                <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                @foreach ($classifications as $classification)
+                                                    <option value="{{ $classification->id }}">
+                                                        {{ $classification->classification_category }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    @endif
+                                    @if ($type == 'journal')
+                                    <div class="form-group">
+                                        <label>{{ GoogleTranslate::trans('Sort by Category', app()->getLocale()) }}:</label>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="classification">
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Category', app()->getLocale()) }}</option>
+                                                <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                @foreach ($classifications as $classification)
+                                                    <option value="{{ $classification->id }}">
+                                                        {{ $classification->category }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    @endif
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
