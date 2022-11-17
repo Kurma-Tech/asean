@@ -85,6 +85,7 @@ class PatentImport implements ToCollection, WithHeadingRow, WithChunkReading, Wi
                 "lat"               => $row['lat'],
                 "month"             => $date[0],
                 "year"              => $date[2],
+                "month_and_year"    => ($date[0] != null && $date[2] != null) ? $date[2] ."-".$date[0] : null,
             ])->patentCategories()->sync($category_collection);
         }
     }

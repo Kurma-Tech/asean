@@ -13,10 +13,32 @@
                             <h3 class="search-title">{{ GoogleTranslate::trans('Search', app()->getLocale()) }}</h3>
 
                             <div class="row">
+<<<<<<< HEAD
                                 <div class="form-group col-md-12">
+=======
+                                <div class="form-group col-md-4">
+                                    <div class="input-group input-group-sm">
+                                        <select class="form-control" wire:model="type">
+                                            <option hidden>
+                                                {{ GoogleTranslate::trans('Choose Data Type', app()->getLocale()) }}
+                                            </option>
+                                            <option value="all">
+                                                {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                            <option value="business">
+                                                {{ GoogleTranslate::trans('Business', app()->getLocale()) }}</option>
+                                            <option value="patent">
+                                                {{ GoogleTranslate::trans('Patent', app()->getLocale()) }}</option>
+                                            <option value="journal">
+                                                {{ GoogleTranslate::trans('Journals', app()->getLocale()) }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-8">
+>>>>>>> 1fe5b9461e36752e24533aca411f08da62814be7
                                     <div class="input-group input-group-sm">
                                         <input type="text" class="form-control" id="search"
-                                            placeholder="{{ GoogleTranslate::trans('Search', app()->getLocale()) }}..." wire:model="search">
+                                            placeholder="{{ GoogleTranslate::trans('Search', app()->getLocale()) }}..."
+                                            wire:model="search">
                                         <span class="input-group-append">
                                             <button type="button" class="btn btn-sm btn-default btn-flat"
                                                 wire:click="handleSearch"><i class="fa fa-search lemongreen"
@@ -29,12 +51,24 @@
                                 <div class="form-group col-md-6 col-sm-12">
                                     <label>{{ GoogleTranslate::trans('Sort by Type', app()->getLocale()) }}:</label>
                                     <div class="input-group input-group-sm">
+<<<<<<< HEAD
                                         <select class="form-control" wire:model="type">
                                             <option hidden>{{ GoogleTranslate::trans('Choose Data Type', app()->getLocale()) }}</option>
                                             <option value="all">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                             <option value="business">{{ GoogleTranslate::trans('Business', app()->getLocale()) }}</option>
                                             <option value="patent">{{ GoogleTranslate::trans('Patent', app()->getLocale()) }}</option>
                                             <option value="journal">{{ GoogleTranslate::trans('Journals', app()->getLocale()) }}</option>
+=======
+                                        <select class="form-control" wire:model="country">
+                                            <option hidden>
+                                                {{ GoogleTranslate::trans('Choose Countries', app()->getLocale()) }}
+                                            </option>
+                                            @foreach ($countries as $country)
+                                                <option value="{{ $country->id }}">
+                                                    {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                </option>
+                                            @endforeach
+>>>>>>> 1fe5b9461e36752e24533aca411f08da62814be7
                                         </select>
                                     </div>
                                 </div>
@@ -57,8 +91,11 @@
                                         <label>{{ GoogleTranslate::trans('Sort by Classifications', app()->getLocale()) }}:</label>
                                         <div class="input-group input-group-sm">
                                             <select class="form-control" wire:model="classification">
-                                                <option hidden>{{ GoogleTranslate::trans('Choose Classifications', app()->getLocale()) }}</option>
-                                                <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                <option hidden>
+                                                    {{ GoogleTranslate::trans('Choose Classifications', app()->getLocale()) }}
+                                                </option>
+                                                <option value="">
+                                                    {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                                 @foreach ($classifications as $classification)
                                                     <option value="{{ $classification->id }}">
                                                         {{ $classification->classifications }}</option>
@@ -101,8 +138,11 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <span class="data-report-count mr-2">{{ GoogleTranslate::trans('About '.$results.' results.', app()->getLocale()) }}</span>
-                                    <a href="{{ route('client.report') }}" class="view-report pull-right" id="view-report-element" target="_blank">{{ GoogleTranslate::trans('Show Report', app()->getLocale()) }}</a>
+                                    <span
+                                        class="data-report-count mr-2">{{ GoogleTranslate::trans('About ' . $results . ' results.', app()->getLocale()) }}</span>
+                                    <a href="{{ route('client.report') }}" class="view-report pull-right"
+                                        id="view-report-element"
+                                        target="_blank">{{ GoogleTranslate::trans('Show Report', app()->getLocale()) }}</a>
                                 </div>
                             </div>
 
@@ -111,15 +151,18 @@
                             <div class="row">
                                 <div class="col-md-12 mt-3 mb-3">
                                     <div wire:ignore>
-                                        {{ GoogleTranslate::trans('PAGE', app()->getLocale()) }}: <span id="page"></span>
+                                        {{ GoogleTranslate::trans('PAGE', app()->getLocale()) }}: <span
+                                            id="page"></span>
                                     </div>
                                     <div style="display: flex; justify-content: space-between;">
-                                        <a href="javascript:prevPage()" class="btn btn-xs btn-default" id="btn_prev">{{ GoogleTranslate::trans('Prev', app()->getLocale()) }}</a>
-                                        <a href="javascript:nextPage()" class="btn btn-xs btn-default pull-right" id="btn_next">{{ GoogleTranslate::trans('Next', app()->getLocale()) }}</a>
+                                        <a href="javascript:prevPage()" class="btn btn-xs btn-default"
+                                            id="btn_prev">{{ GoogleTranslate::trans('Prev', app()->getLocale()) }}</a>
+                                        <a href="javascript:nextPage()" class="btn btn-xs btn-default pull-right"
+                                            id="btn_next">{{ GoogleTranslate::trans('Next', app()->getLocale()) }}</a>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div id="accordion" wire:ignore>
                                 {{-- @if (array_key_exists('features', $businessResults))
                                     @foreach ($businessResults['features'] as $businessResult)
@@ -186,7 +229,8 @@
                             </div>
                         </div>
                         <a id="filter-toggle" href="#" class="btn toggle square"><i class="fas fa-chart-bar fa-lg"
-                                aria-hidden="true"></i> {{ GoogleTranslate::trans('Data Report', app()->getLocale()) }}</a>
+                                aria-hidden="true"></i>
+                            {{ GoogleTranslate::trans('Data Report', app()->getLocale()) }}</a>
                         <div id="filter-wrapper" wire:ignore.self class="overlay-scroll active">
                             <a id="close-filter" href="#" class="toggle square-close"><i
                                     class="fa fa-times fa-lg"></i></a>
@@ -222,6 +266,12 @@
                 type: 'bar',
                 height: 750,
                 foreColor: '#fff',
+                toolbar: {
+                    show: true,
+                    tools: {
+                        download: false // <== line to add
+                    }
+                }
             },
             plotOptions: {
                 bar: {
@@ -253,7 +303,7 @@
                 categories: {!! collect($countriesNameList)->toJson() !!},
                 colors: ['#fff']
             },
-            colors: [ '#b71c1c', '#ffd600', '#01579b'],
+            colors: ['#b71c1c', '#ffd600', '#01579b'],
             title: {
                 text: "{{ GoogleTranslate::trans('Total registered businesses, patents and journals till now.', app()->getLocale()) }}",
                 align: 'left',

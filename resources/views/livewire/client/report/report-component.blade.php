@@ -58,11 +58,16 @@
                                                     <option hidden>
                                                         {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
                                                     </option>
+<<<<<<< HEAD
                                                     <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+=======
+                                                    <option value="">
+                                                        {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+>>>>>>> 1fe5b9461e36752e24533aca411f08da62814be7
                                                     @foreach ($countries as $country)
-                                                    <option value="{{ $country->id }}">
-                                                        {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
-                                                    </option>
+                                                        <option value="{{ $country->id }}">
+                                                            {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -107,18 +112,24 @@
                             <div class="card bg-card-black">
                                 <div class="card-header">
                                     <div class="row">
-                                        <h3 class="col-md-12 col-sm-12 card-title mb-2">Popular Intellectual properties</h3>
+                                        <h3 class="col-md-12 col-sm-12 card-title mb-2">Popular Intellectual properties
+                                        </h3>
                                         <div class="col-md-9 col-sm-12">
                                             <div class="input-group input-group-sm">
                                                 <select class="form-control" wire:model="popularCountryPatent">
                                                     <option hidden>
                                                         {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
                                                     </option>
+<<<<<<< HEAD
                                                     <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+=======
+                                                    <option value="">
+                                                        {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+>>>>>>> 1fe5b9461e36752e24533aca411f08da62814be7
                                                     @foreach ($countries as $country)
-                                                    <option value="{{ $country->id }}">
-                                                        {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
-                                                    </option>
+                                                        <option value="{{ $country->id }}">
+                                                            {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -170,11 +181,20 @@
                                                     <option hidden>
                                                         {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
                                                     </option>
+<<<<<<< HEAD
                                                     <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                                     @foreach ($countries as $country)
                                                     <option value="{{ $country->id }}">
                                                         {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+=======
+                                                    <option value="">
+                                                        {{ GoogleTranslate::trans('All', app()->getLocale()) }}
+>>>>>>> 1fe5b9461e36752e24533aca411f08da62814be7
                                                     </option>
+                                                    @foreach ($countries as $country)
+                                                        <option value="{{ $country->id }}">
+                                                            {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -345,10 +365,12 @@
                                             <option hidden>
                                                 {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
                                             </option>
+                                            <option value="">
+                                                {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                             @foreach ($countries as $country)
-                                            <option value="{{ $country->id }}">
-                                                {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
-                                            </option>
+                                                <option value="{{ $country->id }}">
+                                                    {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -389,10 +411,12 @@
                                             <option hidden>
                                                 {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
                                             </option>
+                                            <option value="">
+                                                {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                             @foreach ($countries as $country)
-                                            <option value="{{ $country->id }}">
-                                                {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
-                                            </option>
+                                                <option value="{{ $country->id }}">
+                                                    {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -405,6 +429,7 @@
                                     <tr>
                                         <th>S.N</th>
                                         <th>Industry</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -424,6 +449,7 @@
         body {
             overflow: auto !important;
         }
+
         .bg-background-black {
             background-color: #202124 !important;
             color: white;
@@ -442,6 +468,7 @@
 
 @push('extra-scripts')
     <script>
+        var forcastChart;
         document.addEventListener("livewire:load", handleLivewireLoad, true);
 
         function handleLivewireLoad() {
@@ -471,6 +498,12 @@
                     zoom: {
                         enabled: false
                     },
+                    toolbar: {
+                        show: true,
+                        tools: {
+                            download: false // <== line to add
+                        }
+                    }
                 },
                 dataLabels: {
                     enabled: false
@@ -580,6 +613,12 @@
                     height: 600,
                     type: 'line',
                     foreColor: '#fff',
+                    toolbar: {
+                        show: true,
+                        tools: {
+                            download: false // <== line to add
+                        }
+                    }
                 },
                 forecastDataPoints: {
                     count: data.forecastedFrom
@@ -631,11 +670,11 @@
                 // },
                 yaxis: {
                     min: 0,
-                    max: 6500
+                    max: data.forecastGraphLimit
                 }
             };
 
-            var forcastChart = new ApexCharts(document.querySelector("#forcast-chart"), forcastChartOptions);
+            forcastChart = new ApexCharts(document.querySelector("#forcast-chart"), forcastChartOptions);
             forcastChart.render();
 
             var emergingData = data.emergingBusiness.sort(function(x, y) {
@@ -682,6 +721,7 @@
                     `
                     <td>${index+1}</td>
                     <td>${element.key}</td>
+                    <td>${element.value} % </td>
                 `;
                 var tableRef = document.getElementById('business-emerging-rate').getElementsByTagName('tbody')[0];
                 var newRow = tableRef.insertRow(tableRef.rows.length);
@@ -708,12 +748,17 @@
 
         Livewire.on('reportsUpdated', (data) => {
             console.log(data);
-            ApexCharts.exec('forcast-chart', 'updateOptions', [{
+
+            forcastChart.updateOptions({
                 xaxis: {
                     categories: data.forcastDates,
                     tickAmount: 10,
                 },
-            }], false, true);
+                yaxis: {
+                    min: 0,
+                    max: data.forecastGraphLimit
+                }
+            });
 
             ApexCharts.exec('forcast-chart', 'updateSeries', [{
                 data: data.forcastData
