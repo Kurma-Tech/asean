@@ -58,12 +58,8 @@
                                                     <option hidden>
                                                         {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
                                                     </option>
-<<<<<<< HEAD
-                                                    <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
-=======
                                                     <option value="">
                                                         {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
->>>>>>> 1fe5b9461e36752e24533aca411f08da62814be7
                                                     @foreach ($countries as $country)
                                                         <option value="{{ $country->id }}">
                                                             {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
@@ -120,12 +116,8 @@
                                                     <option hidden>
                                                         {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
                                                     </option>
-<<<<<<< HEAD
-                                                    <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
-=======
                                                     <option value="">
                                                         {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
->>>>>>> 1fe5b9461e36752e24533aca411f08da62814be7
                                                     @foreach ($countries as $country)
                                                         <option value="{{ $country->id }}">
                                                             {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
@@ -181,15 +173,8 @@
                                                     <option hidden>
                                                         {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
                                                     </option>
-<<<<<<< HEAD
-                                                    <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
-                                                    @foreach ($countries as $country)
-                                                    <option value="{{ $country->id }}">
-                                                        {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
-=======
                                                     <option value="">
                                                         {{ GoogleTranslate::trans('All', app()->getLocale()) }}
->>>>>>> 1fe5b9461e36752e24533aca411f08da62814be7
                                                     </option>
                                                     @foreach ($countries as $country)
                                                         <option value="{{ $country->id }}">
