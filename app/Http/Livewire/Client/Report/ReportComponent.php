@@ -101,7 +101,7 @@ class ReportComponent extends Component
         ini_set('memory_limit', '-1');
         $businessQuery =  DB::table('businesses')->select('id', 'year', 'date_registered', 'industry_classification_id');
 
-        if(!is_null($this->popularCountryBusiness))
+        if(!is_null($this->popularCountryBusiness) && $this->popularCountryBusiness != "")
         {
             $businessQuery = $businessQuery->where('country_id', $this->popularCountryBusiness);
         }
@@ -128,7 +128,7 @@ class ReportComponent extends Component
     {
         ini_set('memory_limit', '-1');
         
-        if(!is_null($this->emergingCountryIndustry))
+        if(!is_null($this->emergingCountryIndustry) && $this->emergingCountryIndustry != "")
         {
             $test = collect(DB::table('businesses')->select('id', 'year', 'country_id', 'parent_classification_id')->where('year', 2020)->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
             $test2 = collect(DB::table('businesses')->select('id', 'year', 'country_id', 'parent_classification_id')->where('year', 2021)->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
@@ -162,7 +162,7 @@ class ReportComponent extends Component
         ini_set('memory_limit', '-1');
         $patentQuery =  DB::table('patents')->select('id', 'registration_date', 'kind_id');
 
-        if(!is_null($this->popularCountryPatent))
+        if(!is_null($this->popularCountryPatent) && $this->popularCountryPatent != "")
         {
             $patentQuery = $patentQuery->where('country_id', $this->popularCountryPatent);
         }
@@ -394,8 +394,8 @@ class ReportComponent extends Component
         $client = new Client();
         $res = $client->post('http://18.136.147.228/api/v1/predict', [
             'json' => [
-                'country_id' => (!is_null($this->forecastCountry)) ? (int)$this->forecastCountry : null,
-                'classification_id' => (!is_null($this->forecastClassification)) ? (int)$this->forecastClassification : null,
+                'country_id' => (!is_null($this->forecastCountry) && $this->forecastCountry != "") ? (int)$this->forecastCountry : null,
+                'classification_id' => (!is_null($this->forecastClassification) && $this->forecastClassification != "") ? (int)$this->forecastClassification : null,
                 'type' => "businesses"
             ]
         ]);

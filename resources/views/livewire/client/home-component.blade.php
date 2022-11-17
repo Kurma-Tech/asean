@@ -187,6 +187,12 @@
                 type: 'bar',
                 height: 750,
                 foreColor: '#fff',
+                toolbar: {
+                    show: true,
+                    tools:{
+                    download:false // <== line to add
+                    }
+                }
             },
             plotOptions: {
                 bar: {
