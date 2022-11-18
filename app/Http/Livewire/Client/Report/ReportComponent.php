@@ -130,25 +130,47 @@ class ReportComponent extends Component
         
         if(!is_null($this->emergingCountryIndustry) && $this->emergingCountryIndustry != "")
         {
-            $test = collect(DB::table('businesses')->select('id', 'year', 'country_id', 'parent_classification_id')->where('year', 2019)->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
-            $test2 = collect(DB::table('businesses')->select('id', 'year', 'country_id', 'parent_classification_id')->where('year', 2020)->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
+            $test2 = collect(DB::table('businesses')->select('id', 'year', 'country_id', 'parent_classification_id')->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
         }else{
-            $test = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', 2019)->get())->pluck('parent_classification_id')->countBy();
-            $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', 2020)->get())->pluck('parent_classification_id')->countBy();
+            $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
         }
-        $final = [];
         
-        foreach ($test as $key => $value){
-            $classification = IndustryClassification::find($key);
-            if($test2->has($key) && !is_null($classification)){
+        $final = [];
+        foreach ($test2 as $key => $value) {
+            if ($key == null){
+                continue;
+            }else{
+                $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $key)->get())->pluck('year')->countBy();
+                // dd($years);
+                $rate = 0;
+                $addition = 0;
+                $temp = null;
+                foreach ($years as $key => $value) {
+                    if($temp != null){
+                        $rate = $rate + (((int)$value - (int)$temp)/(int)$value) * 100;
+                        $addition = $addition + 1;
+                    }else{
+                        $temp = $value;
+                    }
+                }
                 array_push($final, [
                     "key" => IndustryClassification::find($key)->classifications,
-                    "value" => (((int)$value - (int)$test2[$key])/(int)$value) * 100
+                    "value" => round($rate / $addition,2)
                 ]);
-            }else{
-                continue;
             }
         }
+        
+        // foreach ($test as $key => $value){
+        //     $classification = IndustryClassification::find($key);
+        //     if($test2->has($key) && !is_null($classification)){
+        //         array_push($final, [
+        //             "key" => IndustryClassification::find($key)->classifications,
+        //             "value" => (((int)$value - (int)$test2[$key])/(int)$value) * 100
+        //         ]);
+        //     }else{
+        //         continue;
+        //     }
+        // }
 
         rsort($final);
 
@@ -253,18 +275,30 @@ class ReportComponent extends Component
         /* Get Query Data End */
 
 
-        $test = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', 2020)->get())->pluck('parent_classification_id')->countBy();
-        $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', 2021)->get())->pluck('parent_classification_id')->countBy();
+        $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
+        
         $final = [];
-        foreach ($test as $key => $value){
-            $classification = IndustryClassification::find($key);
-            if($test2->has($key) && !is_null($classification)){
+        foreach ($test2 as $key => $value) {
+            if ($key == null){
+                continue;
+            }else{
+                $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $key)->get())->pluck('year')->countBy();
+                // dd($years);
+                $rate = 0;
+                $addition = 0;
+                $temp = null;
+                foreach ($years as $key => $value) {
+                    if($temp != null){
+                        $rate = $rate + (((int)$value - (int)$temp)/(int)$value) * 100;
+                        $addition = $addition + 1;
+                    }else{
+                        $temp = $value;
+                    }
+                }
                 array_push($final, [
                     "key" => IndustryClassification::find($key)->classifications,
-                    "value" => (((int)$value - (int)$test2[$key])/(int)$value) * 100
+                    "value" => round($rate / $addition,2)
                 ]);
-            }else{
-                continue;
             }
         }
         rsort($final);
