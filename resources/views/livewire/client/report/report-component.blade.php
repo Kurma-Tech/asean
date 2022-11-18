@@ -558,8 +558,6 @@
             document.getElementById('business-count').innerHTML = data.businessCount;
             document.getElementById('patent-count').innerHTML = data.patentCount;
             document.getElementById('journal-count').innerHTML = data.journalCount;
-            console.log(data.patentCountByYears);
-            console.log(data.journalCountByYears);
 
             lineChart.updateOptions({
                 series: [{
@@ -698,7 +696,7 @@
 
         function addEmergingRateData(data) {
             $("#business-emerging-rate tbody tr").remove();
-
+                console.log(data);
             for (let index = 0; index < data.length; index++) {
                 console.log(data[index]);
                 const element = data[index];
@@ -732,7 +730,6 @@
         }
 
         Livewire.on('reportsUpdated', (data) => {
-            console.log(data);
 
             forcastChart.updateOptions({
                 xaxis: {
