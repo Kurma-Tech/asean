@@ -153,10 +153,13 @@ class ReportComponent extends Component
                         $temp = $value;
                     }
                 }
-                array_push($final, [
-                    "key" => IndustryClassification::find($key)->classifications,
-                    "value" => round($rate / $addition,2)
-                ]);
+                $industryClassification = IndustryClassification::find($key);
+                if($industryClassification != null){
+                    array_push($final, [
+                        "key" => $industryClassification->classifications,
+                        "value" => round($rate / $addition,2)
+                    ]);
+                }
             }
         }
         
@@ -295,10 +298,14 @@ class ReportComponent extends Component
                         $temp = $value;
                     }
                 }
-                array_push($final, [
-                    "key" => IndustryClassification::find($key)->classifications,
-                    "value" => round($rate / $addition,2)
-                ]);
+                $industryClassification = IndustryClassification::find($key);
+                if($industryClassification != null){
+                    array_push($final, [
+                        "key" => $industryClassification->classifications,
+                        "value" => round($rate / $addition,2)
+                    ]);
+                }
+                
             }
         }
         rsort($final);
