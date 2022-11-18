@@ -136,11 +136,11 @@ class ReportComponent extends Component
         }
         
         $final = [];
-        foreach ($test2 as $key => $value) {
-            if ($key == null){
+        foreach ($test2 as $classKey => $value) {
+            if ($classKey == null){
                 continue;
             }else{
-                $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $key)->get())->pluck('year')->countBy();
+                $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
                 // dd($years);
                 $rate = 0;
                 $addition = 0;
@@ -153,7 +153,7 @@ class ReportComponent extends Component
                         $temp = $value;
                     }
                 }
-                $industryClassification = IndustryClassification::find($key);
+                $industryClassification = IndustryClassification::find($classKey);
                 if($industryClassification != null){
                     array_push($final, [
                         "key" => $industryClassification->classifications,
@@ -281,11 +281,11 @@ class ReportComponent extends Component
         $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
         
         $final = [];
-        foreach ($test2 as $key => $value) {
-            if ($key == null){
+        foreach ($test2 as $classKey => $value) {
+            if ($classKey == null){
                 continue;
             }else{
-                $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $key)->get())->pluck('year')->countBy();
+                $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
                 // dd($years);
                 $rate = 0;
                 $addition = 0;
@@ -298,14 +298,13 @@ class ReportComponent extends Component
                         $temp = $value;
                     }
                 }
-                $industryClassification = IndustryClassification::find($key);
+                $industryClassification = IndustryClassification::find($classKey);
                 if($industryClassification != null){
                     array_push($final, [
                         "key" => $industryClassification->classifications,
                         "value" => round($rate / $addition,2)
                     ]);
                 }
-                
             }
         }
         rsort($final);
