@@ -69,6 +69,7 @@ class MapComponent extends Component
 
     public function updatedClassification($classification)
     {
+        log::info($classification);
         $this->filterData($this->type, $this->country, $classification);
     }
     /* 
@@ -136,8 +137,24 @@ class MapComponent extends Component
             } else {
                 $businessQuery = $businessQuery->where('country_id', $country);
             }
-            $patentQuery = $patentQuery->where('country_id', $country);
-            $journalQuery = $journalQuery->where('country_id', $country);
+            if ($this->type == "patent" && $this->classification != null) {
+                Log::info($this->classification);
+                $listOfCategories = $this->classification;
+                $patentQuery = $patentQuery->where('country_id', $country)->with(['patentCategories' => function($query) use ($listOfCategories) {
+                    $query->whereIn('id', $listOfCategories);
+                }])->get();
+            } else {
+                $patentQuery = $patentQuery->where('country_id', $country);
+            }
+            if ($this->type == "journals" && $this->classification != null) {
+                Log::info($this->classification);
+                $listOfCategories = $this->classification;
+                $journalQuery = $journalQuery->where('country_id', $country)->with(['journalCategories' => function($query) use ($listOfCategories) {
+                    $query->whereIn('id', $listOfCategories);
+                }])->get();
+            } else {
+                $journalQuery = $journalQuery->where('country_id', $country);
+            }
         } else {
             if ($this->type == "business" && $this->classification != null) {
                 $businessQuery = $businessQuery->where('industry_classification_id', $this->classification);

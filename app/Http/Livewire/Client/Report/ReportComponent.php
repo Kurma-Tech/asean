@@ -69,7 +69,7 @@ class ReportComponent extends Component
     public function updatedPopularCountryPatent($country)
     {
         $this->popularCountryPatent = $country;
-        $this->updateTopBusiness();
+        $this->updateTopPatent();
     }
 
     public function updatedForecastClassification($classification)
