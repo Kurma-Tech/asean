@@ -1024,6 +1024,7 @@
         }
 
         Livewire.on('totalReportsUpdated', (data) => {
+            console.log(data);
             lineChart.updateOptions({
                 series: [{
                         name: "Business",

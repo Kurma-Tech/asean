@@ -55,7 +55,7 @@ class ReportComponent extends Component
 
     public function updatedTopCountryFilter($country){
         $this->topCountryFilter = $country;
-        $this->udpateTopChart();
+        $this->updateTopChart();
     }
 
     public function updatedForecastCountry($country)
@@ -305,7 +305,7 @@ class ReportComponent extends Component
         ]);
     }
 
-    public function udpateTopChart()
+    public function updateTopChart()
     {
 
         ini_set('memory_limit', '-1');
@@ -590,6 +590,7 @@ class ReportComponent extends Component
                 "forecastJournalGraphLimit" => $tempForcastJournalData["forecastJournalGraphLimit"],
                 "emergingBusiness" => $emergingBusinessData,
                 "emergingPatents" => $emergingPatentData,
+                "emergingJournals" => $emergingJournalData,
                 "emergingRate" => $final
             ]);
             $this->isFirstLoad = false;
