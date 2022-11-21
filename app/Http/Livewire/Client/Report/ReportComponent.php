@@ -314,7 +314,7 @@ class ReportComponent extends Component
         $journalQuery =  DB::table('journals')->select('id', 'year');
 
 
-        if ($this->country != null) {
+        if ($this->topCountryFilter != null) {
             if ($this->classification != null) {
                 $businessQuery = $businessQuery->where('country_id', $this->topCountryFilter)->where('industry_classification_id', $this->classification);
             } else {
