@@ -17,7 +17,7 @@ class PatentImport implements ToCollection, WithHeadingRow, WithChunkReading, Wi
 
     public function __construct()
     {
-        $this->patentCategories = PatentCategory::select('id', 'ipc_code')->get();
+        $this->patentCategories = PatentCategory::select('id', 'ipc_code', 'group_id')->get();
     }
 
     public function collection(Collection $rows)
@@ -66,7 +66,7 @@ class PatentImport implements ToCollection, WithHeadingRow, WithChunkReading, Wi
                     $categoryQuery = $this->patentCategories->where('ipc_code', $code);
                     if($categoryQuery->count() != 0){
                         $category = $categoryQuery->first() ?? Null;
-                        $array = ['country_id' => $country->id ?? NULL, 'parent_classification_id' => $category->division_id ?? Null, 'year' => $date[2]];
+                        $array = ['country_id' => $country->id ?? NULL, 'parent_classification_id' => $category->group_id ?? Null, 'year' => $date[2]];
                         $category_collection[$category->id] = $array;
                     }else{
                         continue;
