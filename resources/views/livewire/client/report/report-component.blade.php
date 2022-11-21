@@ -476,7 +476,7 @@
                                                 {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
                                             @foreach ($journalClassifications as $classification)
                                                 <option value="{{ $classification->id }}">
-                                                    {{ $classification->classifications }}</option>
+                                                    {{ $classification->category }}</option>
                                             @endforeach
                                         </select>
                                     </div>
