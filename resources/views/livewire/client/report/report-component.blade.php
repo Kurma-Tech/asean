@@ -791,7 +791,7 @@
                     }
                 },
                 forecastDataPoints: {
-                    count: data.forecastedPatentFrom
+                    count: data.forecastedFrom
                 },
                 stroke: {
                     width: 5,
@@ -869,7 +869,7 @@
                     }
                 },
                 forecastDataPoints: {
-                    count: data.forecastedJournalFrom
+                    count: data.forecastedFrom
                 },
                 stroke: {
                     width: 5,
