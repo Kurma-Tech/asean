@@ -215,6 +215,7 @@
 
 @push('extra-scripts')
     <script>
+        var isAuthenticated = {{ (Auth::check()) }}
         var countryChartOption = {
             series: [{
                     name: "Business",
@@ -236,7 +237,7 @@
                 toolbar: {
                     show: true,
                     tools: {
-                        download: false // <== line to add
+                        download: isAuthenticated // <== line to add
                     }
                 }
             },

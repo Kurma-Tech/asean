@@ -19,6 +19,20 @@
 
                                 <div class="col-md-2 pl-4">
                                     <h2>Totals</h2>
+                                    <div class="input-group input-group-sm mb-4">
+                                        <select class="form-control">
+                                            <option hidden>
+                                                {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
+                                            </option>
+                                            <option value="">
+                                                {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                            @foreach ($countries as $country)
+                                                <option value="{{ $country->id }}">
+                                                    {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                     <div class="info-box bg-danger">
                                         <div class="info-box-content">
                                             <span class="info-box-text">Businesses</span>
@@ -454,6 +468,7 @@
 @push('extra-scripts')
     <script>
         var forcastChart;
+        var isAuthenticated = {{ (Auth::check()) }}
         document.addEventListener("livewire:load", handleLivewireLoad, true);
 
         function handleLivewireLoad() {
@@ -486,7 +501,7 @@
                     toolbar: {
                         show: true,
                         tools: {
-                            download: false // <== line to add
+                            download: isAuthenticated // <== line to add
                         }
                     }
                 },
@@ -599,7 +614,7 @@
                     toolbar: {
                         show: true,
                         tools: {
-                            download: false // <== line to add
+                            download: isAuthenticated // <== line to add
                         }
                     }
                 },
