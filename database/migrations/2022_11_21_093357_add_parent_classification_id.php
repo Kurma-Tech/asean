@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('journal_categories', function (Blueprint $table) {
+        Schema::table('journals', function (Blueprint $table) {
             $table->string('parent_classification_id')->nullable();
         });
     }
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('journal_categories', function (Blueprint $table) {
-            //
+        Schema::table('journals', function (Blueprint $table) {
+            $table->dropColumn('parent_classification_id')->nullable();
         });
     }
 };

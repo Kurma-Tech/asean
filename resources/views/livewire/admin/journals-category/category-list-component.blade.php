@@ -95,7 +95,7 @@
                                                     <select class="form-control" id="category-dropdown-section" wire:model="selectedSection">
                                                         <option value="" {{ $selectedSection == Null ?? 'selected' }}>Select Section Category</option>
                                                         @foreach($sections as $sCategory)
-                                                        <option value="{{ $sCategory->id }}">{{ $sCategory->classification_category }}</option>
+                                                        <option value="{{ $sCategory->id }}">{{ $sCategory->category }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('selectedSection')
@@ -110,7 +110,7 @@
                                                     <select class="form-control" id="category-dropdown-division" wire:model="selectedDivision">
                                                         <option value="" {{ $selectedSection == Null ?? 'selected' }}>Select Division Category</option>
                                                         @foreach($divisions as $dCategory)
-                                                        <option value="{{ $dCategory->id }}">{{ $dCategory->classification_category }}</option>
+                                                        <option value="{{ $dCategory->id }}">{{ $dCategory->category }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('selectedDivision')
@@ -127,7 +127,7 @@
                                                     <select class="form-control" id="category-dropdown-group" wire:model="selectedGroup">
                                                         <option value="">Select Group Category</option>
                                                         @foreach($groups as $gCategory)
-                                                        <option value="{{ $gCategory->id }}">{{ $gCategory->classification_category }}</option>
+                                                        <option value="{{ $gCategory->id }}">{{ $gCategory->category }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('selectedGroup')
@@ -144,7 +144,7 @@
                                                     <select class="form-control" id="category-dropdown-class" wire:model="selectedClass">
                                                         <option value="">Select Class Category</option>
                                                         @foreach($classes as $cCategory)
-                                                        <option value="{{ $cCategory->id }}">{{ $cCategory->classification_category }}</option>
+                                                        <option value="{{ $cCategory->id }}">{{ $cCategory->category }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('selectedClass')
