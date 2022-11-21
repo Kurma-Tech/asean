@@ -689,7 +689,7 @@
                                 <hr>
 
                                 <strong><i class="fas fa-book mr-1"></i>Published Year</strong>
-                                <p class="text-muted">${journalData.published_year}</p>
+                                <p class="text-muted">${journalData.year}</p>
                                 <hr>
                                 <strong><i class="fas fa-book mr-1"></i>ISSN No</strong>
                                 <p class="text-muted">${journalData.issn_no}</p>

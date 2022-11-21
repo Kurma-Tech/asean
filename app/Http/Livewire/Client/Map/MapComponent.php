@@ -304,7 +304,7 @@ class MapComponent extends Component
             'author_name' => $journal->author_name ?? 'No Data',
             'publisher_name' => $journal->publisher_name ?? 'No Data',
             'issn_no' => $journal->issn_no ?? 'No Data',
-            'published_year' => $journal->published_year ?? 'No Data',
+            'year' => $journal->year ?? 'No Data',
             'citition_no' => $journal->citition_no ?? 'No Data',
         ];
     }

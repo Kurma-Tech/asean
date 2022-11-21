@@ -22,7 +22,7 @@
                         <div class="mt-1 p-1"><strong class="text-red-400 strong-code">Colums accepted:</strong>
                             <code class="text-xs text-info-400">
                                 title,
-                                published_year,
+                                year,
                                 abstract,
                                 author_name (saperated by semicolon ';'),
                                 categories (saperated by semicolon ';'),

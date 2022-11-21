@@ -42,7 +42,7 @@
                                             <option value="publisher_name">Publisher Name</option>
                                             <option value="issn_no">ISSN No</option>
                                             <option value="cited_score">Cited Score</option>
-                                            <option value="published_year">Published Year</option>
+                                            <option value="year">Published Year</option>
                                         </select>
                                     </div>
                                 </div>
@@ -186,11 +186,11 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="published_year">Published Year<span class="text-danger">*</span></label>
+                                            <label for="year">Published Year<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" name="date"
-                                                id="published_year" wire:model="published_year" placeholder="YYYY"
+                                                id="year" wire:model="year" placeholder="YYYY"
                                                 onchange="this.dispatchEvent(new InputEvent('input'))" />
-                                            @error('published_year')
+                                            @error('year')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -300,7 +300,7 @@
                                                     @endforeach
                                                 @endif
                                             </td>
-                                            <td>{{ $journal->published_year ?? 'N/A' }}</td>
+                                            <td>{{ $journal->year ?? 'N/A' }}</td>
                                             <td>{{ $journal->issn_no ?? 'N/A' }}</td>
                                             <td>{{ $journal->cited_score ?? 'N/A' }}</td>
                                             <td>
@@ -517,7 +517,7 @@
                 $('#abstract_text').val(data).trigger('change');
             });
 
-            $("#published_year").datepicker({
+            $("#year").datepicker({
                 format: "yyyy",
                 viewMode: "years",
                 minViewMode: "years",

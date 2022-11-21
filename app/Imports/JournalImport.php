@@ -44,7 +44,7 @@ class JournalImport implements ToCollection, WithHeadingRow, WithChunkReading, W
             
             Journal::create([
                 "title"          => $row['title'],
-                "published_year" => $row['published_year'],
+                "year"           => $row['year'],
                 "abstract"       => $row['abstract'],
                 "author_name"    => $namesJson,
                 "country_id"     => $country->id ?? NULL,
