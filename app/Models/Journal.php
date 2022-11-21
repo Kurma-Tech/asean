@@ -22,7 +22,7 @@ class Journal extends Model
                 ->orWhere('issn_no', 'like', '%'.$search.'%')
                 ->orWhere('cited_score', 'like', '%'.$search.'%')
                 ->orWhere('link', 'like', '%'.$search.'%')
-                ->orWhere('published_year', 'like', '%'.$search.'%')
+                ->orWhere('year', 'like', '%'.$search.'%')
                 ->orWhere('source_title', 'like', '%'.$search.'%')
                 ->orWhere('author_name', 'like', '%'.$search.'%');
     }

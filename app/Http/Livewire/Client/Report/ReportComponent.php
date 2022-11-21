@@ -254,7 +254,7 @@ class ReportComponent extends Component
         ini_set('memory_limit', '-1');
         $businessQuery =  DB::table('businesses')->select('id', 'year', 'date_registered', 'industry_classification_id');
         $patentQuery =  DB::table('patents')->select('id', 'registration_date', 'kind_id');
-        $journalQuery =  DB::table('journals')->select('id', 'published_year');
+        $journalQuery =  DB::table('journals')->select('id', 'year');
 
 
         if ($this->country != null) {
@@ -344,7 +344,7 @@ class ReportComponent extends Component
             }
         }); // Count of filtered patents with year extraction
 
-        $this->chartJournalsCount = collect($journals)->pluck('published_year')->countBy();
+        $this->chartJournalsCount = collect($journals)->pluck('year')->countBy();
         // dd();
 
         /* Default data for Charts End*/

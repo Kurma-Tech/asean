@@ -42,7 +42,7 @@
                                             <option value="publisher_name">Publisher Name</option>
                                             <option value="issn_no">ISSN No</option>
                                             <option value="citition_no">Citition No</option>
-                                            <option value="published_year">Published Year</option>
+                                            <option value="year">Published Year</option>
                                         </select>
                                     </div>
                                 </div>
@@ -96,7 +96,7 @@
                                                     @endforeach
                                                 @endif
                                             </td>
-                                            <td>{{ $journal->published_year ?? 'N/A' }}</td>
+                                            <td>{{ $journal->year ?? 'N/A' }}</td>
                                             <td>{{ $journal->issn_no ?? 'N/A' }}</td>
                                             <td>{{ $journal->citition_no ?? 'N/A' }}</td>
                                             <td>

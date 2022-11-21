@@ -26,7 +26,7 @@ class JournalsListComponent extends Component
 
     public $hiddenId = 0;
     public $title,
-           $published_year,
+           $year,
            $categories,
            $country_id,
            $abstract,
@@ -58,7 +58,7 @@ class JournalsListComponent extends Component
             'abstract'       => 'nullable',
             'author_name'    => 'required',
             'publisher_name' => 'required',
-            'published_year' => 'required|date_format:"Y"',
+            'year' => 'required|date_format:"Y"',
             'issn_no'        => 'required',
             'cited_score'    => 'required',
             'keywords'       => 'required',
@@ -110,7 +110,7 @@ class JournalsListComponent extends Component
             }
 
             $journal->title          = $this->title;
-            $journal->published_year = $this->published_year;
+            $journal->year           = $this->year;
             $journal->country_id     = $this->country_id;
             $journal->abstract       = $this->abstract;
             $authorsToArray          = explode(';', $this->author_name);
@@ -142,7 +142,7 @@ class JournalsListComponent extends Component
             $this->dispatchBrowserEvent('success-message', ['message' => 'Journal has been ' . $this->btnType . '.']);
 
             $this->reset(
-                'title', 'published_year', 
+                'title', 'year', 
                 'country_id', 'categories', 
                 'abstract', 'author_name', 
                 'publisher_name', 'long', 'lat', 
@@ -164,7 +164,7 @@ class JournalsListComponent extends Component
         $singleJournal        = Journal::find($id);
         $this->hiddenId       = $singleJournal->id;
         $this->title          = $singleJournal->title;
-        $this->published_year = $singleJournal->published_year;
+        $this->year = $singleJournal->year;
         $this->country_id     = $singleJournal->country_id;
         $this->categories     = $singleJournal->journalCategories;
         $this->abstract       = json_decode($singleJournal->abstract);
@@ -235,7 +235,7 @@ class JournalsListComponent extends Component
     public function resetFields()
     {
         $this->reset( 
-            'title', 'published_year', 
+            'title', 'year', 
             'country_id', 'categories', 
             'abstract', 'author_name', 
             'publisher_name', 'long', 'lat', 

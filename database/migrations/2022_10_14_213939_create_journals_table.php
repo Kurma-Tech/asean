@@ -28,7 +28,7 @@ return new class extends Migration
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('CASCADE')->onUpdate('CASCADE');
             $table->bigInteger('category_id')->unsigned()->nullable();
             $table->foreign('category_id')->references('id')->on('journal_categories')->onDelete('CASCADE')->onUpdate('CASCADE');
-            $table->string('published_year')->nullable();
+            $table->string('year')->nullable();
             $table->json('keywords')->nullable();
             $table->decimal('lat', 29, 20)->nullable();
             $table->decimal('long', 29, 20)->nullable();
