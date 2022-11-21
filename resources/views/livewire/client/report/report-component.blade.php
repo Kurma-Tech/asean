@@ -1025,11 +1025,25 @@
         Livewire.on('totalReportsUpdated', (data) => {
             console.log(data);
             lineChart.updateOptions({
+                series: [{
+                        name: "Business",
+                        data: []
+                    },
+                    {
+                        name: "Intellectual property",
+                        data: []
+                    },
+                    {
+                        name: 'Journal',
+                        data: []
+                    }
+                ],
                 xaxis: {
-                    categories: data.lineChartYears
+                    categories: []
                 }
             });
-            ApexCharts.exec('line-chart', 'updateSeries', [{
+            lineChart.updateOptions({
+                series: [{
                         name: "Business",
                         data: data.businessCountByYears
                     },
@@ -1041,7 +1055,11 @@
                         name: 'Journal',
                         data: data.journalCountByYears
                     }
-                ], true);
+                ],
+                xaxis: {
+                    categories: data.lineChartYears
+                }
+            });
             
         });
 
