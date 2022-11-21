@@ -82,11 +82,7 @@ class PatentListComponent extends Component
     public function mount()
     {
         $this->countries        = Country::select('id', 'name')->get();
-<<<<<<< HEAD
         $this->patentCategories = PatentCategory::where('class_id', '!=', Null)->select('ipc_code', 'classification_category')->get();
-=======
-        $this->patentCategories = PatentCategory::where('group_id', '!=', Null)->select('ipc_code', 'classification_category')->take(10)->get();
->>>>>>> 2a0425902b75e1d95a45fb0db5ba35100dbc9508
         $this->patentKinds      = PatentKind::select('id', 'kind')->get();
         $this->patentTypes      = PatentType::select('id', 'type')->get();
     }
