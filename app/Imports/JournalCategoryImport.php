@@ -13,20 +13,45 @@ class JournalCategoryImport implements ToModel, WithHeadingRow, WithChunkReading
 {
     public function model(array $row)
     {
-        if (isset($row['parent_name'])) {
+        $journalCategory = null;
+        $section_id     = null;
+        $division_id    = null;
+        $group_id       = null;
+        $class_id       = null;
 
-            $journalCategory = DB::table('journal_categories')
-                ->select('id')
-                ->where('parent_id', null)
-                ->where('category', $row['parent_name'])
-                ->first();
-        } else {
-            $journalCategory = null;
+        if (isset($row['parent_name'])) {
+            $journalCategory = JournalCategory::where('category', $row['parent_name'])
+            ->select('id','parent_id','section_id','division_id','group_id')
+            ->first();
+
+            if (is_null($journalCategory->parent_id)) {
+                $section_id  = $journalCategory->id;
+            }
+            if (!is_null($journalCategory->section_id)) {
+                $section_id  = $journalCategory->section_id;
+                $division_id = $journalCategory->id;
+            }
+            if (!is_null($journalCategory->division_id)) {
+                $section_id  = $journalCategory->section_id;
+                $division_id = $journalCategory->division_id;
+                $group_id    = $journalCategory->id;
+            }
+            if (!is_null($journalCategory->group_id)) {
+                $section_id  = $journalCategory->section_id;
+                $division_id = $journalCategory->division_id;
+                $group_id    = $journalCategory->group_id;
+                $class_id    = $journalCategory->id;
+            }
         }
-        
+
         return new JournalCategory([
-            "parent_id" => ($journalCategory != null) ? $journalCategory->id : null,
-            "category"  => $row['category'] ?? null
+            "parent_id"   => ($journalCategory != null) ? $journalCategory->id : null,
+            "section_id"  => ($section_id != null) ? $section_id : null,
+            "division_id" => ($division_id != null) ? $division_id : null,
+            "group_id"    => ($group_id != null) ? $group_id : null,
+            "class_id"    => ($class_id != null) ? $class_id : null,
+            "acjs_code"   => $row['ajcs_code'] ?? null,
+            "category"    => $row['category'] ?? null
         ]);
     }
 

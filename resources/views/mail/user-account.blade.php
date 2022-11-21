@@ -1,5 +1,5 @@
 <x-mail::message>
-# Introduction
+# 
 {{ $user_name }}
 The body of your message.
 
