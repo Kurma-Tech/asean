@@ -51,7 +51,7 @@ class ImportComponent extends Component
         } catch (\Throwable $th) {
             DB::rollback();
             $this->error = 'Ops! looks like we had some problem';
-            // $this->error = $th->getMessage();
+            $this->error = $th->getMessage();
             $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
         }
     }
