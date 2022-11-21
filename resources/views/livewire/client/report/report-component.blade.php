@@ -20,7 +20,7 @@
                                 <div class="col-md-2 pl-4">
                                     <h2>Totals</h2>
                                     <div class="input-group input-group-sm mb-4">
-                                        <select class="form-control">
+                                        <select class="form-control" wire:model="topCountryFilter">
                                             <option hidden>
                                                 {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
                                             </option>
@@ -560,6 +560,7 @@
 @push('extra-scripts')
     <script>
         var forcastChart;
+        var lineChart;
         var forcastPatentChart;
         var forcastJournalChart;
         var isAuthenticated = {{ (Auth::check()) }}
@@ -660,7 +661,7 @@
                 }
             };
 
-            var lineChart = new ApexCharts(document.querySelector("#line-chart"), lineChartOptions);
+            lineChart = new ApexCharts(document.querySelector("#line-chart"), lineChartOptions);
             lineChart.render();
 
             // Business, Intellectual Property and Journal Counts
@@ -999,6 +1000,27 @@
                 newRow.innerHTML = myHtmlContent;
             }
         }
+
+        Livewire.on('totalReportsUpdated', (data) => {
+            lineChart.updateOptions({
+                series: [{
+                        name: "Business",
+                        data: data.businessCountByYears
+                    },
+                    {
+                        name: "Intellectual property",
+                        data: data.patentCountByYears
+                    },
+                    {
+                        name: 'Journal',
+                        data: data.journalCountByYears
+                    }
+                ],
+                xaxis: {
+                    categories: data.lineChartYears
+                }
+            });
+        });
 
         Livewire.on('reportsUpdated', (data) => {
 
