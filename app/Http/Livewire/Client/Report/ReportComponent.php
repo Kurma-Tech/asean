@@ -252,10 +252,16 @@ class ReportComponent extends Component
         $emergingJournals = collect($journals)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take(10);
 
         foreach ($emergingJournals as $key => $value) {
-            array_push($emergingJournalData, [
-                "key" => JournalCategory::find($key)->category,
-                "value" => $value
-            ]);
+            foreach ($emergingJournals as $key => $value) {
+                if($key != null){
+                    array_push($emergingJournalData, [
+                        "key" => JournalCategory::find($key)->category,
+                        "value" => $value
+                    ]);
+                }else{
+                    continue;
+                }
+            }
         }
 
         $this->emit("updateTopJournal", [
@@ -488,10 +494,15 @@ class ReportComponent extends Component
         $emergingJournals = collect($journals)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take(10);
 
         foreach ($emergingJournals as $key => $value) {
-            array_push($emergingJournalData, [
-                "key" => JournalCategory::find($key)->category,
-                "value" => $value
-            ]);
+            if($key != null){
+                array_push($emergingJournalData, [
+                    "key" => JournalCategory::find($key)->category,
+                    "value" => $value
+                ]);
+            }else{
+                continue;
+            }
+            
         }
 
         $this->chartPatentsCount = collect($patents)->pluck('date')->countBy(function ($date) {
