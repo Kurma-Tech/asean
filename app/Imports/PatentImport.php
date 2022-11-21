@@ -51,6 +51,8 @@ class PatentImport implements ToCollection, WithHeadingRow, WithChunkReading, Wi
                 $country = null;
             }
 
+            $date = explode('/', $row['filing_date']);
+
             $inventorToArray = explode(';', $row['inventor_name']);
             $inventorJson = json_encode($inventorToArray);
 
@@ -61,18 +63,16 @@ class PatentImport implements ToCollection, WithHeadingRow, WithChunkReading, Wi
                 $category_collection = [];
                 foreach ($codeToArray as $code)
                 {
-                    $country = ['country_id' => $country->id ?? NULL];
                     $categoryQuery = $this->patentCategories->where('ipc_code', $code);
                     if($categoryQuery->count() != 0){
                         $category = $categoryQuery->first() ?? Null;
-                        $category_collection[$category->id] = $country;
+                        $array = ['country_id' => $country->id ?? NULL, 'parent_classification_id' => $category->division_id ?? Null, 'year' => $date[2]];
+                        $category_collection[$category->id] = $array;
                     }else{
                         continue;
                     }
                 }
             }
-
-            $date = explode('/', $row['filing_date']);
 
             Patent::create([
                 "title"             => $row['title'],
