@@ -82,7 +82,11 @@ class PatentListComponent extends Component
     public function mount()
     {
         $this->countries        = Country::select('id', 'name')->get();
+<<<<<<< HEAD
         $this->patentCategories = PatentCategory::where('class_id', '!=', Null)->select('ipc_code', 'classification_category')->get();
+=======
+        $this->patentCategories = PatentCategory::where('group_id', '!=', Null)->select('ipc_code', 'classification_category')->take(10)->get();
+>>>>>>> 2a0425902b75e1d95a45fb0db5ba35100dbc9508
         $this->patentKinds      = PatentKind::select('id', 'kind')->get();
         $this->patentTypes      = PatentType::select('id', 'type')->get();
     }
@@ -103,7 +107,7 @@ class PatentListComponent extends Component
 
         DB::beginTransaction();
 
-        try {
+        // try {
             $updateId = $this->hiddenId;
             if ($updateId > 0) {
                 $patent = Patent::find($updateId); // update Patent
@@ -147,12 +151,12 @@ class PatentListComponent extends Component
             $this->dispatchBrowserEvent('success-message', ['message' => 'Intellectual Property Has Been ' . $this->btnType . '.']);
 
             $this->resetFields();
-        } catch (\Throwable $th) {
-            DB::rollback();
-            // $this->error = $th->getMessage();
-            $this->error = 'Ops! looks like we had some problem';
-            $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);
-        }
+        // } catch (\Throwable $th) {
+        //     DB::rollback();
+        //     // $this->error = $th->getMessage();
+        //     $this->error = 'Ops! looks like we had some problem';
+        //     $this->dispatchBrowserEvent('error-message', ['message' =>$th->getMessage()]);
+        // }
     }
 
     // Update Form

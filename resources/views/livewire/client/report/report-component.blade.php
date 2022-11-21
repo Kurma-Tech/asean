@@ -20,7 +20,7 @@
                                 <div class="col-md-2 pl-4">
                                     <h2>Totals</h2>
                                     <div class="input-group input-group-sm mb-4">
-                                        <select class="form-control">
+                                        <select class="form-control" wire:model="topCountryFilter">
                                             <option hidden>
                                                 {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
                                             </option>
@@ -223,7 +223,7 @@
                                         <thead>
                                             <tr>
                                                 <th>S.N</th>
-                                                <th>Industry Type</th>
+                                                <th>Journal Classification</th>
                                                 <th>Count</th>
                                             </tr>
                                         </thead>
@@ -560,6 +560,7 @@
 @push('extra-scripts')
     <script>
         var forcastChart;
+        var lineChart;
         var forcastPatentChart;
         var forcastJournalChart;
         var isAuthenticated = {{ (Auth::check()) }}
@@ -631,6 +632,11 @@
                     categories: data.lineChartYears
                 },
                 colors: ['#b71c1c', '#ffd600', '#01579b'],
+                noData: {
+                    text: "No enough data.",
+                    align: "center",
+                    verticalAlign: "middle",
+                },
                 tooltip: {
                     y: [{
                             title: {
@@ -660,7 +666,7 @@
                 }
             };
 
-            var lineChart = new ApexCharts(document.querySelector("#line-chart"), lineChartOptions);
+            lineChart = new ApexCharts(document.querySelector("#line-chart"), lineChartOptions);
             lineChart.render();
 
             // Business, Intellectual Property and Journal Counts
@@ -791,7 +797,7 @@
                     }
                 },
                 forecastDataPoints: {
-                    count: data.forecastedPatentFrom
+                    count: data.forecastedFrom
                 },
                 stroke: {
                     width: 5,
@@ -869,7 +875,7 @@
                     }
                 },
                 forecastDataPoints: {
-                    count: data.forecastedJournalFrom
+                    count: data.forecastedFrom
                 },
                 stroke: {
                     width: 5,
@@ -945,6 +951,11 @@
                 return y.value - x.value;
             });
             addEmergingPatentData(emergingPatentData);
+
+            var emergingJournalData = data.emergingJournals.sort(function(x, y) {
+                return y.value - x.value;
+            });
+            addEmergingJournalData(emergingJournalData);
         });
 
         function addEmergingData(data) {
@@ -967,9 +978,7 @@
 
         function addEmergingRateData(data) {
             $("#business-emerging-rate tbody tr").remove();
-                console.log(data);
             for (let index = 0; index < data.length; index++) {
-                console.log(data[index]);
                 const element = data[index];
                 var myHtmlContent =
                     `
@@ -1000,8 +1009,66 @@
             }
         }
 
-        Livewire.on('reportsUpdated', (data) => {
+        function addEmergingJournalData(data) {
+            console.log(data);
+            $("#journal-emerging tbody tr").remove();
 
+            for (let index = 0; index < data.length; index++) {
+                const element = data[index];
+                var myHtmlContent =
+                    `
+                    <td>${index+1}</td>
+                    <td>${element.key}</td>
+                    <td>${element.value}</td>
+                `;
+                var tableRef = document.getElementById('journal-emerging').getElementsByTagName('tbody')[0];
+                var newRow = tableRef.insertRow(tableRef.rows.length);
+                newRow.innerHTML = myHtmlContent;
+            }
+        }
+
+        Livewire.on('totalReportsUpdated', (data) => {
+            console.log(data);
+            lineChart.updateOptions({
+                series: [{
+                        name: "Business",
+                        data: []
+                    },
+                    {
+                        name: "Intellectual property",
+                        data: []
+                    },
+                    {
+                        name: 'Journal',
+                        data: []
+                    }
+                ],
+                xaxis: {
+                    categories: []
+                }
+            });
+            lineChart.updateOptions({
+                series: [{
+                        name: "Business",
+                        data: data.businessCountByYears
+                    },
+                    {
+                        name: "Intellectual property",
+                        data: data.patentCountByYears
+                    },
+                    {
+                        name: 'Journal',
+                        data: data.journalCountByYears
+                    }
+                ],
+                xaxis: {
+                    categories: data.lineChartYears
+                }
+            });
+            
+        });
+
+        Livewire.on('reportsUpdated', (data) => {
             forcastChart.updateOptions({
                 xaxis: {
                     categories: data.forcastDates,
@@ -1066,8 +1133,14 @@
             addEmergingPatentData(emergingPatentData);
         });
 
+        Livewire.on('updateTopJournal', (data) => {
+            var emergingJournalData = data.emergingJournals.sort(function(x, y) {
+                return y.value - x.value;
+            });
+            addEmergingJournalData(emergingJournalData);
+        });
+
         Livewire.on('emergingBusinessRate', (data) => {
-            console.log(data.emergingRate);
             var emergingBusinessRateData = data.emergingRate.sort(function(x, y) {
                 return y.value - x.value;
             });
