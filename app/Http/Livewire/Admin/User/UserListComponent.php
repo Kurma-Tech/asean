@@ -2,11 +2,15 @@
 
 namespace App\Http\Livewire\Admin\User;
 
+use App\Mail\UserAccount;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Str;
 
 class UserListComponent extends Component
 {
@@ -18,6 +22,7 @@ class UserListComponent extends Component
     public $sortBy = false;
 
     public $error;
+    public $random_password;
 
     public $hiddenId = 0;
     public $name;
@@ -45,6 +50,31 @@ class UserListComponent extends Component
         ])->layout('layouts.admin');
     }
 
+    public function randomPasswordGenerator($limit)
+    {
+        $password = '';
+        $passwordSets = ['1234567890', '@#', 'ABCDEFGHJKLMNPQRSTUVWXYZ', 'abcdefghjkmnpqrstuvwxyz'];
+
+        //Get random character from the array
+        foreach ($passwordSets as $passwordSet) {
+            $password .= $passwordSet[array_rand(str_split($passwordSet))];
+        }
+
+        // 9 is the length of password we want
+        while (strlen($password) < $limit) {
+            $randomSet = $passwordSets[array_rand($passwordSets)];
+            $password .= $randomSet[array_rand(str_split($randomSet))];
+        }
+
+        // To sent on Email
+        $this->random_password = $password;
+
+        //Hash Generated Password
+        $password = Hash::make($password);
+
+        return $password;
+    }
+
     // Store
     public function storeUser()
     {
@@ -61,21 +91,30 @@ class UserListComponent extends Component
             else{
                 $user = new User(); // create User
             }
-            
-            $user->name  = $this->name;
-            $user->email  = $this->email;
+            $password = Str::random(9);
+            $user->name     = $this->name;
+            $user->email    = $this->email;
+            $user->password = $this->randomPasswordGenerator(9);
             $user->save();
 
             DB::commit();
 
             $this->dispatchBrowserEvent('success-message',['message' => 'User has been ' . $this->btnType . '.']);
 
-            $this->reset('name', 'email', 'hiddenId', 'btnType');
+            $context = [
+                "user_name" => $user->name,
+                "user_email" => $user->email,
+                "user_password" => $this->random_password,
+            ];
+            
+            Mail::to($user->email)->send(new UserAccount($context));
+
+            $this->resetFields();
             
         } catch (\Throwable $th) {
             DB::rollback();
-            // $this->error = $th->getMessage();
-            $this->error = 'Ops! looks like we had some problem';
+            $this->error = $th->getMessage();
+            // $this->error = 'Ops! looks like we had some problem';
             $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
         }
     }

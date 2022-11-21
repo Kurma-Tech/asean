@@ -35,6 +35,7 @@ use App\Http\Livewire\Admin\User\UserListComponent;
 use App\Http\Livewire\Client\DashboardComponent as ClientDashboardComponent;
 use App\Http\Livewire\Client\HomeComponent;
 use App\Http\Livewire\Client\Report\ReportComponent;
+use App\Mail\UserAccount;
 // use App\Http\Livewire\LoginComponent;
 use Illuminate\Support\Facades\Route;
 
@@ -119,3 +120,14 @@ Route::post('logout', [AuthController::class, 'destroy'])->name('logout');
 // Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('email_test', function(){
+    
+    $context = [
+        "merchant_name" => "Mid City Cafe",
+        "user_name" => "Utsav Thapa",
+        "branch_name" => "Maharajgunj Branch",
+    ];
+    return new UserAccount($context);
+    // Mail::to("niweshs@gmail.com")->send(new BranchUserAssignMail($context));
+});
