@@ -81,7 +81,7 @@ class JournalsListComponent extends Component
     public function mount()
     {
         $this->countries       = Country::select('id', 'name')->get();
-        $this->categories_data = JournalCategory::select('id', 'category')->get();
+        $this->categories_data = JournalCategory::where('division_id', '!=', Null)->select('id', 'category')->get();
     }
 
     public function render()

@@ -54,15 +54,21 @@ class PatentImport implements ToCollection, WithHeadingRow, WithChunkReading, Wi
             $inventorToArray = explode(';', $row['inventor_name']);
             $inventorJson = json_encode($inventorToArray);
 
-            $codeToArray = array_map('trim', explode(';', $row['ipc_code']));    // Category name explode with ,            
+            $codeToArray = array_map('trim', explode(';', $row['ipc_code']));    // Category name explode with ,
+            
             if($codeToArray)
             {
                 $category_collection = [];
                 foreach ($codeToArray as $code)
                 {
                     $country = ['country_id' => $country->id ?? NULL];
-                    $category = $this->patentCategories->where('ipc_code', $code)->first()->id ?? Null;
-                    $category_collection[$category->id] = $country;
+                    $categoryQuery = $this->patentCategories->where('ipc_code', $code);
+                    if($categoryQuery->count() != 0){
+                        $category = $categoryQuery->first() ?? Null;
+                        $category_collection[$category->id] = $country;
+                    }else{
+                        continue;
+                    }
                 }
             }
 

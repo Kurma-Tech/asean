@@ -17,7 +17,7 @@ class JournalImport implements ToCollection, WithHeadingRow, WithChunkReading, W
 
     public function __construct()
     {
-        $this->journalCategories = JournalCategory::select('id', 'category')->get();
+        $this->journalCategories = JournalCategory::select('id', 'category', 'division_id')->get();
     }
 
     public function collection(Collection $rows)
@@ -36,9 +36,14 @@ class JournalImport implements ToCollection, WithHeadingRow, WithChunkReading, W
                 $category_collection = [];
                 foreach ($categoryToArray as $name)
                 {
-                    $country = ['country_id' => $country->id ?? NULL];
-                    $category = $this->journalCategories->where('category', $name)->first()->id ?? Null;
-                    $category_collection[$category->id] = $country;
+                    $categoryQuery = $this->journalCategories->where('category', $name);
+                    if($categoryQuery->count() != 0){
+                        $category = $categoryQuery->first() ?? Null;
+                        $array = ['country_id' => $country->id ?? NULL, 'parent_classification_id' => $category->division_id ?? Null, 'year' => $row['year']];
+                        $category_collection[$category->id] = $array;
+                    }else{
+                        continue;
+                    }
                 }
             }
             
