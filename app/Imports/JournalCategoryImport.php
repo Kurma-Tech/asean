@@ -50,7 +50,7 @@ class JournalCategoryImport implements ToModel, WithHeadingRow, WithChunkReading
             "division_id" => ($division_id != null) ? $division_id : null,
             "group_id"    => ($group_id != null) ? $group_id : null,
             "class_id"    => ($class_id != null) ? $class_id : null,
-            "acjs_code"   => $row['ajcs_code'] ?? null,
+            "ajcs_code"   => $row['ajcs_code'] ?? null,
             "category"    => $row['category'] ?? null
         ]);
     }
