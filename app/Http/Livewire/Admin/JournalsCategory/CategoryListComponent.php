@@ -27,7 +27,7 @@ class CategoryListComponent extends Component
     public $selectedDivision = Null;
     public $selectedGroup = Null;
     public $selectedClass = Null;
-    public $acjs_code;
+    public $ajcs_code;
     public $category;
 
     public $btnType = 'Create';
