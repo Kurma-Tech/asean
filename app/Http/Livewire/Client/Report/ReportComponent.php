@@ -221,14 +221,14 @@ class ReportComponent extends Component
 
         $emergingPatentData = [];
 
-        $emergingPatents = collect($patents)->pluck('kind_id')->countBy()->sortByDesc(null)->take(10);
+        // $emergingPatents = collect($patents)->pluck('kind_id')->countBy()->sortByDesc(null)->take(10);
 
-        foreach ($emergingPatents as $key => $value) {
-            array_push($emergingPatentData, [
-                "key" => PatentKind::find($key)->kind,
-                "value" => $value
-            ]);
-        }
+        // foreach ($emergingPatents as $key => $value) {
+        //     array_push($emergingPatentData, [
+        //         "key" => PatentKind::find($key)->kind,
+        //         "value" => $value
+        //     ]);
+        // }
 
         $this->emit("updateTopPatent", [
             "emergingPatents" => $emergingPatentData
@@ -474,14 +474,14 @@ class ReportComponent extends Component
 
         $emergingPatentData = [];
 
-        $emergingPatents = collect($patents)->pluck('kind_id')->countBy()->sortByDesc(null)->take(10);
+        // $emergingPatents = collect($patents)->pluck('kind_id')->countBy()->sortByDesc(null)->take(10);
 
-        foreach ($emergingPatents as $key => $value) {
-            array_push($emergingPatentData, [
-                "key" => PatentKind::find($key)->kind,
-                "value" => $value
-            ]);
-        }
+        // foreach ($emergingPatents as $key => $value) {
+        //     array_push($emergingPatentData, [
+        //         "key" => PatentKind::find($key)->kind,
+        //         "value" => $value
+        //     ]);
+        // }
 
         $emergingJournalData = [];
 
