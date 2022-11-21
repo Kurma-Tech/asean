@@ -211,7 +211,7 @@ class CategoryListComponent extends Component
     public function resetFields()
     {
         $this->reset(
-            'ipc_code', 'is_parent', 'category', 'hiddenId', 'btnType', 'selectedSection', 
+            'ajcs_code', 'is_parent', 'category', 'hiddenId', 'btnType', 'selectedSection', 
             'selectedDivision', 'selectedGroup', 'selectedClass', 'divisions', 'groups'
         );
     }
