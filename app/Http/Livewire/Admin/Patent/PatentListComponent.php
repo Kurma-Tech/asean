@@ -103,7 +103,7 @@ class PatentListComponent extends Component
 
         DB::beginTransaction();
 
-        try {
+        // try {
             $updateId = $this->hiddenId;
             if ($updateId > 0) {
                 $patent = Patent::find($updateId); // update Patent
@@ -147,12 +147,12 @@ class PatentListComponent extends Component
             $this->dispatchBrowserEvent('success-message', ['message' => 'Intellectual Property Has Been ' . $this->btnType . '.']);
 
             $this->resetFields();
-        } catch (\Throwable $th) {
-            DB::rollback();
-            // $this->error = $th->getMessage();
-            $this->error = 'Ops! looks like we had some problem';
-            $this->dispatchBrowserEvent('error-message', ['message' =>$th->getMessage()]);
-        }
+        // } catch (\Throwable $th) {
+        //     DB::rollback();
+        //     // $this->error = $th->getMessage();
+        //     $this->error = 'Ops! looks like we had some problem';
+        //     $this->dispatchBrowserEvent('error-message', ['message' =>$th->getMessage()]);
+        // }
     }
 
     // Update Form
