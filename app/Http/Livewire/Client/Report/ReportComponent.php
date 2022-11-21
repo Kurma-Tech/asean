@@ -253,7 +253,7 @@ class ReportComponent extends Component
 
         foreach ($emergingJournals as $key => $value) {
             array_push($emergingJournalData, [
-                "key" => PatentKind::find($key)->kind,
+                "key" => JournalCategory::find($key)->category,
                 "value" => $value
             ]);
         }
