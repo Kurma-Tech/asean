@@ -171,7 +171,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            @error('category_id')
+                                            @error('categories')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -485,7 +485,7 @@
         $('#category-dropdown').select2();
         $('#category-dropdown').on('change', function (e) {
             let data = $(this).val();
-                @this.set('category_id', data);
+                @this.set('categories', data);
         });
         window.livewire.on('categoryEvent', () => {
             $('#category-dropdown').select2();
