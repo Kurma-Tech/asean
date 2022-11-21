@@ -151,7 +151,7 @@ class PatentListComponent extends Component
             DB::rollback();
             // $this->error = $th->getMessage();
             $this->error = 'Ops! looks like we had some problem';
-            $this->dispatchBrowserEvent('error-message', ['message' => $this->error]);
+            $this->dispatchBrowserEvent('error-message', ['message' =>$th->getMessage()]);
         }
     }
 
