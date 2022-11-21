@@ -223,7 +223,7 @@
                                         <thead>
                                             <tr>
                                                 <th>S.N</th>
-                                                <th>Industry Type</th>
+                                                <th>Journal Classification</th>
                                                 <th>Count</th>
                                             </tr>
                                         </thead>
@@ -973,9 +973,7 @@
 
         function addEmergingRateData(data) {
             $("#business-emerging-rate tbody tr").remove();
-                console.log(data);
             for (let index = 0; index < data.length; index++) {
-                console.log(data[index]);
                 const element = data[index];
                 var myHtmlContent =
                     `
@@ -1007,6 +1005,7 @@
         }
 
         function addEmergingJournalData(data) {
+            console.log(data);
             $("#journal-emerging tbody tr").remove();
 
             for (let index = 0; index < data.length; index++) {
@@ -1046,7 +1045,6 @@
         });
 
         Livewire.on('reportsUpdated', (data) => {
-
             forcastChart.updateOptions({
                 xaxis: {
                     categories: data.forcastDates,
@@ -1119,7 +1117,6 @@
         });
 
         Livewire.on('emergingBusinessRate', (data) => {
-            console.log(data.emergingRate);
             var emergingBusinessRateData = data.emergingRate.sort(function(x, y) {
                 return y.value - x.value;
             });
