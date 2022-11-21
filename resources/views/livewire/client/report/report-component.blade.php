@@ -946,6 +946,11 @@
                 return y.value - x.value;
             });
             addEmergingPatentData(emergingPatentData);
+
+            var emergingJournalData = data.emergingJournals.sort(function(x, y) {
+                return y.value - x.value;
+            });
+            addEmergingJournalData(emergingJournalData);
         });
 
         function addEmergingData(data) {
@@ -996,6 +1001,23 @@
                     <td>${element.value}</td>
                 `;
                 var tableRef = document.getElementById('patent-emerging').getElementsByTagName('tbody')[0];
+                var newRow = tableRef.insertRow(tableRef.rows.length);
+                newRow.innerHTML = myHtmlContent;
+            }
+        }
+
+        function addEmergingJournalData(data) {
+            $("#journal-emerging tbody tr").remove();
+
+            for (let index = 0; index < data.length; index++) {
+                const element = data[index];
+                var myHtmlContent =
+                    `
+                    <td>${index+1}</td>
+                    <td>${element.key}</td>
+                    <td>${element.value}</td>
+                `;
+                var tableRef = document.getElementById('journal-emerging').getElementsByTagName('tbody')[0];
                 var newRow = tableRef.insertRow(tableRef.rows.length);
                 newRow.innerHTML = myHtmlContent;
             }
@@ -1086,6 +1108,13 @@
                 return y.value - x.value;
             });
             addEmergingPatentData(emergingPatentData);
+        });
+
+        Livewire.on('updateTopJournal', (data) => {
+            var emergingJournalData = data.emergingJournals.sort(function(x, y) {
+                return y.value - x.value;
+            });
+            addEmergingJournalData(emergingJournalData);
         });
 
         Livewire.on('emergingBusinessRate', (data) => {

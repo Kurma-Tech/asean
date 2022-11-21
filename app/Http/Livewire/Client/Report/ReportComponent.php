@@ -235,33 +235,33 @@ class ReportComponent extends Component
         ]);
     }
 
-    // public function updateTopJournal()
-    // {
-    //     ini_set('memory_limit', '-1');
-    //     $patentQuery =  DB::table('journals')->select('id', 'registration_date', 'kind_id');
+    public function updateTopJournal()
+    {
+        ini_set('memory_limit', '-1');
+        $jounalQuery =  DB::table('journal_pivot_journal_category')->select('id', 'parent_classification_id', 'country_id');
 
-    //     if(!is_null($this->popularCountryJournals))
-    //     {
-    //         $patentQuery = $patentQuery->where('country_id', $this->popularCountryJournals);
-    //     }
+        if(!is_null($this->popularCountryJournals))
+        {
+            $jounalQuery = $jounalQuery->where('country_id', $this->popularCountryJournals);
+        }
 
-    //     $patents = $patentQuery->get();
+        $journals = $jounalQuery->get();
 
-    //     $emergingPatentData = [];
+        $emergingJournalData = [];
 
-    //     $emergingPatents = collect($patents)->pluck('kind_id')->countBy()->sortByDesc(null)->take(10);
+        $emergingJournals = collect($journals)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take(10);
 
-    //     foreach ($emergingPatents as $key => $value) {
-    //         array_push($emergingPatentData, [
-    //             "key" => PatentKind::find($key)->kind,
-    //             "value" => $value
-    //         ]);
-    //     }
+        foreach ($emergingJournals as $key => $value) {
+            array_push($emergingJournalData, [
+                "key" => PatentKind::find($key)->kind,
+                "value" => $value
+            ]);
+        }
 
-    //     $this->emit("updateTopPatent", [
-    //         "emergingPatents" => $emergingPatentData
-    //     ]);
-    // }
+        $this->emit("updateTopJournal", [
+            "emergingJournals" => $emergingJournalData
+        ]);
+    }
 
     public function updateForecastChart()
     {
@@ -310,12 +310,12 @@ class ReportComponent extends Component
 
         if ($this->country != null) {
             if ($this->classification != null) {
-                $businessQuery = $businessQuery->where('country_id', $this->country)->where('industry_classification_id', $this->classification);
+                $businessQuery = $businessQuery->where('country_id', $this->topCountryFilter)->where('industry_classification_id', $this->classification);
             } else {
-                $businessQuery = $businessQuery->where('country_id', $this->country);
+                $businessQuery = $businessQuery->where('country_id', $this->topCountryFilter);
             }
-            $patentQuery = $patentQuery->where('country_id', $this->country);
-            $journalQuery = $journalQuery->where('country_id', $this->country);
+            $patentQuery = $patentQuery->where('country_id', $this->topCountryFilter);
+            $journalQuery = $journalQuery->where('country_id', $this->topCountryFilter);
         } else {
             if ($this->classification != null) {
                 $businessQuery = $businessQuery->where('industry_classification_id', $this->classification);
@@ -478,6 +478,17 @@ class ReportComponent extends Component
 
         foreach ($emergingPatents as $key => $value) {
             array_push($emergingPatentData, [
+                "key" => PatentKind::find($key)->kind,
+                "value" => $value
+            ]);
+        }
+
+        $emergingJournalData = [];
+
+        $emergingJournals = collect($journals)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take(10);
+
+        foreach ($emergingJournals as $key => $value) {
+            array_push($emergingJournalData, [
                 "key" => PatentKind::find($key)->kind,
                 "value" => $value
             ]);
