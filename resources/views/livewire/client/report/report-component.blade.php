@@ -632,6 +632,11 @@
                     categories: data.lineChartYears
                 },
                 colors: ['#b71c1c', '#ffd600', '#01579b'],
+                noData: {
+                    text: "No enough data.",
+                    align: "center",
+                    verticalAlign: "middle",
+                },
                 tooltip: {
                     y: [{
                             title: {
