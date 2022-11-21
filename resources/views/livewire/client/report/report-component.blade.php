@@ -398,6 +398,98 @@
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card bg-card-black">
+                        <div class="card-header">
+                            <div class="row">
+                                <h3 class="col-md-12 col-sm-12 card-title mb-2">Intellectual Property Forecast</h3>
+                                <div class="col-md-3 col-sm-12" wire:ignore>
+                                    <div class="input-group input-group-sm">
+                                        <select class="form-control" wire:model="forecastPatentCountry">
+                                            <option hidden>
+                                                {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
+                                            </option>
+                                            <option value="">
+                                                {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                            @foreach ($countries as $country)
+                                                <option value="{{ $country->id }}">
+                                                    {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                {{-- <div class="col-md-3 col-sm-12" wire:ignore>
+                                    <div class="input-group input-group-sm">
+                                        <select class="form-control" wire:model="forecastPatentClassification">
+                                            <option hidden>
+                                                {{ GoogleTranslate::trans('Choose Classifications', app()->getLocale()) }}
+                                            </option>
+                                            <option value="">
+                                                {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                            @foreach ($classifications as $classification)
+                                                <option value="{{ $classification->id }}">
+                                                    {{ $classification->classifications }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div> --}}
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="forcast-patent-chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card bg-card-black">
+                        <div class="card-header">
+                            <div class="row">
+                                <h3 class="col-md-12 col-sm-12 card-title mb-2">Journal Forecast</h3>
+                                <div class="col-md-3 col-sm-12" wire:ignore>
+                                    <div class="input-group input-group-sm">
+                                        <select class="form-control" wire:model="forecastJournalCountry">
+                                            <option hidden>
+                                                {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
+                                            </option>
+                                            <option value="">
+                                                {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                            @foreach ($countries as $country)
+                                                <option value="{{ $country->id }}">
+                                                    {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-12" wire:ignore>
+                                    <div class="input-group input-group-sm">
+                                        <select class="form-control" wire:model="forecastJournalClassification">
+                                            <option hidden>
+                                                {{ GoogleTranslate::trans('Choose Classifications', app()->getLocale()) }}
+                                            </option>
+                                            <option value="">
+                                                {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                            @foreach ($journalClassifications as $classification)
+                                                <option value="{{ $classification->id }}">
+                                                    {{ $classification->category }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="forcast-journal-chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row" wire:ignore>
                 <div class="col-md-12">
                     <div class="card bg-card-black">
@@ -468,6 +560,8 @@
 @push('extra-scripts')
     <script>
         var forcastChart;
+        var forcastPatentChart;
+        var forcastJournalChart;
         var isAuthenticated = {{ (Auth::check()) }}
         document.addEventListener("livewire:load", handleLivewireLoad, true);
 
@@ -672,8 +766,170 @@
                 }
             };
 
+            var forcastPatentChartOptions = {
+                series: [{
+                        name: 'Intellectual Property Forcast',
+                        data: data.forcastPatentData
+                        // data: []
+                    },
+                    // {
+                    //     name: 'Patent Forcast',
+                    //     // data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 17, 2, 7, 5]
+                    //     data: data.forcastData
+                    // }
+                ],
+                chart: {
+                    id: "forcast-patent-chart",
+                    height: 600,
+                    type: 'line',
+                    foreColor: '#fff',
+                    toolbar: {
+                        show: true,
+                        tools: {
+                            download: isAuthenticated // <== line to add
+                        }
+                    }
+                },
+                forecastDataPoints: {
+                    count: data.forecastedPatentFrom
+                },
+                stroke: {
+                    width: 5,
+                    curve: 'smooth'
+                },
+                xaxis: {
+                    // type: 'datetime',
+                    categories: data.forcastPatentDates,
+                    // categories: []
+                    // categories: [
+                    //     '2011-01-01', '2011-02-01'
+                    // ],
+                    tickAmount: 10,
+                    // labels: {
+                    //     formatter: function(value, timestamp, opts) {
+                    //         console.log(timestamp);
+                    //         return opts.dateFormatter(new Date(timestamp), 'dd MMM')
+                    //     }
+                    // }
+                },
+                title: {
+                    text: 'Intellectual Property Forcast',
+                    align: 'left',
+                    style: {
+                        fontSize: "16px",
+                        color: '#fff'
+                    }
+                },
+                colors: ['#b71c1c', '#ffd600', '#01579b'],
+                noData: {
+                    text: "No enough data to forecast.",
+                    align: "center",
+                    verticalAlign: "middle",
+                },
+                // fill: {
+                //     type: 'gradient',
+                //     gradient: {
+                //         shade: 'dark',
+                //         gradientToColors: ['#FDD835'],
+                //         shadeIntensity: 1,
+                //         type: 'horizontal',
+                //         opacityFrom: 1,
+                //         opacityTo: 1,
+                //         stops: [0, 100, 100, 100]
+                //     },
+                // },
+                yaxis: {
+                    min: 0,
+                    max: data.forecastPatentGraphLimit
+                }
+            };
+
+            var forcastJournalChartOptions = {
+                series: [{
+                        name: 'Journal Forcast',
+                        data: data.forcastJournalData
+                        // data: []
+                    },
+                    // {
+                    //     name: 'Journal Forcast',
+                    //     // data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 17, 2, 7, 5]
+                    //     data: data.forcastData
+                    // }
+                ],
+                chart: {
+                    id: "forcast-journal-chart",
+                    height: 600,
+                    type: 'line',
+                    foreColor: '#fff',
+                    toolbar: {
+                        show: true,
+                        tools: {
+                            download: isAuthenticated // <== line to add
+                        }
+                    }
+                },
+                forecastDataPoints: {
+                    count: data.forecastedJournalFrom
+                },
+                stroke: {
+                    width: 5,
+                    curve: 'smooth'
+                },
+                xaxis: {
+                    // type: 'datetime',
+                    categories: data.forcastJournalDates,
+                    // categories: []
+                    // categories: [
+                    //     '2011-01-01', '2011-02-01'
+                    // ],
+                    tickAmount: 10,
+                    // labels: {
+                    //     formatter: function(value, timestamp, opts) {
+                    //         console.log(timestamp);
+                    //         return opts.dateFormatter(new Date(timestamp), 'dd MMM')
+                    //     }
+                    // }
+                },
+                title: {
+                    text: 'Journal Forcast',
+                    align: 'left',
+                    style: {
+                        fontSize: "16px",
+                        color: '#fff'
+                    }
+                },
+                colors: ['#b71c1c', '#ffd600', '#01579b'],
+                noData: {
+                    text: "No enough data to forecast.",
+                    align: "center",
+                    verticalAlign: "middle",
+                },
+                // fill: {
+                //     type: 'gradient',
+                //     gradient: {
+                //         shade: 'dark',
+                //         gradientToColors: ['#FDD835'],
+                //         shadeIntensity: 1,
+                //         type: 'horizontal',
+                //         opacityFrom: 1,
+                //         opacityTo: 1,
+                //         stops: [0, 100, 100, 100]
+                //     },
+                // },
+                yaxis: {
+                    min: 0,
+                    max: data.forecastJournalGraphLimit
+                }
+            };
+
             forcastChart = new ApexCharts(document.querySelector("#forcast-chart"), forcastChartOptions);
             forcastChart.render();
+
+            forcastPatentChart = new ApexCharts(document.querySelector("#forcast-patent-chart"), forcastPatentChartOptions);
+            forcastPatentChart.render();
+
+            forcastJournalChart = new ApexCharts(document.querySelector("#forcast-journal-chart"), forcastJournalChartOptions);
+            forcastJournalChart.render();
 
             var emergingData = data.emergingBusiness.sort(function(x, y) {
                 return y.value - x.value;
@@ -759,6 +1015,40 @@
 
             ApexCharts.exec('forcast-chart', 'updateSeries', [{
                 data: data.forcastData
+            }], true);
+        });
+
+        Livewire.on('reportsPatentUpdated', (data) => {
+            forcastPatentChart.updateOptions({
+                xaxis: {
+                    categories: data.forcastPatentDates,
+                    tickAmount: 10,
+                },
+                yaxis: {
+                    min: 0,
+                    max: data.forecastPatentGraphLimit
+                }
+            });
+
+            ApexCharts.exec('forcast-patent-chart', 'updateSeries', [{
+                data: data.forcastPatentData
+            }], true);
+        });
+
+        Livewire.on('reportsJournalUpdated', (data) => {
+            forcastJournalChart.updateOptions({
+                xaxis: {
+                    categories: data.forcastJournalDates,
+                    tickAmount: 10,
+                },
+                yaxis: {
+                    min: 0,
+                    max: data.forecastJournalGraphLimit
+                }
+            });
+
+            ApexCharts.exec('forcast-journal-chart', 'updateSeries', [{
+                data: data.forcastJournalData
             }], true);
         });
 

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use App\Models\Country;
 use App\Models\IndustryClassification;
+use App\Models\JournalCategory;
 use App\Models\PatentKind;
 use GuzzleHttp\Client;
 
@@ -18,6 +19,7 @@ class ReportComponent extends Component
         $country,
         $classification,
         $forecastClassification,
+        $forecastJournalClassification,
         $topLimitBusiness = 10,
         $topLimitPatent = 10,
         $topLimitJournal = 10,
@@ -26,7 +28,9 @@ class ReportComponent extends Component
         $popularCountryPatent, 
         $popularCountryJournals,
         $emergingCountryIndustry,
-        $forecastCountry;
+        $forecastCountry,
+        $forecastPatentCountry,
+        $forecastJournalCountry;
 
     protected
         $business = [],
@@ -54,6 +58,18 @@ class ReportComponent extends Component
         $this->updateForecastChart();
     }
 
+    public function updatedForecastPatentCountry($country)
+    {
+        $this->forecastCountry = $country;
+        $this->updateForecastPatentChart();
+    }
+
+    public function updatedForecastJournalCountry($country)
+    {
+        $this->forecastCountry = $country;
+        $this->updateForecastJournalChart();
+    }
+
     public function updatedEmergingCountryIndustry($country)
     {
         $this->emergingCountryIndustry = $country;
@@ -76,6 +92,12 @@ class ReportComponent extends Component
     {
         $this->forecastClassification = $classification;
         $this->updateForecastChart();
+    }
+
+    public function updatedforecastJournalClassification($classification)
+    {
+        $this->forecastJournalClassification = $classification;
+        $this->updateForecastJournalChart();
     }
 
     public function updatedTopLimitBusiness($topLimitBusiness)
@@ -249,6 +271,28 @@ class ReportComponent extends Component
         ]);
     }
 
+    public function updateForecastPatentChart(){
+        $tempForcastPatentData = $this->predictPatent();
+
+        $this->emit("reportsPatentUpdated", [
+            "forecastedFrom" =>  10,
+            "forcastPatentDates" => $tempForcastPatentData["forecastedPatentDates"],
+            "forcastPatentData" => $tempForcastPatentData["forecastedPatentData"],
+            "forecastPatentGraphLimit" => $tempForcastPatentData["forecastPatentGraphLimit"],
+        ]);
+    }
+
+    public function updateForecastJournalChart(){
+        $tempForcastJournalData = $this->predictJournal();
+
+        $this->emit("reportsJournalUpdated", [
+            "forecastedFrom" =>  10,
+            "forcastJournalDates" => $tempForcastJournalData["forecastedJournalDates"],
+            "forcastJournalData" => $tempForcastJournalData["forecastedJournalData"],
+            "forecastJournalGraphLimit" => $tempForcastJournalData["forecastJournalGraphLimit"],
+        ]);
+    }
+
     public function filterData()
     {
         ini_set('memory_limit', '-1');
@@ -396,6 +440,8 @@ class ReportComponent extends Component
         // dd($tempChartBusinessCount);
 
         $tempForcastData = $this->predict();
+        $tempForcastPatentData = $this->predictPatent();
+        $tempForcastJournalData = $this->predictJournal();
 
         if ($this->isFirstLoad) {
             $this->emit("reportsFirstLoad", [
@@ -410,6 +456,12 @@ class ReportComponent extends Component
                 "forcastDates" => $tempForcastData["forecastedDates"],
                 "forcastData" => $tempForcastData["forecastedData"],
                 "forecastGraphLimit" => $tempForcastData["forecastGraphLimit"],
+                "forcastPatentDates" => $tempForcastPatentData["forecastedPatentDates"],
+                "forcastPatentData" => $tempForcastPatentData["forecastedPatentData"],
+                "forecastPatentGraphLimit" => $tempForcastPatentData["forecastPatentGraphLimit"],
+                "forcastJournalDates" => $tempForcastJournalData["forecastedJournalDates"],
+                "forcastJournalData" => $tempForcastJournalData["forecastedJournalData"],
+                "forecastJournalGraphLimit" => $tempForcastJournalData["forecastJournalGraphLimit"],
                 "emergingBusiness" => $emergingBusinessData,
                 "emergingPatents" => $emergingPatentData,
                 "emergingRate" => $final
@@ -424,7 +476,13 @@ class ReportComponent extends Component
                 "forecastedFrom" =>  $this->tempForcastData["forecastedDates"]->count() - collect($tempChartBusinessCount)->keys()->count(),
                 "forcastDates" => $this->tempForcastData["forecastedDates"],
                 "forcastData" => $this->tempForcastData["forecastedData"],
-                "forecastGraphLimit" => $tempForcastData["forecastGraphLimit"]
+                "forecastGraphLimit" => $tempForcastData["forecastGraphLimit"],
+                "forcastPatentDates" => $tempForcastPatentData["forecastedPatentDates"],
+                "forcastPatentData" => $tempForcastPatentData["forecastedPatentData"],
+                "forecastPatentGraphLimit" => $tempForcastPatentData["forecastPatentGraphLimit"],
+                "forcastJournalDates" => $tempForcastJournalData["forecastedJournalDates"],
+                "forcastJournalData" => $tempForcastJournalData["forecastedJournalData"],
+                "forecastJournalGraphLimit" => $tempForcastJournalData["forecastJournalGraphLimit"],
             ]);
         }
     }
@@ -456,14 +514,54 @@ class ReportComponent extends Component
         
     }
 
+    public function predictPatent()
+    {
+        $client = new Client();
+        $res = $client->post('http://18.136.147.228/api/v1/predict', [
+            'json' => [
+                'country_id' => (!is_null($this->forecastPatentCountry) && $this->forecastPatentCountry != "") ? (int)$this->forecastPatentCountry : null,
+                'classification_id' => null,
+                'type' => "patents"
+            ]
+        ]);
+        $data = json_decode($res->getBody(), true); 
+        
+        if($data["success"] == true){
+            return ["forecastedPatentDates" => $data['prediction_data']['keys'], "forecastedPatentData" => $data['prediction_data']['values'], "forecastPatentGraphLimit" => max($data['prediction_data']['values']) + 1000];
+        }else{
+            return ["forecastedPatentDates" => ['2011-01-01', '2011-02-01'], "forecastedPatentData" => [], "forecastPatentGraphLimit" => 1000];
+        }
+    }
+
+    public function predictJournal()
+    {
+        $client = new Client();
+        $res = $client->post('http://18.136.147.228/api/v1/predict', [
+            'json' => [
+                'country_id' => (!is_null($this->forecastJournalCountry) && $this->forecastJournalCountry != "") ? (int)$this->forecastJournalCountry : null,
+                'classification_id' => (!is_null($this->forecastJournalClassification) && $this->forecastJournalClassification != "") ? (int)$this->forecastJournalClassification : null,
+                'type' => "journal_pivot_journal_category"
+            ]
+        ]);
+        $data = json_decode($res->getBody(), true); 
+        
+        if($data["success"] == true){
+            return ["forecastedJournalDates" => $data['prediction_data']['keys'], "forecastedJournalData" => $data['prediction_data']['values'], "forecastJournalGraphLimit" => max($data['prediction_data']['values']) + 1000];
+        }else{
+            return ["forecastedJournalDates" => ['2011-01-01', '2011-02-01'], "forecastedJournalData" => [], "forecastJournalGraphLimit" => 1000];
+        }
+    }
+
     public function render()
     {
         // dd(DB::table('businesses')->select('id', 'year')->pluck('year')->countBy());
         $countries = Country::select('id', 'status', 'name')->where("status", "1")->get();
         $classifications = IndustryClassification::select('id', 'classifications')->where('parent_id', null)->where('classifications', '!=', null)->get();
+        $journalClassifications = JournalCategory::select('id', 'category')->where('division_id', null)->where('section_id', '!=', Null)->get();
         return view('livewire.client.report.report-component', [
             'countries' => $countries,
             'classifications' => $classifications,
+            'journalClassifications' => $journalClassifications,
             'allData' => DB::table('businesses')->select('id', 'year')->pluck('year')->countBy()
         ])->layout('layouts.client');
     }
