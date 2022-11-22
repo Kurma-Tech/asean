@@ -84,6 +84,12 @@ class ReportComponent extends Component
         $this->updateTopBusinessRate();
     }
 
+    public function updatedEmergingCountryJournal($country)
+    {
+        $this->emergingCountryJournal = $country;
+        $this->updateTopJournalRate();
+    }
+
     public function updatedPopularCountryBusiness($country)
     {
         $this->popularCountryBusiness = $country;
@@ -213,6 +219,50 @@ class ReportComponent extends Component
 
         $this->emit("emergingBusinessRate", [
             "emergingRate" => $final
+        ]);
+    }
+
+    public function updateTopJournalRate()
+    {
+        ini_set('memory_limit', '-1');
+
+        if (!is_null($this->emergingCountryJournal) && $this->emergingCountryJournal != "") {
+            $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
+        } else {
+            $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
+        }
+
+        $journalClassificationRates = [];
+        foreach ($journalClassificationForEmerging as $classKey => $value) {
+            if ($classKey == null) {
+                continue;
+            } else {
+                $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                // dd($years);
+                $rate = 0;
+                $addition = 0;
+                $temp = null;
+                foreach ($years as $key => $value) {
+                    if ($temp != null) {
+                        $rate = $rate + (((int)$value - (int)$temp) / (int)$value) * 100;
+                        $addition = $addition + 1;
+                    } else {
+                        $temp = $value;
+                    }
+                }
+                $journalClassification = JournalCategory::find($classKey);
+                if ($journalClassification != null) {
+                    array_push($journalClassificationRates, [
+                        "key" => $journalClassification->category,
+                        "value" => round($rate / $addition, 2)
+                    ]);
+                }
+            }
+        }
+        rsort($journalClassificationRates);
+
+        $this->emit("emergingJournalRate", [
+            "emergingJournalRate" => $journalClassificationRates
         ]);
     }
 
