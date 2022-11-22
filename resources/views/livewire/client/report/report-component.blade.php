@@ -644,7 +644,7 @@
         var lineChart;
         var forcastPatentChart;
         var forcastJournalChart;
-        var isAuthenticated = {{ (Auth::check()) }}
+        var isAuthenticated = {{ (Auth::check()) }} ?? false;
         document.addEventListener("livewire:load", handleLivewireLoad, true);
 
         function handleLivewireLoad() {
