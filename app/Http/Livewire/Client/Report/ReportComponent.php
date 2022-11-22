@@ -118,11 +118,11 @@ class ReportComponent extends Component
         $this->updateTopPatent();
     }
 
-    // public function updatedTopLimitJournal($topLimitJournal)
-    // {
-    //     $this->topLimitJournal = $topLimitJournal;
-    //     $this->updateTopJournal();
-    // }
+    public function updatedTopLimitJournal($topLimitJournal)
+    {
+        $this->topLimitJournal = $topLimitJournal;
+        $this->updateTopJournal();
+    }
 
     public function updateTopBusiness()
     {
@@ -249,7 +249,7 @@ class ReportComponent extends Component
 
         $emergingJournalData = [];
 
-        $emergingJournals = collect($journals)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take(10);
+        $emergingJournals = collect($journals)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take($this->topLimitJournal);
 
         foreach ($emergingJournals as $key => $value) {
             foreach ($emergingJournals as $key => $value) {
@@ -489,9 +489,19 @@ class ReportComponent extends Component
         //     ]);
         // }
 
+        ini_set('memory_limit', '-1');
+        $topJounalQuery =  DB::table('journal_pivot_journal_category')->select('id', 'parent_classification_id', 'country_id');
+
+        if(!is_null($this->popularCountryJournals))
+        {
+            $topJounalQuery = $topJounalQuery->where('country_id', $this->popularCountryJournals);
+        }
+
+        $topJournals = $topJounalQuery->get();
+
         $emergingJournalData = [];
 
-        $emergingJournals = collect($journals)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take(10);
+        $emergingJournals = collect($topJournals)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take(10);
 
         foreach ($emergingJournals as $key => $value) {
             if($key != null){
@@ -502,7 +512,6 @@ class ReportComponent extends Component
             }else{
                 continue;
             }
-            
         }
 
         $this->chartPatentsCount = collect($patents)->pluck('date')->countBy(function ($date) {
