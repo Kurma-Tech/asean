@@ -106,7 +106,7 @@ class HomeComponent extends Component
         if ($this->type == "business") {
             $categories = IndustryClassification::select('id', 'classifications')->where('parent_id', '!=', null)->get();
         }elseif($this->type == "patent") {
-            $categories = PatentCategory::select('id', 'classification_category')->where('parent_id', '!=', null)->get();
+            $categories = PatentCategory::select('id', 'classification_category')->where('parent_id', '!=', null)->takae(1000)->get();
         }elseif($this->type == "journals") {
             $categories = JournalCategory::select('id', 'category')->where('parent_id', '!=', null)->get();
         }
