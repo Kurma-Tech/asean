@@ -241,7 +241,7 @@ class ReportComponent extends Component
         ini_set('memory_limit', '-1');
 
         if (!is_null($this->emergingCountryJournal) && $this->emergingCountryJournal != "") {
-            $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
+            $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->get())->where('country_id', $this->emergingCountryJournal)->pluck('parent_classification_id')->countBy();
         } else {
             $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
         }
