@@ -7,7 +7,7 @@ use Livewire\Component;
 use App\Models\Country;
 use App\Models\IndustryClassification;
 use App\Models\JournalCategory;
-use App\Models\PatentKind;
+use App\Models\PatentCategory;
 use GuzzleHttp\Client;
 
 class ReportComponent extends Component
@@ -587,7 +587,7 @@ class ReportComponent extends Component
         foreach ($emergingPatents as $key => $value) {
             if ($key != null){
                 array_push($emergingPatentData, [
-                    "key" => PatentKind::find($key)->kind,
+                    "key" => PatentCategory::find($key)->classification_category,
                     "value" => $value
                 ]);
             }else{
