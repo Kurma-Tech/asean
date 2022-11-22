@@ -800,7 +800,7 @@ class ReportComponent extends Component
         $countries = Country::select('id', 'status', 'name')->where("status", "1")->get();
         $classifications = IndustryClassification::select('id', 'classifications')->where('parent_id', null)->where('classifications', '!=', null)->get();
         $journalClassifications = JournalCategory::select('id', 'category')->where('division_id', null)->where('section_id', '!=', Null)->get();
-        $patentClassifications = JournalCategory::select('id', 'category')->where('class_id', null)->where('division_id', '!=', Null)->get();
+        $patentClassifications = PatentCategory::select('id', 'classification_category')->where('class_id', null)->where('division_id', '!=', Null)->get();
         return view('livewire.client.report.report-component', [
             'countries' => $countries,
             'classifications' => $classifications,
