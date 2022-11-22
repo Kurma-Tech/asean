@@ -28,6 +28,7 @@ class ReportComponent extends Component
         $popularCountryPatent,
         $popularCountryJournals,
         $emergingCountryIndustry,
+        $emergingCountryJournal,
         $forecastCountry,
         $forecastPatentCountry,
         $topCountryFilter,
@@ -53,7 +54,8 @@ class ReportComponent extends Component
         $this->filterData();
     }
 
-    public function updatedTopCountryFilter($country){
+    public function updatedTopCountryFilter($country)
+    {
         $this->topCountryFilter = $country;
         $this->updateTopChart();
     }
@@ -82,6 +84,12 @@ class ReportComponent extends Component
         $this->updateTopBusinessRate();
     }
 
+    public function updatedEmergingCountryJournal($country)
+    {
+        $this->emergingCountryJournal = $country;
+        $this->updateTopJournalRate();
+    }
+
     public function updatedPopularCountryBusiness($country)
     {
         $this->popularCountryBusiness = $country;
@@ -92,6 +100,12 @@ class ReportComponent extends Component
     {
         $this->popularCountryPatent = $country;
         $this->updateTopPatent();
+    }
+
+    public function updatedPopularCountryJournals($country)
+    {
+        $this->popularCountryJournals = $country;
+        $this->updateTopJournal();
     }
 
     public function updatedForecastClassification($classification)
@@ -118,11 +132,11 @@ class ReportComponent extends Component
         $this->updateTopPatent();
     }
 
-    // public function updatedTopLimitJournal($topLimitJournal)
-    // {
-    //     $this->topLimitJournal = $topLimitJournal;
-    //     $this->updateTopJournal();
-    // }
+    public function updatedTopLimitJournal($topLimitJournal)
+    {
+        $this->topLimitJournal = $topLimitJournal;
+        $this->updateTopJournal();
+    }
 
     public function updateTopBusiness()
     {
@@ -208,6 +222,50 @@ class ReportComponent extends Component
         ]);
     }
 
+    public function updateTopJournalRate()
+    {
+        ini_set('memory_limit', '-1');
+
+        if (!is_null($this->emergingCountryJournal) && $this->emergingCountryJournal != "") {
+            $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
+        } else {
+            $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
+        }
+
+        $journalClassificationRates = [];
+        foreach ($journalClassificationForEmerging as $classKey => $value) {
+            if ($classKey == null) {
+                continue;
+            } else {
+                $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                // dd($years);
+                $rate = 0;
+                $addition = 0;
+                $temp = null;
+                foreach ($years as $key => $value) {
+                    if ($temp != null) {
+                        $rate = $rate + (((int)$value - (int)$temp) / (int)$value) * 100;
+                        $addition = $addition + 1;
+                    } else {
+                        $temp = $value;
+                    }
+                }
+                $journalClassification = JournalCategory::find($classKey);
+                if ($journalClassification != null) {
+                    array_push($journalClassificationRates, [
+                        "key" => $journalClassification->category,
+                        "value" => round($rate / $addition, 2)
+                    ]);
+                }
+            }
+        }
+        rsort($journalClassificationRates);
+
+        $this->emit("emergingJournalRate", [
+            "emergingJournalRate" => $journalClassificationRates
+        ]);
+    }
+
     public function updateTopPatent()
     {
         ini_set('memory_limit', '-1');
@@ -240,8 +298,7 @@ class ReportComponent extends Component
         ini_set('memory_limit', '-1');
         $jounalQuery =  DB::table('journal_pivot_journal_category')->select('id', 'parent_classification_id', 'country_id');
 
-        if(!is_null($this->popularCountryJournals))
-        {
+        if (!is_null($this->popularCountryJournals)) {
             $jounalQuery = $jounalQuery->where('country_id', $this->popularCountryJournals);
         }
 
@@ -249,18 +306,16 @@ class ReportComponent extends Component
 
         $emergingJournalData = [];
 
-        $emergingJournals = collect($journals)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take(10);
+        $emergingJournals = collect($journals)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take($this->topLimitJournal);
 
         foreach ($emergingJournals as $key => $value) {
-            foreach ($emergingJournals as $key => $value) {
-                if($key != null){
-                    array_push($emergingJournalData, [
-                        "key" => JournalCategory::find($key)->category,
-                        "value" => $value
-                    ]);
-                }else{
-                    continue;
-                }
+            if ($key != null) {
+                array_push($emergingJournalData, [
+                    "key" => JournalCategory::find($key)->category,
+                    "value" => $value
+                ]);
+            } else {
+                continue;
             }
         }
 
@@ -432,10 +487,10 @@ class ReportComponent extends Component
         /* Get Query Data End */
 
 
-        $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
+        $businessClassificationForEmerging = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
 
-        $final = [];
-        foreach ($test2 as $classKey => $value) {
+        $businessClassificationRates = [];
+        foreach ($businessClassificationForEmerging as $classKey => $value) {
             if ($classKey == null) {
                 continue;
             } else {
@@ -454,14 +509,46 @@ class ReportComponent extends Component
                 }
                 $industryClassification = IndustryClassification::find($classKey);
                 if ($industryClassification != null) {
-                    array_push($final, [
+                    array_push($businessClassificationRates, [
                         "key" => $industryClassification->classifications,
                         "value" => round($rate / $addition, 2)
                     ]);
                 }
             }
         }
-        rsort($final);
+        rsort($businessClassificationRates);
+
+
+        $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
+
+        $journalClassificationRates = [];
+        foreach ($journalClassificationForEmerging as $classKey => $value) {
+            if ($classKey == null) {
+                continue;
+            } else {
+                $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                // dd($years);
+                $rate = 0;
+                $addition = 0;
+                $temp = null;
+                foreach ($years as $key => $value) {
+                    if ($temp != null) {
+                        $rate = $rate + (((int)$value - (int)$temp) / (int)$value) * 100;
+                        $addition = $addition + 1;
+                    } else {
+                        $temp = $value;
+                    }
+                }
+                $journalClassification = JournalCategory::find($classKey);
+                if ($journalClassification != null) {
+                    array_push($journalClassificationRates, [
+                        "key" => $journalClassification->category,
+                        "value" => round($rate / $addition, 2)
+                    ]);
+                }
+            }
+        }
+        rsort($journalClassificationRates);
 
         /* Default data for Charts */
 
@@ -489,20 +576,28 @@ class ReportComponent extends Component
         //     ]);
         // }
 
+        ini_set('memory_limit', '-1');
+        $topJounalQuery =  DB::table('journal_pivot_journal_category')->select('id', 'parent_classification_id', 'country_id');
+
+        if (!is_null($this->popularCountryJournals)) {
+            $topJounalQuery = $topJounalQuery->where('country_id', $this->popularCountryJournals);
+        }
+
+        $topJournals = $topJounalQuery->get();
+
         $emergingJournalData = [];
 
-        $emergingJournals = collect($journals)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take(10);
+        $emergingJournals = collect($topJournals)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take(10);
 
         foreach ($emergingJournals as $key => $value) {
-            if($key != null){
+            if ($key != null) {
                 array_push($emergingJournalData, [
                     "key" => JournalCategory::find($key)->category,
                     "value" => $value
                 ]);
-            }else{
+            } else {
                 continue;
             }
-            
         }
 
         $this->chartPatentsCount = collect($patents)->pluck('date')->countBy(function ($date) {
@@ -591,7 +686,8 @@ class ReportComponent extends Component
                 "emergingBusiness" => $emergingBusinessData,
                 "emergingPatents" => $emergingPatentData,
                 "emergingJournals" => $emergingJournalData,
-                "emergingRate" => $final
+                "emergingRate" => $businessClassificationRates,
+                "emergingJournalRate" => $journalClassificationRates
             ]);
             $this->isFirstLoad = false;
         } else {

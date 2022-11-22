@@ -183,7 +183,7 @@
                                         <h3 class="col-md-12 col-sm-12 card-title mb-2">Popular Journals</h3>
                                         <div class="col-md-9 col-sm-12">
                                             <div class="input-group input-group-sm">
-                                                <select class="form-control">
+                                                <select class="form-control" wire:model="popularCountryJournals">
                                                     <option hidden>
                                                         {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
                                                     </option>
@@ -200,7 +200,7 @@
                                         </div>
                                         <div class="col-md-3 col-sm-12">
                                             <div class="input-group input-group-sm">
-                                                <select class="form-control">
+                                                <select class="form-control" wire:model="topLimitJournal">
                                                     <option hidden>
                                                         {{ GoogleTranslate::trans('Select', app()->getLocale()) }}
                                                     </option>
@@ -490,47 +490,89 @@
                 </div>
             </div>
 
-            <div class="row" wire:ignore>
+            <div class="row">
                 <div class="col-md-12">
-                    <div class="card bg-card-black">
-                        <div class="card-header">
-                            <div class="row">
-                                <h3 class="col-md-12 col-sm-12 card-title mb-2">Emerging Industries</h3>
-                                <div class="col-md-12 col-sm-12">
-                                    <div class="input-group input-group-sm">
-                                        <select class="form-control" wire:model="emergingCountryIndustry">
-                                            <option hidden>
-                                                {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
-                                            </option>
-                                            <option value="">
-                                                {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
-                                            @foreach ($countries as $country)
-                                                <option value="{{ $country->id }}">
-                                                    {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                    <div class="row">
+                        <div class="col-md-4" wire:ignore>
+                            <div class="card bg-card-black">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <h3 class="col-md-12 col-sm-12 card-title mb-2">Emerging Industries</h3>
+                                        <div class="col-md-12 col-sm-12">
+                                            <div class="input-group input-group-sm">
+                                                <select class="form-control" wire:model="emergingCountryIndustry">
+                                                    <option hidden>
+                                                        {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="">
+                                                        {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                    @foreach ($countries as $country)
+                                                        <option value="{{ $country->id }}">
+                                                            {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
+                                </div>
+                                <div class="card-body table-responsive overlay-scroll p-0" style="height: 300px;">
+                                    <table class="table table-head-fixed" id="business-emerging-rate">
+                                        <thead>
+                                            <tr>
+                                                <th>S.N</th>
+                                                <th>Industry</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body table-responsive overlay-scroll p-0" style="height: 300px;">
-                            <table class="table table-head-fixed" id="business-emerging-rate">
-                                <thead>
-                                    <tr>
-                                        <th>S.N</th>
-                                        <th>Industry</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+
+                        <div class="col-md-4" wire:ignore>
+                            <div class="card bg-card-black">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <h3 class="col-md-12 col-sm-12 card-title mb-2">Emerging Journals</h3>
+                                        <div class="col-md-12 col-sm-12">
+                                            <div class="input-group input-group-sm">
+                                                <select class="form-control" wire:model="emergingCountryJournal">
+                                                    <option hidden>
+                                                        {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="">
+                                                        {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                    @foreach ($countries as $country)
+                                                        <option value="{{ $country->id }}">
+                                                            {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body table-responsive overlay-scroll p-0" style="height: 300px;">
+                                    <table class="table table-head-fixed" id="journal-emerging-rate">
+                                        <thead>
+                                            <tr>
+                                                <th>S.N</th>
+                                                <th>Journal Classification</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -947,6 +989,11 @@
             });
             addEmergingRateData(emergingRateData);
 
+            var emergingJournalRateData = data.emergingJournalRate.sort(function(x, y) {
+                return y.value - x.value;
+            });
+            addEmergingJournalRateData(emergingJournalRateData);
+
             var emergingPatentData = data.emergingPatents.sort(function(x, y) {
                 return y.value - x.value;
             });
@@ -987,6 +1034,23 @@
                     <td>${element.value} % </td>
                 `;
                 var tableRef = document.getElementById('business-emerging-rate').getElementsByTagName('tbody')[0];
+                var newRow = tableRef.insertRow(tableRef.rows.length);
+                newRow.innerHTML = myHtmlContent;
+            }
+        }
+
+
+        function addEmergingJournalRateData(data) {
+            $("#journal-emerging-rate tbody tr").remove();
+            for (let index = 0; index < data.length; index++) {
+                const element = data[index];
+                var myHtmlContent =
+                    `
+                    <td>${index+1}</td>
+                    <td>${element.key}</td>
+                    <td>${element.value} % </td>
+                `;
+                var tableRef = document.getElementById('journal-emerging-rate').getElementsByTagName('tbody')[0];
                 var newRow = tableRef.insertRow(tableRef.rows.length);
                 newRow.innerHTML = myHtmlContent;
             }
@@ -1145,6 +1209,13 @@
                 return y.value - x.value;
             });
             addEmergingRateData(emergingBusinessRateData);
+        });
+
+        Livewire.on('emergingJournalRate', (data) => {
+            var emergingJournalRateData = data.emergingJournalRate.sort(function(x, y) {
+                return y.value - x.value;
+            });
+            addEmergingJournalRateData(emergingJournalRateData);
         });
     </script>
 @endpush
