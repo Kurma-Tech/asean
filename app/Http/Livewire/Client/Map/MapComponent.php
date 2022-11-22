@@ -140,7 +140,9 @@ class MapComponent extends Component
             if ($this->type == "patent" && $this->classification != null) {
                 Log::info($this->classification);
                 $listOfCategories = $this->classification;
-                $patentQuery = $patentQuery->where('country_id', $country)->with('patentCategories')->where('patent_categories.id', $listOfCategories);
+                $patentQuery = $patentQuery->where('country_id', $country)->with(['patentCategories' => function($query) use ($listOfCategories) {
+                    $query->where('patent_categories.id', $listOfCategories);
+                }]);
             } else {
                 $patentQuery = $patentQuery->where('country_id', $country);
             }
