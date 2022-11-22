@@ -91,8 +91,8 @@ class MapComponent extends Component
         /* Model Queries */
         DB::enableQueryLog();
         $businessQuery =  DB::table('businesses')->select('id', 'lat', 'long', 'year', 'company_name');
-        $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'registration_date', 'title');
-        $journalQuery =  DB::table('journals')->select('id', 'lat', 'long', 'title');
+        $patentQuery =  Patent::select('id', 'lat', 'long', 'registration_date', 'title');
+        $journalQuery =  Journal::select('id', 'lat', 'long', 'title');
         /* Model Queries End */
 
 
