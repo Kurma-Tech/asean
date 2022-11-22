@@ -211,7 +211,7 @@ class ReportComponent extends Component
                 if ($industryClassification != null) {
                     array_push($final, [
                         "key" => $industryClassification->classifications,
-                        "value" => round($rate / $addition, 2)
+                        "value" => ($addition == 0) ? 0 : round($rate / $addition, 2)
                     ]);
                 }
             }
@@ -268,7 +268,7 @@ class ReportComponent extends Component
                 if ($journalClassification != null) {
                     array_push($journalClassificationRates, [
                         "key" => $journalClassification->category,
-                        "value" => round($rate / $addition, 2)
+                        "value" => ($addition == 0) ? 0 : round($rate / $addition, 2)
                     ]);
                 }
             }
@@ -312,7 +312,7 @@ class ReportComponent extends Component
                 if ($patentClassification != null) {
                     array_push($patentClassificationRates, [
                         "key" => $patentClassification->classification_category,
-                        "value" => round($rate / $addition, 2)
+                        "value" => ($addition == 0) ? 0 : round($rate / $addition, 2)
                     ]);
                 }
             }
@@ -574,7 +574,7 @@ class ReportComponent extends Component
                 if ($industryClassification != null) {
                     array_push($businessClassificationRates, [
                         "key" => $industryClassification->classifications,
-                        "value" => round($rate / $addition, 2)
+                        "value" => ($addition == 0) ? 0 : round($rate / $addition, 2)
                     ]);
                 }
             }
@@ -606,7 +606,7 @@ class ReportComponent extends Component
                 if ($journalClassification != null) {
                     array_push($journalClassificationRates, [
                         "key" => $journalClassification->category,
-                        "value" => round($rate / $addition, 2)
+                        "value" => ($addition == 0) ? 0 : round($rate / $addition, 2)
                     ]);
                 }
             }
@@ -638,7 +638,7 @@ class ReportComponent extends Component
                 if ($patentClassification != null) {
                     array_push($patentClassificationRates, [
                         "key" => $patentClassification->classification_category,
-                        "value" => round($rate / $addition, 2)
+                        "value" => ($addition == 0) ? 0 : round($rate / $addition, 2)
                     ]);
                 }
             }
