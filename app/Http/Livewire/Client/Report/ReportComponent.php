@@ -251,7 +251,12 @@ class ReportComponent extends Component
             if ($classKey == null) {
                 continue;
             } else {
-                $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                if (!is_null($this->emergingCountryJournal) && $this->emergingCountryJournal != "") {
+                    $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->where('country_id', $this->emergingCountryJournal)->pluck('year')->countBy();
+                } else {
+                    $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                }
+
                 // dd($years);
                 $rate = 0;
                 $addition = 0;

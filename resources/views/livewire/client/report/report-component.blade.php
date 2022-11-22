@@ -1274,6 +1274,8 @@
         });
 
         Livewire.on('emergingJournalRate', (data) => {
+            console.log("here");
+            console.log(data);
             var emergingJournalRateData = data.emergingJournalRate.sort(function(x, y) {
                 return y.value - x.value;
             });
