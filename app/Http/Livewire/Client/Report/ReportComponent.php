@@ -53,7 +53,8 @@ class ReportComponent extends Component
         $this->filterData();
     }
 
-    public function updatedTopCountryFilter($country){
+    public function updatedTopCountryFilter($country)
+    {
         $this->topCountryFilter = $country;
         $this->updateTopChart();
     }
@@ -246,8 +247,7 @@ class ReportComponent extends Component
         ini_set('memory_limit', '-1');
         $jounalQuery =  DB::table('journal_pivot_journal_category')->select('id', 'parent_classification_id', 'country_id');
 
-        if(!is_null($this->popularCountryJournals))
-        {
+        if (!is_null($this->popularCountryJournals)) {
             $jounalQuery = $jounalQuery->where('country_id', $this->popularCountryJournals);
         }
 
@@ -258,15 +258,13 @@ class ReportComponent extends Component
         $emergingJournals = collect($journals)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take($this->topLimitJournal);
 
         foreach ($emergingJournals as $key => $value) {
-            foreach ($emergingJournals as $key => $value) {
-                if($key != null){
-                    array_push($emergingJournalData, [
-                        "key" => JournalCategory::find($key)->category,
-                        "value" => $value
-                    ]);
-                }else{
-                    continue;
-                }
+            if ($key != null) {
+                array_push($emergingJournalData, [
+                    "key" => JournalCategory::find($key)->category,
+                    "value" => $value
+                ]);
+            } else {
+                continue;
             }
         }
 
@@ -498,8 +496,7 @@ class ReportComponent extends Component
         ini_set('memory_limit', '-1');
         $topJounalQuery =  DB::table('journal_pivot_journal_category')->select('id', 'parent_classification_id', 'country_id');
 
-        if(!is_null($this->popularCountryJournals))
-        {
+        if (!is_null($this->popularCountryJournals)) {
             $topJounalQuery = $topJounalQuery->where('country_id', $this->popularCountryJournals);
         }
 
@@ -510,12 +507,12 @@ class ReportComponent extends Component
         $emergingJournals = collect($topJournals)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take(10);
 
         foreach ($emergingJournals as $key => $value) {
-            if($key != null){
+            if ($key != null) {
                 array_push($emergingJournalData, [
                     "key" => JournalCategory::find($key)->category,
                     "value" => $value
                 ]);
-            }else{
+            } else {
                 continue;
             }
         }
