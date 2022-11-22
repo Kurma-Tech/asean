@@ -1193,6 +1193,9 @@
         });
 
         Livewire.on('reportsUpdated', (data) => {
+            document.getElementById('business-count').innerHTML = data.businessCount;
+            document.getElementById('patent-count').innerHTML = data.patentCount;
+            document.getElementById('journal-count').innerHTML = data.journalCount;
             forcastChart.updateOptions({
                 xaxis: {
                     categories: data.forcastDates,

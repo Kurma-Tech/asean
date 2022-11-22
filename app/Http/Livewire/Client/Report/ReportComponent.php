@@ -514,6 +514,9 @@ class ReportComponent extends Component
         }
 
         $this->emit("totalReportsUpdated", [
+            "businessCount" => collect($business)->count(),
+            "patentCount" => collect($patents)->count(),
+            "journalCount" => collect($journals)->count(),
             "businessCountByYears" => collect($tempChartBusinessCount)->values(),
             "patentCountByYears" => collect($tempChartPatentsCount)->values(),
             "journalCountByYears" => collect($tempChartJournalsCount)->values(),
