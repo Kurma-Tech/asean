@@ -287,7 +287,7 @@ class ReportComponent extends Component
 
         $emergingPatentData = [];
 
-        $emergingPatents = collect($topPatents)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take(10);
+        $emergingPatents = collect($topPatents)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take($this->topLimitPatent);
 
         foreach ($emergingPatents as $key => $value) {
             if ($key != null) {
