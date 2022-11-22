@@ -290,5 +290,6 @@
 
         var countryChart = new ApexCharts(document.querySelector("#countryChart"), countryChartOption);
         countryChart.render();
+        var test = {!! (Auth::check()) !!};
     </script>
 @endpush
