@@ -292,7 +292,7 @@ class ReportComponent extends Component
         ini_set('memory_limit', '-1');
 
         if (!is_null($this->emergingCountryPatent) && $this->emergingCountryPatent != "") {
-            $patentClassificationForEmerging = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->get())->where('country_id', $this->emergingCountryPatent)->pluck('parent_classification_id')->countBy();
+            $patentClassificationForEmerging = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id', 'country_id')->get())->where('country_id', $this->emergingCountryPatent)->pluck('parent_classification_id')->countBy();
         } else {
             $patentClassificationForEmerging = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
         }
@@ -302,8 +302,11 @@ class ReportComponent extends Component
             if ($classKey == null) {
                 continue;
             } else {
-                $years = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
-                // dd($years);
+                if (!is_null($this->emergingCountryPatent) && $this->emergingCountryPatent != "") {
+                    $years = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('parent_classification_id', $classKey)->get())->where('country_id', $this->emergingCountryPatent)->pluck('year')->countBy();
+                } else {
+                    $years = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                }
                 $rate = 0;
                 $addition = 0;
                 $temp = null;
