@@ -420,7 +420,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-3 col-sm-12" wire:ignore>
+                                <div class="col-md-3 col-sm-12" wire:ignore>
                                     <div class="input-group input-group-sm">
                                         <select class="form-control" wire:model="forecastPatentClassification">
                                             <option hidden>
@@ -428,13 +428,13 @@
                                             </option>
                                             <option value="">
                                                 {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
-                                            @foreach ($classifications as $classification)
+                                            @foreach ($patentClassifications as $classification)
                                                 <option value="{{ $classification->id }}">
                                                     {{ $classification->classifications }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                </div> --}}
+                                </div>
                             </div>
                         </div>
                         <div class="card-body">

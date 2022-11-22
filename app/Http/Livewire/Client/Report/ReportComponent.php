@@ -20,6 +20,7 @@ class ReportComponent extends Component
         $classification,
         $forecastClassification,
         $forecastJournalClassification,
+        $forecastPatentClassification,
         $topLimitBusiness = 10,
         $topLimitPatent = 10,
         $topLimitJournal = 10,
@@ -68,7 +69,7 @@ class ReportComponent extends Component
 
     public function updatedForecastPatentCountry($country)
     {
-        $this->forecastCountry = $country;
+        $this->forecastPatentCountry = $country;
         $this->updateForecastPatentChart();
     }
 
@@ -114,10 +115,16 @@ class ReportComponent extends Component
         $this->updateForecastChart();
     }
 
-    public function updatedforecastJournalClassification($classification)
+    public function updatedForecastJournalClassification($classification)
     {
         $this->forecastJournalClassification = $classification;
         $this->updateForecastJournalChart();
+    }
+
+    public function updatedForecastPatentClassification($classification)
+    {
+        $this->forecastPatentClassification = $classification;
+        $this->updateForecastPatentChart();
     }
 
     public function updatedTopLimitBusiness($topLimitBusiness)
@@ -565,16 +572,29 @@ class ReportComponent extends Component
             ]);
         }
 
+        $topPatentQuery =  DB::table('patent_pivot_patent_category')->select('id', 'parent_classification_id', 'country_id');
+
+        if (!is_null($this->popularCountryPatenty)) {
+            $topPatentQuery = $topPatentQuery->where('country_id', $this->popularCountryPatenty);
+        }
+
+        $topPatents = $topPatentQuery->get();
+
         $emergingPatentData = [];
 
-        // $emergingPatents = collect($patents)->pluck('kind_id')->countBy()->sortByDesc(null)->take(10);
+        $emergingPatents = collect($topPatents)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take(10);
 
-        // foreach ($emergingPatents as $key => $value) {
-        //     array_push($emergingPatentData, [
-        //         "key" => PatentKind::find($key)->kind,
-        //         "value" => $value
-        //     ]);
-        // }
+        foreach ($emergingPatents as $key => $value) {
+            if ($key != null){
+                array_push($emergingPatentData, [
+                    "key" => PatentKind::find($key)->kind,
+                    "value" => $value
+                ]);
+            }else{
+                continue;
+            }
+            
+        }
 
         ini_set('memory_limit', '-1');
         $topJounalQuery =  DB::table('journal_pivot_journal_category')->select('id', 'parent_classification_id', 'country_id');
@@ -742,8 +762,8 @@ class ReportComponent extends Component
         $res = $client->post('http://18.136.147.228/api/v1/predict', [
             'json' => [
                 'country_id' => (!is_null($this->forecastPatentCountry) && $this->forecastPatentCountry != "") ? (int)$this->forecastPatentCountry : null,
-                'classification_id' => null,
-                'type' => "patents"
+                'classification_id' => (!is_null($this->forecastPatentClassification) && $this->forecastPatentClassification != "") ? (int)$this->forecastPatentClassification : null,
+                'type' => "patent_pivot_patent_category"
             ]
         ]);
         $data = json_decode($res->getBody(), true);
@@ -780,10 +800,12 @@ class ReportComponent extends Component
         $countries = Country::select('id', 'status', 'name')->where("status", "1")->get();
         $classifications = IndustryClassification::select('id', 'classifications')->where('parent_id', null)->where('classifications', '!=', null)->get();
         $journalClassifications = JournalCategory::select('id', 'category')->where('division_id', null)->where('section_id', '!=', Null)->get();
+        $patentClassifications = JournalCategory::select('id', 'category')->where('class_id', null)->where('division_id', '!=', Null)->get();
         return view('livewire.client.report.report-component', [
             'countries' => $countries,
             'classifications' => $classifications,
             'journalClassifications' => $journalClassifications,
+            'patentClassifications' => $patentClassifications,
             'allData' => DB::table('businesses')->select('id', 'year')->pluck('year')->countBy()
         ])->layout('layouts.client');
     }
