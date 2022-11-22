@@ -215,10 +215,7 @@
 
 @push('extra-scripts')
     <script>
-        var isAuthenticated = false;
-        if (  {{ auth()->user() }}){
-            isAuthenticated = {{ (Auth::check()) }}
-        }
+        var isAuthenticated = true;
         var countryChartOption = {
             series: [{
                     name: "Business",
