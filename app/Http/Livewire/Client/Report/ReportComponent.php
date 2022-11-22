@@ -276,24 +276,29 @@ class ReportComponent extends Component
     public function updateTopPatent()
     {
         ini_set('memory_limit', '-1');
-        $patentQuery =  DB::table('patents')->select('id', 'registration_date', 'kind_id');
 
-        if (!is_null($this->popularCountryPatent) && $this->popularCountryPatent != "") {
-            $patentQuery = $patentQuery->where('country_id', $this->popularCountryPatent);
+        $topPatentQuery =  DB::table('patent_pivot_patent_category')->select('id', 'parent_classification_id', 'country_id');
+
+        if (!is_null($this->popularCountryPatent)) {
+            $topPatentQuery = $topPatentQuery->where('country_id', $this->popularCountryPatent);
         }
 
-        $patents = $patentQuery->get();
+        $topPatents = $topPatentQuery->get();
 
         $emergingPatentData = [];
 
-        // $emergingPatents = collect($patents)->pluck('kind_id')->countBy()->sortByDesc(null)->take(10);
+        $emergingPatents = collect($topPatents)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take(10);
 
-        // foreach ($emergingPatents as $key => $value) {
-        //     array_push($emergingPatentData, [
-        //         "key" => PatentKind::find($key)->kind,
-        //         "value" => $value
-        //     ]);
-        // }
+        foreach ($emergingPatents as $key => $value) {
+            if ($key != null) {
+                array_push($emergingPatentData, [
+                    "key" => PatentCategory::find($key)->classification_category,
+                    "value" => $value
+                ]);
+            } else {
+                continue;
+            }
+        }
 
         $this->emit("updateTopPatent", [
             "emergingPatents" => $emergingPatentData
@@ -585,15 +590,14 @@ class ReportComponent extends Component
         $emergingPatents = collect($topPatents)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take(10);
 
         foreach ($emergingPatents as $key => $value) {
-            if ($key != null){
+            if ($key != null) {
                 array_push($emergingPatentData, [
                     "key" => PatentCategory::find($key)->classification_category,
                     "value" => $value
                 ]);
-            }else{
+            } else {
                 continue;
             }
-            
         }
 
         ini_set('memory_limit', '-1');
