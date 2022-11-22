@@ -142,7 +142,7 @@ class MapComponent extends Component
                 $listOfCategories = $this->classification;
                 $patentQuery = $patentQuery->where('country_id', $country)->with(['patentCategories' => function($query) use ($listOfCategories) {
                     $query->whereIn('id', $listOfCategories);
-                }])->get();
+                }]);
             } else {
                 $patentQuery = $patentQuery->where('country_id', $country);
             }
@@ -151,7 +151,7 @@ class MapComponent extends Component
                 $listOfCategories = $this->classification;
                 $journalQuery = $journalQuery->where('country_id', $country)->with(['journalCategories' => function($query) use ($listOfCategories) {
                     $query->whereIn('id', $listOfCategories);
-                }])->get();
+                }]);
             } else {
                 $journalQuery = $journalQuery->where('country_id', $country);
             }
