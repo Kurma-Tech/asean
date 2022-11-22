@@ -574,8 +574,8 @@ class ReportComponent extends Component
 
         $topPatentQuery =  DB::table('patent_pivot_patent_category')->select('id', 'parent_classification_id', 'country_id');
 
-        if (!is_null($this->popularCountryPatenty)) {
-            $topPatentQuery = $topPatentQuery->where('country_id', $this->popularCountryPatenty);
+        if (!is_null($this->popularCountryPatent)) {
+            $topPatentQuery = $topPatentQuery->where('country_id', $this->popularCountryPatent);
         }
 
         $topPatents = $topPatentQuery->get();
