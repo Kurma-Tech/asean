@@ -107,7 +107,7 @@
                                         <thead>
                                             <tr>
                                                 <th>S.N</th>
-                                                <th>Industry Type</th>
+                                                <th>Industry Classification</th>
                                                 <th>Count</th>
                                             </tr>
                                         </thead>
@@ -153,7 +153,7 @@
                                                         {{ GoogleTranslate::trans('Top 20', app()->getLocale()) }}
                                                     </option>
                                                     <option value="30">
-                                                        {{ GoogleTranslate::trans('Top 20', app()->getLocale()) }}
+                                                        {{ GoogleTranslate::trans('Top 30', app()->getLocale()) }}
                                                     </option>
                                                 </select>
                                             </div>
@@ -165,7 +165,7 @@
                                         <thead>
                                             <tr>
                                                 <th>S.N</th>
-                                                <th>Patent Kind</th>
+                                                <th>Patent Classification</th>
                                                 <th>Count</th>
                                             </tr>
                                         </thead>
@@ -522,6 +522,45 @@
                                             <tr>
                                                 <th>S.N</th>
                                                 <th>Industry</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4" wire:ignore>
+                            <div class="card bg-card-black">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <h3 class="col-md-12 col-sm-12 card-title mb-2">Emerging Patents</h3>
+                                        <div class="col-md-12 col-sm-12">
+                                            <div class="input-group input-group-sm">
+                                                <select class="form-control" wire:model="emergingCountryPatent">
+                                                    <option hidden>
+                                                        {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="">
+                                                        {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                    @foreach ($countries as $country)
+                                                        <option value="{{ $country->id }}">
+                                                            {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body table-responsive overlay-scroll p-0" style="height: 300px;">
+                                    <table class="table table-head-fixed" id="patent-emerging-rate">
+                                        <thead>
+                                            <tr>
+                                                <th>S.N</th>
+                                                <th>Patent Classification</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -994,6 +1033,11 @@
             });
             addEmergingJournalRateData(emergingJournalRateData);
 
+            var emergingPatentRateData = data.emergingPatentRate.sort(function(x, y) {
+                return y.value - x.value;
+            });
+            addEmergingPatentRateData(emergingPatentRateData);
+
             var emergingPatentData = data.emergingPatents.sort(function(x, y) {
                 return y.value - x.value;
             });
@@ -1051,6 +1095,22 @@
                     <td>${element.value} % </td>
                 `;
                 var tableRef = document.getElementById('journal-emerging-rate').getElementsByTagName('tbody')[0];
+                var newRow = tableRef.insertRow(tableRef.rows.length);
+                newRow.innerHTML = myHtmlContent;
+            }
+        }
+
+        function addEmergingPatentRateData(data) {
+            $("#patent-emerging-rate tbody tr").remove();
+            for (let index = 0; index < data.length; index++) {
+                const element = data[index];
+                var myHtmlContent =
+                    `
+                    <td>${index+1}</td>
+                    <td>${element.key}</td>
+                    <td>${element.value} % </td>
+                `;
+                var tableRef = document.getElementById('patent-emerging-rate').getElementsByTagName('tbody')[0];
                 var newRow = tableRef.insertRow(tableRef.rows.length);
                 newRow.innerHTML = myHtmlContent;
             }
@@ -1216,6 +1276,13 @@
                 return y.value - x.value;
             });
             addEmergingJournalRateData(emergingJournalRateData);
+        });
+
+        Livewire.on('emergingPatentRate', (data) => {
+            var emergingPatentRateData = data.emergingPatentRate.sort(function(x, y) {
+                return y.value - x.value;
+            });
+            addEmergingPatentRateData(emergingPatentRateData);
         });
     </script>
 @endpush
