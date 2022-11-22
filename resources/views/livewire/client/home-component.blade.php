@@ -215,7 +215,7 @@
 
 @push('extra-scripts')
     <script>
-        var isAuthenticated = true;
+        var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
         var countryChartOption = {
             series: [{
                     name: "Business",
@@ -290,6 +290,5 @@
 
         var countryChart = new ApexCharts(document.querySelector("#countryChart"), countryChartOption);
         countryChart.render();
-        var test = {{ auth()->check() ? 'true' : 'false' }};
     </script>
 @endpush
