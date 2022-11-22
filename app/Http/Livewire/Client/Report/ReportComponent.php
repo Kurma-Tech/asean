@@ -455,14 +455,16 @@ class ReportComponent extends Component
 
         $this->chartBusinessCount = collect($business)->pluck('year')->countBy(); // business chart count
 
-        $this->chartPatentsCount = collect($patents)->pluck('date')->countBy(function ($date) {
-            $tempDate = substr(strchr($date, "/", 0), 4);
-            if (strlen($tempDate) == 4) {
-                return $tempDate;
-            } else {
-                return false;
-            }
-        }); // Count of filtered patents with year extraction
+        // $this->chartPatentsCount = collect($patents)->pluck('date')->countBy(function ($date) {
+        //     $tempDate = substr(strchr($date, "/", 0), 4);
+        //     if (strlen($tempDate) == 4) {
+        //         return $tempDate;
+        //     } else {
+        //         return false;
+        //     }
+        // }); // Count of filtered patents with year extraction
+
+        $this->chartPatentsCount =  collect($patents)->pluck('date')->countBy();
 
         $this->chartJournalsCount = collect($journals)->pluck('year')->countBy();
         // dd();
@@ -710,14 +712,17 @@ class ReportComponent extends Component
             }
         }
 
-        $this->chartPatentsCount = collect($patents)->pluck('date')->countBy(function ($date) {
-            $tempDate = substr(strchr($date, "/", 0), 4);
-            if (strlen($tempDate) == 4) {
-                return $tempDate;
-            } else {
-                return false;
-            }
-        }); // Count of filtered patents with year extraction
+        // $this->chartPatentsCount = collect($patents)->pluck('date')->countBy(function ($date) {
+        //     $tempDate = substr(strchr($date, "/", 0), 4);
+        //     if (strlen($tempDate) == 4) {
+        //         return $tempDate;
+        //     } else {
+        //         return false;
+        //     }
+        // }); // Count of filtered patents with year extraction
+
+
+        $this->chartPatentsCount =  collect($patents)->pluck('date')->countBy();
 
         $this->chartJournalsCount = collect($journals)->pluck('year')->countBy();
         // dd();
