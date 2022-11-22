@@ -241,7 +241,7 @@ class ReportComponent extends Component
         ini_set('memory_limit', '-1');
 
         if (!is_null($this->emergingCountryJournal) && $this->emergingCountryJournal != "") {
-            $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->get())->where('country_id', $this->emergingCountryJournal)->pluck('parent_classification_id')->countBy();
+            $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id', 'country_id')->get())->where('country_id', $this->emergingCountryJournal)->pluck('parent_classification_id')->countBy();
         } else {
             $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
         }
@@ -252,7 +252,7 @@ class ReportComponent extends Component
                 continue;
             } else {
                 if (!is_null($this->emergingCountryJournal) && $this->emergingCountryJournal != "") {
-                    $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->where('country_id', $this->emergingCountryJournal)->pluck('year')->countBy();
+                    $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('parent_classification_id', $classKey)->get())->where('country_id', $this->emergingCountryJournal)->pluck('year')->countBy();
                 } else {
                     $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
                 }
@@ -281,6 +281,7 @@ class ReportComponent extends Component
         rsort($journalClassificationRates);
 
         $this->emit("emergingJournalRate", [
+            "test2" => $this->emergingCountryJournal,
             "test" => $journalClassificationForEmerging,
             "emergingJournalRate" => $journalClassificationRates
         ]);
