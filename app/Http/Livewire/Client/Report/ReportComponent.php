@@ -281,6 +281,7 @@ class ReportComponent extends Component
         rsort($journalClassificationRates);
 
         $this->emit("emergingJournalRate", [
+            "test" => $journalClassificationForEmerging,
             "emergingJournalRate" => $journalClassificationRates
         ]);
     }
