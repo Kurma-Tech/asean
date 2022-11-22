@@ -459,7 +459,7 @@ class ReportComponent extends Component
                 }
                 $industryClassification = IndustryClassification::find($classKey);
                 if ($industryClassification != null) {
-                    array_push($final, [
+                    array_push($businessClassificationRates, [
                         "key" => $industryClassification->classifications,
                         "value" => round($rate / $addition, 2)
                     ]);
@@ -491,7 +491,7 @@ class ReportComponent extends Component
                 }
                 $journalClassification = JournalCategory::find($classKey);
                 if ($journalClassification != null) {
-                    array_push($final, [
+                    array_push($journalClassificationRates, [
                         "key" => $journalClassification->category,
                         "value" => round($rate / $addition, 2)
                     ]);
