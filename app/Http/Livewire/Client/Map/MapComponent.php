@@ -143,7 +143,7 @@ class MapComponent extends Component
                 $patentQuery = $patentQuery->where('country_id', $country)->with(['patentCategories' => function($query) use ($listOfCategories) {
                     $query->where('patent_categories.id', $listOfCategories);
                 }]);
-                dd($patentQuery->get());
+                dd($patentQuery->get()->first());
             } else {
                 $patentQuery = $patentQuery->where('country_id', $country);
             }
