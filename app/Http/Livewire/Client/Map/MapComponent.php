@@ -159,6 +159,20 @@ class MapComponent extends Component
             if ($this->type == "business" && $this->classification != null) {
                 $businessQuery = $businessQuery->where('industry_classification_id', $this->classification);
             }
+            if ($this->type == "patent" && $this->classification != null) {
+                Log::info($this->classification);
+                $listOfCategories = $this->classification;
+                $patentQuery = $patentQuery->with(['patentCategories' => function($query) use ($listOfCategories) {
+                    $query->whereIn('id', $listOfCategories);
+                }]);
+            }
+            if ($this->type == "journals" && $this->classification != null) {
+                Log::info($this->classification);
+                $listOfCategories = $this->classification;
+                $journalQuery = $journalQuery->with(['journalCategories' => function($query) use ($listOfCategories) {
+                    $query->whereIn('id', $listOfCategories);
+                }]);
+            }
         }
         /* Filter By Country and Classification End*/
 
