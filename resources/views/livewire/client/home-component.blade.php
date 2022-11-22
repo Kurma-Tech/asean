@@ -216,7 +216,7 @@
 @push('extra-scripts')
     <script>
         var isAuthenticated = false;
-        if ( {{ (Auth::check()) }} != null){
+        if ( {{ Auth::user() ?? null }} != null){
             isAuthenticated = {{ (Auth::check()) }}
         }
         var countryChartOption = {
