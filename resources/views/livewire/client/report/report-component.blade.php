@@ -1210,5 +1210,12 @@
             });
             addEmergingRateData(emergingBusinessRateData);
         });
+
+        Livewire.on('emergingJournalRate', (data) => {
+            var emergingJournalRateData = data.emergingJournalRate.sort(function(x, y) {
+                return y.value - x.value;
+            });
+            addEmergingJournalRateData(emergingJournalRateData);
+        });
     </script>
 @endpush
