@@ -464,7 +464,7 @@ class ReportComponent extends Component
         //     }
         // }); // Count of filtered patents with year extraction
 
-        $this->chartPatentsCount =  collect($patents)->pluck('date')->countBy();
+        $this->chartPatentsCount =  collect($patents)->pluck('year')->countBy();
 
         $this->chartJournalsCount = collect($journals)->pluck('year')->countBy();
         // dd();
@@ -722,7 +722,7 @@ class ReportComponent extends Component
         // }); // Count of filtered patents with year extraction
 
 
-        $this->chartPatentsCount =  collect($patents)->pluck('date')->countBy();
+        $this->chartPatentsCount =  collect($patents)->pluck('year')->countBy();
 
         $this->chartJournalsCount = collect($journals)->pluck('year')->countBy();
         // dd();
