@@ -91,8 +91,8 @@ class MapComponent extends Component
         /* Model Queries */
         DB::enableQueryLog();
         $businessQuery =  DB::table('businesses')->select('id', 'lat', 'long', 'year', 'company_name');
-        $patentQuery =  Patent::select('id', 'lat', 'long', 'registration_date', 'title');
-        $journalQuery =  Journal::select('id', 'lat', 'long', 'title');
+        $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'registration_date', 'title');
+        $journalQuery =  DB::table('journals')->select('id', 'lat', 'long', 'title');
         /* Model Queries End */
 
 
@@ -140,18 +140,20 @@ class MapComponent extends Component
             if ($this->type == "patent" && $this->classification != null) {
                 Log::info($this->classification);
                 $listOfCategories = $this->classification;
-                $patentQuery = $patentQuery->where('country_id', $country)->with(['patentCategories' => function($query) use ($listOfCategories) {
-                    $query->where('patent_categories.id', $listOfCategories);
-                }]);
+                $patentQuery = $patentQuery->where('country_id', $country);
+                // ->with(['patentCategories' => function($query) use ($listOfCategories) {
+                //     $query->where('patent_categories.id', $listOfCategories);
+                // }]);
             } else {
                 $patentQuery = $patentQuery->where('country_id', $country);
             }
             if ($this->type == "journals" && $this->classification != null) {
                 Log::info($this->classification);
                 $listOfCategories = $this->classification;
-                $journalQuery = $journalQuery->where('country_id', $country)->with(['journalCategories' => function($query) use ($listOfCategories) {
-                    $query->where('journal_categories.id', $listOfCategories);
-                }]);
+                $journalQuery = $journalQuery->where('country_id', $country);
+                // ->with(['journalCategories' => function($query) use ($listOfCategories) {
+                //     $query->where('journal_categories.id', $listOfCategories);
+                // }]);
             } else {
                 $journalQuery = $journalQuery->where('country_id', $country);
             }
