@@ -15,10 +15,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('businesses', function (Blueprint $table) {
-            $table->bigInteger('region_id')->nullable()->unsigned();
-            $table->bigInteger('province_id')->nullable()->unsigned();
-            $table->bigInteger('district_id')->nullable()->unsigned();
-            $table->bigInteger('city_id')->nullable()->unsigned();
+            // $table->bigInteger('region_id')->nullable()->unsigned();
+            // $table->bigInteger('province_id')->nullable()->unsigned();
+            // $table->bigInteger('district_id')->nullable()->unsigned();
+            // $table->bigInteger('city_id')->nullable()->unsigned();
             $table->bigInteger('group_id')->nullable()->unsigned();
 
             $table->foreign('region_id')->references('id')->on('regions')->onDelete('CASCADE')->onUpdate('CASCADE');
