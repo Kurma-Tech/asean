@@ -6,20 +6,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Country extends Model
+class Province extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = "countries";
+    protected $table = "provinces";
     protected $guarded = ['id'];
-    protected $dates = ['deleted_at'];
 
     public static function search($search){
         return empty($search) ? static::query()
             : static::query()->where('id', 'like', '%'.$search.'%')
                 ->orWhere('name', 'like', '%'.$search.'%')
-                ->orWhere('c_code', 'like', '%'.$search.'%')
-                ->orWhere('short_code', 'like', '%'.$search.'%');
+                ->orWhere('code', 'like', '%'.$search.'%');
+    }
+
+    public function regions()
+    {
+        return $this->belongsTo(Region::class, 'region_id');
     }
 
     public function businesses()

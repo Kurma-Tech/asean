@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Livewire\Admin\BusinessType;
+namespace App\Http\Livewire\Admin\Country\Region;
 
-use App\Models\BusinessType;
-use Cviebrock\EloquentSluggable\Services\SlugService;
+use App\Models\Country;
+use App\Models\Region;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class BusinessListComponent extends Component
+class RegionComponent extends Component
 {
     use WithPagination;
 
@@ -18,38 +18,47 @@ class BusinessListComponent extends Component
     public $sortBy = false;
 
     public $error;
+    public $countries = [];
 
     public $hiddenId = 0;
-    public $type;
-    public $slug;
+    public $name;
+    public $code;
+    public $country_id;
     public $btnType = 'Create';
 
-    public function generateslug()
-    {
-        $this->slug = SlugService::createSlug(BusinessType::class, 'slug', $this->type);
-    }
+    protected $listeners = ['refreshRegionListComponent' => '$refresh'];
 
     protected function rules()
     {
         return [
-            'type' => 'required',
-            'slug' => 'required|unique:patent_kinds,slug',
+            'name'       => 'required',
+            'code'       => 'required',
+            'country_id' => 'required|integer'
         ];
+    }
+
+    protected $messages = [
+        'country_id.required' => 'Please select country',
+        'country_id.integer'  => 'You must select country from drop down',
+    ];
+
+    public function mount()
+    {
+        $this->countries = Country::select('id', 'name')->get();
     }
 
     public function render()
     {
-        return view('livewire.admin.business-type.business-list-component', [
-            'businessTypes' => BusinessType::search($this->search)
+        return view('livewire.admin.country.region.region-component', [
+            'regions' => Region::search($this->search)
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
                 ->paginate($this->perPage),
         ])->layout('layouts.admin');
     }
 
-    // Store
-    public function storeBusinessType()
+    public function storeRegion()
     {
-        $this->validate(); // validate BusinessType form
+        $this->validate(); // validate region form
 
         DB::beginTransaction();
 
@@ -57,21 +66,22 @@ class BusinessListComponent extends Component
             $updateId = $this->hiddenId;
             if($updateId > 0)
             {
-                $bType = BusinessType::find($updateId); // Update BusinessType
+                $region = Region::find($updateId); // Update Region
             }
             else{
-                $bType = new BusinessType(); // Create BusinessType
+                $region = new Region(); // Create Region
             }
-
-            $bType->type  = $this->type;
-            $bType->slug  = $this->slug;
-            $bType->save();
+            
+            $region->name       = $this->name;
+            $region->code       = $this->code;
+            $region->country_id = $this->country_id;
+            $region->save();
 
             DB::commit();
+            
+            $this->resetFields();
 
-            $this->dispatchBrowserEvent('success-message',['message' => 'Business type has been ' . $this->btnType . '.']);
-
-            $this->reset('type', 'slug', 'hiddenId', 'btnType');
+            $this->dispatchBrowserEvent('success-message',['message' => 'Region has been created.']);
             
         } catch (\Throwable $th) {
             DB::rollback();
@@ -82,23 +92,24 @@ class BusinessListComponent extends Component
     }
 
     // Update Form
-    public function editForm($type_id)
+    public function editForm($id)
     {
-        $singleType     = BusinessType::find($type_id);
-        $this->hiddenId = $singleType->id;
-        $this->type     = $singleType->type;
-        $this->slug     = $singleType->slug;
-        $this->btnType  = 'Update';
+        $singleRegion     = Region::find($id);
+        $this->hiddenId   = $singleRegion->id;
+        $this->name       = $singleRegion->name;
+        $this->code       = $singleRegion->code;
+        $this->country_id = $singleRegion->country_id;
+        $this->btnType    = 'Update';
     }
 
     // softDelete
     public function softDelete($id)
     {
         try {
-            $data = BusinessType::find($id);
+            $data = Region::find($id);
             if ($data != null) {
                 $data->delete();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Business type deleted successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Region deleted successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -115,10 +126,10 @@ class BusinessListComponent extends Component
     public function restore($id)
     {
         try {
-            $data = BusinessType::onlyTrashed()->find($id);
+            $data = Region::onlyTrashed()->find($id);
             if ($data != null) {
                 $data->restore();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Business type restored successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Region restored successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -134,6 +145,6 @@ class BusinessListComponent extends Component
     // reset fields
     public function resetFields()
     {
-        $this->reset('type', 'slug', 'hiddenId', 'btnType');
+        $this->reset('name', 'code', 'country_id', 'hiddenId', 'btnType');
     }
 }

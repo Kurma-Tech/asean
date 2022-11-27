@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Livewire\Admin\BusinessType;
+namespace App\Http\Livewire\Admin\BusinessGroup;
 
-use App\Models\BusinessType;
+use App\Models\BusinessGroup;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -20,13 +20,13 @@ class BusinessListComponent extends Component
     public $error;
 
     public $hiddenId = 0;
-    public $type;
+    public $group;
     public $slug;
     public $btnType = 'Create';
 
     public function generateslug()
     {
-        $this->slug = SlugService::createSlug(BusinessType::class, 'slug', $this->type);
+        $this->slug = SlugService::createSlug(BusinessGroup::class, 'slug', $this->type);
     }
 
     protected function rules()
@@ -39,17 +39,17 @@ class BusinessListComponent extends Component
 
     public function render()
     {
-        return view('livewire.admin.business-type.business-list-component', [
-            'businessTypes' => BusinessType::search($this->search)
+        return view('livewire.admin.business-group.business-list-component', [
+            'businessGroups' => BusinessGroup::search($this->search)
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
                 ->paginate($this->perPage),
         ])->layout('layouts.admin');
     }
 
     // Store
-    public function storeBusinessType()
+    public function storeBusinessGroup()
     {
-        $this->validate(); // validate BusinessType form
+        $this->validate(); // validate BusinessGroup form
 
         DB::beginTransaction();
 
@@ -57,21 +57,21 @@ class BusinessListComponent extends Component
             $updateId = $this->hiddenId;
             if($updateId > 0)
             {
-                $bType = BusinessType::find($updateId); // Update BusinessType
+                $bType = BusinessGroup::find($updateId); // Update BusinessGroup
             }
             else{
-                $bType = new BusinessType(); // Create BusinessType
+                $bType = new BusinessGroup(); // Create BusinessGroup
             }
 
-            $bType->type  = $this->type;
+            $bType->group  = $this->group;
             $bType->slug  = $this->slug;
             $bType->save();
 
             DB::commit();
 
-            $this->dispatchBrowserEvent('success-message',['message' => 'Business type has been ' . $this->btnType . '.']);
+            $this->dispatchBrowserEvent('success-message',['message' => 'Business group has been ' . $this->btnType . '.']);
 
-            $this->reset('type', 'slug', 'hiddenId', 'btnType');
+            $this->resetFields();
             
         } catch (\Throwable $th) {
             DB::rollback();
@@ -82,12 +82,12 @@ class BusinessListComponent extends Component
     }
 
     // Update Form
-    public function editForm($type_id)
+    public function editForm($group_id)
     {
-        $singleType     = BusinessType::find($type_id);
-        $this->hiddenId = $singleType->id;
-        $this->type     = $singleType->type;
-        $this->slug     = $singleType->slug;
+        $singleGroup    = BusinessGroup::find($group_id);
+        $this->hiddenId = $singleGroup->id;
+        $this->group    = $singleGroup->group;
+        $this->slug     = $singleGroup->slug;
         $this->btnType  = 'Update';
     }
 
@@ -95,10 +95,10 @@ class BusinessListComponent extends Component
     public function softDelete($id)
     {
         try {
-            $data = BusinessType::find($id);
+            $data = BusinessGroup::find($id);
             if ($data != null) {
                 $data->delete();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Business type deleted successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Business group deleted successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -115,10 +115,10 @@ class BusinessListComponent extends Component
     public function restore($id)
     {
         try {
-            $data = BusinessType::onlyTrashed()->find($id);
+            $data = BusinessGroup::onlyTrashed()->find($id);
             if ($data != null) {
                 $data->restore();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Business type restored successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Business group restored successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -134,6 +134,6 @@ class BusinessListComponent extends Component
     // reset fields
     public function resetFields()
     {
-        $this->reset('type', 'slug', 'hiddenId', 'btnType');
+        $this->reset('group', 'slug', 'hiddenId', 'btnType');
     }
 }

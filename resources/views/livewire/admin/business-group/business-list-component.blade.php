@@ -1,4 +1,4 @@
-@section('title', 'Business Type List')
+@section('title', 'Business Group List')
 
 <div>
     <!-- Main content -->
@@ -33,7 +33,7 @@
                                         <select class="form-control" style="width: 100%;" wire:model="orderBy">
                                             <option hidden>Choose Order By</option>
                                             <option value="id">By ID</option>
-                                            <option value="type">Type</option>
+                                            <option value="group">Group</option>
                                         </select>
                                     </div>
                                 </div>
@@ -58,16 +58,16 @@
                 <div class="col-4 col-md-4 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">{{ $btnType }} Business Type</h3>
+                            <h3 class="card-title">{{ $btnType }} Business Group</h3>
                         </div>
                         <!-- ./card-header -->
-                        <form wire:submit.prevent="storeBusinessType">
+                        <form wire:submit.prevent="storeBusinessGroup">
                             <div class="card-body">
                                 <input type="hidden" wire:model="hiddenId">
                                 <div class="form-group">
-                                    <label for="type">Business Type<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="type" placeholder="Enter Business Type" wire:model='type' wire:keyup.debounce.300ms="generateslug">
-                                    @error('type')
+                                    <label for="group">Business Group<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="group" placeholder="Enter Business Group" wire:model='group' wire:keyup.debounce.300ms="generateslug">
+                                    @error('group')
                                     <div class="error">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -96,7 +96,7 @@
                 <div class="col-8 col-md-8 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">All Business Type List</h3>
+                            <h3 class="card-title">All Business Group List</h3>
                         </div>
                         <!-- ./card-header -->
                         <div class="card-body">
@@ -104,31 +104,31 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Type</th>
+                                        <th>Group</th>
                                         <th>Slug</th>
                                         <th>Trashed</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($businessTypes as $bType)
+                                    @foreach($businessGroups as $bGroup)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $bType->type }}</td>
-                                        <td>{{ $bType->slug }}</td>
+                                        <td>{{ $bGroup->group }}</td>
+                                        <td>{{ $bGroup->slug }}</td>
                                         <td>
-                                            <span class="badge {{ ($bType->deleted_at) ? 'bg-danger':'bg-success' }}">{{ ($bType->deleted_at) ? 'Deleted':'Available' }}</span>
+                                            <span class="badge {{ ($bGroup->deleted_at) ? 'bg-danger':'bg-success' }}">{{ ($bGroup->deleted_at) ? 'Deleted':'Available' }}</span>
                                         </td>
                                         <td>
-                                            @if($bType->deleted_at)
-                                            <a href="#" class="btn btn-xs bg-success" wire:click="restore({{$bType->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
+                                            @if($bGroup->deleted_at)
+                                            <a href="#" class="btn btn-xs bg-success" wire:click="restore({{$bGroup->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
                                                 <i class="fas fa-trash-restore"></i>
                                             </a>
                                             @else
-                                            <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$bType->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
+                                            <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$bGroup->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <a href="#" class="btn btn-xs bg-danger" wire:click="softDelete({{$bType->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
+                                            <a href="#" class="btn btn-xs bg-danger" wire:click="softDelete({{$bGroup->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
                                                 <i class="far fa-trash-alt"></i>
                                             </a>
                                             @endif
@@ -140,7 +140,7 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer clearfix">
-                            {{$businessTypes->links('admin.render.admin-pagination-links')}}
+                            {{$businessGroups->links('admin.render.admin-pagination-links')}}
                         </div>
                     </div>
                     <!-- /.card -->

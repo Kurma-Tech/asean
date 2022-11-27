@@ -21,6 +21,14 @@ class BusinessImport implements ToModel, WithHeadingRow, WithChunkReading, WithB
         } else {
             $businessType = null;
         }
+        if (isset($row['business_group'])) {
+            $businessGroup = DB::table('business_groups')
+                ->select('id', 'group')
+                ->where('group', $row['business_group'])
+                ->first();
+        } else {
+            $businessGroup = null;
+        }
         if (isset($row['classification_code'])) {
             $industryClassification = DB::table('industry_classifications')
                 ->select('id', 'code', 'section_id')
@@ -37,6 +45,38 @@ class BusinessImport implements ToModel, WithHeadingRow, WithChunkReading, WithB
         } else {
             $country = null;
         }
+        if (isset($row['region_code'])) {
+            $region = DB::table('regions')
+                ->select('id', 'code')
+                ->where('code', $row['region_code'])
+                ->first();
+        } else {
+            $region = null;
+        }
+        if (isset($row['province_code'])) {
+            $province = DB::table('provinces')
+                ->select('id', 'code')
+                ->where('code', $row['province_code'])
+                ->first();
+        } else {
+            $province = null;
+        }
+        if (isset($row['district_code'])) {
+            $district = DB::table('districts')
+                ->select('id', 'code')
+                ->where('code', $row['district_code'])
+                ->first();
+        } else {
+            $district = null;
+        }
+        if (isset($row['city_code'])) {
+            $city = DB::table('cities')
+                ->select('id', 'code')
+                ->where('code', $row['city_code'])
+                ->first();
+        } else {
+            $city = null;
+        }
         
         $date = explode('/', $row['date_registered']);
         
@@ -46,8 +86,13 @@ class BusinessImport implements ToModel, WithHeadingRow, WithChunkReading, WithB
             "company_name"               => $row['company_name'],
             "date_registered"            => $row['date_registered'],
             "business_type_id"           => ($businessType != null) ? $businessType->id : null,
+            "business_group_id"          => ($businessGroup != null) ? $businessGroup->id : null,
             "industry_classification_id" => ($industryClassification != null) ? $industryClassification->id : null,
             "country_id"                 => ($country != null) ? $country->id : null,
+            "region_id"                  => ($region != null) ? $region->id : null,
+            "province_id"                => ($province != null) ? $province->id : null,
+            "district_id"                => ($district != null) ? $district->id : null,
+            "city_id"                    => ($city != null) ? $city->id : null,
             "ngc_code"                   => $row['ngc_code'] ?? Null,
             "status"                     => $row['status'] ?? 'Registered',
             "address"                    => $row['address'] ?? Null,

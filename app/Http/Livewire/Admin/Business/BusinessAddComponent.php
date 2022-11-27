@@ -3,18 +3,42 @@
 namespace App\Http\Livewire\Admin\Business;
 
 use App\Models\Business;
+use App\Models\BusinessGroup;
+use App\Models\BusinessType;
+use App\Models\City;
+use App\Models\Country;
+use App\Models\District;
+use App\Models\IndustryClassification;
+use App\Models\Province;
+use App\Models\Region;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class BusinessAddComponent extends Component
 {
+    public 
+        $businessTypes,
+        $businessGroups,
+        $industryClassifications,
+        $countries,
+        $regions,
+        $provinces,
+        $districts,
+        $cities;
+
+    public $selectedCountry  = Null;
+    public $selectedRegion   = Null;
+    public $selectedProvince = Null;
+    public $selectedDistrict = Null;
+
     public
         $company_name,
         $sec_no,
         $ngc_code,
         $business_type_id,
+        $business_group_id,
         $industry_classification_id,
-        $country_id,
+        $city_id,
         $year,
         $date_registered,
         $geo_code,
@@ -44,8 +68,13 @@ class BusinessAddComponent extends Component
             'sec_no'                     => 'required',
             'ngc_code'                   => 'nullable',
             'business_type_id'           => 'required|integer',
+            'business_group_id'          => 'required|integer',
             'industry_classification_id' => 'required|integer',
-            'country_id'                 => 'required|integer',
+            'selectedCountry'            => 'required|integer',
+            'selectedRegion'             => 'required|integer',
+            'selectedProvince'           => 'required|integer',
+            'selectedDistrict'           => 'required|integer',
+            'city_id'                    => 'required|integer',
             'year'                       => 'required',
             'date_registered'            => 'required|date_format:"m/d/Y"',
             'geo_code'                   => 'nullable',
@@ -59,27 +88,81 @@ class BusinessAddComponent extends Component
     }
 
     protected $messages = [
-        'country_id.required'                 => 'Country field is required',
-        'country_id.integer'                  => 'You must select country from drop down',
+        'selectedCountry.required'            => 'Country field is required',
+        'selectedCountry.integer'             => 'You must select country from drop down',
+        'selectedRegion.required'             => 'Region field is required',
+        'selectedRegion.integer'              => 'You must select region from drop down',
+        'selectedProvince.required'           => 'Province field is required',
+        'selectedProvince.integer'            => 'You must select province from drop down',
+        'selectedDistrict.required'           => 'District field is required',
+        'selectedDistrict.integer'            => 'You must select district from drop down',
+        'city_id.required'                    => 'City field is required',
+        'city_id.integer'                     => 'You must select city from drop down',
         'business_type_id.required'           => 'Business type field is required',
         'business_type_id.integer'            => 'You must select business type from drop down',
+        'business_group_id.required'          => 'Business group field is required',
+        'business_group_id.integer'           => 'You must select business group from drop down',
         'industry_classification_id.required' => 'Classification field is required',
         'industry_classification_id.integer'  => 'You must select classification from drop down',
         'long.required'                       => 'Longitude field is required',
         'lat.required'                        => 'Latitude field is required',
     ];
 
+    public function mount()
+    {
+        $this->businessTypes           = BusinessType::select('id', 'type')->get();
+        $this->businessGroups          = BusinessGroup::select('id', 'group')->get();
+        $this->industryClassifications = IndustryClassification::select('id', 'classifications')->get();
+        $this->countries               = Country::select('id', 'name')->get();
+        $this->regions                 = collect();
+        $this->provinces               = collect();
+        $this->districts               = collect();
+        $this->cities                  = collect();
+    }
+
+    // update regions
+    public function updatedSelectedCountry($id)
+    {
+        if (!is_null($id)) {
+            $this->regions = Region::where('country_id', $id)
+            ->select('id', 'name', 'code')
+            ->get();
+        }
+    }
+
+    // update province
+    public function updatedSelectedRegion($id)
+    {
+        if (!is_null($id)) {
+            $this->provinces = Province::where('region_id', $id)
+            ->select('id', 'name', 'code')
+            ->get();
+        }
+    }
+
+    // update district
+    public function updatedSelectedProvince($id)
+    {
+        if (!is_null($id)) {
+            $this->districts = District::where('province_id', $id)
+            ->select('id', 'name', 'code')
+            ->get();
+        }
+    }
+
+    // update city
+    public function updatedSelectedCity($id)
+    {
+        if (!is_null($id)) {
+            $this->cities = City::where('district_id', $id)
+            ->select('id', 'name', 'code')
+            ->get();
+        }
+    }
+
     public function render()
     {
-        $countries               = DB::table('countries')->select('id', 'name')->get();
-        $businessTypes           = DB::table('business_types')->select('id', 'type')->get();
-        $industryClassifications = DB::table('industry_classifications')->select('id', 'classifications')->get();
-
-        return view('livewire.admin.business.business-add-component', [
-            'countries' => $countries, 
-            'businessTypes' => $businessTypes, 
-            'industryClassifications' => $industryClassifications
-        ])->layout('layouts.admin');
+        return view('livewire.admin.business.business-add-component')->layout('layouts.admin');
     }
 
     // Store
@@ -97,8 +180,13 @@ class BusinessAddComponent extends Component
             $business->sec_no                     = $this->sec_no;
             $business->ngc_code                   = $this->ngc_code;
             $business->business_type_id           = $this->business_type_id;
+            $business->business_group_id          = $this->business_group_id;
             $business->industry_classification_id = $this->industry_classification_id;
-            $business->country_id                 = $this->country_id;
+            $business->country_id                 = $this->selectedCountry;
+            $business->region_id                  = $this->selectedRegion;
+            $business->province_id                = $this->selectedProvince;
+            $business->district_id                = $this->selectedDistrict;
+            $business->city_id                    = $this->city_id;
             $business->year                       = $this->year;
             $business->date_registered            = $this->date_registered;
             $business->geo_code                   = $this->geo_code;

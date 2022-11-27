@@ -71,6 +71,24 @@
 
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
+                                            <label for="business_group_name">Business Group<span class="text-danger">*</span></label>
+                                            <div wire:ignore>
+                                                <select class="form-control select2 select2bs4" id="business_group_name"
+                                                    wire:model="business_group_id" style="width: 100%;">
+                                                    <option hidden>Choose Business Group</option>
+                                                    @foreach($businessGroups as $businessGroup)
+                                                    <option value="{{ $businessGroup->id }}">{{ $businessGroup->group }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            @error('business_group_id')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
                                             <label for="industry_classification_name">Industry Classification<span class="text-danger">*</span></label>
                                             <div wire:ignore>
                                                 <select class="form-control select2 select2bs4"
@@ -208,18 +226,96 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-12" wire:ignore>
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="country_name">Country<span class="text-danger">*</span></label>
-                                            <select class="form-control select2 select2bs4"
-                                                id="country_name" wire:model="country_id"
-                                                style="width: 100%;" onchange="this.dispatchEvent(new InputEvent('input'))">
-                                                <option hidden>Select Country</option>
-                                                @foreach($countries as $country)
-                                                <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                                @endforeach
-                                            </select>
+                                            <div wire:ignore>
+                                                <select class="form-control select2 select2bs4"
+                                                    id="country_name" wire:model="country_id"
+                                                    style="width: 100%;" onchange="this.dispatchEvent(new InputEvent('input'))">
+                                                    <option hidden>Select Country</option>
+                                                    @foreach($countries as $country)
+                                                    <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                             @error('country_id')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="region_name">Region<span class="text-danger">*</span></label>
+                                            <div wire:ignore>
+                                                <select class="form-control select2 select2bs4"
+                                                    id="region_name" wire:model="region_id"
+                                                    style="width: 100%;" onchange="this.dispatchEvent(new InputEvent('input'))">
+                                                    <option hidden>Select region</option>
+                                                    @foreach($regions as $region)
+                                                    <option value="{{ $region->id }}">{{ $region->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            @error('region_id')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="province_name">Province<span class="text-danger">*</span></label>
+                                            <div wire:ignore>
+                                                <select class="form-control select2 select2bs4"
+                                                    id="province_name" wire:model="province_id"
+                                                    style="width: 100%;" onchange="this.dispatchEvent(new InputEvent('input'))">
+                                                    <option hidden>Select province</option>
+                                                    @foreach($provinces as $province)
+                                                    <option value="{{ $province->id }}">{{ $province->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            @error('province_id')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="district_name">District<span class="text-danger">*</span></label>
+                                            <div wire:ignore>
+                                                <select class="form-control select2 select2bs4"
+                                                    id="district_name" wire:model="district_id"
+                                                    style="width: 100%;" onchange="this.dispatchEvent(new InputEvent('input'))">
+                                                    <option hidden>Select district</option>
+                                                    @foreach($districts as $district)
+                                                    <option value="{{ $district->id }}">{{ $district->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            @error('district_id')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="city_name">City<span class="text-danger">*</span></label>
+                                            <div wire:ignore>
+                                                <select class="form-control select2 select2bs4"
+                                                    id="city_name" wire:model="city_id"
+                                                    style="width: 100%;" onchange="this.dispatchEvent(new InputEvent('input'))">
+                                                    <option hidden>Select city</option>
+                                                    @foreach($cities as $city)
+                                                    <option value="{{ $city->id }}">{{ $city->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            @error('city_id')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -355,9 +451,34 @@
                     @this.set('country_id', data);
             });
 
+            $('#region_name').on('change', function (e) {
+                let data = $(this).val();
+                    @this.set('region_id', data);
+            });
+
+            $('#province_name').on('change', function (e) {
+                let data = $(this).val();
+                    @this.set('province_id', data);
+            });
+
+            $('#district_name').on('change', function (e) {
+                let data = $(this).val();
+                    @this.set('district_id', data);
+            });
+
+            $('#city_name').on('change', function (e) {
+                let data = $(this).val();
+                    @this.set('city_id', data);
+            });
+
             $('#business_type_name').on('change', function (e) {
                 let data = $(this).val();
                     @this.set('business_type_id', data);
+            });
+
+            $('#business_group_name').on('change', function (e) {
+                let data = $(this).val();
+                    @this.set('business_group_id', data);
             });
 
             $('#industry_classification_name').on('change', function (e) {

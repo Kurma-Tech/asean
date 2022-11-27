@@ -81,46 +81,92 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item {{ (request()->routeIs('admin.areas*')) ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ (request()->routeIs('admin.areas*')) ? 'active' : '' }}">
+                        <li class="nav-item {{ (request()->routeIs('admin.regions*')) ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ (request()->routeIs('admin.regions*')) ? 'active' : '' }}">
                                 <i class="nav-icon fa fa-location-arrow text-warning"></i>
                                 <p>
-                                    Area Code
+                                    Regions
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{route('admin.areas.list')}}" class="nav-link {{ (request()->routeIs('admin.areas.list')) ? 'active' : '' }}">
+                                    <a href="{{route('admin.regions.list')}}" class="nav-link {{ (request()->routeIs('admin.regions.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-info"></i>
                                         <p>View All</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{route('admin.areas.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.areas.trashed.list')) ? 'active' : '' }}">
+                                    <a href="{{route('admin.regions.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.regions.trashed.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-danger"></i>
                                         <p>View Trashed</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item {{ (request()->routeIs('admin.zips*')) ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ (request()->routeIs('admin.zips*')) ? 'active' : '' }}">
+                        <li class="nav-item {{ (request()->routeIs('admin.provinces*')) ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ (request()->routeIs('admin.provinces*')) ? 'active' : '' }}">
                                 <i class="nav-icon fa fa-mail-bulk text-secondary"></i>
                                 <p>
-                                    Zip Code
+                                    Provinces
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{route('admin.zips.list')}}" class="nav-link {{ (request()->routeIs('admin.zips.list')) ? 'active' : '' }}">
+                                    <a href="{{route('admin.provinces.list')}}" class="nav-link {{ (request()->routeIs('admin.provinces.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-info"></i>
                                         <p>View All</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{route('admin.zips.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.zips.trashed.list')) ? 'active' : '' }}">
+                                    <a href="{{route('admin.provinces.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.provinces.trashed.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-danger"></i>
+                                        <p>View Trashed</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item {{ (request()->routeIs('admin.districts*')) ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ (request()->routeIs('admin.districts*')) ? 'active' : '' }}">
+                                <i class="nav-icon fa fa-mail-bulk text-secondary"></i>
+                                <p>
+                                    Districts
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route('admin.districts.list')}}" class="nav-link {{ (request()->routeIs('admin.districts.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-info"></i>
+                                        <p>View All</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.districts.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.districts.trashed.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-danger"></i>
+                                        <p>View Trashed</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item {{ (request()->routeIs('admin.cities*')) ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ (request()->routeIs('admin.cities*')) ? 'active' : '' }}">
+                                <i class="nav-icon fa fa-mail-bulk text-secondary"></i>
+                                <p>
+                                    Cities
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route('admin.cities.list')}}" class="nav-link {{ (request()->routeIs('admin.cities.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-info"></i>
+                                        <p>View All</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.cities.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.cities.trashed.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-danger"></i>
                                         <p>View Trashed</p>
                                     </a>
@@ -244,6 +290,29 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route('admin.typeBusiness.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.typeBusiness.trashed.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-danger"></i>
+                                        <p>View Trashed</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item {{ (request()->routeIs('admin.groupBusiness*')) ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ (request()->routeIs('admin.groupBusiness*')) ? 'active' : '' }}">
+                                <img src="{{ asset('admin/dist/img/icons/businessTypeIcon.png') }}" alt="bc-icon" style="width:24px;">
+                                <p>
+                                    Business Group
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route('admin.groupBusiness.list')}}" class="nav-link {{ (request()->routeIs('admin.groupBusiness.list')) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle text-info"></i>
+                                        <p>View All</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.groupBusiness.trashed.list')}}" class="nav-link {{ (request()->routeIs('admin.groupBusiness.trashed.list')) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-circle text-danger"></i>
                                         <p>View Trashed</p>
                                     </a>

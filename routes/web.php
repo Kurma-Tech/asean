@@ -6,16 +6,22 @@ use App\Http\Livewire\Admin\Business\BusinessAddComponent;
 use App\Http\Livewire\Admin\Business\BusinessListComponent;
 use App\Http\Livewire\Admin\Business\BusinessTrashedComponent;
 use App\Http\Livewire\Admin\Business\BusinessUpdateComponent;
+use App\Http\Livewire\Admin\BusinessGroup\BusinessListComponent as BusinessGroupBusinessListComponent;
+use App\Http\Livewire\Admin\BusinessGroup\TrashedComponent as BusinessGroupTrashedComponent;
 use App\Http\Livewire\Admin\BusinessType\BusinessListComponent as BusinessTypeBusinessListComponent;
 use App\Http\Livewire\Admin\BusinessType\TrashedComponent as BusinessTypeTrashedComponent;
 use App\Http\Livewire\Admin\Classification\ClassificationList;
 use App\Http\Livewire\Admin\Classification\TrashedComponent as ClassificationTrashedComponent;
-use App\Http\Livewire\Admin\Country\Area\AreaComponent;
-use App\Http\Livewire\Admin\Country\Area\AreaTrashedComponent;
+use App\Http\Livewire\Admin\Country\City\CityComponent;
+use App\Http\Livewire\Admin\Country\City\CityTrashedComponent;
+use App\Http\Livewire\Admin\Country\Region\RegionComponent;
+use App\Http\Livewire\Admin\Country\Region\RegionTrashedComponent;
 use App\Http\Livewire\Admin\Country\CountryListComponent;
 use App\Http\Livewire\Admin\Country\CountryTrashedComponent;
-use App\Http\Livewire\Admin\Country\Zip\ZipComponent;
-use App\Http\Livewire\Admin\Country\Zip\ZipTrashedComponent;
+use App\Http\Livewire\Admin\Country\District\DistrictComponent;
+use App\Http\Livewire\Admin\Country\District\DistrictTrashedComponent;
+use App\Http\Livewire\Admin\Country\Province\ProvinceComponent;
+use App\Http\Livewire\Admin\Country\Province\ProvinceTrashedComponent;
 use App\Http\Livewire\Admin\DashboardComponent;
 use App\Http\Livewire\Admin\Journals\JournalsListComponent;
 use App\Http\Livewire\Admin\Journals\JournalsTrashedComponent;
@@ -61,12 +67,18 @@ Route::prefix('admin')->name('admin.')->group(function() {
         // Countries
         Route::get('countries', CountryListComponent::class)->name('countries.list');
         Route::get('countries/trashed', CountryTrashedComponent::class)->name('countries.trashed.list');
-        // Area
-        Route::get('countries/areas', AreaComponent::class)->name('areas.list');
-        Route::get('countries/areas/trashed', AreaTrashedComponent::class)->name('areas.trashed.list');
-        // Zip
-        Route::get('countries/zips', ZipComponent::class)->name('zips.list');
-        Route::get('countries/zips/trashed', ZipTrashedComponent::class)->name('zips.trashed.list');
+        // Regions
+        Route::get('countries/regions', RegionComponent::class)->name('regions.list');
+        Route::get('countries/regions/trashed', RegionTrashedComponent::class)->name('regions.trashed.list');
+        // Provinces
+        Route::get('countries/provinces', ProvinceComponent::class)->name('provinces.list');
+        Route::get('countries/provinces/trashed', ProvinceTrashedComponent::class)->name('provinces.trashed.list');
+        // Districts
+        Route::get('countries/districts', DistrictComponent::class)->name('districts.list');
+        Route::get('countries/districts/trashed', DistrictTrashedComponent::class)->name('districts.trashed.list');
+        // Cities
+        Route::get('countries/cities', CityComponent::class)->name('cities.list');
+        Route::get('countries/cities/trashed', CityTrashedComponent::class)->name('cities.trashed.list');
         // Business
         Route::get('business', BusinessListComponent::class)->name('business.list');
         Route::get('business/add', BusinessAddComponent::class)->name('business.add');
@@ -76,6 +88,9 @@ Route::prefix('admin')->name('admin.')->group(function() {
         // BusinessType
         Route::get('business/types', BusinessTypeBusinessListComponent::class)->name('typeBusiness.list');
         Route::get('business/types/trashed', BusinessTypeTrashedComponent::class)->name('typeBusiness.trashed.list');
+        // BusinessGroup
+        Route::get('business/groups', BusinessGroupBusinessListComponent::class)->name('groupBusiness.list');
+        Route::get('business/groups/trashed', BusinessGroupTrashedComponent::class)->name('groupBusiness.trashed.list');
         // Patent
         Route::get('intellectual-property', PatentListComponent::class)->name('patent.list');
         Route::get('intellectual-property/trashed', PatentTrashedComponent::class)->name('patent.trashed.list');

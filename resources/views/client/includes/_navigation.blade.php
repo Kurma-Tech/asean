@@ -1,7 +1,7 @@
         <nav class="main-header navbar navbar-expand navbar-dark">
 
             <!-- Brand Logo -->
-            <a href="#" class="brand-link">
+            <a href="{{ route('client.home') }}" class="brand-link">
                 <img src="{{ asset('client/dist/img/asean-favicon.png') }}" alt="Asean Logo"
                     class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light" style="color: #8bc34a;">Asean</span>
