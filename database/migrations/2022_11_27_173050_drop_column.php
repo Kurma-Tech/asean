@@ -37,6 +37,12 @@ return new class extends Migration
                 $table->dropColumn('city_id');
             });
         }
+        if (Schema::hasColumn('businesses', 'group_id'))
+        {
+            Schema::table('businesses', function (Blueprint $table) {
+                $table->dropColumn('group_id');
+            });
+        }
     }
 
     /**
