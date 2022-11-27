@@ -26,7 +26,8 @@
                             <code class="text-xs text-info-400">
                                 year, 
                                 company_name, 
-                                business_type, 
+                                business_type,
+                                business_group,
                                 classification_code,
                                 country_short_code i.e IND for Indonesia,
                                 sec_no, 
@@ -39,7 +40,11 @@
                                 geo_code, 
                                 geo_description, 
                                 long, 
-                                lat
+                                lat,
+                                region_code,
+                                province_code,
+                                district_code,
+                                city_code
                             </code>
                         </div>
                     </div>
