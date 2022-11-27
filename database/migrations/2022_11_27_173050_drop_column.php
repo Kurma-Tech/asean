@@ -13,6 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         if (Schema::hasColumn('businesses', 'region_id'))
         {
             Schema::table('businesses', function (Blueprint $table) {
@@ -43,6 +44,7 @@ return new class extends Migration
                 $table->dropColumn('group_id');
             });
         }
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 
     /**
