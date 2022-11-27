@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreign('province_id')->references('id')->on('provinces')->onDelete('CASCADE')->onUpdate('CASCADE');
             $table->foreign('district_id')->references('id')->on('districts')->onDelete('CASCADE')->onUpdate('CASCADE');
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('CASCADE')->onUpdate('CASCADE');
-            $table->foreign('group_id')->references('id')->on('groups')->onDelete('CASCADE')->onUpdate('CASCADE');
+            $table->foreign('group_id')->references('id')->on('business_groups')->onDelete('CASCADE')->onUpdate('CASCADE');
         });
     }
 
