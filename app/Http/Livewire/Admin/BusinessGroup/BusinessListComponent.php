@@ -32,7 +32,7 @@ class BusinessListComponent extends Component
     protected function rules()
     {
         return [
-            'type' => 'required',
+            'group' => 'required',
             'slug' => 'required|unique:patent_kinds,slug',
         ];
     }
