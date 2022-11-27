@@ -26,7 +26,7 @@ class BusinessListComponent extends Component
 
     public function generateslug()
     {
-        $this->slug = SlugService::createSlug(BusinessGroup::class, 'slug', $this->type);
+        $this->slug = SlugService::createSlug(BusinessGroup::class, 'slug', $this->group);
     }
 
     protected function rules()
