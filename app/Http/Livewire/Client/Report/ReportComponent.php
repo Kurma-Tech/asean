@@ -7,7 +7,7 @@ use Livewire\Component;
 use App\Models\Country;
 use App\Models\IndustryClassification;
 use App\Models\JournalCategory;
-use App\Models\PatentKind;
+use App\Models\PatentCategory;
 use GuzzleHttp\Client;
 
 class ReportComponent extends Component
@@ -20,6 +20,7 @@ class ReportComponent extends Component
         $classification,
         $forecastClassification,
         $forecastJournalClassification,
+        $forecastPatentClassification,
         $topLimitBusiness = 10,
         $topLimitPatent = 10,
         $topLimitJournal = 10,
@@ -29,6 +30,7 @@ class ReportComponent extends Component
         $popularCountryJournals,
         $emergingCountryIndustry,
         $emergingCountryJournal,
+        $emergingCountryPatent,
         $forecastCountry,
         $forecastPatentCountry,
         $topCountryFilter,
@@ -68,7 +70,7 @@ class ReportComponent extends Component
 
     public function updatedForecastPatentCountry($country)
     {
-        $this->forecastCountry = $country;
+        $this->forecastPatentCountry = $country;
         $this->updateForecastPatentChart();
     }
 
@@ -88,6 +90,12 @@ class ReportComponent extends Component
     {
         $this->emergingCountryJournal = $country;
         $this->updateTopJournalRate();
+    }
+
+    public function updatedEmergingCountryPatent($country)
+    {
+        $this->emergingCountryPatent = $country;
+        $this->updateTopPatentRate();
     }
 
     public function updatedPopularCountryBusiness($country)
@@ -114,10 +122,16 @@ class ReportComponent extends Component
         $this->updateForecastChart();
     }
 
-    public function updatedforecastJournalClassification($classification)
+    public function updatedForecastJournalClassification($classification)
     {
         $this->forecastJournalClassification = $classification;
         $this->updateForecastJournalChart();
+    }
+
+    public function updatedForecastPatentClassification($classification)
+    {
+        $this->forecastPatentClassification = $classification;
+        $this->updateForecastPatentChart();
     }
 
     public function updatedTopLimitBusiness($topLimitBusiness)
@@ -197,7 +211,7 @@ class ReportComponent extends Component
                 if ($industryClassification != null) {
                     array_push($final, [
                         "key" => $industryClassification->classifications,
-                        "value" => round($rate / $addition, 2)
+                        "value" => ($addition == 0) ? 0 : round($rate / $addition, 2)
                     ]);
                 }
             }
@@ -227,7 +241,7 @@ class ReportComponent extends Component
         ini_set('memory_limit', '-1');
 
         if (!is_null($this->emergingCountryJournal) && $this->emergingCountryJournal != "") {
-            $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
+            $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id', 'country_id')->get())->where('country_id', $this->emergingCountryJournal)->pluck('parent_classification_id')->countBy();
         } else {
             $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
         }
@@ -237,7 +251,12 @@ class ReportComponent extends Component
             if ($classKey == null) {
                 continue;
             } else {
-                $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                if (!is_null($this->emergingCountryJournal) && $this->emergingCountryJournal != "") {
+                    $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('parent_classification_id', $classKey)->get())->where('country_id', $this->emergingCountryJournal)->pluck('year')->countBy();
+                } else {
+                    $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                }
+
                 // dd($years);
                 $rate = 0;
                 $addition = 0;
@@ -254,7 +273,7 @@ class ReportComponent extends Component
                 if ($journalClassification != null) {
                     array_push($journalClassificationRates, [
                         "key" => $journalClassification->category,
-                        "value" => round($rate / $addition, 2)
+                        "value" => ($addition == 0) ? 0 : round($rate / $addition, 2)
                     ]);
                 }
             }
@@ -262,31 +281,85 @@ class ReportComponent extends Component
         rsort($journalClassificationRates);
 
         $this->emit("emergingJournalRate", [
+            "test2" => $this->emergingCountryJournal,
+            "test" => $journalClassificationForEmerging,
             "emergingJournalRate" => $journalClassificationRates
+        ]);
+    }
+
+    public function updateTopPatentRate()
+    {
+        ini_set('memory_limit', '-1');
+
+        if (!is_null($this->emergingCountryPatent) && $this->emergingCountryPatent != "") {
+            $patentClassificationForEmerging = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id', 'country_id')->get())->where('country_id', $this->emergingCountryPatent)->pluck('parent_classification_id')->countBy();
+        } else {
+            $patentClassificationForEmerging = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
+        }
+
+        $patentClassificationRates = [];
+        foreach ($patentClassificationForEmerging as $classKey => $value) {
+            if ($classKey == null) {
+                continue;
+            } else {
+                if (!is_null($this->emergingCountryPatent) && $this->emergingCountryPatent != "") {
+                    $years = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('parent_classification_id', $classKey)->get())->where('country_id', $this->emergingCountryPatent)->pluck('year')->countBy();
+                } else {
+                    $years = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                }
+                $rate = 0;
+                $addition = 0;
+                $temp = null;
+                foreach ($years as $key => $value) {
+                    if ($temp != null) {
+                        $rate = $rate + (((int)$value - (int)$temp) / (int)$value) * 100;
+                        $addition = $addition + 1;
+                    } else {
+                        $temp = $value;
+                    }
+                }
+                $patentClassification = PatentCategory::find($classKey);
+                if ($patentClassification != null) {
+                    array_push($patentClassificationRates, [
+                        "key" => $patentClassification->classification_category,
+                        "value" => ($addition == 0) ? 0 : round($rate / $addition, 2)
+                    ]);
+                }
+            }
+        }
+        rsort($patentClassificationRates);
+
+        $this->emit("emergingPatentRate", [
+            "emergingPatentRate" => $patentClassificationRates
         ]);
     }
 
     public function updateTopPatent()
     {
         ini_set('memory_limit', '-1');
-        $patentQuery =  DB::table('patents')->select('id', 'registration_date', 'kind_id');
 
-        if (!is_null($this->popularCountryPatent) && $this->popularCountryPatent != "") {
-            $patentQuery = $patentQuery->where('country_id', $this->popularCountryPatent);
+        $topPatentQuery =  DB::table('patent_pivot_patent_category')->select('id', 'parent_classification_id', 'country_id');
+
+        if (!is_null($this->popularCountryPatent)) {
+            $topPatentQuery = $topPatentQuery->where('country_id', $this->popularCountryPatent);
         }
 
-        $patents = $patentQuery->get();
+        $topPatents = $topPatentQuery->get();
 
         $emergingPatentData = [];
 
-        // $emergingPatents = collect($patents)->pluck('kind_id')->countBy()->sortByDesc(null)->take(10);
+        $emergingPatents = collect($topPatents)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take($this->topLimitPatent);
 
-        // foreach ($emergingPatents as $key => $value) {
-        //     array_push($emergingPatentData, [
-        //         "key" => PatentKind::find($key)->kind,
-        //         "value" => $value
-        //     ]);
-        // }
+        foreach ($emergingPatents as $key => $value) {
+            if ($key != null) {
+                array_push($emergingPatentData, [
+                    "key" => PatentCategory::find($key)->classification_category,
+                    "value" => $value
+                ]);
+            } else {
+                continue;
+            }
+        }
 
         $this->emit("updateTopPatent", [
             "emergingPatents" => $emergingPatentData
@@ -365,7 +438,7 @@ class ReportComponent extends Component
 
         ini_set('memory_limit', '-1');
         $businessQuery =  DB::table('businesses')->select('id', 'year', 'date_registered', 'industry_classification_id');
-        $patentQuery =  DB::table('patents')->select('id', 'registration_date', 'kind_id');
+        $patentQuery =  DB::table('patents')->select('id', 'year', 'kind_id');
         $journalQuery =  DB::table('journals')->select('id', 'year');
 
 
@@ -392,14 +465,16 @@ class ReportComponent extends Component
 
         $this->chartBusinessCount = collect($business)->pluck('year')->countBy(); // business chart count
 
-        $this->chartPatentsCount = collect($patents)->pluck('date')->countBy(function ($date) {
-            $tempDate = substr(strchr($date, "/", 0), 4);
-            if (strlen($tempDate) == 4) {
-                return $tempDate;
-            } else {
-                return false;
-            }
-        }); // Count of filtered patents with year extraction
+        // $this->chartPatentsCount = collect($patents)->pluck('date')->countBy(function ($date) {
+        //     $tempDate = substr(strchr($date, "/", 0), 4);
+        //     if (strlen($tempDate) == 4) {
+        //         return $tempDate;
+        //     } else {
+        //         return false;
+        //     }
+        // }); // Count of filtered patents with year extraction
+
+        $this->chartPatentsCount =  collect($patents)->pluck('year')->countBy();
 
         $this->chartJournalsCount = collect($journals)->pluck('year')->countBy();
         // dd();
@@ -451,6 +526,9 @@ class ReportComponent extends Component
         }
 
         $this->emit("totalReportsUpdated", [
+            "businessCount" => collect($business)->count(),
+            "patentCount" => collect($patents)->count(),
+            "journalCount" => collect($journals)->count(),
             "businessCountByYears" => collect($tempChartBusinessCount)->values(),
             "patentCountByYears" => collect($tempChartPatentsCount)->values(),
             "journalCountByYears" => collect($tempChartJournalsCount)->values(),
@@ -462,7 +540,7 @@ class ReportComponent extends Component
     {
         ini_set('memory_limit', '-1');
         $businessQuery =  DB::table('businesses')->select('id', 'year', 'date_registered', 'industry_classification_id');
-        $patentQuery =  DB::table('patents')->select('id', 'registration_date', 'kind_id');
+        $patentQuery =  DB::table('patents')->select('id', 'year', 'kind_id');
         $journalQuery =  DB::table('journals')->select('id', 'year');
 
 
@@ -511,7 +589,7 @@ class ReportComponent extends Component
                 if ($industryClassification != null) {
                     array_push($businessClassificationRates, [
                         "key" => $industryClassification->classifications,
-                        "value" => round($rate / $addition, 2)
+                        "value" => ($addition == 0) ? 0 : round($rate / $addition, 2)
                     ]);
                 }
             }
@@ -543,12 +621,44 @@ class ReportComponent extends Component
                 if ($journalClassification != null) {
                     array_push($journalClassificationRates, [
                         "key" => $journalClassification->category,
-                        "value" => round($rate / $addition, 2)
+                        "value" => ($addition == 0) ? 0 : round($rate / $addition, 2)
                     ]);
                 }
             }
         }
         rsort($journalClassificationRates);
+
+
+        $patentClassificationForEmerging = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
+
+        $patentClassificationRates = [];
+        foreach ($patentClassificationForEmerging as $classKey => $value) {
+            if ($classKey == null) {
+                continue;
+            } else {
+                $years = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                // dd($years);
+                $rate = 0;
+                $addition = 0;
+                $temp = null;
+                foreach ($years as $key => $value) {
+                    if ($temp != null) {
+                        $rate = $rate + (((int)$value - (int)$temp) / (int)$value) * 100;
+                        $addition = $addition + 1;
+                    } else {
+                        $temp = $value;
+                    }
+                }
+                $patentClassification = PatentCategory::find($classKey);
+                if ($patentClassification != null) {
+                    array_push($patentClassificationRates, [
+                        "key" => $patentClassification->classification_category,
+                        "value" => ($addition == 0) ? 0 : round($rate / $addition, 2)
+                    ]);
+                }
+            }
+        }
+        rsort($patentClassificationRates);
 
         /* Default data for Charts */
 
@@ -565,16 +675,28 @@ class ReportComponent extends Component
             ]);
         }
 
+        $topPatentQuery =  DB::table('patent_pivot_patent_category')->select('id', 'parent_classification_id', 'country_id');
+
+        if (!is_null($this->popularCountryPatent)) {
+            $topPatentQuery = $topPatentQuery->where('country_id', $this->popularCountryPatent);
+        }
+
+        $topPatents = $topPatentQuery->get();
+
         $emergingPatentData = [];
 
-        // $emergingPatents = collect($patents)->pluck('kind_id')->countBy()->sortByDesc(null)->take(10);
+        $emergingPatents = collect($topPatents)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take(10);
 
-        // foreach ($emergingPatents as $key => $value) {
-        //     array_push($emergingPatentData, [
-        //         "key" => PatentKind::find($key)->kind,
-        //         "value" => $value
-        //     ]);
-        // }
+        foreach ($emergingPatents as $key => $value) {
+            if ($key != null) {
+                array_push($emergingPatentData, [
+                    "key" => PatentCategory::find($key)->classification_category,
+                    "value" => $value
+                ]);
+            } else {
+                continue;
+            }
+        }
 
         ini_set('memory_limit', '-1');
         $topJounalQuery =  DB::table('journal_pivot_journal_category')->select('id', 'parent_classification_id', 'country_id');
@@ -600,14 +722,17 @@ class ReportComponent extends Component
             }
         }
 
-        $this->chartPatentsCount = collect($patents)->pluck('date')->countBy(function ($date) {
-            $tempDate = substr(strchr($date, "/", 0), 4);
-            if (strlen($tempDate) == 4) {
-                return $tempDate;
-            } else {
-                return false;
-            }
-        }); // Count of filtered patents with year extraction
+        // $this->chartPatentsCount = collect($patents)->pluck('date')->countBy(function ($date) {
+        //     $tempDate = substr(strchr($date, "/", 0), 4);
+        //     if (strlen($tempDate) == 4) {
+        //         return $tempDate;
+        //     } else {
+        //         return false;
+        //     }
+        // }); // Count of filtered patents with year extraction
+
+
+        $this->chartPatentsCount =  collect($patents)->pluck('year')->countBy();
 
         $this->chartJournalsCount = collect($journals)->pluck('year')->countBy();
         // dd();
@@ -687,7 +812,8 @@ class ReportComponent extends Component
                 "emergingPatents" => $emergingPatentData,
                 "emergingJournals" => $emergingJournalData,
                 "emergingRate" => $businessClassificationRates,
-                "emergingJournalRate" => $journalClassificationRates
+                "emergingJournalRate" => $journalClassificationRates,
+                "emergingPatentRate" => $patentClassificationRates
             ]);
             $this->isFirstLoad = false;
         } else {
@@ -742,8 +868,8 @@ class ReportComponent extends Component
         $res = $client->post('http://18.136.147.228/api/v1/predict', [
             'json' => [
                 'country_id' => (!is_null($this->forecastPatentCountry) && $this->forecastPatentCountry != "") ? (int)$this->forecastPatentCountry : null,
-                'classification_id' => null,
-                'type' => "patents"
+                'classification_id' => (!is_null($this->forecastPatentClassification) && $this->forecastPatentClassification != "") ? (int)$this->forecastPatentClassification : null,
+                'type' => "patent_pivot_patent_category"
             ]
         ]);
         $data = json_decode($res->getBody(), true);
@@ -780,10 +906,12 @@ class ReportComponent extends Component
         $countries = Country::select('id', 'status', 'name')->where("status", "1")->get();
         $classifications = IndustryClassification::select('id', 'classifications')->where('parent_id', null)->where('classifications', '!=', null)->get();
         $journalClassifications = JournalCategory::select('id', 'category')->where('division_id', null)->where('section_id', '!=', Null)->get();
+        $patentClassifications = PatentCategory::select('id', 'classification_category')->where('class_id', null)->where('division_id', '!=', Null)->get();
         return view('livewire.client.report.report-component', [
             'countries' => $countries,
             'classifications' => $classifications,
             'journalClassifications' => $journalClassifications,
+            'patentClassifications' => $patentClassifications,
             'allData' => DB::table('businesses')->select('id', 'year')->pluck('year')->countBy()
         ])->layout('layouts.client');
     }

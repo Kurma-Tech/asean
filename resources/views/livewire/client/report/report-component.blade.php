@@ -107,7 +107,7 @@
                                         <thead>
                                             <tr>
                                                 <th>S.N</th>
-                                                <th>Industry Type</th>
+                                                <th>Industry Classification</th>
                                                 <th>Count</th>
                                             </tr>
                                         </thead>
@@ -153,7 +153,7 @@
                                                         {{ GoogleTranslate::trans('Top 20', app()->getLocale()) }}
                                                     </option>
                                                     <option value="30">
-                                                        {{ GoogleTranslate::trans('Top 20', app()->getLocale()) }}
+                                                        {{ GoogleTranslate::trans('Top 30', app()->getLocale()) }}
                                                     </option>
                                                 </select>
                                             </div>
@@ -165,7 +165,7 @@
                                         <thead>
                                             <tr>
                                                 <th>S.N</th>
-                                                <th>Patent Kind</th>
+                                                <th>Patent Classification</th>
                                                 <th>Count</th>
                                             </tr>
                                         </thead>
@@ -420,7 +420,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-3 col-sm-12" wire:ignore>
+                                <div class="col-md-3 col-sm-12" wire:ignore>
                                     <div class="input-group input-group-sm">
                                         <select class="form-control" wire:model="forecastPatentClassification">
                                             <option hidden>
@@ -428,13 +428,13 @@
                                             </option>
                                             <option value="">
                                                 {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
-                                            @foreach ($classifications as $classification)
+                                            @foreach ($patentClassifications as $classification)
                                                 <option value="{{ $classification->id }}">
-                                                    {{ $classification->classifications }}</option>
+                                                    {{ $classification->classification_category }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                </div> --}}
+                                </div>
                             </div>
                         </div>
                         <div class="card-body">
@@ -536,6 +536,45 @@
                             <div class="card bg-card-black">
                                 <div class="card-header">
                                     <div class="row">
+                                        <h3 class="col-md-12 col-sm-12 card-title mb-2">Emerging Patents</h3>
+                                        <div class="col-md-12 col-sm-12">
+                                            <div class="input-group input-group-sm">
+                                                <select class="form-control" wire:model="emergingCountryPatent">
+                                                    <option hidden>
+                                                        {{ GoogleTranslate::trans('Select Country', app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="">
+                                                        {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                    @foreach ($countries as $country)
+                                                        <option value="{{ $country->id }}">
+                                                            {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body table-responsive overlay-scroll p-0" style="height: 300px;">
+                                    <table class="table table-head-fixed" id="patent-emerging-rate">
+                                        <thead>
+                                            <tr>
+                                                <th>S.N</th>
+                                                <th>Patent Classification</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4" wire:ignore>
+                            <div class="card bg-card-black">
+                                <div class="card-header">
+                                    <div class="row">
                                         <h3 class="col-md-12 col-sm-12 card-title mb-2">Emerging Journals</h3>
                                         <div class="col-md-12 col-sm-12">
                                             <div class="input-group input-group-sm">
@@ -605,7 +644,7 @@
         var lineChart;
         var forcastPatentChart;
         var forcastJournalChart;
-        var isAuthenticated = {{ (Auth::check()) }}
+        var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
         document.addEventListener("livewire:load", handleLivewireLoad, true);
 
         function handleLivewireLoad() {
@@ -994,6 +1033,11 @@
             });
             addEmergingJournalRateData(emergingJournalRateData);
 
+            var emergingPatentRateData = data.emergingPatentRate.sort(function(x, y) {
+                return y.value - x.value;
+            });
+            addEmergingPatentRateData(emergingPatentRateData);
+
             var emergingPatentData = data.emergingPatents.sort(function(x, y) {
                 return y.value - x.value;
             });
@@ -1056,6 +1100,22 @@
             }
         }
 
+        function addEmergingPatentRateData(data) {
+            $("#patent-emerging-rate tbody tr").remove();
+            for (let index = 0; index < data.length; index++) {
+                const element = data[index];
+                var myHtmlContent =
+                    `
+                    <td>${index+1}</td>
+                    <td>${element.key}</td>
+                    <td>${element.value} % </td>
+                `;
+                var tableRef = document.getElementById('patent-emerging-rate').getElementsByTagName('tbody')[0];
+                var newRow = tableRef.insertRow(tableRef.rows.length);
+                newRow.innerHTML = myHtmlContent;
+            }
+        }
+
         function addEmergingPatentData(data) {
             $("#patent-emerging tbody tr").remove();
 
@@ -1092,7 +1152,9 @@
         }
 
         Livewire.on('totalReportsUpdated', (data) => {
-            console.log(data);
+            document.getElementById('business-count').innerHTML = data.businessCount;
+            document.getElementById('patent-count').innerHTML = data.patentCount;
+            document.getElementById('journal-count').innerHTML = data.journalCount;
             lineChart.updateOptions({
                 series: [{
                         name: "Business",
@@ -1212,10 +1274,19 @@
         });
 
         Livewire.on('emergingJournalRate', (data) => {
+            console.log("here");
+            console.log(data);
             var emergingJournalRateData = data.emergingJournalRate.sort(function(x, y) {
                 return y.value - x.value;
             });
             addEmergingJournalRateData(emergingJournalRateData);
+        });
+
+        Livewire.on('emergingPatentRate', (data) => {
+            var emergingPatentRateData = data.emergingPatentRate.sort(function(x, y) {
+                return y.value - x.value;
+            });
+            addEmergingPatentRateData(emergingPatentRateData);
         });
     </script>
 @endpush
