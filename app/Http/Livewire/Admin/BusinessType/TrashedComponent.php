@@ -34,7 +34,7 @@ class TrashedComponent extends Component
         try {
             $data = BusinessType::where('id', $id);
             if ($data != null) {
-                $data->forecDelete();
+                $data->forceDelete();
                 $this->dispatchBrowserEvent('success-message',['message' => 'Business type permanently deleted successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';

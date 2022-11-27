@@ -20,7 +20,7 @@ class TrashedComponent extends Component
 
     public function render()
     {
-        return view('livewire.admin.business-type.trashed-component', [
+        return view('livewire.admin.business-group.trashed-component', [
             'businessGroups' => BusinessGroup::search($this->search)
                 ->onlyTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
@@ -34,7 +34,7 @@ class TrashedComponent extends Component
         try {
             $data = BusinessGroup::where('id', $id);
             if ($data != null) {
-                $data->forecDelete();
+                $data->forceDelete();
                 $this->dispatchBrowserEvent('success-message',['message' => 'Business group permanently deleted successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
