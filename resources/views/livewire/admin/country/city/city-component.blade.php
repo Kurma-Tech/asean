@@ -187,7 +187,7 @@
                                         <td><strong>{{ $city->id }}</strong></td>
                                         <td><span class="badge badge-primary">{{ $city->name ?? 'NULL' }}</span></td>
                                         <td><span class="badge badge-primary">{{ $city->code ?? 'NULL' }}</span></td>
-                                        <td><span class="badge badge-secondary">{{ $city->districts->provinces->regions->country->name ?? 'NULL' }} > {{ $city->districts->province->regions->name ?? 'NULL' }} > {{ $city->districts->province->name ?? 'NULL' }} > {{ $city->districts->name ?? 'NULL' }}</span></td>
+                                        <td><span class="badge badge-secondary">{{ $city->districts->provinces->regions->country->name ?? 'NULL' }} > {{ $city->districts->provinces->regions->name ?? 'NULL' }} > {{ $city->districts->provinces->name ?? 'NULL' }} > {{ $city->districts->name ?? 'NULL' }}</span></td>
                                         <td>
                                             <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$city->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
                                                 <i class="fas fa-edit"></i>

@@ -171,7 +171,7 @@
                                         <td><strong>{{ $district->id }}</strong></td>
                                         <td><span class="badge badge-primary">{{ $district->name ?? 'NULL' }}</span></td>
                                         <td><span class="badge badge-primary">{{ $district->code ?? 'NULL' }}</span></td>
-                                        <td><p class="paragraph-row">{{ $district->provinces->regions->country->name ?? 'NULL' }} | {{ $district->province->regions->name ?? 'NULL' }} | {{ $district->province->name ?? 'NULL' }}</p></td>
+                                        <td><p class="paragraph-row">{{ $district->provinces->regions->country->name ?? 'NULL' }} | {{ $district->provinces->regions->name ?? 'NULL' }} | {{ $district->provinces->name ?? 'NULL' }}</p></td>
                                         <td>
                                             <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$district->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
                                                 <i class="fas fa-edit"></i>

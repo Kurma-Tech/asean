@@ -82,7 +82,7 @@
                                         <td><strong>{{ $district->id }}</strong></td>
                                         <td><span class="badge badge-primary">{{ $district->name ?? 'NULL' }}</span></td>
                                         <td><span class="badge badge-primary">{{ $district->code ?? 'NULL' }}</span></td>
-                                        <td><p class="paragraph-row">{{ $district->provinces->regions->country->name ?? 'NULL' }} | {{ $district->province->regions->name ?? 'NULL' }} | {{ $district->province->name ?? 'NULL' }}</p></td>
+                                        <td><p class="paragraph-row">{{ $district->provinces->regions->country->name ?? 'NULL' }} | {{ $district->provinces->regions->name ?? 'NULL' }} | {{ $district->provinces->name ?? 'NULL' }}</p></td>
                                         <td>
                                             <a href="javascript:void(0)" onclick="confirm('Do you want to restore?') || event.stopImmediatePropagation()" class="btn btn-xs bg-success" wire:click="restore({{$district->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
                                                 <i class="fas fa-trash-restore"></i>
