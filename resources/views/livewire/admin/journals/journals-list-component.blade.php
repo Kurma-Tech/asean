@@ -351,7 +351,7 @@
                                                             <div class="product-title">
                                                                 Source Link
                                                             </div>
-                                                            <a href="{{ $journal->link ?? 'javascript:void(0)'}}" class="product-title">{{ $journal->link ?? 'N/A'}}</a>
+                                                            <a href="{{ $journal->link ?? 'javascript:void(0)'}}" class="product-title" target="_blank" title="Visit Link">{{ $journal->link ?? 'N/A'}}</a>
                                                         </div>
                                                     </li>
                                                     <li class="item">
@@ -404,7 +404,7 @@
                                                             <div class="product-title">
                                                                 Geo Location
                                                             </div>
-                                                            <p class="product-title">{{$journal->long ?? 'N/A'}} (long), {{$journal->lat ?? 'N/A'}} (Lat)</p>
+                                                            <a class="product-title" href="https://www.google.com/maps/place/{{$journal->lat ?? 'NULL'}},{{$journal->long ?? 'NULL'}}" target="_blank" title="Google Map View">{{$journal->long ?? 'N/A'}} (long), {{$journal->lat ?? 'N/A'}} (Lat)</a>
                                                         </div>
                                                     </li>
                                                     <li class="item">

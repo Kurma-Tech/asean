@@ -344,7 +344,7 @@
                                                         <div class="product-title">
                                                             Registration Date
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{ $patent->registration_date  ?? 'N/A'}}</a>
+                                                        <p class="product-title">{{ $patent->registration_date  ?? 'N/A'}}</p>
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -352,7 +352,7 @@
                                                         <div class="product-title">
                                                             Filing Date
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{ $patent->filing_date  ?? 'N/A'}}</a>
+                                                        <p class="product-title">{{ $patent->filing_date  ?? 'N/A'}}</p>
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -360,7 +360,7 @@
                                                         <div class="product-title">
                                                             Registration Number
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{ $patent->registration_no  ?? 'N/A'}}</a>
+                                                        <p class="product-title">{{ $patent->registration_no  ?? 'N/A'}}</p>
                                                     </div>
                                                 </li>
                                                 @if(!is_null($patent->patentCategories))
@@ -371,7 +371,7 @@
                                                         </div>
                                                         <p class="product-title">
                                                             @foreach ($patent->patentCategories as $pCategories)
-                                                                <span class="badge badge-secondary">{{ $pCategories->category }}</span>
+                                                                <span class="badge badge-secondary" title="{{ $pCategories->classification_category }}">{{ $pCategories->ipc_code }}</span>
                                                             @endforeach
                                                         </p>
                                                     </div>
@@ -395,7 +395,7 @@
                                                         <div class="product-title">
                                                             Applicant Company
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{$patent->applicant_company ?? 'N/A'}}</a>
+                                                        <p class="product-title">{{$patent->applicant_company ?? 'N/A'}}</p>
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -403,7 +403,7 @@
                                                         <div class="product-title">
                                                             Country Name
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{$patent->country->name ?? 'N/A'}}</a>
+                                                        <p class="product-title">{{$patent->country->name ?? 'N/A'}}</p>
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -411,7 +411,7 @@
                                                         <div class="product-title">
                                                             Geo Location
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{$patent->long ?? 'N/A'}} (long), {{$patent->lat ?? 'N/A'}} (Lat)</a>
+                                                        <a class="product-title" href="https://www.google.com/maps/place/{{$patent->lat ?? 'NULL'}},{{$patent->long ?? 'NULL'}}" target="_blank" title="Google Map View">{{$patent->long ?? 'N/A'}} (long), {{$patent->lat ?? 'N/A'}} (Lat)</a>
                                                     </div>
                                                 </li>
                                                 <li class="item">
