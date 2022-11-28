@@ -21,7 +21,7 @@
                         
                         <div class="mt-1 p-1"><strong class="text-red-400 strong-code">Colums accepted:</strong>
                             <code class="text-xs text-info-400">
-                                province_code,
+                                province_name,
                                 name,
                                 code,
                             </code>

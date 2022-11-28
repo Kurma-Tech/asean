@@ -16,14 +16,14 @@ class ProvinceImport implements ToCollection, WithHeadingRow, WithChunkReading, 
 
     public function __construct()
     {
-        $this->regions = Region::select('id', 'code');
+        $this->regions = Region::select('id', 'name');
     }
 
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) 
         {
-            $region = $this->regions->where('code', $row['region_code'])->first();
+            $region = $this->regions->where('name', $row['region_name'])->first();
             Province::create([
                 "region_id" => $region->id ?? Null,
                 "name"      => $row['name'],

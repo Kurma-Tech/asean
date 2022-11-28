@@ -16,14 +16,14 @@ class DistrictImport implements ToCollection, WithHeadingRow, WithChunkReading, 
 
     public function __construct()
     {
-        $this->provinces = Province::select('id', 'code');
+        $this->provinces = Province::select('id', 'name');
     }
 
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) 
         {
-            $province = $this->provinces->where('code', $row['province_code'])->first();
+            $province = $this->provinces->where('name', $row['province_name'])->first();
             District::create([
                 "province_id" => $province->id ?? Null,
                 "name"        => $row['name'],
