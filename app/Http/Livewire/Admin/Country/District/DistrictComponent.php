@@ -39,7 +39,7 @@ class DistrictComponent extends Component
     {
         return [
             'name'        => 'required',
-            'code'        => 'required',
+            'code'        => 'nullable',
             'province_id' => 'required|integer'
         ];
     }

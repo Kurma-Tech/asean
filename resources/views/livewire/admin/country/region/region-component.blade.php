@@ -92,7 +92,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="code">Region Code<span class="text-danger">*</span></label>
+                                    <label for="code">Region Code</label>
                                     <input type="text" class="form-control" id="code" placeholder="Ex. 10 (2 digits)"
                                         wire:model='code'>
                                     @error('code')

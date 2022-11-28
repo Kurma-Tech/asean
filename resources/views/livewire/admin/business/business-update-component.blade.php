@@ -37,20 +37,7 @@
                                             @enderror
                                         </div>
                                     </div>
-
-                                    <div class="col-md-6 col-sm-12">
-                                        <div class="form-group">
-                                            <label for="ngc_code">NGC Code</label>
-                                            <input type="text" class="form-control" id="ngc_code"
-                                                wire:model="ngc_code">
-                                            @error('ngc_code')
-                                                <div class="error">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
+                                    
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label for="business_type_name">Business Type<span class="text-danger">*</span></label>
@@ -125,56 +112,6 @@
                                             <input type="text" class="form-control" name="date_registered"
                                                 id="date_registered" wire:model="date_registered" onchange="this.dispatchEvent(new InputEvent('input'))"/>
                                             @error('date_registered')
-                                                <div class="error">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-12">
-                                        <div class="form-group">
-                                            <label for="geo_code">Geo Code</label>
-                                            <input type="text" class="form-control" id="geo_code"
-                                                wire:model="geo_code">
-                                            @error('geo_code')
-                                                <div class="error">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 col-sm-12">
-                                        <div class="form-group">
-                                            <label for="industry_code">Industry Code</label>
-                                            <input type="text" class="form-control" id="industry_code"
-                                                wire:model="industry_code">
-                                            @error('industry_code')
-                                                <div class="error">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-12">
-                                        <div class="form-group">
-                                            <label for="geo_description">Geo Description</label>
-                                            <div wire:ignore>
-                                                <textarea id="geo_description" wire:model="geo_description"></textarea>
-                                            </div>
-                                            @error('geo_description')
-                                                <div class="error">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 col-sm-12">
-                                        <div class="form-group">
-                                            <label for="industry_description">Industry Description</label>
-                                            <div wire:ignore>
-                                                <textarea id="industry_description" wire:model="industry_description"></textarea>
-                                            </div>
-                                            @error('industry_description')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>

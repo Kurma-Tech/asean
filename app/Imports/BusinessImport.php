@@ -45,34 +45,34 @@ class BusinessImport implements ToModel, WithHeadingRow, WithChunkReading, WithB
         } else {
             $country = null;
         }
-        if (isset($row['region_code'])) {
+        if (isset($row['region_name'])) {
             $region = DB::table('regions')
-                ->select('id', 'code')
-                ->where('code', $row['region_code'])
+                ->select('id', 'name')
+                ->where('name', $row['region_name'])
                 ->first();
         } else {
             $region = null;
         }
-        if (isset($row['province_code'])) {
+        if (isset($row['province_name'])) {
             $province = DB::table('provinces')
-                ->select('id', 'code')
-                ->where('code', $row['province_code'])
+                ->select('id', 'name')
+                ->where('name', $row['province_name'])
                 ->first();
         } else {
             $province = null;
         }
-        if (isset($row['district_code'])) {
+        if (isset($row['district_name'])) {
             $district = DB::table('districts')
-                ->select('id', 'code')
-                ->where('code', $row['district_code'])
+                ->select('id', 'name')
+                ->where('name', $row['district_name'])
                 ->first();
         } else {
             $district = null;
         }
-        if (isset($row['city_code'])) {
+        if (isset($row['city_name'])) {
             $city = DB::table('cities')
-                ->select('id', 'code')
-                ->where('code', $row['city_code'])
+                ->select('id', 'name')
+                ->where('name', $row['city_name'])
                 ->first();
         } else {
             $city = null;

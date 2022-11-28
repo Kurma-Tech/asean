@@ -29,22 +29,17 @@
                                 business_type,
                                 business_group,
                                 classification_code,
-                                country_short_code i.e IND for Indonesia,
+                                country_short_code i.e ID (two letter code) for Indonesia,
                                 sec_no, 
-                                date_registered, 
-                                ngc_code, 
+                                date_registered,
                                 status, 
-                                address, 
-                                industry_code, 
-                                industry_description, 
-                                geo_code, 
-                                geo_description, 
+                                address,
                                 long, 
                                 lat,
-                                region_code,
-                                province_code,
-                                district_code,
-                                city_code
+                                region_name,
+                                province_name,
+                                district_name,
+                                city_name
                             </code>
                         </div>
                     </div>

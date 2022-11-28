@@ -32,7 +32,7 @@ class RegionComponent extends Component
     {
         return [
             'name'       => 'required',
-            'code'       => 'required',
+            'code'       => 'nullable',
             'country_id' => 'required|integer'
         ];
     }

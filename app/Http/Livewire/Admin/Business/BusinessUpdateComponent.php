@@ -31,17 +31,12 @@ class BusinessUpdateComponent extends Component
         $business_id,
         $company_name,
         $sec_no,
-        $ngc_code,
         $business_type_id,
         $business_group_id,
         $industry_classification_id,
         $city_id,
         $year,
         $date_registered,
-        $geo_code,
-        $industry_code,
-        $geo_description,
-        $industry_description,
         $address,
         $long,
         $lat;
@@ -63,7 +58,6 @@ class BusinessUpdateComponent extends Component
         return [
             'company_name'               => 'required',
             'sec_no'                     => 'required',
-            'ngc_code'                   => 'nullable',
             'business_type_id'           => 'required|integer',
             'business_group_id'          => 'required|integer',
             'industry_classification_id' => 'required|integer',
@@ -74,10 +68,6 @@ class BusinessUpdateComponent extends Component
             'city_id'                    => 'required|integer',
             'year'                       => 'required',
             'date_registered'            => 'required|date_format:"m/d/Y"',
-            'geo_code'                   => 'nullable',
-            'industry_code'              => 'nullable',
-            'geo_description'            => 'nullable',
-            'industry_description'       => 'nullable',
             'long'                       => 'required',
             'lat'                        => 'required',
             'address'                    => 'required'
@@ -120,7 +110,6 @@ class BusinessUpdateComponent extends Component
         $business                         = Business::findOrFail($this->business_id);
         $this->company_name               = $business->company_name;
         $this->sec_no                     = $business->sec_no;
-        $this->ngc_code                   = $business->ngc_code;
         $this->business_type_id           = $business->business_type_id;
         $this->business_group_id          = $business->business_group_id;
         $this->industry_classification_id = $business->industry_classification_id;
@@ -131,10 +120,6 @@ class BusinessUpdateComponent extends Component
         $this->city_id                    = $business->city_id;
         $this->year                       = $business->year;
         $this->date_registered            = $business->date_registered;
-        $this->geo_code                   = $business->geo_code;
-        $this->industry_code              = $business->industry_code;
-        $this->geo_description            = $business->geo_description;
-        $this->industry_description       = $business->industry_description;
         $this->address                    = $business->address;
         $this->long                       = $business->long;
         $this->lat                        = $business->lat;
@@ -201,7 +186,6 @@ class BusinessUpdateComponent extends Component
             $business = Business::findOrFail($this->business_id);
             $business->company_name               = $this->company_name;
             $business->sec_no                     = $this->sec_no;
-            $business->ngc_code                   = $this->ngc_code;
             $business->business_type_id           = $this->business_type_id;
             $business->business_group_id          = $this->business_group_id;
             $business->industry_classification_id = $this->industry_classification_id;
@@ -212,10 +196,6 @@ class BusinessUpdateComponent extends Component
             $business->city_id                    = $this->city_id;
             $business->year                       = $this->year;
             $business->date_registered            = $this->date_registered;
-            $business->geo_code                   = $this->geo_code;
-            $business->industry_code              = $this->industry_code;
-            $business->geo_description            = $this->geo_description;
-            $business->industry_description       = $this->industry_description;
             $business->long                       = $this->long;
             $business->lat                        = $this->lat;
             $business->address                    = $this->address;

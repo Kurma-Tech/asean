@@ -42,7 +42,7 @@ class CityComponent extends Component
     {
         return [
             'name'        => 'required',
-            'code'        => 'required',
+            'code'        => 'nullable',
             'district_id' => 'required'
         ];
     }

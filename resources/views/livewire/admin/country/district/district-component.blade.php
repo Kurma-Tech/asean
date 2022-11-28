@@ -123,7 +123,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="code">District Code<span class="text-danger">*</span></label>
+                                    <label for="code">District Code</label>
                                     <input type="text" class="form-control" id="code" placeholder="Ex. 1500 (4 or 5 digits)"
                                         wire:model='code'>
                                     @error('code')

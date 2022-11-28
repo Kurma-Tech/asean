@@ -36,7 +36,7 @@ class ProvinceComponent extends Component
     {
         return [
             'name'      => 'required',
-            'code'      => 'required',
+            'code'      => 'nullable',
             'region_id' => 'required|integer'
         ];
     }
