@@ -15,7 +15,7 @@ class CityImport implements ToCollection, WithHeadingRow, WithChunkReading, With
 
     public function __construct()
     {
-        $this->districts = District::select('id', 'name');
+        $this->districts = District::select('id', 'name')->get();
     }
 
     public function collection(Collection $rows)

@@ -90,7 +90,7 @@
                                         <select class="form-control select2 select2bs4" id="region_name" wire:model="region_id">
                                             <option hidden>Choose Region</option>
                                             @foreach($regions as $region)
-                                            <option value="{{ $region->id }}">{{ $region->region_name }}</option>
+                                            <option value="{{ $region->id }}">{{ $region->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -155,7 +155,7 @@
                                         <td><strong>{{ $province->id }}</strong></td>
                                         <td><span class="badge badge-primary">{{ $province->name ?? 'NULL' }}</span></td>
                                         <td><span class="badge badge-primary">{{ $province->code ?? 'NULL' }}</span></td>
-                                        <td><span class="badge badge-secondary">{{ $province->regions->country->name ?? 'NULL' }} > {{ $province->regions->name ?? 'NULL' }}</span></td>
+                                        <td><p class="paragraph-row">{{ $province->regions->country->name ?? 'NULL' }} | {{ $province->regions->name ?? 'NULL' }}</p></td>
                                         <td>
                                             <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$province->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
                                                 <i class="fas fa-edit"></i>

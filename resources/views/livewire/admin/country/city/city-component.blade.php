@@ -90,7 +90,7 @@
                                         <select class="form-control select2 select2bs4" id="region_name" wire:model="region_id">
                                             <option hidden>Choose Region</option>
                                             @foreach($regions as $region)
-                                            <option value="{{ $region->id }}">{{ $region->region_name }}</option>
+                                            <option value="{{ $region->id }}">{{ $region->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>

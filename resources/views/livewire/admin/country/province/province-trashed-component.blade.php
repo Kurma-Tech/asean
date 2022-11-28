@@ -82,7 +82,7 @@
                                         <td><strong>{{ $province->id }}</strong></td>
                                         <td><span class="badge badge-primary">{{ $province->name ?? 'NULL' }}</span></td>
                                         <td><span class="badge badge-primary">{{ $province->code ?? 'NULL' }}</span></td>
-                                        <td><span class="badge badge-secondary">{{ $province->regions->country->name ?? 'NULL' }} > {{ $province->regions->name ?? 'NULL' }}</span></td>
+                                        <td><p class="paragraph-row">{{ $province->regions->country->name ?? 'NULL' }} | {{ $province->regions->name ?? 'NULL' }}</p></td>
                                         <td>
                                             <a href="javascript:void(0)" onclick="confirm('Do you want to restore?') || event.stopImmediatePropagation()" class="btn btn-xs bg-success" wire:click="restore({{$province->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
                                                 <i class="fas fa-trash-restore"></i>

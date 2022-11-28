@@ -16,7 +16,7 @@ class ProvinceImport implements ToCollection, WithHeadingRow, WithChunkReading, 
 
     public function __construct()
     {
-        $this->regions = Region::select('id', 'name');
+        $this->regions = Region::select('id', 'name')->get();
     }
 
     public function collection(Collection $rows)

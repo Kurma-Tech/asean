@@ -16,7 +16,7 @@ class RegionImport implements ToCollection, WithHeadingRow, WithChunkReading, Wi
 
     public function __construct()
     {
-        $this->countries = Country::select('id', 'short_code');
+        $this->countries = Country::select('id', 'short_code')->get();
     }
 
     public function collection(Collection $rows)
