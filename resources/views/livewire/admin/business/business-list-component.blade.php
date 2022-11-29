@@ -148,7 +148,7 @@
                                                         <div class="product-title">
                                                             Country
                                                         </div>
-                                                        <p class="product-title">{{ $business->country  ?? 'NULL'}}</p>
+                                                        <p class="product-title">{{ $business->country->name  ?? 'NULL'}}</p>
                                                     </div>
                                                 </li>
                                                 <li class="item">
