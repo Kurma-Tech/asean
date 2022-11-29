@@ -111,7 +111,7 @@ class BusinessUpdateComponent extends Component
         $this->company_name               = $business->company_name;
         $this->sec_no                     = $business->sec_no;
         $this->business_type_id           = $business->business_type_id;
-        $this->business_group_id          = $business->business_group_id;
+        $this->business_group_id          = $business->group_id;
         $this->industry_classification_id = $business->industry_classification_id;
         $this->country_id                 = $business->country_id;
         $this->selectedCountry            = $business->region_id;
@@ -187,7 +187,7 @@ class BusinessUpdateComponent extends Component
             $business->company_name               = $this->company_name;
             $business->sec_no                     = $this->sec_no;
             $business->business_type_id           = $this->business_type_id;
-            $business->business_group_id          = $this->business_group_id;
+            $business->group_id                   = $this->business_group_id;
             $business->industry_classification_id = $this->industry_classification_id;
             $business->country_id                 = $this->country_id;
             $business->region_id                  = $this->region_id;

@@ -86,7 +86,7 @@ class BusinessImport implements ToModel, WithHeadingRow, WithChunkReading, WithB
             "company_name"               => $row['company_name'],
             "date_registered"            => $row['date_registered'],
             "business_type_id"           => ($businessType != null) ? $businessType->id : null,
-            "business_group_id"          => ($businessGroup != null) ? $businessGroup->id : null,
+            "group_id"                   => ($businessGroup != null) ? $businessGroup->id : null,
             "industry_classification_id" => ($industryClassification != null) ? $industryClassification->id : null,
             "country_id"                 => ($country != null) ? $country->id : null,
             "region_id"                  => ($region != null) ? $region->id : null,

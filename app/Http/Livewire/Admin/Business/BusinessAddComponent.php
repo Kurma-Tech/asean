@@ -169,7 +169,7 @@ class BusinessAddComponent extends Component
             $business->company_name               = $this->company_name;
             $business->sec_no                     = $this->sec_no;
             $business->business_type_id           = $this->business_type_id;
-            $business->business_group_id          = $this->business_group_id;
+            $business->group_id                   = $this->business_group_id;
             $business->industry_classification_id = $this->industry_classification_id;
             $business->country_id                 = $this->selectedCountry;
             $business->region_id                  = $this->selectedRegion;

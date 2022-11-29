@@ -36,7 +36,7 @@ class Business extends Model
 
     public function businessGroup()
     {
-        return $this->belongsTo(BusinessGroup::class, 'business_group_id');
+        return $this->belongsTo(BusinessGroup::class, 'group_id');
     }
 
     public function country()
