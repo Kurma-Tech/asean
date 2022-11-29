@@ -81,6 +81,7 @@
                                         <th>Registered Year</th>
                                         <th>SEC No.</th>
                                         <th>Type</th>
+                                        <th>Group</th>
                                         <th>Classification</th>
                                         <th>Status</th>
                                     </tr>
@@ -97,6 +98,9 @@
                                         </td>
                                         <td>
                                             <span class="badge badge-primary">{{ $business->businessType->type ?? 'N/A' }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-primary">{{ $business->businessGroup->group ?? 'N/A' }}</span>
                                         </td>
                                         <td>
                                             <span class="badge badge-info">{{ $business->industryClassification->classifications ?? 'N/A' }}</span>
