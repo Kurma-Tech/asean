@@ -114,7 +114,7 @@
                                     @foreach($businessGroups as $bGroup)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $bGroup->group }}  id {{$bGroup->id}}</td>
+                                        <td>{{ $bGroup->group }}</td>
                                         <td>{{ $bGroup->slug }}</td>
                                         <td>
                                             <span class="badge {{ ($bGroup->deleted_at) ? 'bg-danger':'bg-success' }}">{{ ($bGroup->deleted_at) ? 'Deleted':'Available' }}</span>
