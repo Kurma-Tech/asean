@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Client\Map;
 use App\Models\Business;
 use App\Models\Patent;
 use App\Models\Journal;
+use App\Models\Region;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -14,6 +15,7 @@ class MapComponent extends Component
     public
         $long,
         $lat,
+        $isDensityMap = true,
         $geoJson,
         $type,
         $country,
@@ -29,6 +31,7 @@ class MapComponent extends Component
 
     protected
         $business = [],
+        $densityBusiness = [],
         $patents = [],
         $journals = [];
 
@@ -48,6 +51,11 @@ class MapComponent extends Component
         $this->type = "all";
         $this->emit("loader_on");
         $this->filterData($this->type, $this->country, $this->classification);
+    }
+
+    public function changeMap($value){
+        $this->isDensityMap = $value;
+        $this->emit("map_changed");
     }
 
     public function updatedCountry($country)
@@ -90,7 +98,7 @@ class MapComponent extends Component
 
         /* Model Queries */
         DB::enableQueryLog();
-        $businessQuery =  DB::table('businesses')->select('id', 'lat', 'long', 'year', 'company_name');
+        $businessQuery =  DB::table('businesses')->select('id', 'lat', 'long', 'year', 'company_name', "region_id");
         $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'registration_date', 'title');
         $journalQuery =  DB::table('journals')->select('id', 'lat', 'long', 'title');
         /* Model Queries End */
@@ -170,11 +178,13 @@ class MapComponent extends Component
 
         /* Get Query Data */
         $this->business = $businessQuery->get()->chunk(5000);
+        $this->densityBusiness = $businessQuery->get();
         $this->patents = $patentQuery->get();
         $this->journals = $journalQuery->get();
         /* Get Query Data End */
 
         $this->loadJsonData(); // Load data for map
+        $this->loadDensityJsonData();
         $this->emit("loader_off"); // Loader off
     }
 
@@ -268,6 +278,18 @@ class MapComponent extends Component
         $this->emit("resultsUpdated", $this->totalBusiness + $this->totalPatents);
 
         $this->emit("mapUpdated", ["geoJson" => $tempBusinessDataChunked, "patentJson" => $patentGeoLocations, "journalJson" => $journalGeoLocations]);
+    }
+
+    private function loadDensityJsonData(){
+        $densityBusinessData = [];
+        foreach(collect($this->densityBusiness)->whereNotNull('region_id')->pluck('region_id')->countBy() as $key => $value)
+        {
+            array_push($densityBusinessData, [
+                "name" => Region::find($key)->name,
+                "count" => $value
+            ]);
+        }
+        $this->emit("densityMapUpdated", ["densityBusinessData"=>$densityBusinessData]);
     }
 
     public function getBusinessDataFromId($id)

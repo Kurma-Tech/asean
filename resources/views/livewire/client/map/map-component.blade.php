@@ -5,10 +5,31 @@
     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
         type="text/css">
     <style>
-        #map {
+        #maps {
             height: 100vh;
             width: 100%;
             position: relative;
+        }
+
+        #map {
+            height: 100vh;
+            width: 100%;
+            z-index: 1;
+            position: absolute;
+        }
+
+        #density-map {
+            height: 100vh;
+            width: 100%;
+            z-index: 2;
+            position: absolute;
+        }
+
+        #change-maps{
+            position: absolute;
+            z-index: 10;
+            left: 330px;
+            top: 20px;
         }
 
         #loader {
@@ -16,7 +37,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 1;
+            z-index: 9;
             display: none;
             justify-content: center;
             align-items: center;
@@ -46,7 +67,6 @@
         .popUp-content {
             overflow-y: auto;
             max-height: 400px;
-
             width: 100%;
         }
 
@@ -72,9 +92,9 @@
         .mapboxgl-ctrl-center {
             bottom: 72px;
             left: 50%;
-            position:absolute; 
-            pointer-events:none; 
-            z-index:2;
+            position: absolute;
+            pointer-events: none;
+            z-index: 2;
         }
 
         .mapboxgl-ctrl-center .mapboxgl-ctrl-group {
@@ -82,15 +102,56 @@
             margin-bottom: 5px;
         }
 
+        .legend {
+            background-color: #fff;
+            border-radius: 3px;
+            bottom: 50px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            color: black;
+            padding: 10px;
+            position: absolute;
+            z-index: 11;
+            left: 330px;
+        }
+        
+        .legend h4 {
+            margin: 0 0 10px;
+        }
+        
+        .legend div span {
+            border-radius: 50%;
+            display: inline-block;
+            height: 10px;
+            margin-right: 5px;
+            width: 10px;
+        }
     </style>
 @endpush
 
-<div>
-    <div id="map" wire:ignore>
-        <div id="loader"><img src="loader.gif" alt="loader"></div>
-        {{-- <div id="background">
-            <img src="star-background-min.jpg" alt="background" srcset="">
-        </div> --}}
+<div id="maps">
+    <div id="state-legend" class="legend" style="display: {{ $isDensityMap ? 'block' : 'none' }};">
+        <h4>Business</h4>
+        <div><span style="background-color: #723122"></span>25,000</div>
+        <div><span style="background-color: #8b4225"></span>10,000</div>
+        <div><span style="background-color: #a25626"></span>7,500</div>
+        <div><span style="background-color: #b86b25"></span>5,000</div>
+        <div><span style="background-color: #ca8323"></span>2,500</div>
+        <div><span style="background-color: #da9c20"></span>1,000</div>
+        <div><span style="background-color: #e6b71e"></span>750</div>
+        <div><span style="background-color: #eed322"></span>500</div>
+        <div><span style="background-color: #f2f12d"></span>0</div>
+    </div>
+
+    <div id="change-maps">
+        <button class="btn {{ $isDensityMap ? 'btn-success' : 'btn-default' }} btn-sm pull-right" wire:click="changeMap(true)">Density Map</button>
+        <button class="btn {{ $isDensityMap ? 'btn-default' : 'btn-success' }} btn-sm pull-right" wire:click="changeMap(false)">Heat Map</button>
+    </div>
+    <div id="loader"><img src="loader.gif" alt="loader"></div>
+    <div style="display: {{ $isDensityMap ? 'none' : 'block' }}; position: relative; height: 100vh; width: 100%;">
+        <div id="map" wire:ignore></div>
+    </div>
+    <div style="display: {{ $isDensityMap ? 'block' : 'none' }}; position: relative; height: 100vh; width: 100%;">
+        <div id="density-map" wire:ignore></div>
     </div>
 </div>
 
@@ -106,6 +167,7 @@
     <script>
         var currentMarkers = [];
         var map;
+        var density_map;
         var geoLocations;
         var loadLocations;
         var businessChunkedData = 0;
@@ -216,13 +278,47 @@
                     [141.79211516906793, 27.60302090835848]
                 ] // Set the map's geographical boundaries.
             });
+            density_map = new mapboxgl.Map({
+                container: "density-map", // container ID
+                style: "{{ env('MAPBOX_STYLE') }}", // style URL
+                center: [111.09841688936865, 2.37304225637002], // starting position [lng, lat]
+                zoom: 6, // starting zoom
+                minZoom: 6,
+                projection: "equirectangular", // display map style
+                bearing: -17.6,
+                antialias: true,
+                maxBounds: [
+                    [91.56216158463567, -10.491532410391958],
+                    [141.79211516906793, 27.60302090835848]
+                ] // Set the map's geographical boundaries.
+            });
+
+
+            const zoomThreshold = 4;
+
+            // density_map.on('load', () => {
+
+
+                // density_map.addLayer({
+                //     'id': 'poi-labels',
+                //     'type': 'symbol',
+                //     'source': 'population',
+                //     'source-layer': "ph-region-4myng8",
+                //     'layout': {
+                //         'text-field': ['get', 'name'],
+                //         'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+                //         'text-radial-offset': 0.5,
+                //         'text-justify': 'auto'
+                //     }
+                // });
+            // });
 
             // var nav = map.addControl(new mapboxgl.AttributionControl(), 'bottom-left');
 
             var nav = new mapboxgl.NavigationControl(); // position is optional
             map.addControl(nav, 'bottom-left');
 
-            nav._container.parentNode.className="mapboxgl-ctrl-center"
+            nav._container.parentNode.className = "mapboxgl-ctrl-center"
 
             map.loadImage(
                 '/light-bulb.png',
@@ -735,6 +831,11 @@
                 if (typeof mapLayer !== 'undefined') {
                     map.removeLayer('journal-heat-point').removeLayer('journal-point').removeSource('journal');
                 }
+
+                var mapLayer = map.getLayer('journal-heat-point');
+                if (typeof mapLayer !== 'undefined') {
+                    map.removeLayer('journal-heat-point').removeLayer('journal-point').removeSource('journal');
+                }
             } catch (error) {
 
             }
@@ -782,11 +883,103 @@
             }
         });
 
+        Livewire.on('densityMapUpdated', (data) => {
+
+            var mapLayer = density_map.getLayer('state-business-density');
+            if (typeof mapLayer !== 'undefined') {
+                density_map.removeLayer('state-business-density');
+            }
+
+            var mapLayer = density_map.getSource('business-density');
+            if (typeof mapLayer !== 'undefined') {
+                density_map.removeSource('business-density');
+            }
+
+            density_map.addSource('business-density', {
+                    type: 'vector',
+                    url: 'mapbox://kurmatech.7s6qx4no'
+                    // 'type': 'geojson',
+                    // 'data': testData
+                });
+
+            const zoomThreshold = 4;
+
+            const matchExpression = ['match', ['get', 'long']];
+            for (const row of data.densityBusinessData) {
+                // Convert the range of data values to a suitable color
+                const red = Math.floor((row['count'] / 20000) * 1000);
+                if (row['count'] > 0 && row['count'] <= 500){
+                    var color = '#F2F12D';
+                }else if (row['count'] > 500 && row['count'] <= 750){
+                    var color = '#E6B71E';
+                }else if (row['count'] > 750 && row['count'] <= 1000){
+                    var color = '#DA9C20';
+                }else if (row['count'] > 1000 && row['count'] <= 2500){
+                    var color = '#CA8323';
+                }else if (row['count'] > 2500 && row['count'] <= 5000){
+                    var color = '#B86B25';
+                }else if (row['count'] > 5000 && row['count'] <= 7500){
+                    var color = '#A25626';
+                }else if (row['count'] > 7500 && row['count'] <= 10000){
+                    var color = '#8B4225';
+                }else if (row['count'] > 10000){
+                    var color = '#723122';
+                }else{
+                    const color = `(0, 0, 0)`;
+                }
+                matchExpression.push(row['name'], color);
+            }
+
+            matchExpression.push('rgba(0, 0, 0, 0)');
+
+            if (!(data.densityBusinessData <= 0)){
+                density_map.addLayer({
+                    'id': 'state-business-density',
+                    'source': 'business-density',
+                    'source-layer': "ph-region-4myng8",
+                    // 'maxzoom': zoomThreshold,
+                    'type': 'fill',
+                    // only include features for which the "isState"
+                    // property is "true"
+                    // 'paint': {
+                    //     'fill-color': '#0080ff', // blue color fill
+                    //     'fill-opacity': 0.5
+                    // }
+                    // 'filter': ['==', 'isState', true],
+
+                    'paint': {
+                        'fill-color': matchExpression,
+                        'fill-opacity': 0.60
+                    }
+                }, );
+            }
+
+
+
+            
+                // density_map.addLayer({
+                //     'id': 'poi-labels',
+                //     'type': 'symbol',
+                //     'source': 'population',
+                //     'source-layer': "ph-region-4myng8",
+                //     'layout': {
+                //         'text-field': ['get', 'name'],
+                //         'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+                //         'text-radial-offset': 0.5,
+                //         'text-justify': 'auto'
+                //     }
+                // });
+        });
+
         Livewire.on('loader_on', () => {
             document.getElementById('loader').style.display = 'flex';
         });
         Livewire.on('loader_off', () => {
             document.getElementById('loader').style.display = 'none';
+        });
+        Livewire.on('map_changed', () => {
+            map.resize();
+            density_map.resize();
         });
         Livewire.on('flyover', (data) => {
             map.flyTo({
