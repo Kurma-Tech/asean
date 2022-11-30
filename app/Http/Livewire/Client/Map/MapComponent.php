@@ -148,7 +148,12 @@ class MapComponent extends Component
             if ($this->type == "patent" && $this->classification != null) {
                 Log::info($this->classification);
                 $listOfCategories = $this->classification;
-                $patentQuery = $patentQuery->where('country_id', $country);
+                $patentQuery = $patentQuery->where('country_id', $country)->whereExists(function ($query) use ($listOfCategories) {
+                    $query->select(DB::raw(1))
+                          ->from('patent_categories')
+                          ->whereColumn('patent_categories.id', $listOfCategories);
+                });
+                
                 // ->with(['patentCategories' => function($query) use ($listOfCategories) {
                 //     $query->where('patent_categories.id', $listOfCategories);
                 // }]);
@@ -158,7 +163,11 @@ class MapComponent extends Component
             if ($this->type == "journals" && $this->classification != null) {
                 Log::info($this->classification);
                 $listOfCategories = $this->classification;
-                $journalQuery = $journalQuery->where('country_id', $country);
+                $journalQuery = $journalQuery->where('country_id', $country)->whereExists(function ($query) use ($listOfCategories) {
+                    $query->select(DB::raw(1))
+                          ->from('journal_categories')
+                          ->whereColumn('journal_categories.id', $listOfCategories);
+                });
                 // ->with(['journalCategories' => function($query) use ($listOfCategories) {
                 //     $query->where('journal_categories.id', $listOfCategories);
                 // }]);
@@ -168,6 +177,26 @@ class MapComponent extends Component
         } else {
             if ($this->type == "business" && $this->classification != null) {
                 $businessQuery = $businessQuery->where('industry_classification_id', $this->classification);
+            }
+
+            if ($this->type == "patent" && $this->classification != null) {
+                Log::info($this->classification);
+                $listOfCategories = $this->classification;
+                $patentQuery = $patentQuery->where('country_id', $country)->whereExists(function ($query) use ($listOfCategories) {
+                    $query->select(DB::raw(1))
+                          ->from('patent_categories')
+                          ->whereColumn('patent_categories.id', $listOfCategories);
+                });
+            } 
+
+            if ($this->type == "journals" && $this->classification != null) {
+                Log::info($this->classification);
+                $listOfCategories = $this->classification;
+                $journalQuery = $journalQuery->where('country_id', $country)->whereExists(function ($query) use ($listOfCategories) {
+                    $query->select(DB::raw(1))
+                          ->from('journal_categories')
+                          ->whereColumn('journal_categories.id', $listOfCategories);
+                });
             }
         }
         /* Filter By Country and Classification End*/

@@ -29,6 +29,7 @@ class ReportComponent extends Component
         $popularCountryPatent,
         $popularCountryJournals,
         $emergingCountryIndustry,
+        $emergingYoungIndustry,
         $emergingCountryJournal,
         $emergingCountryPatent,
         $forecastCountry,
@@ -83,6 +84,12 @@ class ReportComponent extends Component
     public function updatedEmergingCountryIndustry($country)
     {
         $this->emergingCountryIndustry = $country;
+        $this->updateTopBusinessRate();
+    }
+
+    public function updatedEmergingYoungIndustry($young)
+    {
+        $this->emergingYoungIndustry = $young;
         $this->updateTopBusinessRate();
     }
 
@@ -184,9 +191,23 @@ class ReportComponent extends Component
         ini_set('memory_limit', '-1');
 
         if (!is_null($this->emergingCountryIndustry) && $this->emergingCountryIndustry != "") {
-            $test2 = collect(DB::table('businesses')->select('id', 'year', 'country_id', 'parent_classification_id')->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
+            $test2 = collect(DB::table('businesses')->select('id', 'year', 'country_id', 'parent_classification_id')->get())->where('country_id', $this->emergingCountryIndustry)->filter(function ($value, $key) {
+                if ($value->year != null  && $this->emergingYoungIndustry != null && $this->emergingYoungIndustry != ""){
+                    return (date('Y') - (int)$value->year) <= $this->emergingYoungIndustry;
+                }else{
+                    return true;
+                }
+                
+            })->pluck('parent_classification_id')->countBy();
         } else {
-            $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
+            $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->get())->filter(function ($value, $key) {
+                if ($value->year != null  && $this->emergingYoungIndustry != null && $this->emergingYoungIndustry != ""){
+                    return (date('Y') - (int)$value->year) <= $this->emergingYoungIndustry;
+                }else{
+                    return true;
+                }
+                
+            })->pluck('parent_classification_id')->countBy();
         }
 
         $final = [];
@@ -194,7 +215,14 @@ class ReportComponent extends Component
             if ($classKey == null) {
                 continue;
             } else {
-                $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->filter(function ($value, $key) {
+                    if ($value->year != null  && $this->emergingYoungIndustry != null && $this->emergingYoungIndustry != ""){
+                        return (date('Y') - (int)$value->year) <= $this->emergingYoungIndustry;
+                    }else{
+                        return true;
+                    }
+                    
+                })->pluck('year')->countBy();
                 // dd($years);
                 $rate = 0;
                 $addition = 0;
@@ -565,14 +593,28 @@ class ReportComponent extends Component
         /* Get Query Data End */
 
 
-        $businessClassificationForEmerging = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
+        $businessClassificationForEmerging = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->get())->filter(function ($value, $key) {
+            if ($value->year != null  && $this->emergingYoungIndustry != null && $this->emergingYoungIndustry != ""){
+                return (date('Y') - (int)$value->year) <= $this->emergingYoungIndustry;
+            }else{
+                return true;
+            }
+            
+        })->pluck('parent_classification_id')->countBy();
 
         $businessClassificationRates = [];
         foreach ($businessClassificationForEmerging as $classKey => $value) {
             if ($classKey == null) {
                 continue;
             } else {
-                $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->filter(function ($value, $key) {
+                    if ($value->year != null  && $this->emergingYoungIndustry != null && $this->emergingYoungIndustry != ""){
+                        return (date('Y') - (int)$value->year) <= $this->emergingYoungIndustry;
+                    }else{
+                        return true;
+                    }
+                    
+                })->pluck('year')->countBy();
                 // dd($years);
                 $rate = 0;
                 $addition = 0;
