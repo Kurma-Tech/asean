@@ -250,7 +250,7 @@
                                             <label for="city_name">City<span class="text-danger">*</span></label>
                                             <div wire:ignore>
                                                 <select class="form-control select2 select2bs4"
-                                                    id="city_name" wire:model="selectedCity"
+                                                    id="city_name" wire:model="city_id"
                                                     style="width: 100%;" onchange="this.dispatchEvent(new InputEvent('input'))">
                                                     <option hidden>Select city</option>
                                                     @foreach($cities as $city)
@@ -258,7 +258,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            @error('selectedCity')
+                                            @error('city_id')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -411,7 +411,7 @@
 
             $('#city_name').on('change', function (e) {
                 let data = $(this).val();
-                    @this.set('selectedCity', data);
+                    @this.set('city_id', data);
             });
 
             $('#business_type_name').on('change', function (e) {
