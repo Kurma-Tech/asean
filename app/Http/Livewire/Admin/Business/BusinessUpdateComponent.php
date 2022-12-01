@@ -193,10 +193,10 @@ class BusinessUpdateComponent extends Component
             $business->business_type_id           = $this->business_type_id;
             $business->group_id                   = $this->business_group_id;
             $business->industry_classification_id = $this->industry_classification_id;
-            $business->country_id                 = $this->country_id;
-            $business->region_id                  = $this->region_id;
-            $business->province_id                = $this->province_id;
-            $business->district_id                = $this->district_id;
+            $business->country_id                 = $this->selectedCountry;
+            $business->region_id                  = $this->selectedRegion;
+            $business->province_id                = $this->selectedProvince;
+            $business->district_id                = $this->selectedDistrict;
             $business->city_id                    = $this->city_id;
             $business->year                       = $this->year;
             $business->date_registered            = $this->date_registered;
