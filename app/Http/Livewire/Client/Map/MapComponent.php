@@ -151,7 +151,7 @@ class MapComponent extends Component
                 $patentQuery = $patentQuery->where('country_id', $country)->whereExists(function ($query) use ($listOfCategories) {
                     $query->select(DB::raw(1))
                           ->from('patent_categories')
-                          ->whereColumn('patent_categories.id', $listOfCategories);
+                          ->where('patent_categories.id', $listOfCategories);
                 });
                 
                 // ->with(['patentCategories' => function($query) use ($listOfCategories) {
@@ -166,7 +166,7 @@ class MapComponent extends Component
                 $journalQuery = $journalQuery->where('country_id', $country)->whereExists(function ($query) use ($listOfCategories) {
                     $query->select(DB::raw(1))
                           ->from('journal_categories')
-                          ->whereColumn('journal_categories.id', $listOfCategories);
+                          ->where('journal_categories.id', $listOfCategories);
                 });
                 // ->with(['journalCategories' => function($query) use ($listOfCategories) {
                 //     $query->where('journal_categories.id', $listOfCategories);
@@ -185,7 +185,7 @@ class MapComponent extends Component
                 $patentQuery = $patentQuery->where('country_id', $country)->whereExists(function ($query) use ($listOfCategories) {
                     $query->select(DB::raw(1))
                           ->from('patent_categories')
-                          ->whereColumn('patent_categories.id', $listOfCategories);
+                          ->where('patent_categories.id', $listOfCategories);
                 });
             } 
 
@@ -195,7 +195,7 @@ class MapComponent extends Component
                 $journalQuery = $journalQuery->where('country_id', $country)->whereExists(function ($query) use ($listOfCategories) {
                     $query->select(DB::raw(1))
                           ->from('journal_categories')
-                          ->whereColumn('journal_categories.id', $listOfCategories);
+                          ->where('journal_categories.id', $listOfCategories);
                 });
             }
         }
