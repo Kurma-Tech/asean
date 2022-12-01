@@ -150,8 +150,8 @@ class MapComponent extends Component
                 $listOfCategories = $this->classification;
                 $patentQuery = $patentQuery->where('country_id', $country)->whereExists(function ($query) use ($listOfCategories) {
                     $query->select(DB::raw(1))
-                          ->from('patent_categories')
-                          ->where('patent_categories.id', $listOfCategories);
+                          ->from('patent_pivot_patent_category')
+                          ->where('patent_pivot_patent_category.id', $listOfCategories);
                 });
                 
                 // ->with(['patentCategories' => function($query) use ($listOfCategories) {
@@ -165,8 +165,8 @@ class MapComponent extends Component
                 $listOfCategories = $this->classification;
                 $journalQuery = $journalQuery->where('country_id', $country)->whereExists(function ($query) use ($listOfCategories) {
                     $query->select(DB::raw(1))
-                          ->from('journal_categories')
-                          ->where('journal_categories.id', $listOfCategories);
+                          ->from('journal_pivot_journal_category')
+                          ->where('journal_pivot_journal_category.id', $listOfCategories);
                 });
                 // ->with(['journalCategories' => function($query) use ($listOfCategories) {
                 //     $query->where('journal_categories.id', $listOfCategories);
@@ -184,8 +184,8 @@ class MapComponent extends Component
                 $listOfCategories = $this->classification;
                 $patentQuery = $patentQuery->where('country_id', $country)->whereExists(function ($query) use ($listOfCategories) {
                     $query->select(DB::raw(1))
-                          ->from('patent_categories')
-                          ->where('patent_categories.id', $listOfCategories);
+                          ->from('patent_pivot_patent_category')
+                          ->where('patent_pivot_patent_category.id', $listOfCategories);
                 });
             } 
 
@@ -194,8 +194,8 @@ class MapComponent extends Component
                 $listOfCategories = $this->classification;
                 $journalQuery = $journalQuery->where('country_id', $country)->whereExists(function ($query) use ($listOfCategories) {
                     $query->select(DB::raw(1))
-                          ->from('journal_categories')
-                          ->where('journal_categories.id', $listOfCategories);
+                          ->from('journal_pivot_journal_category')
+                          ->where('journal_pivot_journal_category.id', $listOfCategories);
                 });
             }
         }
