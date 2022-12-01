@@ -575,7 +575,7 @@
                                 <div class="card-header">
                                     <div class="row">
                                         <h3 class="col-md-12 col-sm-12 card-title mb-2">Emerging Patents</h3>
-                                        <div class="col-md-4 col-sm-4">
+                                        <div class="col-md-8 col-sm-8">
                                             <div class="input-group input-group-sm">
                                                 <select class="form-control" wire:model="emergingCountryPatent">
                                                     <option hidden>
@@ -652,7 +652,7 @@
                                 <div class="card-header">
                                     <div class="row">
                                         <h3 class="col-md-12 col-sm-12 card-title mb-2">Emerging Journals</h3>
-                                        <div class="col-md-12 col-sm-12">
+                                        <div class="col-md-8 col-sm-8">
                                             <div class="input-group input-group-sm">
                                                 <select class="form-control" wire:model="emergingCountryJournal">
                                                     <option hidden>
