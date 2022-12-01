@@ -70,6 +70,7 @@
                                                     <option value="{{ $businessGroup->id }}">{{ $businessGroup->group }}</option>
                                                     @endforeach
                                                     @endisset
+                                                    
                                                 </select>
                                             </div>
                                             @error('business_group_id')
