@@ -498,7 +498,7 @@
                                 <div class="card-header">
                                     <div class="row">
                                         <h3 class="col-md-12 col-sm-12 card-title mb-2">Emerging Industries</h3>
-                                        <div class="col-md-12 col-sm-12">
+                                        <div class="col-md-8 col-sm-8">
                                             <div class="input-group input-group-sm">
                                                 <select class="form-control" wire:model="emergingCountryIndustry">
                                                     <option hidden>
@@ -511,6 +511,44 @@
                                                             {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
                                                         </option>
                                                     @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4">
+                                            <div class="input-group input-group-sm">
+                                                <select class="form-control" wire:model="emergingYoungIndustry">
+                                                    <option hidden>
+                                                        {{ GoogleTranslate::trans('Select Young By', app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="">
+                                                        {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                    <option value="1">
+                                                        1 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="2">
+                                                        2 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="3">
+                                                        3 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="4">
+                                                        4 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="5">
+                                                        5 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="6">
+                                                        6 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="7">
+                                                        7 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="8">
+                                                        8 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="9">
+                                                        9 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -537,7 +575,7 @@
                                 <div class="card-header">
                                     <div class="row">
                                         <h3 class="col-md-12 col-sm-12 card-title mb-2">Emerging Patents</h3>
-                                        <div class="col-md-12 col-sm-12">
+                                        <div class="col-md-8 col-sm-8">
                                             <div class="input-group input-group-sm">
                                                 <select class="form-control" wire:model="emergingCountryPatent">
                                                     <option hidden>
@@ -550,6 +588,44 @@
                                                             {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
                                                         </option>
                                                     @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4">
+                                            <div class="input-group input-group-sm">
+                                                <select class="form-control" wire:model="emergingYoungPatent">
+                                                    <option hidden>
+                                                        {{ GoogleTranslate::trans('Select Young By', app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="">
+                                                        {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                    <option value="1">
+                                                        1 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="2">
+                                                        2 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="3">
+                                                        3 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="4">
+                                                        4 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="5">
+                                                        5 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="6">
+                                                        6 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="7">
+                                                        7 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="8">
+                                                        8 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="9">
+                                                        9 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -576,7 +652,7 @@
                                 <div class="card-header">
                                     <div class="row">
                                         <h3 class="col-md-12 col-sm-12 card-title mb-2">Emerging Journals</h3>
-                                        <div class="col-md-12 col-sm-12">
+                                        <div class="col-md-8 col-sm-8">
                                             <div class="input-group input-group-sm">
                                                 <select class="form-control" wire:model="emergingCountryJournal">
                                                     <option hidden>
@@ -589,6 +665,44 @@
                                                             {{ GoogleTranslate::trans($country->name, app()->getLocale()) }}
                                                         </option>
                                                     @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4">
+                                            <div class="input-group input-group-sm">
+                                                <select class="form-control" wire:model="emergingYoungJournal">
+                                                    <option hidden>
+                                                        {{ GoogleTranslate::trans('Select Young By', app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="">
+                                                        {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                    <option value="1">
+                                                        1 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="2">
+                                                        2 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="3">
+                                                        3 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="4">
+                                                        4 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="5">
+                                                        5 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="6">
+                                                        6 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="7">
+                                                        7 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="8">
+                                                        8 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
+                                                    <option value="9">
+                                                        9 {{ GoogleTranslate::trans("year", app()->getLocale()) }}
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>

@@ -1,4 +1,15 @@
 @push('extra-styles')
+<style>
+    .content-wrapper{
+        position: relative;
+        height: calc(100vh - 48px)!important;
+    }
+    .content{
+        position: absolute;
+        width: 100%;
+        height: calc(100vh - 48px)!important;
+    }
+</style>
 @endpush
 
 <div>

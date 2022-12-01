@@ -29,8 +29,11 @@ class ReportComponent extends Component
         $popularCountryPatent,
         $popularCountryJournals,
         $emergingCountryIndustry,
+        $emergingYoungIndustry,
         $emergingCountryJournal,
+        $emergingYoungJournal,
         $emergingCountryPatent,
+        $emergingYoungPatent,
         $forecastCountry,
         $forecastPatentCountry,
         $topCountryFilter,
@@ -84,6 +87,24 @@ class ReportComponent extends Component
     {
         $this->emergingCountryIndustry = $country;
         $this->updateTopBusinessRate();
+    }
+
+    public function updatedEmergingYoungIndustry($young)
+    {
+        $this->emergingYoungIndustry = $young;
+        $this->updateTopBusinessRate();
+    }
+
+    public function updatedEmergingYoungJournal($young)
+    {
+        $this->emergingYoungJournal = $young;
+        $this->updateTopJournalRate();
+    }
+
+    public function updatedEmergingYoungPatent($young)
+    {
+        $this->emergingYoungPatent = $young;
+        $this->updateTopPatentRate();
     }
 
     public function updatedEmergingCountryJournal($country)
@@ -184,9 +205,23 @@ class ReportComponent extends Component
         ini_set('memory_limit', '-1');
 
         if (!is_null($this->emergingCountryIndustry) && $this->emergingCountryIndustry != "") {
-            $test2 = collect(DB::table('businesses')->select('id', 'year', 'country_id', 'parent_classification_id')->get())->where('country_id', $this->emergingCountryIndustry)->pluck('parent_classification_id')->countBy();
+            $test2 = collect(DB::table('businesses')->select('id', 'year', 'country_id', 'parent_classification_id')->get())->where('country_id', $this->emergingCountryIndustry)->filter(function ($value, $key) {
+                if ($value->year != null  && $this->emergingYoungIndustry != null && $this->emergingYoungIndustry != ""){
+                    return (date('Y') - (int)$value->year) <= $this->emergingYoungIndustry;
+                }else{
+                    return true;
+                }
+                
+            })->pluck('parent_classification_id')->countBy();
         } else {
-            $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
+            $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->get())->filter(function ($value, $key) {
+                if ($value->year != null  && $this->emergingYoungIndustry != null && $this->emergingYoungIndustry != ""){
+                    return (date('Y') - (int)$value->year) <= $this->emergingYoungIndustry;
+                }else{
+                    return true;
+                }
+                
+            })->pluck('parent_classification_id')->countBy();
         }
 
         $final = [];
@@ -194,7 +229,14 @@ class ReportComponent extends Component
             if ($classKey == null) {
                 continue;
             } else {
-                $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->filter(function ($value, $key) {
+                    if ($value->year != null  && $this->emergingYoungIndustry != null && $this->emergingYoungIndustry != ""){
+                        return (date('Y') - (int)$value->year) <= $this->emergingYoungIndustry;
+                    }else{
+                        return true;
+                    }
+                    
+                })->pluck('year')->countBy();
                 // dd($years);
                 $rate = 0;
                 $addition = 0;
@@ -241,9 +283,23 @@ class ReportComponent extends Component
         ini_set('memory_limit', '-1');
 
         if (!is_null($this->emergingCountryJournal) && $this->emergingCountryJournal != "") {
-            $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id', 'country_id')->get())->where('country_id', $this->emergingCountryJournal)->pluck('parent_classification_id')->countBy();
+            $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id', 'country_id')->get())->where('country_id', $this->emergingCountryJournal)->filter(function ($value, $key) {
+                if ($value->year != null  && $this->emergingYoungJournal != null && $this->emergingYoungJournal != ""){
+                    return (date('Y') - (int)$value->year) <= $this->emergingYoungJournal;
+                }else{
+                    return true;
+                }
+                
+            })->pluck('parent_classification_id')->countBy();
         } else {
-            $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
+            $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->get())->filter(function ($value, $key) {
+                if ($value->year != null  && $this->emergingYoungJournal != null && $this->emergingYoungJournal != ""){
+                    return (date('Y') - (int)$value->year) <= $this->emergingYoungJournal;
+                }else{
+                    return true;
+                }
+                
+            })->pluck('parent_classification_id')->countBy();
         }
 
         $journalClassificationRates = [];
@@ -252,9 +308,23 @@ class ReportComponent extends Component
                 continue;
             } else {
                 if (!is_null($this->emergingCountryJournal) && $this->emergingCountryJournal != "") {
-                    $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('parent_classification_id', $classKey)->get())->where('country_id', $this->emergingCountryJournal)->pluck('year')->countBy();
+                    $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('parent_classification_id', $classKey)->get())->where('country_id', $this->emergingCountryJournal)->filter(function ($value, $key) {
+                        if ($value->year != null  && $this->emergingYoungJournal != null && $this->emergingYoungJournal != ""){
+                            return (date('Y') - (int)$value->year) <= $this->emergingYoungJournal;
+                        }else{
+                            return true;
+                        }
+                        
+                    })->pluck('year')->countBy();
                 } else {
-                    $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                    $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->filter(function ($value, $key) {
+                        if ($value->year != null  && $this->emergingYoungJournal != null && $this->emergingYoungJournal != ""){
+                            return (date('Y') - (int)$value->year) <= $this->emergingYoungJournal;
+                        }else{
+                            return true;
+                        }
+                        
+                    })->pluck('year')->countBy();
                 }
 
                 // dd($years);
@@ -292,9 +362,23 @@ class ReportComponent extends Component
         ini_set('memory_limit', '-1');
 
         if (!is_null($this->emergingCountryPatent) && $this->emergingCountryPatent != "") {
-            $patentClassificationForEmerging = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id', 'country_id')->get())->where('country_id', $this->emergingCountryPatent)->pluck('parent_classification_id')->countBy();
+            $patentClassificationForEmerging = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id', 'country_id')->get())->where('country_id', $this->emergingCountryPatent)->filter(function ($value, $key) {
+                if ($value->year != null  && $this->emergingYoungPatent != null && $this->emergingYoungPatent != ""){
+                    return (date('Y') - (int)$value->year) <= $this->emergingYoungPatent;
+                }else{
+                    return true;
+                }
+                
+            })->pluck('parent_classification_id')->countBy();
         } else {
-            $patentClassificationForEmerging = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
+            $patentClassificationForEmerging = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->get())->filter(function ($value, $key) {
+                if ($value->year != null  && $this->emergingYoungPatent != null && $this->emergingYoungPatent != ""){
+                    return (date('Y') - (int)$value->year) <= $this->emergingYoungPatent;
+                }else{
+                    return true;
+                }
+                
+            })->pluck('parent_classification_id')->countBy();
         }
 
         $patentClassificationRates = [];
@@ -303,9 +387,23 @@ class ReportComponent extends Component
                 continue;
             } else {
                 if (!is_null($this->emergingCountryPatent) && $this->emergingCountryPatent != "") {
-                    $years = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('parent_classification_id', $classKey)->get())->where('country_id', $this->emergingCountryPatent)->pluck('year')->countBy();
+                    $years = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('parent_classification_id', $classKey)->get())->where('country_id', $this->emergingCountryPatent)->filter(function ($value, $key) {
+                        if ($value->year != null  && $this->emergingYoungPatent != null && $this->emergingYoungPatent != ""){
+                            return (date('Y') - (int)$value->year) <= $this->emergingYoungPatent;
+                        }else{
+                            return true;
+                        }
+                        
+                    })->pluck('year')->countBy();
                 } else {
-                    $years = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                    $years = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->filter(function ($value, $key) {
+                        if ($value->year != null  && $this->emergingYoungPatent != null && $this->emergingYoungPatent != ""){
+                            return (date('Y') - (int)$value->year) <= $this->emergingYoungPatent;
+                        }else{
+                            return true;
+                        }
+                        
+                    })->pluck('year')->countBy();
                 }
                 $rate = 0;
                 $addition = 0;
@@ -565,14 +663,28 @@ class ReportComponent extends Component
         /* Get Query Data End */
 
 
-        $businessClassificationForEmerging = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
+        $businessClassificationForEmerging = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->get())->filter(function ($value, $key) {
+            if ($value->year != null  && $this->emergingYoungIndustry != null && $this->emergingYoungIndustry != ""){
+                return (date('Y') - (int)$value->year) <= $this->emergingYoungIndustry;
+            }else{
+                return true;
+            }
+            
+        })->pluck('parent_classification_id')->countBy();
 
         $businessClassificationRates = [];
         foreach ($businessClassificationForEmerging as $classKey => $value) {
             if ($classKey == null) {
                 continue;
             } else {
-                $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->filter(function ($value, $key) {
+                    if ($value->year != null  && $this->emergingYoungIndustry != null && $this->emergingYoungIndustry != ""){
+                        return (date('Y') - (int)$value->year) <= $this->emergingYoungIndustry;
+                    }else{
+                        return true;
+                    }
+                    
+                })->pluck('year')->countBy();
                 // dd($years);
                 $rate = 0;
                 $addition = 0;
