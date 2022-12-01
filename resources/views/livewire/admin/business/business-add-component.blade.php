@@ -65,12 +65,11 @@
                                                 <select class="form-control select2 select2bs4" id="business_group_name"
                                                     wire:model="business_group_id" style="width: 100%;">
                                                     <option hidden>Choose Business Group</option>
-                                                    @isset($businessTypes)
+                                                    @isset($businessGroup)
                                                     @foreach($businessGroups as $businessGroup)
                                                     <option value="{{ $businessGroup->id }}">{{ $businessGroup->group }}</option>
                                                     @endforeach
                                                     @endisset
-                                                    
                                                 </select>
                                             </div>
                                             @error('business_group_id')
