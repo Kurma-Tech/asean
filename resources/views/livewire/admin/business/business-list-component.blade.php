@@ -82,7 +82,7 @@
                                         <th>SEC No.</th>
                                         <th>Type</th>
                                         <th>Group</th>
-                                        <th>Classification</th>
+                                        <th>Classification Code</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
@@ -103,7 +103,7 @@
                                             <span class="badge badge-primary">{{ $business->businessGroup->group ?? 'N/A' }}</span>
                                         </td>
                                         <td>
-                                            <span class="badge badge-info">{{ $business->industryClassification->classifications ?? 'N/A' }}</span>
+                                            <span class="badge badge-info" title="{{ $business->industryClassification->classifications ?? 'N/A' }}">{{ $business->industryClassification->code ?? 'N/A' }}</span>
                                         </td>
                                         <td>
                                             <span class="badge {{($business->status == 'REGISTERED') ? 'badge-success':'badge-danger'}}">{{$business->status ?? 'NULL'}}</span>
@@ -142,9 +142,9 @@
                                                 <li class="item">
                                                     <div class="product-info">
                                                         <div class="product-title">
-                                                            Classification Code
+                                                            Classification Name
                                                         </div>
-                                                        <p class="product-title">{{ $business->industryClassification->code ?? 'N/A' }}</p>
+                                                        <p class="product-title">{{ $business->industryClassification->classifications ?? 'N/A' }}</p>
                                                     </div>
                                                 </li>
                                                 <li class="item">

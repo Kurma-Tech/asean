@@ -45,9 +45,11 @@
                                                 <select class="form-control select2 select2bs4" id="business_type_name"
                                                     wire:model="business_type_id" style="width: 100%;">
                                                     <option hidden>Choose Business Type</option>
+                                                    @isset($businessTypes)
                                                     @foreach($businessTypes as $businessType)
                                                     <option value="{{ $businessType->id }}">{{ $businessType->type }}</option>
                                                     @endforeach
+                                                    @endisset
                                                 </select>
                                             </div>
                                             @error('business_type_id')
@@ -63,9 +65,11 @@
                                                 <select class="form-control select2 select2bs4" id="business_group_name"
                                                     wire:model="business_group_id" style="width: 100%;">
                                                     <option hidden>Choose Business Group</option>
+                                                    @isset($businessTypes)
                                                     @foreach($businessGroups as $businessGroup)
                                                     <option value="{{ $businessGroup->id }}">{{ $businessGroup->group }}</option>
                                                     @endforeach
+                                                    @endisset
                                                 </select>
                                             </div>
                                             @error('business_group_id')
