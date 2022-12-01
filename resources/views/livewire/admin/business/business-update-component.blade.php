@@ -45,7 +45,7 @@
                                                 <select class="form-control select2 select2bs4" id="business_type_name"
                                                     wire:model="business_type_id" style="width: 100%;">
                                                     <option hidden>Choose Business Type</option>
-                                                    @isset($businessType)
+                                                    @isset($businessTypes)
                                                     @foreach($businessTypes as $businessType)
                                                     <option value="{{ $businessType->id }}">{{ $businessType->type }}</option>
                                                     @endforeach
@@ -65,7 +65,7 @@
                                                 <select class="form-control select2 select2bs4" id="business_group_name"
                                                     wire:model="business_group_id" style="width: 100%;">
                                                     <option hidden>Choose Business Group</option>
-                                                    @isset($businessGroup)
+                                                    @isset($businessGroups)
                                                     @foreach($businessGroups as $businessGroup)
                                                     <option value="{{ $businessGroup->id }}">{{ $businessGroup->group }}</option>
                                                     @endforeach
@@ -86,9 +86,11 @@
                                                     id="industry_classification_name" wire:model="industry_classification_id"
                                                     style="width: 100%;">
                                                     <option hidden>Choose Industry Classification</option>
+                                                    @isset($industryClassifications)
                                                     @foreach($industryClassifications as $classification)
                                                     <option value="{{ $classification->id }}">{{ $classification->classifications }}</option>
                                                     @endforeach
+                                                    @endisset
                                                 </select>
                                             </div>
                                             @error('industry_classification_id')
