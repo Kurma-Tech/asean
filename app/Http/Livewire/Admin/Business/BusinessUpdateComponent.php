@@ -3,8 +3,12 @@
 namespace App\Http\Livewire\Admin\Business;
 
 use App\Models\Business;
+use App\Models\BusinessGroup;
+use App\Models\BusinessType;
 use App\Models\City;
+use App\Models\Country;
 use App\Models\District;
+use App\Models\IndustryClassification;
 use App\Models\Province;
 use App\Models\Region;
 use Illuminate\Support\Facades\DB;
@@ -97,14 +101,14 @@ class BusinessUpdateComponent extends Component
 
     public function mount($key)
     {
-        $this->businessTypes              = DB::table('business_types')->select('id', 'type')->get();
-        $this->businessGroups             = DB::table('business_groups')->select('id', 'group')->get();
-        $this->industryClassifications    = DB::table('industry_classifications')->select('id', 'classifications')->get();
-        $this->countries                  = DB::table('countries')->select('id', 'name')->get();
-        $this->regions                    = collect();
-        $this->provinces                  = collect();
-        $this->districts                  = collect();
-        $this->cities                     = collect();
+        $this->businessTypes           = BusinessType::select('id', 'type')->get();
+        $this->businessGroups          = BusinessGroup::select('id', 'group')->get();
+        $this->industryClassifications = IndustryClassification::select('id', 'classifications')->get();
+        $this->countries               = Country::select('id', 'name')->get();
+        $this->regions                 = collect();
+        $this->provinces               = collect();
+        $this->districts               = collect();
+        $this->cities                  = collect();
 
         $this->business_id                = $key;
         $business                         = Business::findOrFail($this->business_id);
