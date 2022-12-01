@@ -174,7 +174,7 @@
                                             <label for="country_name">Country<span class="text-danger">*</span></label>
                                             <div wire:ignore>
                                                 <select class="form-control select2 select2bs4"
-                                                    id="country_name" wire:model="country_id"
+                                                    id="country_name" wire:model="selectedCountry"
                                                     style="width: 100%;" onchange="this.dispatchEvent(new InputEvent('input'))">
                                                     <option hidden>Select Country</option>
                                                     @foreach($countries as $country)
@@ -182,7 +182,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            @error('country_id')
+                                            @error('selectedCountry')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -193,7 +193,7 @@
                                             <label for="region_name">Region<span class="text-danger">*</span></label>
                                             <div wire:ignore>
                                                 <select class="form-control select2 select2bs4"
-                                                    id="region_name" wire:model="region_id"
+                                                    id="region_name" wire:model="selectedRegion"
                                                     style="width: 100%;" onchange="this.dispatchEvent(new InputEvent('input'))">
                                                     <option hidden>Select region</option>
                                                     @foreach($regions as $region)
@@ -201,7 +201,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            @error('region_id')
+                                            @error('selectedRegion')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -212,7 +212,7 @@
                                             <label for="province_name">Province<span class="text-danger">*</span></label>
                                             <div wire:ignore>
                                                 <select class="form-control select2 select2bs4"
-                                                    id="province_name" wire:model="province_id"
+                                                    id="province_name" wire:model="selectedProvince"
                                                     style="width: 100%;" onchange="this.dispatchEvent(new InputEvent('input'))">
                                                     <option hidden>Select province</option>
                                                     @foreach($provinces as $province)
@@ -220,7 +220,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            @error('province_id')
+                                            @error('selectedProvince')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -231,7 +231,7 @@
                                             <label for="district_name">District<span class="text-danger">*</span></label>
                                             <div wire:ignore>
                                                 <select class="form-control select2 select2bs4"
-                                                    id="district_name" wire:model="district_id"
+                                                    id="district_name" wire:model="selectedDistrict"
                                                     style="width: 100%;" onchange="this.dispatchEvent(new InputEvent('input'))">
                                                     <option hidden>Select district</option>
                                                     @foreach($districts as $district)
@@ -239,7 +239,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            @error('district_id')
+                                            @error('selectedDistrict')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -250,7 +250,7 @@
                                             <label for="city_name">City<span class="text-danger">*</span></label>
                                             <div wire:ignore>
                                                 <select class="form-control select2 select2bs4"
-                                                    id="city_name" wire:model="city_id"
+                                                    id="city_name" wire:model="selectedCity"
                                                     style="width: 100%;" onchange="this.dispatchEvent(new InputEvent('input'))">
                                                     <option hidden>Select city</option>
                                                     @foreach($cities as $city)
@@ -258,7 +258,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            @error('city_id')
+                                            @error('selectedCity')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -391,27 +391,27 @@
 
             $('#country_name').on('change', function (e) {
                 let data = $(this).val();
-                    @this.set('country_id', data);
+                    @this.set('selectedCountry', data);
             });
 
             $('#region_name').on('change', function (e) {
                 let data = $(this).val();
-                    @this.set('region_id', data);
+                    @this.set('selectedRegion', data);
             });
 
             $('#province_name').on('change', function (e) {
                 let data = $(this).val();
-                    @this.set('province_id', data);
+                    @this.set('selectedProvince', data);
             });
 
             $('#district_name').on('change', function (e) {
                 let data = $(this).val();
-                    @this.set('district_id', data);
+                    @this.set('selectedDistrict', data);
             });
 
             $('#city_name').on('change', function (e) {
                 let data = $(this).val();
-                    @this.set('city_id', data);
+                    @this.set('selectedCity', data);
             });
 
             $('#business_type_name').on('change', function (e) {
@@ -421,7 +421,7 @@
 
             $('#business_group_name').on('change', function (e) {
                 let data = $(this).val();
-                    @this.set('business_group_id', data);
+                    @this.set('group_id', data);
             });
 
             $('#industry_classification_name').on('change', function (e) {
