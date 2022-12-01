@@ -841,8 +841,10 @@
             }
             businessChunkedData = data.geoJson.length;
             mergedDataBusiness = [...new Set([].concat(...data.geoJson.map((element) => element.features)))];
-            mergedDataPatent = [...new Set([].concat(...data.patentJson.features))];
-            mergedDataJournal = [...new Set([].concat(...data.journalJson.features))];
+            mergedDataPatent = data.patentJson.features;
+            mergedDataJournal = data.journalJson.features;
+            // mergedDataPatent = [...new Set([].concat(...data.patentJson.features))];
+            // mergedDataJournal = [...new Set([].concat(...data.journalJson.features))];
             mergedData = mergedDataBusiness.concat(mergedDataPatent).concat(mergedDataJournal);
             changePage(1);
 
