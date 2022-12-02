@@ -686,12 +686,16 @@ class ReportComponent extends Component
                     
                 })->pluck('year')->countBy();
                 $arrayYears = $years->toArray();
-                $listOfYears = array_keys($arrayYears);
-                $listOfYears = array_map('intval', $listOfYears);
-                $highestYear = (int) max($listOfYears);
-                $lowYear = min($listOfYears);
+                if (count($arrayYears) >= 2){
+                    $listOfYears = array_keys($arrayYears);
+                    $listOfYears = array_map('intval', $listOfYears);
+                    $highestYear = (int) max($listOfYears);
+                    $lowYear = min($listOfYears);
+                    $rate = (($arrayYears[$highestYear] / $arrayYears[$lowYear]) ^ (1 / ($highestYear - $lowYear)) - 1) * 100;
+                }else{
+                    $rate = 0;
+                }
 
-                $rate = (($arrayYears[$highestYear] / $arrayYears[$lowYear]) ^ (1 / ($highestYear - $lowYear)) - 1) * 100;
 
                 // // dd($years);
                 // $rate = 0;
