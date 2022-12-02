@@ -1016,7 +1016,7 @@ class ReportComponent extends Component
     {
         // dd(DB::table('businesses')->select('id', 'year')->pluck('year')->countBy());
         $countries = Country::select('id', 'status', 'name')->where("status", "1")->get();
-        $classifications = IndustryClassification::select('id', 'classifications')->where('parent_id', null)->where('classifications', '!=', null)->get();
+        $classifications = IndustryClassification::select('id', 'classifications')->where('parent_id', null)->where('classifications', '!=', null)->where('section_id', '!=', null)->where('division_id', '!=', null)->where('group_id', '!=', null)->get();
         $journalClassifications = JournalCategory::select('id', 'category')->where('division_id', null)->where('section_id', '!=', Null)->get();
         $patentClassifications = PatentCategory::select('id', 'classification_category')->where('class_id', null)->where('division_id', '!=', Null)->get();
         return view('livewire.client.report.report-component', [
