@@ -663,7 +663,7 @@ class ReportComponent extends Component
         /* Get Query Data End */
 
 
-        $businessClassificationForEmerging = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->get())->filter(function ($value, $key) {
+        $businessClassificationForEmerging = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', '!=', date('Y'))->get())->filter(function ($value, $key) {
             if ($value->year != null  && $this->emergingYoungIndustry != null && $this->emergingYoungIndustry != ""){
                 return (date('Y') - (int)$value->year) <= $this->emergingYoungIndustry;
             }else{
@@ -677,7 +677,7 @@ class ReportComponent extends Component
             if ($classKey == null) {
                 continue;
             } else {
-                $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->filter(function ($value, $key) {
+                $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->where('year', '!=', date('Y'))->get())->filter(function ($value, $key) {
                     if ($value->year != null  && $this->emergingYoungIndustry != null && $this->emergingYoungIndustry != ""){
                         return (date('Y') - (int)$value->year) <= $this->emergingYoungIndustry;
                     }else{
@@ -710,14 +710,14 @@ class ReportComponent extends Component
         rsort($businessClassificationRates);
 
 
-        $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
+        $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('year', '!=', date('Y'))->get())->pluck('parent_classification_id')->countBy();
 
         $journalClassificationRates = [];
         foreach ($journalClassificationForEmerging as $classKey => $value) {
             if ($classKey == null) {
                 continue;
             } else {
-                $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->where('year', '!=', date('Y'))->get())->pluck('year')->countBy();
                 // dd($years);
                 $rate = 0;
                 $addition = 0;
@@ -743,14 +743,14 @@ class ReportComponent extends Component
         rsort($journalClassificationRates);
 
 
-        $patentClassificationForEmerging = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->get())->pluck('parent_classification_id')->countBy();
+        $patentClassificationForEmerging = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->where('year', '!=', date('Y'))->get())->pluck('parent_classification_id')->countBy();
 
         $patentClassificationRates = [];
         foreach ($patentClassificationForEmerging as $classKey => $value) {
             if ($classKey == null) {
                 continue;
             } else {
-                $years = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->get())->pluck('year')->countBy();
+                $years = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->where('year', '!=', date('Y'))->get())->pluck('year')->countBy();
                 // dd($years);
                 $rate = 0;
                 $addition = 0;
