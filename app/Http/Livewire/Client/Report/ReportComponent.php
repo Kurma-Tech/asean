@@ -685,24 +685,35 @@ class ReportComponent extends Component
                     }
                     
                 })->pluck('year')->countBy();
-                // dd($years);
-                $rate = 0;
-                $addition = 0;
-                $temp = null;
-                foreach ($years as $key => $value) {
-                    if ($temp != null) {
-                        $rate = $rate + (((int)$value - (int)$temp) / (int)$temp) * 100;
-                        $addition = $addition + 1;
-                        $temp = $value;
-                    } else {
-                        $temp = $value;
-                    }
-                }
+                $arrayYears = $years->toArray();
+                $listOfYears = array_keys($arrayYears);
+                $listOfYears = array_map('intval', $listOfYears);
+                $highestYear = (int) max($listOfYears);
+                $lowYear = min($listOfYears);
+
+                $rate = (($arrayYears[$highestYear] / $arrayYears[$lowYear]) ^ (1 / ($highestYear - $lowYear)) - 1) * 100;
+
+                // // dd($years);
+                // $rate = 0;
+                // $addition = 0;
+                // $temp = null;
+                // foreach ($years as $key => $value) {
+                //     if ($temp != null) {
+                //         // $rate = $rate + (((int)$value - (int)$temp) / (int)$temp) * 100;
+                //         $addition = $addition + 1;
+                //         $temp = $value;
+                //     } else {
+                //         $temp = $value;
+                //     }
+                // }
+                // $rate = $
+
+
                 $industryClassification = IndustryClassification::find($classKey);
                 if ($industryClassification != null) {
                     array_push($businessClassificationRates, [
                         "key" => $industryClassification->classifications,
-                        "value" => ($addition == 0) ? 0 : round($rate / $addition, 2)
+                        "value" => round($rate, 2)
                     ]);
                 }
             }
