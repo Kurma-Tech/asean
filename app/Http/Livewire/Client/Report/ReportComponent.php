@@ -691,7 +691,7 @@ class ReportComponent extends Component
                     $listOfYears = array_map('intval', $listOfYears);
                     $highestYear = (int) max($listOfYears);
                     $lowYear = min($listOfYears);
-                    $rate = (($arrayYears[$highestYear] / $arrayYears[$lowYear]) ^ (1 / ($highestYear - $lowYear)) - 1) * 100;
+                    $rate = (pow(($arrayYears[$highestYear] / $arrayYears[$lowYear]),(1 / ($highestYear - $lowYear))) - 1) * 100;
                 }else{
                     $rate = 0;
                 }
