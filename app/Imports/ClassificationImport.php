@@ -41,8 +41,7 @@ class ClassificationImport implements ToModel, WithHeadingRow, WithChunkReading,
                 $section_id  = $classification->section_id;
                 $division_id = $classification->division_id;
                 $group_id    = $classification->group_id;
-                $class_id    = $classification->id;
-                
+                // $class_id    = $classification->id;
             }
         }
         
