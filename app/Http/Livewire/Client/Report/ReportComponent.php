@@ -697,22 +697,6 @@ class ReportComponent extends Component
                 }
 
 
-                // // dd($years);
-                // $rate = 0;
-                // $addition = 0;
-                // $temp = null;
-                // foreach ($years as $key => $value) {
-                //     if ($temp != null) {
-                //         // $rate = $rate + (((int)$value - (int)$temp) / (int)$temp) * 100;
-                //         $addition = $addition + 1;
-                //         $temp = $value;
-                //     } else {
-                //         $temp = $value;
-                //     }
-                // }
-                // $rate = $
-
-
                 $industryClassification = IndustryClassification::find($classKey);
                 if ($industryClassification != null) {
                     array_push($businessClassificationRates, [
@@ -733,24 +717,21 @@ class ReportComponent extends Component
                 continue;
             } else {
                 $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->where('year', '!=', date('Y'))->get())->pluck('year')->countBy();
-                // dd($years);
-                $rate = 0;
-                $addition = 0;
-                $temp = null;
-                foreach ($years as $key => $value) {
-                    if ($temp != null) {
-                        $rate = $rate + (((int)$value - (int)$temp) / (int)$temp) * 100;
-                        $addition = $addition + 1;
-                        $temp = $value;
-                    } else {
-                        $temp = $value;
-                    }
+                $arrayYears = $years->toArray();
+                if (count($arrayYears) >= 2){
+                    $listOfYears = array_keys($arrayYears);
+                    $listOfYears = array_map('intval', $listOfYears);
+                    $highestYear = (int) max($listOfYears);
+                    $lowYear = min($listOfYears);
+                    $rate = (pow(($arrayYears[$highestYear] / $arrayYears[$lowYear]),(1 / ($highestYear - $lowYear))) - 1) * 100;
+                }else{
+                    $rate = 0;
                 }
                 $journalClassification = JournalCategory::find($classKey);
                 if ($journalClassification != null) {
                     array_push($journalClassificationRates, [
                         "key" => $journalClassification->category,
-                        "value" => ($addition == 0) ? 0 : round($rate / $addition, 2)
+                        "value" => round($rate, 2)
                     ]);
                 }
             }
@@ -766,24 +747,21 @@ class ReportComponent extends Component
                 continue;
             } else {
                 $years = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->where('year', '!=', date('Y'))->get())->pluck('year')->countBy();
-                // dd($years);
-                $rate = 0;
-                $addition = 0;
-                $temp = null;
-                foreach ($years as $key => $value) {
-                    if ($temp != null) {
-                        $rate = $rate + (((int)$value - (int)$temp) / (int)$temp) * 100;
-                        $addition = $addition + 1;
-                        $temp = $value;
-                    } else {
-                        $temp = $value;
-                    }
+                $arrayYears = $years->toArray();
+                if (count($arrayYears) >= 2){
+                    $listOfYears = array_keys($arrayYears);
+                    $listOfYears = array_map('intval', $listOfYears);
+                    $highestYear = (int) max($listOfYears);
+                    $lowYear = min($listOfYears);
+                    $rate = (pow(($arrayYears[$highestYear] / $arrayYears[$lowYear]),(1 / ($highestYear - $lowYear))) - 1) * 100;
+                }else{
+                    $rate = 0;
                 }
                 $patentClassification = PatentCategory::find($classKey);
                 if ($patentClassification != null) {
                     array_push($patentClassificationRates, [
                         "key" => $patentClassification->classification_category,
-                        "value" => ($addition == 0) ? 0 : round($rate / $addition, 2)
+                        "value" => round($rate, 2)
                     ]);
                 }
             }
