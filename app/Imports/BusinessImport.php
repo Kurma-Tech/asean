@@ -31,7 +31,7 @@ class BusinessImport implements ToModel, WithHeadingRow, WithChunkReading, WithB
         }
         if (isset($row['classification_code'])) {
             $industryClassification = DB::table('industry_classifications')
-                ->select('id', 'code', 'section_id')
+                ->select('id', 'code', 'class_id')
                 ->where('code', $row['classification_code'])
                 ->first();
         } else {
