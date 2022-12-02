@@ -691,7 +691,7 @@ class ReportComponent extends Component
                 $temp = null;
                 foreach ($years as $key => $value) {
                     if ($temp != null) {
-                        $rate = $rate + (((int)$value - (int)$temp) / (int)$value) * 100;
+                        $rate = $rate + (((int)$value - (int)$temp) / (int)$temp) * 100;
                         $addition = $addition + 1;
                         $temp = $value;
                     } else {
@@ -724,7 +724,7 @@ class ReportComponent extends Component
                 $temp = null;
                 foreach ($years as $key => $value) {
                     if ($temp != null) {
-                        $rate = $rate + (((int)$value - (int)$temp) / (int)$value) * 100;
+                        $rate = $rate + (((int)$value - (int)$temp) / (int)$temp) * 100;
                         $addition = $addition + 1;
                         $temp = $value;
                     } else {
@@ -757,7 +757,7 @@ class ReportComponent extends Component
                 $temp = null;
                 foreach ($years as $key => $value) {
                     if ($temp != null) {
-                        $rate = $rate + (((int)$value - (int)$temp) / (int)$value) * 100;
+                        $rate = $rate + (((int)$value - (int)$temp) / (int)$temp) * 100;
                         $addition = $addition + 1;
                         $temp = $value;
                     } else {
