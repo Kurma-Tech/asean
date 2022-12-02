@@ -693,6 +693,7 @@ class ReportComponent extends Component
                     if ($temp != null) {
                         $rate = $rate + (((int)$value - (int)$temp) / (int)$value) * 100;
                         $addition = $addition + 1;
+                        $temp = $value;
                     } else {
                         $temp = $value;
                     }
@@ -725,6 +726,7 @@ class ReportComponent extends Component
                     if ($temp != null) {
                         $rate = $rate + (((int)$value - (int)$temp) / (int)$value) * 100;
                         $addition = $addition + 1;
+                        $temp = $value;
                     } else {
                         $temp = $value;
                     }
@@ -757,6 +759,7 @@ class ReportComponent extends Component
                     if ($temp != null) {
                         $rate = $rate + (((int)$value - (int)$temp) / (int)$value) * 100;
                         $addition = $addition + 1;
+                        $temp = $value;
                     } else {
                         $temp = $value;
                     }
