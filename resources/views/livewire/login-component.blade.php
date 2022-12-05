@@ -23,11 +23,11 @@
                         </div>
                         @error('password') <p class="text-red">{{ $message }}</p> @enderror
 
-                        <blockquote class="blockquote">
+                        {{-- <blockquote class="blockquote">
                             <p class="mb-0"><span class="text-red-400">{{ GoogleTranslate::trans('Username', app()->getLocale()) }}</span>: admin@aseana.com</p>
                             <p class="mb-0"><span class="text-red-400">{{ GoogleTranslate::trans('Password', app()->getLocale()) }}</span>: password</p>
                             <p class="mb-0"><span class="text-red-400">{{ GoogleTranslate::trans('Note', app()->getLocale()) }}</span>: {{ GoogleTranslate::trans('Copy and past the crediantials for admin login', app()->getLocale()) }}</p>
-                        </blockquote>
+                        </blockquote> --}}
                     </div>
                     <div class="modal-footer justify-content-end pt-1 pb-1">
                         <button type="button" class="btn btn-sm btn-danger pt-1 pb-1" data-dismiss="modal">{{ GoogleTranslate::trans('Cancel', app()->getLocale()) }}</button>
