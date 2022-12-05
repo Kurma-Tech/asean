@@ -57,7 +57,7 @@
                                             <select class="form-control" wire:model="country">
                                                 <option hidden>{{ GoogleTranslate::trans('Choose Countries', app()->getLocale()) }}</option>
                                                 @foreach ($countries as $country)
-                                                    <option value="{{ $country->id }}">{{ GoogleTranslate::trans( $country->name, app()->getLocale()) }}</option>
+                                                    <option value="{{ $country["id"] }}">{{ GoogleTranslate::trans( $country["name"], app()->getLocale()) }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -72,8 +72,8 @@
                                                 <option hidden>
                                                     {{ GoogleTranslate::trans('Choose Classifications', app()->getLocale()) }}
                                                 </option>
-                                                <option value="">
-                                                    {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                {{-- <option value="">
+                                                    {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option> --}}
                                                 @foreach ($classifications as $classification)
                                                     <option value="{{ $classification->id }}">
                                                         {{ $classification->classifications }}</option>
@@ -206,14 +206,14 @@
                                 @endif --}}
                             </div>
                         </div>
-                        <a id="filter-toggle" href="#" class="btn toggle square"><i class="fas fa-chart-bar fa-lg"
+                        {{-- <a id="filter-toggle" href="#" class="btn toggle square"><i class="fas fa-chart-bar fa-lg"
                                 aria-hidden="true"></i>
                             {{ GoogleTranslate::trans('Data Report', app()->getLocale()) }}</a>
                         <div id="filter-wrapper" wire:ignore.self class="overlay-scroll active">
                             <a id="close-filter" href="#" class="toggle square-close"><i
                                     class="fa fa-times fa-lg"></i></a>
                             <div id="countryChart" wire:ignore></div>
-                        </div>
+                        </div> --}}
                     </div>
                     {{-- <div class="col-12 col-sm-12 p-3 scroll-element" id="reportSection" wire:ignore>
                         @livewire('client.report.report-component')
@@ -225,81 +225,81 @@
 </div>
 
 @push('extra-scripts')
-    <script>
-        var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
-        var countryChartOption = {
-            series: [{
-                    name: "Business",
-                    data: {!! collect($businessCountListByCountry)->toJson() !!}
-                },
-                {
-                    name: "Patent",
-                    data: {!! collect($patentCountListByCountry)->toJson() !!}
-                },
-                {
-                    name: "Journals",
-                    data: {!! collect($journalCountListByCountry)->toJson() !!}
-                }
-            ],
-            chart: {
-                type: 'bar',
-                height: 750,
-                foreColor: '#fff',
-                toolbar: {
-                    show: true,
-                    tools: {
-                        download: isAuthenticated // <== line to add
-                    }
-                }
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: true,
-                    dataLabels: {
-                        position: 'top',
-                    },
-                }
-            },
-            dataLabels: {
-                enabled: true,
-                offsetX: -6,
-                style: {
-                    fontSize: '11px',
-                    colors: ['#fff'],
+    {{-- <script>
+        // var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+        // var countryChartOption = {
+        //     series: [{
+        //             name: "Business",
+        //             data: {!! collect($businessCountListByCountry)->toJson() !!}
+        //         },
+        //         {
+        //             name: "Patent",
+        //             data: {!! collect($patentCountListByCountry)->toJson() !!}
+        //         },
+        //         {
+        //             name: "Journals",
+        //             data: {!! collect($journalCountListByCountry)->toJson() !!}
+        //         }
+        //     ],
+        //     chart: {
+        //         type: 'bar',
+        //         height: 750,
+        //         foreColor: '#fff',
+        //         toolbar: {
+        //             show: true,
+        //             tools: {
+        //                 download: isAuthenticated // <== line to add
+        //             }
+        //         }
+        //     },
+        //     plotOptions: {
+        //         bar: {
+        //             horizontal: true,
+        //             dataLabels: {
+        //                 position: 'top',
+        //             },
+        //         }
+        //     },
+        //     dataLabels: {
+        //         enabled: true,
+        //         offsetX: -6,
+        //         style: {
+        //             fontSize: '11px',
+        //             colors: ['#fff'],
 
-                }
-            },
-            stroke: {
-                show: true,
-                width: 1,
-                colors: ['#333']
-            },
-            tooltip: {
-                shared: true,
-                intersect: false
-            },
-            xaxis: {
-                categories: {!! collect($countriesNameList)->toJson() !!},
-                colors: ['#fff']
-            },
-            colors: ['#b71c1c', '#ffd600', '#01579b'],
-            title: {
-                text: "{{ GoogleTranslate::trans('Total registered businesses, patents and journals till now.', app()->getLocale()) }}",
-                align: 'left',
-                margin: 0,
-                offsetX: 0,
-                offsetY: 0,
-                floating: false,
-                style: {
-                    fontSize: '14px',
-                    fontWeight: 'bold',
-                    fontFamily: undefined,
-                    color: '#fff'
-                },
-            }
-        };
+        //         }
+        //     },
+        //     stroke: {
+        //         show: true,
+        //         width: 1,
+        //         colors: ['#333']
+        //     },
+        //     tooltip: {
+        //         shared: true,
+        //         intersect: false
+        //     },
+        //     xaxis: {
+        //         categories: {!! collect($countriesNameList)->toJson() !!},
+        //         colors: ['#fff']
+        //     },
+        //     colors: ['#b71c1c', '#ffd600', '#01579b'],
+        //     title: {
+        //         text: "{{ GoogleTranslate::trans('Total registered businesses, patents and journals till now.', app()->getLocale()) }}",
+        //         align: 'left',
+        //         margin: 0,
+        //         offsetX: 0,
+        //         offsetY: 0,
+        //         floating: false,
+        //         style: {
+        //             fontSize: '14px',
+        //             fontWeight: 'bold',
+        //             fontFamily: undefined,
+        //             color: '#fff'
+        //         },
+        //     }
+        // };
 
-        var countryChart = new ApexCharts(document.querySelector("#countryChart"), countryChartOption);
-        countryChart.render();
-    </script>
+        // var countryChart = new ApexCharts(document.querySelector("#countryChart"), countryChartOption);
+        // countryChart.render();
+    </script> --}}
 @endpush

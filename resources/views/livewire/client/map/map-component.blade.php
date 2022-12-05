@@ -5,6 +5,15 @@
     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
         type="text/css">
     <style>
+        .content-wrapper{
+            position: relative;
+            height: calc(100vh - 48px)!important;
+        }
+        .content{
+            position: absolute;
+            width: 100%;
+            height: calc(100vh - 48px)!important;
+        }
         #maps {
             height: 100vh;
             width: 100%;
@@ -127,33 +136,308 @@
         }
     </style>
 @endpush
+<div>
+    <div class="content-wrapper">
+        <section class="content p-0">
+            <div class="container-fluid p-0">
+                <div class="row m-0">
+                    <div class="col-12 col-sm-12 position-relative overflow-control p-0" id="mapSection">
+                        <div id="maps">
+                            <div id="state-legend" class="legend" style="display: {{ $isDensityMap ? 'none' : 'block'}};">
+                                <h4>Business</h4>
+                                <div><span style="background-color: #723122"></span>25,000</div>
+                                <div><span style="background-color: #8b4225"></span>10,000</div>
+                                <div><span style="background-color: #a25626"></span>7,500</div>
+                                <div><span style="background-color: #b86b25"></span>5,000</div>
+                                <div><span style="background-color: #ca8323"></span>2,500</div>
+                                <div><span style="background-color: #da9c20"></span>1,000</div>
+                                <div><span style="background-color: #e6b71e"></span>750</div>
+                                <div><span style="background-color: #eed322"></span>500</div>
+                                <div><span style="background-color: #f2f12d"></span>0</div>
+                            </div>
+                        
+                            <div id="change-maps">
+                                <button class="btn {{ $isDensityMap ? 'btn-success' : 'btn-default' }} btn-sm pull-right" wire:click="changeMap(true)">Density Map</button>
+                                <button class="btn {{ $isDensityMap ? 'btn-default' : 'btn-success' }} btn-sm pull-right" wire:click="changeMap(false)">Heat Map</button>
+                            </div>
+                            <div id="loader"><img src="loader.gif" alt="loader"></div>
+                            <div style="display: {{ $isDensityMap ? 'block' : 'none' }}; position: relative; height: 100vh; width: 100%;">
+                                <div id="map" wire:ignore></div>
+                            </div>
+                            <div style="display: {{ $isDensityMap ? 'none' : 'block' }}; position: relative; height: 100vh; width: 100%;">
+                                <div id="density-map" wire:ignore></div>
+                            </div>
+                        </div>
+                        <div class="map-overlay-box overlay-scroll">
+                            <h3 class="search-title">{{ GoogleTranslate::trans('Search', app()->getLocale()) }}</h3>
 
-<div id="maps">
-    <div id="state-legend" class="legend" style="display: {{ $isDensityMap ? 'block' : 'none' }};">
-        <h4>Business</h4>
-        <div><span style="background-color: #723122"></span>25,000</div>
-        <div><span style="background-color: #8b4225"></span>10,000</div>
-        <div><span style="background-color: #a25626"></span>7,500</div>
-        <div><span style="background-color: #b86b25"></span>5,000</div>
-        <div><span style="background-color: #ca8323"></span>2,500</div>
-        <div><span style="background-color: #da9c20"></span>1,000</div>
-        <div><span style="background-color: #e6b71e"></span>750</div>
-        <div><span style="background-color: #eed322"></span>500</div>
-        <div><span style="background-color: #f2f12d"></span>0</div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control" id="search"
+                                            placeholder="{{ GoogleTranslate::trans('Search', app()->getLocale()) }}..."
+                                            wire:model="searchValue">
+                                        <span class="input-group-append">
+                                            <button type="button" class="btn btn-sm btn-default btn-flat"
+                                                wire:click="handleSearch"><i class="fa fa-search lemongreen"
+                                                    aria-hidden="true"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label>{{ GoogleTranslate::trans('Sort by Type', app()->getLocale()) }}:</label>
+                                    <div class="input-group input-group-sm">
+                                        <select class="form-control" wire:model="type">
+                                            <option hidden>{{ GoogleTranslate::trans('Choose Data Type', app()->getLocale()) }}</option>
+                                            {{-- <option value="all">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option> --}}
+                                            <option value="business">{{ GoogleTranslate::trans('Business', app()->getLocale()) }}</option>
+                                            <option value="patent">{{ GoogleTranslate::trans('Patent', app()->getLocale()) }}</option>
+                                            <option value="journal">{{ GoogleTranslate::trans('Journals', app()->getLocale()) }}</option>
+                                        </select>
+                                        @error('type')
+                                            <div class="error">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="filter-inputs mt-0 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label>{{ GoogleTranslate::trans('Sort by Countries', app()->getLocale()) }}:</label>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="country">
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Countries', app()->getLocale()) }}</option>
+                                                @foreach ($countries as $country)
+                                                    <option value="{{ $country["id"] }}">{{ GoogleTranslate::trans( $country["name"], app()->getLocale()) }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('country')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    @if ($type == 'business')
+                                    <div class="form-group">
+                                        <label>{{ GoogleTranslate::trans('Sort by Classifications', app()->getLocale()) }}:</label>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="classification">
+                                                <option hidden>
+                                                    {{ GoogleTranslate::trans('Choose Classifications', app()->getLocale()) }}
+                                                </option>
+                                                <option value="">
+                                                    {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                @foreach ($classifications as $classification)
+                                                    <option value="{{ $classification->id }}">
+                                                        {{ $classification->classifications }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>{{ GoogleTranslate::trans('Sort by Business Groups', app()->getLocale()) }}:</label>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="business_group">
+                                                <option hidden>
+                                                    {{ GoogleTranslate::trans('Choose Business Groups', app()->getLocale()) }}
+                                                </option>
+                                                {{-- <option value="">
+                                                    {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option> --}}
+                                                @foreach ($business_groups as $business_group)
+                                                    <option value="{{ $business_group->group }}">
+                                                        {{ $business_group->group }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>{{ GoogleTranslate::trans('Sort by Business Types', app()->getLocale()) }}:</label>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="business_type">
+                                                <option hidden>
+                                                    {{ GoogleTranslate::trans('Choose Business Types', app()->getLocale()) }}
+                                                </option>
+                                                {{-- <option value="">
+                                                    {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option> --}}
+                                                @foreach ($business_types as $business_type)
+                                                    <option value="{{ $business_type->id }}">
+                                                        {{ $business_type->type }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    @endif
+                                    @if ($type == 'patent')
+                                    <div class="form-group">
+                                        <label>{{ GoogleTranslate::trans('Sort by Category', app()->getLocale()) }}:</label>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="classification">
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Category', app()->getLocale()) }}</option>
+                                                <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                @foreach ($classifications as $classification)
+                                                    <option value="{{ $classification->id }}">
+                                                        {{ $classification->classification_category }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>{{ GoogleTranslate::trans('Sort by Patent Kind', app()->getLocale()) }}:</label>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="patent_kind">
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Patent Kind', app()->getLocale()) }}</option>
+                                                {{-- <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option> --}}
+                                                @foreach ($patent_kinds as $patent_kind)
+                                                    <option value="{{ $patent_kind->id }}">
+                                                        {{ $patent_kind->kind }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>{{ GoogleTranslate::trans('Sort by Patent Type', app()->getLocale()) }}:</label>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="patent_type">
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Patent Type', app()->getLocale()) }}</option>
+                                                {{-- <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option> --}}
+                                                @foreach ($patent_types as $patent_type)
+                                                    <option value="{{ $patent_type->id }}">
+                                                        {{ $patent_type->type }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    @endif
+                                    @if ($type == 'journal')
+                                    <div class="form-group">
+                                        <label>{{ GoogleTranslate::trans('Sort by Category', app()->getLocale()) }}:</label>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="classification">
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Category', app()->getLocale()) }}</option>
+                                                <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                @foreach ($classifications as $classification)
+                                                    <option value="{{ $classification->id }}">
+                                                        {{ $classification->category }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    @endif
+                                    <a class="btn btn-sm btn-success float-end" wire:click="filterSubmit()">{{ GoogleTranslate::trans('Submit', app()->getLocale()) }}</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span
+                                        class="data-report-count mr-2">{{ GoogleTranslate::trans('About ' . $results . ' results.', app()->getLocale()) }}</span>
+                                    <a href="{{ route('client.report') }}" class="view-report pull-right"
+                                        id="view-report-element"
+                                        target="_blank">{{ GoogleTranslate::trans('Show Report', app()->getLocale()) }}</a>
+                                </div>
+                            </div>
+
+                            <hr class="mb-2">
+
+                            <div class="row">
+                                <div class="col-md-12 mt-3 mb-3">
+                                    <div wire:ignore>
+                                        {{ GoogleTranslate::trans('PAGE', app()->getLocale()) }}: <span
+                                            id="page"></span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <a href="javascript:prevPage()" class="btn btn-xs btn-default"
+                                            id="btn_prev">{{ GoogleTranslate::trans('Prev', app()->getLocale()) }}</a>
+                                        <a href="javascript:nextPage()" class="btn btn-xs btn-default pull-right"
+                                            id="btn_next">{{ GoogleTranslate::trans('Next', app()->getLocale()) }}</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="accordion" wire:ignore>
+                                {{-- @if (array_key_exists('features', $businessResults))
+                                    @foreach ($businessResults['features'] as $businessResult)
+                                        <div class="card card-secondary">
+                                            <div class="card-header" style="border-radius: 0;">
+                                                <h4 class="card-title w-100">
+                                                    <a class="d-block w-100" data-toggle="collapse"
+                                                        href="#result{{ $businessResult['properties']['locationId'] }}">
+                                                        {{ $businessResult['properties']['company_name'] }}
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="result{{ $businessResult['properties']['locationId'] }}"
+                                                class="collapse {{ $loop->index == 0 ? 'show' : '' }}"
+                                                data-parent="#accordion" wire:ignore.self>
+                                                <div class="card-body">
+                                                    <p><strong>NGC Code:</strong>
+                                                        {{ $businessResult['properties']['ngc_code'] }}</p>
+                                                    <p><strong>Date Registered:</strong>
+                                                        {{ $businessResult['properties']['date_registerd'] }}</p>
+                                                    <p><strong>Address:</strong>
+                                                        {{ $businessResult['properties']['address'] }}</p>
+                                                    <p><strong>Business Type:</strong>
+                                                        {{ $businessResult['properties']['business_type'] }}</p>
+                                                        <button class="btn btn-danger btn-sm fly-over-btn"
+                                                            wire:click="handleFlyOver({{ $businessResult['geometry']['coordinates'][0] }}, {{ $businessResult['geometry']['coordinates'][1] }})"
+                                                            data-lat="{{ $businessResult['geometry']['coordinates'][0] }}"
+                                                            data-long="{{ $businessResult['geometry']['coordinates'][1] }}">Show
+                                                            in map</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif --}}
+
+                                {{-- @if (array_key_exists('features', $patentResults))
+                                    @foreach ($patentResults['features'] as $patentResult)
+                                        <div class="card card-secondary">
+                                            <div class="card-header">
+                                                <h4 class="card-title w-100">
+                                                    <a class="d-block w-100" data-toggle="collapse"
+                                                        href="#result{{ $patentResult['properties']['id'] }}">
+                                                        {{ $patentResult['properties']['title'] }}
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="result{{ $patentResult['properties']['id'] }}"
+                                                class="collapse {{ $loop->index == 0 ? 'show' : '' }}"
+                                                data-parent="#accordion" wire:ignore.self>
+                                                <div class="card-body">
+                                                    <p><strong>Patent Id:</strong>
+                                                        {{ $patentResult['properties']['patent_id'] }}</p>
+                                                    <p><strong>Date Registered:</strong>
+                                                        {{ $patentResult['properties']['date_registerd'] }}</p>
+                                                        <button class="btn btn-danger btn-sm fly-over-btn"
+                                                            data-lat="{{ $patentResult['geometry']['coordinates'][0] }}"
+                                                            data-long="{{ $patentResult['geometry']['coordinates'][1] }}">Show
+                                                            in map</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif --}}
+                            </div>
+                        </div>
+                        {{-- <a id="filter-toggle" href="#" class="btn toggle square"><i class="fas fa-chart-bar fa-lg"
+                                aria-hidden="true"></i>
+                            {{ GoogleTranslate::trans('Data Report', app()->getLocale()) }}</a>
+                        <div id="filter-wrapper" wire:ignore.self class="overlay-scroll active">
+                            <a id="close-filter" href="#" class="toggle square-close"><i
+                                    class="fa fa-times fa-lg"></i></a>
+                            <div id="countryChart" wire:ignore></div>
+                        </div> --}}
+                    </div>
+                    {{-- <div class="col-12 col-sm-12 p-3 scroll-element" id="reportSection" wire:ignore>
+                        @livewire('client.report.report-component')
+                    </div> --}}
+                </div>
+            </div>
+        </section>
     </div>
 
-    <div id="change-maps">
-        <button class="btn {{ $isDensityMap ? 'btn-success' : 'btn-default' }} btn-sm pull-right" wire:click="changeMap(true)">Density Map</button>
-        <button class="btn {{ $isDensityMap ? 'btn-default' : 'btn-success' }} btn-sm pull-right" wire:click="changeMap(false)">Heat Map</button>
-    </div>
-    <div id="loader"><img src="loader.gif" alt="loader"></div>
-    <div style="display: {{ $isDensityMap ? 'none' : 'block' }}; position: relative; height: 100vh; width: 100%;">
-        <div id="map" wire:ignore></div>
-    </div>
-    <div style="display: {{ $isDensityMap ? 'block' : 'none' }}; position: relative; height: 100vh; width: 100%;">
-        <div id="density-map" wire:ignore></div>
-    </div>
 </div>
+
 
 @push('extra-scripts')
     <!-- mapbox -->
@@ -806,7 +1090,7 @@
 
         function handleLivewireLoad() {
             console.log("handleLivewireLoad");
-            Livewire.emit('mapFirstLoad');
+            // Livewire.emit('mapFirstLoad');
         }
 
         Livewire.on('mapUpdated', (data) => {
@@ -974,9 +1258,11 @@
         });
 
         Livewire.on('loader_on', () => {
+            console.log("on");
             document.getElementById('loader').style.display = 'flex';
         });
         Livewire.on('loader_off', () => {
+            console.log("off");
             document.getElementById('loader').style.display = 'none';
         });
         Livewire.on('map_changed', () => {
