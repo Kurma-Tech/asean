@@ -83,6 +83,10 @@ class MapComponent extends Component
         });
     }
 
+    public function changeMap($value){
+        $this->isDensityMap = $value;
+    }
+
     /* 
         Mapping Listeners to Handler Functions 
     */
