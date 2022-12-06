@@ -144,7 +144,7 @@ class MapComponent extends Component
                 $businessQuery = $businessQuery->where('year', $this->year);
             }
             if ($this->business_group != null) {
-                $businessQuery = $businessQuery->where('group_id', $this->country);
+                $businessQuery = $businessQuery->where('group_id', $this->business_group);
             }
             if ($this->business_type != null) {
                 $businessQuery = $businessQuery->where('business_type_id', $this->country);

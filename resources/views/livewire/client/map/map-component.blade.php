@@ -245,7 +245,7 @@
                                                 {{-- <option value="">
                                                     {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option> --}}
                                                 @foreach ($business_groups as $business_group)
-                                                    <option value="{{ $business_group->group }}">
+                                                    <option value="{{ $business_group->id }}">
                                                         {{ $business_group->group }}</option>
                                                 @endforeach
                                             </select>
