@@ -949,48 +949,48 @@
                 }
             }, );
 
-            map.on('click', 'business-point' + sourceId, (event) => {
-                coordinates = event.features[0].geometry.coordinates;
-                @this.getBusinessDataFromId(event.features[0].properties.locationId).then((businessData) => {
-                    const content =
-                        `<div class="card card-secondary popUp-content">
-                            <div class="card-header">
-                                <h3 class="card-title">${businessData.company_name}</h3>
-                            </div>
+            // map.on('click', 'business-point' + sourceId, (event) => {
+            //     coordinates = event.features[0].geometry.coordinates;
+            //     @this.getBusinessDataFromId(event.features[0].properties.locationId).then((businessData) => {
+            //         const content =
+            //             `<div class="card card-secondary popUp-content">
+            //                 <div class="card-header">
+            //                     <h3 class="card-title">${businessData.company_name}</h3>
+            //                 </div>
 
-                            <div class="card-body">
-                                <strong><i class="fas fa-map-marker-alt mr-1"></i> Address</strong>
-                                <p class="text-muted">
-                                    ${businessData.address}
-                                </p>
+            //                 <div class="card-body">
+            //                     <strong><i class="fas fa-map-marker-alt mr-1"></i> Address</strong>
+            //                     <p class="text-muted">
+            //                         ${businessData.address}
+            //                     </p>
 
-                                <hr>
+            //                     <hr>
 
-                                <strong><i class="fas fa-book mr-1"></i> Date Registerd</strong>
-                                <p class="text-muted">${businessData.date_registerd}</p>
+            //                     <strong><i class="fas fa-book mr-1"></i> Date Registerd</strong>
+            //                     <p class="text-muted">${businessData.date_registerd}</p>
 
-                                <hr>
+            //                     <hr>
 
-                                <strong><i class="fas fa-pencil-alt mr-1"></i> Business Type & Ind. Classification</strong>
-                                <p class="text-muted">
-                                    <p class="badge badge-md badge-info cursor-pointer" title="Business Type">${businessData.business_type}</p>
-                                    <p class="badge badge-md badge-primary cursor-pointer" title="Industry Classification">${businessData.industry_classification}</p>
-                                </p>
+            //                     <strong><i class="fas fa-pencil-alt mr-1"></i> Business Type & Ind. Classification</strong>
+            //                     <p class="text-muted">
+            //                         <p class="badge badge-md badge-info cursor-pointer" title="Business Type">${businessData.business_type}</p>
+            //                         <p class="badge badge-md badge-primary cursor-pointer" title="Industry Classification">${businessData.industry_classification}</p>
+            //                     </p>
 
-                                <hr>
+            //                     <hr>
 
-                                <strong><i class="far fa-file-alt mr-1"></i> Industry Description</strong>
-                                <p class="text-muted">${businessData.industry_description}</p>
-                            </div>
-                        </div>`;
-                    new mapboxgl.Popup()
-                        .setLngLat(coordinates)
-                        .setHTML(content)
-                        .addTo(map);
-                })
+            //                     <strong><i class="far fa-file-alt mr-1"></i> Industry Description</strong>
+            //                     <p class="text-muted">${businessData.industry_description}</p>
+            //                 </div>
+            //             </div>`;
+            //         new mapboxgl.Popup()
+            //             .setLngLat(coordinates)
+            //             .setHTML(content)
+            //             .addTo(map);
+            //     })
 
 
-            });
+            // });
         }
 
         function addPatentPoint() {
