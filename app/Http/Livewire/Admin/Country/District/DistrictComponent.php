@@ -21,8 +21,8 @@ class DistrictComponent extends Component
 
     public $error;
     public $countries = [];
-    public $regions;
-    public $provinces;
+    // public $regions;
+    // public $provinces;
 
     public $hiddenId = 0;
     public $name;
@@ -57,31 +57,45 @@ class DistrictComponent extends Component
     }
 
     // update Regions
-    public function updatedSelectedCountry($id)
-    {
-        if (!is_null($id)) {
-            $this->regions = Region::where('country_id', $id)
-            ->select('id', 'name', 'code')
-            ->get();
-        }
-    }
+    // public function updatedSelectedCountry($id)
+    // {
+    //     if (!is_null($id)) {
+    //         $this->regions = Region::where('country_id', $id)
+    //         ->select('id', 'name', 'code')
+    //         ->get();
+    //     }
+    // }
 
-    // update Provinces
-    public function updatedSelectedRegion($id)
-    {
-        if (!is_null($id)) {
-            $this->provinces = Province::where('region_id', $id)
-            ->select('id', 'name', 'code')
-            ->get();
-        }
-    }
+    // // update Provinces
+    // public function updatedSelectedRegion($id)
+    // {
+    //     if (!is_null($id)) {
+    //         $this->provinces = Province::where('region_id', $id)
+    //         ->select('id', 'name', 'code')
+    //         ->get();
+    //     }
+    // }
 
     public function render()
     {
+        $regions = [];
+        $provinces = [];
+        if($this->selectedCountry != null){
+            $regions = Region::where('country_id', $this->selectedCountry)
+            ->select('id', 'name', 'code')
+            ->get();
+        }
+        if($this->selectedRegion != null){
+            $provinces = Province::where('region_id', $this->selectedRegion)
+            ->select('id', 'name', 'code')
+            ->get();
+        }
         return view('livewire.admin.country.district.district-component', [
             'districts' => District::search($this->search)
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
                 ->paginate($this->perPage),
+            'regions'   => $regions,
+            'provinces' => $provinces
         ])->layout('layouts.admin');
     }
 
