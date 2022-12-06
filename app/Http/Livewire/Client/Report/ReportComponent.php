@@ -186,7 +186,7 @@ class ReportComponent extends Component
 
         $emergingBusinessData = [];
 
-        $emergingBusiness = collect($business)->pluck('industry_classification_id')->countBy()->sortByDesc(null)->take($this->topLimitBusiness);
+        $emergingBusiness = collect($business)->where('industry_classification_id', '!=', null)->pluck('industry_classification_id')->countBy()->sortByDesc(null)->take($this->topLimitBusiness);
 
         foreach ($emergingBusiness as $key => $value) {
             if(IndustryClassification::find($key) != null){
@@ -776,7 +776,7 @@ class ReportComponent extends Component
 
         $emergingBusinessData = [];
 
-        $emergingBusiness = collect($business)->pluck('industry_classification_id')->countBy()->sortByDesc(null)->take(10);
+        $emergingBusiness = collect($business)->where('industry_classification_id', '!=', null)->pluck('industry_classification_id')->countBy()->sortByDesc(null)->take(10);
 
         foreach ($emergingBusiness as $key => $value) {
             if(IndustryClassification::find($key) != null){
