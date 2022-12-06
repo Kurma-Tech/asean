@@ -20,7 +20,6 @@ class DistrictComponent extends Component
     public $sortBy = false;
 
     public $error;
-    public $countries = [];
     // public $regions;
     // public $provinces;
 
@@ -51,7 +50,6 @@ class DistrictComponent extends Component
 
     public function mount()
     {
-        $this->countries = Country::select('id', 'name')->get();
         $this->regions   = collect();
         $this->provinces = collect();
     }
@@ -78,8 +76,10 @@ class DistrictComponent extends Component
 
     public function render()
     {
+        $countries = [];
         $regions = [];
         $provinces = [];
+        $countries = Country::select('id', 'name')->get();
         if($this->selectedCountry != null){
             $regions = Region::where('country_id', $this->selectedCountry)
             ->select('id', 'name', 'code')
@@ -90,12 +90,14 @@ class DistrictComponent extends Component
             ->select('id', 'name', 'code')
             ->get();
         }
+        
         return view('livewire.admin.country.district.district-component', [
             'districts' => District::search($this->search)
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
                 ->paginate($this->perPage),
             'regions'   => $regions,
-            'provinces' => $provinces
+            'provinces' => $provinces,
+            'countries' =>  $countries
         ])->layout('layouts.admin');
     }
 
@@ -146,8 +148,8 @@ class DistrictComponent extends Component
         $this->selectedRegion  = $singleDistrict->provinces->regions->id;
         $this->btnType         = 'Update';
 
-        $this->updatedSelectedCountry($this->selectedCountry);
-        $this->updatedSelectedRegion($this->selectedRegion);
+        // $this->updatedSelectedCountry($this->selectedCountry);
+        // $this->updatedSelectedRegion($this->selectedRegion);
     }
 
     // softDelete

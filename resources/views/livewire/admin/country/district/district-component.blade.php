@@ -71,7 +71,7 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="country_name">Country Name<span class="text-danger">*</span></label>
-                                    <div wire:ignore>
+                                    <div>
                                         <select class="form-control select2 select2bs4" id="country_name" wire:model="selectedCountry">
                                             <option hidden>Choose Country</option>
                                             @foreach($countries as $country)
