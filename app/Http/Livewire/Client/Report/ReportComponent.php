@@ -779,10 +779,12 @@ class ReportComponent extends Component
         $emergingBusiness = collect($business)->pluck('industry_classification_id')->countBy()->sortByDesc(null)->take(10);
 
         foreach ($emergingBusiness as $key => $value) {
-            array_push($emergingBusinessData, [
-                "key" => IndustryClassification::find($key)->classifications ?? Null,
-                "value" => $value
-            ]);
+            if(IndustryClassification::find($key) != null){
+                array_push($emergingBusinessData, [
+                    "key" => IndustryClassification::find($key)->classifications,
+                    "value" => $value
+                ]);
+            }
         }
 
         $topPatentQuery =  DB::table('patent_pivot_patent_category')->select('id', 'parent_classification_id', 'country_id');
