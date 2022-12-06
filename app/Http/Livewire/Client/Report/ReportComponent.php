@@ -189,10 +189,12 @@ class ReportComponent extends Component
         $emergingBusiness = collect($business)->pluck('industry_classification_id')->countBy()->sortByDesc(null)->take($this->topLimitBusiness);
 
         foreach ($emergingBusiness as $key => $value) {
-            array_push($emergingBusinessData, [
-                "key" => IndustryClassification::find($key)->classifications,
-                "value" => $value
-            ]);
+            if(IndustryClassification::find($key) != null){
+                array_push($emergingBusinessData, [
+                    "key" => IndustryClassification::find($key)->classifications,
+                    "value" => $value
+                ]);
+            }
         }
 
         $this->emit("updateTopBusiness", [
