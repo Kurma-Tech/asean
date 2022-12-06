@@ -1032,29 +1032,29 @@
                 }
             }, );
 
-            map.on('click', 'patent-point', (event) => {
-                coordinates = event.features[0].geometry.coordinates;
-                @this.getPatentDataFromId(event.features[0].properties.id).then((patentData) => {
-                    const content =
-                        `<div class="card card-secondary popUp-content">
-                            <div class="card-header">
-                                <h3 class="card-title">${patentData.title}</h3>
-                            </div>
+            // map.on('click', 'patent-point', (event) => {
+            //     coordinates = event.features[0].geometry.coordinates;
+            //     @this.getPatentDataFromId(event.features[0].properties.id).then((patentData) => {
+            //         const content =
+            //             `<div class="card card-secondary popUp-content">
+            //                 <div class="card-header">
+            //                     <h3 class="card-title">${patentData.title}</h3>
+            //                 </div>
 
-                            <div class="card-body">
-                                <strong><i class="fas fa-book mr-1"></i> Date Registerd</strong>
-                                <p class="text-muted">${patentData.date}</p>
+            //                 <div class="card-body">
+            //                     <strong><i class="fas fa-book mr-1"></i> Date Registerd</strong>
+            //                     <p class="text-muted">${patentData.date}</p>
 
-                                <hr>
-                            </div>
-                        </div>`
-                    new mapboxgl.Popup()
-                        .setLngLat(coordinates)
-                        .setHTML(content)
-                        .addTo(map);
-                })
+            //                     <hr>
+            //                 </div>
+            //             </div>`
+            //         new mapboxgl.Popup()
+            //             .setLngLat(coordinates)
+            //             .setHTML(content)
+            //             .addTo(map);
+            //     })
 
-            });
+            // });
         }
 
         function addJournalPoint() {
@@ -1096,44 +1096,44 @@
                 }
             }, );
 
-            map.on('click', 'journal-point', (event) => {
-                coordinates = event.features[0].geometry.coordinates;
-                @this.getJournalDataFromId(event.features[0].properties.id).then((journalData) => {
-                    const content =
-                        `<div class="card card-secondary popUp-content">
-                            <div class="card-header">
-                                <h3 class="card-title">${journalData.title}</h3>
-                            </div>
+            // map.on('click', 'journal-point', (event) => {
+            //     coordinates = event.features[0].geometry.coordinates;
+            //     @this.getJournalDataFromId(event.features[0].properties.id).then((journalData) => {
+            //         const content =
+            //             `<div class="card card-secondary popUp-content">
+            //                 <div class="card-header">
+            //                     <h3 class="card-title">${journalData.title}</h3>
+            //                 </div>
 
-                            <div class="card-body">
-                                <strong><i class="fas fa-book mr-1"></i>Author Name</strong>
-                                <p class="text-muted">${journalData.author_name}</p>
+            //                 <div class="card-body">
+            //                     <strong><i class="fas fa-book mr-1"></i>Author Name</strong>
+            //                     <p class="text-muted">${journalData.author_name}</p>
 
-                                <hr>
+            //                     <hr>
 
-                                <strong><i class="fas fa-book mr-1"></i>Publisher Name</strong>
-                                <p class="text-muted">${journalData.publisher_name}</p>
+            //                     <strong><i class="fas fa-book mr-1"></i>Publisher Name</strong>
+            //                     <p class="text-muted">${journalData.publisher_name}</p>
 
-                                <hr>
+            //                     <hr>
 
-                                <strong><i class="fas fa-book mr-1"></i>Published Year</strong>
-                                <p class="text-muted">${journalData.year}</p>
-                                <hr>
-                                <strong><i class="fas fa-book mr-1"></i>ISSN No</strong>
-                                <p class="text-muted">${journalData.issn_no}</p>
-                                <hr>
-                                <strong><i class="fas fa-book mr-1"></i>Citition No</strong>
-                                <p class="text-muted">${journalData.citition_no}</p>
-                                <hr>
-                            </div>
-                        </div>`
-                    new mapboxgl.Popup()
-                        .setLngLat(coordinates)
-                        .setHTML(content)
-                        .addTo(map);
-                });
+            //                     <strong><i class="fas fa-book mr-1"></i>Published Year</strong>
+            //                     <p class="text-muted">${journalData.year}</p>
+            //                     <hr>
+            //                     <strong><i class="fas fa-book mr-1"></i>ISSN No</strong>
+            //                     <p class="text-muted">${journalData.issn_no}</p>
+            //                     <hr>
+            //                     <strong><i class="fas fa-book mr-1"></i>Citition No</strong>
+            //                     <p class="text-muted">${journalData.citition_no}</p>
+            //                     <hr>
+            //                 </div>
+            //             </div>`
+            //         new mapboxgl.Popup()
+            //             .setLngLat(coordinates)
+            //             .setHTML(content)
+            //             .addTo(map);
+            //     });
 
-            });
+            // });
         }
 
         function handleLivewireLoad() {
