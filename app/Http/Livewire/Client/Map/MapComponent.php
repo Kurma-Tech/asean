@@ -85,6 +85,7 @@ class MapComponent extends Component
 
     public function changeMap($value){
         $this->isDensityMap = $value;
+        $this->emit("map_changed");
     }
 
     /* 
