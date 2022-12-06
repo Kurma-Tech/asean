@@ -36,6 +36,7 @@ class MapComponent extends Component
         $countries = [],
         $per_page = 10,
         $country,
+        $year,
         $classification,
         $business_group,
         $business_type,
@@ -139,6 +140,9 @@ class MapComponent extends Component
             if ($this->country != null) {
                 $businessQuery = $businessQuery->where('country_id', $this->country);
             }
+            if ($this->year != null || $this->year != "") {
+                $businessQuery = $businessQuery->where('year', $this->year);
+            }
             if ($this->business_group != null) {
                 $businessQuery = $businessQuery->where('group_id', $this->country);
             }
@@ -153,10 +157,9 @@ class MapComponent extends Component
             $this->business = $businessQuery->get()->chunk(5000);
             $this->densityBusiness = $businessQuery->get();
         }
-
         
         if($this->type == "patent"){
-            $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'registration_date', 'title', 'kind_id', 'type_id');
+            $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'year', 'title', 'kind_id', 'type_id');
 
             $tempOperation = "AND";
             if ($this->searchValue != "") {
@@ -179,6 +182,9 @@ class MapComponent extends Component
             if ($this->country != null) {
                 $patentQuery = $patentQuery->where('country_id', $this->country);
             }
+            if ($this->year != null || $this->year != "") {
+                $patentQuery = $patentQuery->where('year', $this->year);
+            }
             if ($this->patent_kind != null) {
                 $patentQuery = $patentQuery->where('kind_id', $this->country);
             }
@@ -199,7 +205,7 @@ class MapComponent extends Component
         }
 
         if($this->type == "journal"){
-            $journalQuery =  DB::table('journals')->select('id', 'lat', 'long', 'title');
+            $journalQuery =  DB::table('journals')->select('id', 'lat', 'long', 'title', 'yaer');
 
             $tempOperation = "AND";
             if ($this->searchValue != "") {
@@ -221,6 +227,9 @@ class MapComponent extends Component
 
             if ($this->country != null) {
                 $journalQuery = $journalQuery->where('country_id', $this->country);
+            }
+            if ($this->year != null || $this->year != "") {
+                $journalQuery = $journalQuery->where('year', $this->year);
             }
             if ($this->classification != null) {
                 $listOfCategories = $this->classification;
@@ -392,6 +401,7 @@ class MapComponent extends Component
         $business_groups = [];
         $patent_kinds = [];
         $patent_types = [];
+        $years = [];
         if ($this->type == "business") {
             $categories = Cache::rememberForever('industry_classifications_with_ids', function () {
                 return IndustryClassification::select('id', 'classifications')->where('parent_id', '!=', null)->where('classifications', '!=', null)->where('section_id', '!=', null)->where('division_id', '!=', null)->where('group_id', '!=', null)->get();
@@ -401,6 +411,9 @@ class MapComponent extends Component
             });
             $business_types = Cache::rememberForever('business_types', function () {
                 return BusinessType::select('id', 'type')->where('type', '!=', null)->get();
+            });
+            $years = Cache::remember('business_year', 2592000  , function () {
+                return DB::select(DB::raw("SELECT DISTINCT year FROM businesses ORDER BY year DESC"));
             });
         }elseif($this->type == "patent") {
             $categories = Cache::rememberForever('patent_classifications_with_ids', function () {
@@ -412,17 +425,26 @@ class MapComponent extends Component
             $patent_types = Cache::rememberForever('patents_types', function () {
                 return PatentType::select('id', 'type')->where('type', '!=', null)->get();
             });
+            $years = Cache::remember('patent_year', 2592000  , function () {
+                return DB::select(DB::raw("SELECT DISTINCT year FROM patents ORDER BY year DESC"));
+            });
         }elseif($this->type == "journal") {
             $categories = Cache::rememberForever('journal_classifications_with_ids', function () {
                 return JournalCategory::select('id', 'category')->where('division_id', null)->where('section_id', '!=', Null)->get();
             });
+            $years = Cache::remember('journal_year', 2592000  , function () {
+                return DB::select(DB::raw("SELECT DISTINCT year FROM journals ORDER BY year DESC"));
+            });
         }
+
+ 
         return view('livewire.client.map.map-component', [
             'classifications'  => $categories,
             'business_groups'  => $business_groups,
             'business_types'   => $business_types,
             'patent_kinds'    => $patent_kinds,
-            'patent_types'    => $patent_types
+            'patent_types'    => $patent_types,
+            'years'           => $years
         ])->layout('layouts.client');
     }
 }

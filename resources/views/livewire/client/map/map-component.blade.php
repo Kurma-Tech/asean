@@ -267,6 +267,22 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label>{{ GoogleTranslate::trans('Sort by Year', app()->getLocale()) }}:</label>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="year">
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Year', app()->getLocale()) }}</option>
+                                                <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                @foreach ($years as $year)
+                                                    <option value="{{ $year->year }}">
+                                                        {{ $year->year }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('type')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                     @endif
                                     @if ($type == 'patent')
                                     <div class="form-group">
@@ -308,6 +324,22 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label>{{ GoogleTranslate::trans('Sort by Year', app()->getLocale()) }}:</label>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="year">
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Year', app()->getLocale()) }}</option>
+                                                <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                @foreach ($years as $year)
+                                                    <option value="{{ $year->year }}">
+                                                        {{ $year->year }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('type')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                     @endif
                                     @if ($type == 'journal')
                                     <div class="form-group">
@@ -321,6 +353,22 @@
                                                         {{ $classification->category }}</option>
                                                 @endforeach
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label>{{ GoogleTranslate::trans('Sort by Year', app()->getLocale()) }}:</label>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="year">
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Year', app()->getLocale()) }}</option>
+                                                <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                @foreach ($years as $year)
+                                                    <option value="{{ $year->year }}">
+                                                        {{ $year->year }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('type')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     @endif
