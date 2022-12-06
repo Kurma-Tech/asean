@@ -87,7 +87,7 @@
                                 <div class="form-group">
                                     <label for="region_name">Region<span class="text-danger">*</span></label>
                                     <div>
-                                        <select class="form-control select2 select2bs4" id="region_name" wire:model="selectedRegion">
+                                        <select class="form-control" id="region_name" wire:model="selectedRegion">
                                             <option hidden>Choose Region</option>
                                             @foreach($regions as $region)
                                             <option value="{{ $region->id }}">{{ $region->name }}</option>
@@ -103,7 +103,7 @@
                                 <div class="form-group">
                                     <label for="province_name">Province<span class="text-danger">*</span></label>
                                     <div>
-                                        <select class="form-control select2 select2bs4" id="province_name" wire:model="province_id">
+                                        <select class="form-control" id="province_name" wire:model="province_id">
                                             <option hidden>Choose Province</option>
                                             @foreach($provinces as $province)
                                             <option value="{{ $province->id }}">{{ $province->name }}</option>
