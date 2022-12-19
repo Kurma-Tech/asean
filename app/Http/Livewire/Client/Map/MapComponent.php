@@ -89,6 +89,12 @@ class MapComponent extends Component
         $this->emit("map_changed");
     }
 
+    public function handleSearch()
+    {
+        $this->emit("loader_on");
+        $this->filterData();
+    }
+
     /* 
         Mapping Listeners to Handler Functions 
     */
@@ -154,8 +160,9 @@ class MapComponent extends Component
             }
 
             $this->totalBusiness = $businessQuery->count();
-            $this->business = $businessQuery->get()->chunk(5000);
             $this->densityBusiness = $businessQuery->get();
+            $this->business = $this->densityBusiness->chunk(5000);
+            
         }
         
         if($this->type == "patent"){
