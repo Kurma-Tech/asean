@@ -29,8 +29,8 @@ class CountryListComponent extends Component
     {
         return [
             'name'       => 'required|min:3',
-            'c_code'     => 'nullable|min:3|max:10',
-            'short_code' => 'nullable|min:3|max:10',
+            'c_code'     => 'nullable|min:2|max:5',
+            'short_code' => 'required|min:2|max:3',
             'status'     => 'boolean',
         ];
     }
@@ -39,7 +39,6 @@ class CountryListComponent extends Component
     {
         return view('livewire.admin.country.country-list-component', [
             'countries' => Country::search($this->search)
-                ->withTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
                 ->paginate($this->perPage),
         ])->layout('layouts.admin');
@@ -127,9 +126,15 @@ class CountryListComponent extends Component
             }
         } catch (\Throwable $th) {
             DB::rollback();
-            $this->error = $th->getMessage();
-            // $this->error = 'Ops! looks like we had some problem';
+            // $this->error = $th->getMessage();
+            $this->error = 'Ops! looks like we had some problem';
             $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
         }
+    }
+
+    // reset fields
+    public function resetFields()
+    {
+        $this->reset('name', 'c_code', 'short_code', 'status', 'hiddenId', 'btnType');
     }
 }

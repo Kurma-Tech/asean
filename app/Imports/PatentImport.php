@@ -2,44 +2,98 @@
 
 namespace App\Imports;
 
-use App\Models\Country;
 use App\Models\Patent;
-use App\Models\PatentKind;
-use App\Models\PatentType;
-use Maatwebsite\Excel\Concerns\ToModel;
+use App\Models\PatentCategory;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class PatentImport implements ToModel, WithHeadingRow, WithChunkReading, WithBatchInserts
+class PatentImport implements ToCollection, WithHeadingRow, WithChunkReading, WithBatchInserts
 {
-    private $patentType;
-    private $patentKind;
-    private $country;
+    private $patentCategories;
 
     public function __construct()
     {
-        $this->patentType = PatentType::select('id')->get();
-        $this->patentKind = PatentKind::select('id')->get();
-        $this->country    = Country::select('id')->get();
+        $this->patentCategories = PatentCategory::select('id', 'ipc_code', 'group_id')->get();
     }
 
-    public function model(array $row)
+    public function collection(Collection $rows)
     {
-        $patentType = $this->patentType->where('id', $row['type_id'])->first();
-        $patentKind = $this->patentKind->where('id', $row['kind_id'])->first();
-        $country    = $this->country->where('id', $row['country_id'])->first();
-        
-        return new Patent([
-            "title"      => $row['title'],
-            "patent_id"  => $row['patent_id'],
-            "country_id" => $country->id ?? NULL,
-            "kind_id"    => $patentKind->id ?? NULL,
-            "type_id"    => $patentType->id ?? NULL,
-            "date"       => $row['patent_id'],
-            "long"       => $row['long'],
-            "lat"        => $row['lat'],
-        ]);
+        foreach ($rows as $row) 
+        {
+            if (isset($row['ip_type_name'])) {
+                $patentType = DB::table('patent_types')
+                    ->select('id')
+                    ->where('type', $row['ip_type_name'])
+                    ->first();
+            } else {
+                $patentType = null;
+            }
+    
+            if (isset($row['ip_kind_name'])) {
+                $patentKind = DB::table('patent_kinds')
+                    ->select('id')
+                    ->where('kind', $row['ip_kind_name'])
+                    ->first();
+            } else {
+                $patentKind = null;
+            }
+    
+            if (isset($row['country_short_code'])) {
+                $country = DB::table('countries')
+                    ->select('id')
+                    ->where('short_code', $row['country_short_code'])
+                    ->first();
+            } else {
+                $country = null;
+            }
+
+            $date = explode('/', $row['filing_date']);
+
+            $inventorToArray = explode(';', $row['inventor_name']);
+            $inventorJson = json_encode($inventorToArray);
+
+            $codeToArray = array_map('trim', explode(';', $row['ipc_code']));    // Category name explode with ,
+            
+            if($codeToArray)
+            {
+                $category_collection = [];
+                foreach ($codeToArray as $code)
+                {
+                    $categoryQuery = $this->patentCategories->where('ipc_code', $code);
+                    if($categoryQuery->count() != 0){
+                        $category = $categoryQuery->first() ?? Null;
+                        $array = ['country_id' => $country->id ?? NULL, 'parent_classification_id' => $category->group_id ?? Null, 'year' => $date[2]];
+                        $category_collection[$category->id] = $array;
+                    }else{
+                        continue;
+                    }
+                }
+            }
+
+            Patent::create([
+                "title"             => $row['title'],
+                "filing_no"         => $row['filing_no'],
+                "applicant_company" => $row['applicant_company'],
+                "inventor_name"     => $inventorJson,
+                "country_id"        => ($country != null) ? $country->id : null,
+                "kind_id"           => ($patentKind != null) ? $patentKind->id : null,
+                "type_id"           => ($patentType != null) ? $patentType->id : null,
+                "registration_date" => $row['registration_date'],
+                "registration_no"   => $row['registration_no'],
+                "filing_date"       => $row['filing_date'],
+                "publication_date"  => $row['publication_date'],
+                "abstract"          => $row['abstract'],
+                "long"              => $row['long'],
+                "lat"               => $row['lat'],
+                "month"             => $date[0],
+                "year"              => $date[2],
+                "month_and_year"    => ($date[0] != null && $date[2] != null) ? $date[2] ."-".$date[0] : null,
+            ])->patentCategories()->sync($category_collection);
+        }
     }
 
     public function batchSize(): int

@@ -81,7 +81,8 @@
                                         <th>Registered Year</th>
                                         <th>SEC No.</th>
                                         <th>Type</th>
-                                        <th>Classification</th>
+                                        <th>Group</th>
+                                        <th>Classification Code</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
@@ -99,7 +100,10 @@
                                             <span class="badge badge-primary">{{ $business->businessType->type ?? 'N/A' }}</span>
                                         </td>
                                         <td>
-                                            <span class="badge badge-info">{{ $business->industryClassification->classifications ?? 'N/A' }}</span>
+                                            <span class="badge badge-primary">{{ $business->businessGroup->group ?? 'N/A' }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-info" title="{{ $business->industryClassification->classifications ?? 'N/A' }}">{{ $business->industryClassification->code ?? 'N/A' }}</span>
                                         </td>
                                         <td>
                                             <span class="badge {{($business->status == 'REGISTERED') ? 'badge-success':'badge-danger'}}">{{$business->status ?? 'NULL'}}</span>
@@ -121,7 +125,7 @@
                                                         <a href="{{ route('admin.business.update', ['key' => $business->id]) }}" class="btn btn-xs bg-warning" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
-                                                        <a href="javascript:void(0)" class="btn btn-xs bg-danger" wire:click="softDelete({{$business->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <a href="javascript:void(0)" onclick="confirm('Are you sure? Do you want to delete?') || event.stopImmediatePropagation()" class="btn btn-xs bg-danger" wire:click="softDelete({{$business->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
                                                             <i class="far fa-trash-alt"></i>
                                                         </a>
                                                         @endif
@@ -132,7 +136,55 @@
                                                         <div class="product-title">
                                                             Date Registered
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{ $business->date_registered ?? 'NULL' }}</a>
+                                                        <p class="product-title">{{ $business->date_registered ?? 'NULL' }}</p>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Classification Name
+                                                        </div>
+                                                        <p class="product-title">{{ $business->industryClassification->classifications ?? 'N/A' }}</p>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Country
+                                                        </div>
+                                                        <p class="product-title">{{ $business->country->name  ?? 'NULL'}}</p>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Region
+                                                        </div>
+                                                        <p class="product-title">{{$business->businessRegion->name ?? 'NULL'}}</p>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Province
+                                                        </div>
+                                                        <p class="product-title">{{$business->businessProvince->name ?? 'NULL'}}</p>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            District
+                                                        </div>
+                                                        <p class="product-title">{{$business->businessDistrict->name ?? 'NULL'}}</p>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            City
+                                                        </div>
+                                                        <p class="product-title">{{$business->businessCity->name ?? 'NULL'}}</p>
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -140,39 +192,7 @@
                                                         <div class="product-title">
                                                             Address
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{ $business->address  ?? 'NULL'}}</a>
-                                                    </div>
-                                                </li>
-                                                <li class="item">
-                                                    <div class="product-info">
-                                                        <div class="product-title">
-                                                            PSIC Code
-                                                        </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{ $business->industryClassification->psic_code ?? 'N/A' }}</a>
-                                                    </div>
-                                                </li>
-                                                <li class="item">
-                                                    <div class="product-info">
-                                                        <div class="product-title">
-                                                            NGC Code
-                                                        </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{$business->ngc_code ?? 'NULL'}}</a>
-                                                    </div>
-                                                </li>
-                                                <li class="item">
-                                                    <div class="product-info">
-                                                        <div class="product-title">
-                                                            Industry Code
-                                                        </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{$business->industry_code ?? 'NULL'}}</a>
-                                                    </div>
-                                                </li>
-                                                <li class="item">
-                                                    <div class="product-info">
-                                                        <div class="product-title">
-                                                            Geographic Code
-                                                        </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{$business->geo_code ?? 'NULL'}}</a>
+                                                        <p class="product-title">{{ $business->address  ?? 'NULL'}}</p>
                                                     </div>
                                                 </li>
                                                 <li class="item">
@@ -180,23 +200,7 @@
                                                         <div class="product-title">
                                                             Geo Location
                                                         </div>
-                                                        <a href="javascript:void(0)" class="product-title">{{$business->long ?? 'NULL'}} (long), {{$business->lat ?? 'NULL'}} (Lat)</a>
-                                                    </div>
-                                                </li>
-                                                <li class="item">
-                                                    <div class="product-info">
-                                                        <div class="product-title">
-                                                            Industry Description
-                                                        </div>
-                                                        <p>
-                                                            {{$business->industry_description ?? 'NULL'}}
-                                                        </p>
-                                                        <div class="product-title">
-                                                            Geo Description
-                                                        </div>
-                                                        <p>
-                                                            {{$business->geo_description ?? 'NULL'}}
-                                                        </p>
+                                                        <a class="product-title" href="https://www.google.com/maps/place/{{$business->lat ?? 'NULL'}},{{$business->long ?? 'NULL'}}" target="_blank" title="Google Map View">{{$business->long ?? 'NULL'}} (long), {{$business->lat ?? 'NULL'}} (Lat)</a>
                                                     </div>
                                                 </li>
                                                 <li class="item">

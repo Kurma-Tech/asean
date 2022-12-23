@@ -1,4 +1,15 @@
 @push('extra-styles')
+<style>
+    .content-wrapper{
+        position: relative;
+        height: calc(100vh - 48px)!important;
+    }
+    .content{
+        position: absolute;
+        width: 100%;
+        height: calc(100vh - 48px)!important;
+    }
+</style>
 @endpush
 
 <div>
@@ -10,24 +21,14 @@
                     <div class="col-12 col-sm-12 position-relative overflow-control p-0" id="mapSection">
                         @livewire('client.map.map-component')
                         <div class="map-overlay-box overlay-scroll">
-                            <h3 class="search-title">Search</h3>
+                            <h3 class="search-title">{{ GoogleTranslate::trans('Search', app()->getLocale()) }}</h3>
 
                             <div class="row">
-                                <div class="form-group col-md-4">
-                                    <div class="input-group input-group-sm">
-                                        <select class="form-control" wire:model="type">
-                                            <option hidden>Choose Data Type</option>
-                                            <option value="all">All</option>
-                                            <option value="business">Business</option>
-                                            <option value="patent">Patent</option>
-                                            <option value="journals">Journals</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-8">
+                                <div class="form-group col-md-12">
                                     <div class="input-group input-group-sm">
                                         <input type="text" class="form-control" id="search"
-                                            placeholder="Search..." wire:model="search">
+                                            placeholder="{{ GoogleTranslate::trans('Search', app()->getLocale()) }}..."
+                                            wire:model="search">
                                         <span class="input-group-append">
                                             <button type="button" class="btn btn-sm btn-default btn-flat"
                                                 wire:click="handleSearch"><i class="fa fa-search lemongreen"
@@ -36,25 +37,43 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="filter-inputs mt-0">
-                                <div class="form-group">
-                                    <label>Sort by Countries:</label>
+                            <div class="row">
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label>{{ GoogleTranslate::trans('Sort by Type', app()->getLocale()) }}:</label>
                                     <div class="input-group input-group-sm">
-                                        <select class="form-control" wire:model="country">
-                                            <option hidden>Choose Countries</option>
-                                            @foreach ($countries as $country)
-                                                <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                            @endforeach
+                                        <select class="form-control" wire:model="type">
+                                            <option hidden>{{ GoogleTranslate::trans('Choose Data Type', app()->getLocale()) }}</option>
+                                            <option value="all">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                            <option value="business">{{ GoogleTranslate::trans('Business', app()->getLocale()) }}</option>
+                                            <option value="patent">{{ GoogleTranslate::trans('Patent', app()->getLocale()) }}</option>
+                                            <option value="journal">{{ GoogleTranslate::trans('Journals', app()->getLocale()) }}</option>
                                         </select>
                                     </div>
                                 </div>
-                                @if ($type != 'all')
+                                <div class="filter-inputs mt-0 col-md-6 col-sm-12">
                                     <div class="form-group">
-                                        <label>Sort by Classifications:</label>
+                                        <label>{{ GoogleTranslate::trans('Sort by Countries', app()->getLocale()) }}:</label>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="country">
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Countries', app()->getLocale()) }}</option>
+                                                @foreach ($countries as $country)
+                                                    <option value="{{ $country["id"] }}">{{ GoogleTranslate::trans( $country["name"], app()->getLocale()) }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    @if ($type == 'business')
+                                    <div class="form-group">
+                                        <label>{{ GoogleTranslate::trans('Sort by Classifications', app()->getLocale()) }}:</label>
                                         <div class="input-group input-group-sm">
                                             <select class="form-control" wire:model="classification">
-                                                <option hidden>Choose Classifications</option>
-                                                <option value="">All</option>
+                                                <option hidden>
+                                                    {{ GoogleTranslate::trans('Choose Classifications', app()->getLocale()) }}
+                                                </option>
+                                                {{-- <option value="">
+                                                    {{ GoogleTranslate::trans('All', app()->getLocale()) }}</option> --}}
                                                 @foreach ($classifications as $classification)
                                                     <option value="{{ $classification->id }}">
                                                         {{ $classification->classifications }}</option>
@@ -62,12 +81,46 @@
                                             </select>
                                         </div>
                                     </div>
-                                @endif
+                                    @endif
+                                    @if ($type == 'patent')
+                                    <div class="form-group">
+                                        <label>{{ GoogleTranslate::trans('Sort by Category', app()->getLocale()) }}:</label>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="classification">
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Category', app()->getLocale()) }}</option>
+                                                <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                @foreach ($classifications as $classification)
+                                                    <option value="{{ $classification->id }}">
+                                                        {{ $classification->classification_category }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    @endif
+                                    @if ($type == 'journal')
+                                    <div class="form-group">
+                                        <label>{{ GoogleTranslate::trans('Sort by Category', app()->getLocale()) }}:</label>
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-control" wire:model="classification">
+                                                <option hidden>{{ GoogleTranslate::trans('Choose Category', app()->getLocale()) }}</option>
+                                                <option value="">{{ GoogleTranslate::trans('All', app()->getLocale()) }}</option>
+                                                @foreach ($classifications as $classification)
+                                                    <option value="{{ $classification->id }}">
+                                                        {{ $classification->category }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    @endif
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <span class="data-report-count mr-2">About {{ $results }} results.</span>
-                                    <span class="view-report pull-right" id="view-report-element">Show Report</span>
+                                    <span
+                                        class="data-report-count mr-2">{{ GoogleTranslate::trans('About ' . $results . ' results.', app()->getLocale()) }}</span>
+                                    <a href="{{ route('client.report') }}" class="view-report pull-right"
+                                        id="view-report-element"
+                                        target="_blank">{{ GoogleTranslate::trans('Show Report', app()->getLocale()) }}</a>
                                 </div>
                             </div>
 
@@ -76,15 +129,18 @@
                             <div class="row">
                                 <div class="col-md-12 mt-3 mb-3">
                                     <div wire:ignore>
-                                        PAGE: <span id="page"></span>
+                                        {{ GoogleTranslate::trans('PAGE', app()->getLocale()) }}: <span
+                                            id="page"></span>
                                     </div>
                                     <div style="display: flex; justify-content: space-between;">
-                                        <a href="javascript:prevPage()" class="btn btn-xs btn-default" id="btn_prev">Prev</a>
-                                        <a href="javascript:nextPage()" class="btn btn-xs btn-default pull-right" id="btn_next">Next</a>
+                                        <a href="javascript:prevPage()" class="btn btn-xs btn-default"
+                                            id="btn_prev">{{ GoogleTranslate::trans('Prev', app()->getLocale()) }}</a>
+                                        <a href="javascript:nextPage()" class="btn btn-xs btn-default pull-right"
+                                            id="btn_next">{{ GoogleTranslate::trans('Next', app()->getLocale()) }}</a>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div id="accordion" wire:ignore>
                                 {{-- @if (array_key_exists('features', $businessResults))
                                     @foreach ($businessResults['features'] as $businessResult)
@@ -150,17 +206,18 @@
                                 @endif --}}
                             </div>
                         </div>
-                        <a id="filter-toggle" href="#" class="btn toggle square"><i class="fas fa-chart-bar fa-lg"
-                                aria-hidden="true"></i> Data Report</a>
+                        {{-- <a id="filter-toggle" href="#" class="btn toggle square"><i class="fas fa-chart-bar fa-lg"
+                                aria-hidden="true"></i>
+                            {{ GoogleTranslate::trans('Data Report', app()->getLocale()) }}</a>
                         <div id="filter-wrapper" wire:ignore.self class="overlay-scroll active">
                             <a id="close-filter" href="#" class="toggle square-close"><i
                                     class="fa fa-times fa-lg"></i></a>
                             <div id="countryChart" wire:ignore></div>
-                        </div>
+                        </div> --}}
                     </div>
-                    <div class="col-12 col-sm-12 p-3 scroll-element" id="reportSection" wire:ignore>
-                        @livewire('client.report.report-component', ['type' => $type, 'country' => $country, 'classification' => $classification])
-                    </div>
+                    {{-- <div class="col-12 col-sm-12 p-3 scroll-element" id="reportSection" wire:ignore>
+                        @livewire('client.report.report-component')
+                    </div> --}}
                 </div>
             </div>
         </section>
@@ -168,74 +225,81 @@
 </div>
 
 @push('extra-scripts')
-    <script>
-        var countryChartOption = {
-            series: [{
-                    name: "Business",
-                    data: {!! collect($businessCountListByCountry)->toJson() !!}
-                },
-                {
-                    name: "Patent",
-                    data: {!! collect($patentCountListByCountry)->toJson() !!}
-                },
-                {
-                    name: "Journals",
-                    data: []
-                }
-            ],
-            chart: {
-                type: 'bar',
-                height: 750,
-                foreColor: '#fff',
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: true,
-                    dataLabels: {
-                        position: 'top',
-                    },
-                }
-            },
-            dataLabels: {
-                enabled: true,
-                offsetX: -6,
-                style: {
-                    fontSize: '11px',
-                    colors: ['#fff'],
+    {{-- <script>
+        // var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+        // var countryChartOption = {
+        //     series: [{
+        //             name: "Business",
+        //             data: {!! collect($businessCountListByCountry)->toJson() !!}
+        //         },
+        //         {
+        //             name: "Patent",
+        //             data: {!! collect($patentCountListByCountry)->toJson() !!}
+        //         },
+        //         {
+        //             name: "Journals",
+        //             data: {!! collect($journalCountListByCountry)->toJson() !!}
+        //         }
+        //     ],
+        //     chart: {
+        //         type: 'bar',
+        //         height: 750,
+        //         foreColor: '#fff',
+        //         toolbar: {
+        //             show: true,
+        //             tools: {
+        //                 download: isAuthenticated // <== line to add
+        //             }
+        //         }
+        //     },
+        //     plotOptions: {
+        //         bar: {
+        //             horizontal: true,
+        //             dataLabels: {
+        //                 position: 'top',
+        //             },
+        //         }
+        //     },
+        //     dataLabels: {
+        //         enabled: true,
+        //         offsetX: -6,
+        //         style: {
+        //             fontSize: '11px',
+        //             colors: ['#fff'],
 
-                }
-            },
-            stroke: {
-                show: true,
-                width: 1,
-                colors: ['#333']
-            },
-            tooltip: {
-                shared: true,
-                intersect: false
-            },
-            xaxis: {
-                categories: {!! collect($countriesNameList)->toJson() !!},
-                colors: ['#fff']
-            },
-            colors: ['#ffd600', '#b71c1c', '#01579b'],
-            title: {
-                text: "Total registered businesses, patents and journals till now.",
-                align: 'left',
-                margin: 0,
-                offsetX: 0,
-                offsetY: 0,
-                floating: false,
-                style: {
-                    fontSize: '14px',
-                    fontWeight: 'bold',
-                    fontFamily: undefined,
-                    color: '#fff'
-                },
-            }
-        };
+        //         }
+        //     },
+        //     stroke: {
+        //         show: true,
+        //         width: 1,
+        //         colors: ['#333']
+        //     },
+        //     tooltip: {
+        //         shared: true,
+        //         intersect: false
+        //     },
+        //     xaxis: {
+        //         categories: {!! collect($countriesNameList)->toJson() !!},
+        //         colors: ['#fff']
+        //     },
+        //     colors: ['#b71c1c', '#ffd600', '#01579b'],
+        //     title: {
+        //         text: "{{ GoogleTranslate::trans('Total registered businesses, patents and journals till now.', app()->getLocale()) }}",
+        //         align: 'left',
+        //         margin: 0,
+        //         offsetX: 0,
+        //         offsetY: 0,
+        //         floating: false,
+        //         style: {
+        //             fontSize: '14px',
+        //             fontWeight: 'bold',
+        //             fontFamily: undefined,
+        //             color: '#fff'
+        //         },
+        //     }
+        // };
 
-        var countryChart = new ApexCharts(document.querySelector("#countryChart"), countryChartOption);
-        countryChart.render();
-    </script>
+        // var countryChart = new ApexCharts(document.querySelector("#countryChart"), countryChartOption);
+        // countryChart.render();
+    </script> --}}
 @endpush

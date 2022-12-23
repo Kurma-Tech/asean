@@ -33,8 +33,7 @@
                                         <select class="form-control" style="width: 100%;" wire:model="orderBy">
                                             <option hidden>Choose Order By</option>
                                             <option value="id">By ID</option>
-                                            <option value="name">name</option>
-                                            <option value="isDeactivated">Activated</option>
+                                            <option value="type">Type</option>
                                         </select>
                                     </div>
                                 </div>
@@ -66,7 +65,7 @@
                             <div class="card-body">
                                 <input type="hidden" wire:model="hiddenId">
                                 <div class="form-group">
-                                    <label for="type">Business Type</label>
+                                    <label for="type">Business Type<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="type" placeholder="Enter Business Type" wire:model='type' wire:keyup.debounce.300ms="generateslug">
                                     @error('type')
                                     <div class="error">{{ $message }}</div>
@@ -79,11 +78,15 @@
                                     <div class="error">{{ $message }}</div>
                                     @enderror
                                 </div>
+
+                                <blockquote class="blockquote">
+                                    <p class="mb-0"><span class="text-red-400">Note*</span>: Fields with <span class="text-danger">*</span> sign are mendatory.</p>
+                                </blockquote>
                             </div>
                             <!-- /.card-body -->
                         
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-success">{{ $btnType }}</button>
+                                <button type="submit" class="btn btn-success btn-sm">{{ $btnType }}</button>
                                 <div class="btn btn-sm btn-danger pull-right" data-toggle="tooltip" data-placement="top" title="Reset Form Fields" wire:click="resetFields()"><i class="fas fa-redo-alt"></i> Reset Fields</div>
                             </div>
                         </form>

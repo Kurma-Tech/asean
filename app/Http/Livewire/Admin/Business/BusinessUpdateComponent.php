@@ -3,25 +3,44 @@
 namespace App\Http\Livewire\Admin\Business;
 
 use App\Models\Business;
+use App\Models\BusinessGroup;
+use App\Models\BusinessType;
+use App\Models\City;
+use App\Models\Country;
+use App\Models\District;
+use App\Models\IndustryClassification;
+use App\Models\Province;
+use App\Models\Region;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class BusinessUpdateComponent extends Component
 {
+    public 
+        $businessTypes = [],
+        $businessGroups = [],
+        $industryClassifications = [],
+        $countries = [],
+        $regions,
+        $provinces,
+        $districts,
+        $cities;
+
+    public $selectedCountry  = Null;
+    public $selectedRegion   = Null;
+    public $selectedProvince = Null;
+    public $selectedDistrict = Null;
+
     public
         $business_id,
         $company_name,
         $sec_no,
-        $ngc_code,
         $business_type_id,
+        $business_group_id,
         $industry_classification_id,
-        $country_id,
+        $city_id,
         $year,
         $date_registered,
-        $geo_code,
-        $industry_code,
-        $geo_description,
-        $industry_description,
         $address,
         $long,
         $lat;
@@ -43,16 +62,16 @@ class BusinessUpdateComponent extends Component
         return [
             'company_name'               => 'required',
             'sec_no'                     => 'required',
-            'ngc_code'                   => 'nullable',
             'business_type_id'           => 'required|integer',
+            'business_group_id'          => 'required|integer',
             'industry_classification_id' => 'required|integer',
-            'country_id'                 => 'required|integer',
+            'selectedCountry'            => 'required|integer',
+            'selectedRegion'             => 'nullable|integer',
+            'selectedProvince'           => 'nullable|integer',
+            'selectedDistrict'           => 'nullable|integer',
+            'city_id'                    => 'nullable|integer',
             'year'                       => 'required',
             'date_registered'            => 'required|date_format:"m/d/Y"',
-            'geo_code'                   => 'nullable',
-            'industry_code'              => 'nullable',
-            'geo_description'            => 'nullable',
-            'industry_description'       => 'nullable',
             'long'                       => 'required',
             'lat'                        => 'required',
             'address'                    => 'required'
@@ -60,10 +79,20 @@ class BusinessUpdateComponent extends Component
     }
 
     protected $messages = [
-        'country_id.required'                 => 'Country field is required',
-        'country_id.integer'                  => 'You must select country from drop down',
+        'selectedCountry.required'            => 'Country field is required',
+        'selectedCountry.integer'             => 'You must select country from drop down',
+        'selectedRegion.required'             => 'Region field is required',
+        'selectedRegion.integer'              => 'You must select region from drop down',
+        'selectedProvince.required'           => 'Province field is required',
+        'selectedProvince.integer'            => 'You must select province from drop down',
+        'selectedDistrict.required'           => 'District field is required',
+        'selectedDistrict.integer'            => 'You must select district from drop down',
+        'city_id.required'                    => 'City field is required',
+        'city_id.integer'                     => 'You must select city from drop down',
         'business_type_id.required'           => 'Business type field is required',
         'business_type_id.integer'            => 'You must select business type from drop down',
+        'business_group_id.required'          => 'Business group field is required',
+        'business_group_id.integer'           => 'You must select business group from drop down',
         'industry_classification_id.required' => 'Classification field is required',
         'industry_classification_id.integer'  => 'You must select classification from drop down',
         'long.required'                       => 'Longitude field is required',
@@ -72,36 +101,82 @@ class BusinessUpdateComponent extends Component
 
     public function mount($key)
     {
+        $this->businessTypes           = BusinessType::select('id', 'type')->get();
+        $this->businessGroups          = BusinessGroup::select('id', 'group')->get();
+        $this->industryClassifications = IndustryClassification::select('id', 'classifications')->get();
+        $this->countries               = Country::select('id', 'name')->get();
+        $this->regions                 = collect();
+        $this->provinces               = collect();
+        $this->districts               = collect();
+        $this->cities                  = collect();
+
         $this->business_id                = $key;
         $business                         = Business::findOrFail($this->business_id);
         $this->company_name               = $business->company_name;
         $this->sec_no                     = $business->sec_no;
-        $this->ngc_code                   = $business->ngc_code;
         $this->business_type_id           = $business->business_type_id;
+        $this->business_group_id          = $business->group_id;
         $this->industry_classification_id = $business->industry_classification_id;
         $this->country_id                 = $business->country_id;
+        $this->selectedCountry            = $business->region_id;
+        $this->selectedRegion             = $business->province_id;
+        $this->selectedProvince           = $business->district_id;
+        $this->city_id                    = $business->city_id;
         $this->year                       = $business->year;
         $this->date_registered            = $business->date_registered;
-        $this->geo_code                   = $business->geo_code;
-        $this->industry_code              = $business->industry_code;
-        $this->geo_description            = $business->geo_description;
-        $this->industry_description       = $business->industry_description;
         $this->address                    = $business->address;
         $this->long                       = $business->long;
         $this->lat                        = $business->lat;
+
+        $this->updatedSelectedCountry($this->selectedCountry);
+        $this->updatedSelectedRegion($this->selectedRegion);
+        $this->updatedSelectedProvince($this->selectedProvince);
+        $this->updatedSelectedDistrict($this->selectedDistrict);
+    }
+
+    // update regions
+    public function updatedSelectedCountry($id)
+    {
+        if (!is_null($id)) {
+            $this->regions = Region::where('country_id', $id)
+            ->select('id', 'name', 'code')
+            ->get();
+        }
+    }
+
+    // update province
+    public function updatedSelectedRegion($id)
+    {
+        if (!is_null($id)) {
+            $this->provinces = Province::where('region_id', $id)
+            ->select('id', 'name', 'code')
+            ->get();
+        }
+    }
+
+    // update district
+    public function updatedSelectedProvince($id)
+    {
+        if (!is_null($id)) {
+            $this->districts = District::where('province_id', $id)
+            ->select('id', 'name', 'code')
+            ->get();
+        }
+    }
+
+    // update city
+    public function updatedSelectedDistrict($id)
+    {
+        if (!is_null($id)) {
+            $this->cities = City::where('district_id', $id)
+            ->select('id', 'name', 'code')
+            ->get();
+        }
     }
 
     public function render()
     {
-        $countries               = DB::table('countries')->select('id', 'name')->get();
-        $businessTypes           = DB::table('business_types')->select('id', 'type')->get();
-        $industryClassifications = DB::table('industry_classifications')->select('id', 'classifications')->get();
-
-        return view('livewire.admin.business.business-update-component', [
-            'countries' => $countries, 
-            'businessTypes' => $businessTypes, 
-            'industryClassifications' => $industryClassifications
-        ])->layout('layouts.admin');
+        return view('livewire.admin.business.business-update-component')->layout('layouts.admin');
     }
 
     // Update
@@ -115,16 +190,16 @@ class BusinessUpdateComponent extends Component
             $business = Business::findOrFail($this->business_id);
             $business->company_name               = $this->company_name;
             $business->sec_no                     = $this->sec_no;
-            $business->ngc_code                   = $this->ngc_code;
             $business->business_type_id           = $this->business_type_id;
+            $business->group_id                   = $this->business_group_id;
             $business->industry_classification_id = $this->industry_classification_id;
-            $business->country_id                 = $this->country_id;
+            $business->country_id                 = $this->selectedCountry;
+            $business->region_id                  = $this->selectedRegion;
+            $business->province_id                = $this->selectedProvince;
+            $business->district_id                = $this->selectedDistrict;
+            $business->city_id                    = $this->city_id;
             $business->year                       = $this->year;
             $business->date_registered            = $this->date_registered;
-            $business->geo_code                   = $this->geo_code;
-            $business->industry_code              = $this->industry_code;
-            $business->geo_description            = $this->geo_description;
-            $business->industry_description       = $this->industry_description;
             $business->long                       = $this->long;
             $business->lat                        = $this->lat;
             $business->address                    = $this->address;

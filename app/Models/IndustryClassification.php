@@ -17,7 +17,7 @@ class IndustryClassification extends Model
         return empty($search) ? static::query()
             : static::query()->where('id', 'like', '%'.$search.'%')
                 ->orWhere('classifications', 'like', '%'.$search.'%')
-                ->orWhere('psic_code', 'like', '%'.$search.'%');
+                ->orWhere('code', 'like', '%'.$search.'%');
     }
 
     public function businesses()
@@ -27,11 +27,5 @@ class IndustryClassification extends Model
 
     public function parent(){
         return $this->hasOne(IndustryClassification::class, "id", "parent_id");
-    }
-
-    public function manpowers()
-    {
-        return $this->belongsToMany(Manpower::class, 'classification_manpowers', 'classification_id', 'manpower_id')
-                    ->withPivot(['seats']);
     }
 }

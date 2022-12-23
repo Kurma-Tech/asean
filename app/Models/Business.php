@@ -31,6 +31,36 @@ class Business extends Model
 
     public function businessType()
     {
-        return $this->belongsTo(BusinessType::class);
+        return $this->belongsTo(BusinessType::class, 'business_type_id');
+    }
+
+    public function businessGroup()
+    {
+        return $this->belongsTo(BusinessGroup::class, 'group_id');
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
+
+    public function businessRegion()
+    {
+        return $this->belongsTo(Region::class, 'region_id');
+    }
+
+    public function businessProvince()
+    {
+        return $this->belongsTo(Province::class, 'province_id');
+    }
+
+    public function businessDistrict()
+    {
+        return $this->belongsTo(District::class, 'district_id');
+    }
+
+    public function businessCity()
+    {
+        return $this->belongsTo(City::class, 'city_id');
     }
 }

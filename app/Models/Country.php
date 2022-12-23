@@ -21,4 +21,9 @@ class Country extends Model
                 ->orWhere('c_code', 'like', '%'.$search.'%')
                 ->orWhere('short_code', 'like', '%'.$search.'%');
     }
+
+    public function businesses()
+    {
+        return $this->hasMany(Business::class);
+    }
 }

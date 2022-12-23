@@ -12,6 +12,8 @@
 <!-- overlayScrollbars -->
 <link rel="stylesheet" href="{{asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
 <link rel="stylesheet" href="{{ asset('client/dist/css/apexcharts.css') }}">
+<!-- Toastr -->
+<link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
 <style>
 .warning,.danger,.info { background-color: #dfdfdf; }
 .warning.active { background-color: #ffc107; color: antiquewhite !important; }
@@ -179,6 +181,31 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
     }
+</style>
+
+<style>
+    .drop-down { position: relative; display: inline-block; width: auto; margin-top: 0; font-family: verdana; } 
+    .drop-down select { display: none; } 
+    .drop-down .button a { display: block; color: #8bc34a; transition: .5s ease-in-out;}
+    .drop-down .button a:hover { color: #8bc34a; }
+    .drop-down .button span { background-repeat: no-repeat; text-indent: 40px; display: inline-block;}
+    .drop-down .select-list { position: absolute; top: 0; right: 0; z-index: 1; margin-top: 40px; padding: 0; margin-bottom: 0; background-color: #595959; list-style: none; width: max-content;} 
+    .drop-down .select-list li { display: none; padding: 5px 5px; cursor: pointer;} 
+    .drop-down .select-list li span { 
+        display: inline-block;
+        width: 100%; 
+        padding: 5px 5px 5px 32px;
+        background-color: #595959;
+        background-repeat: no-repeat; 
+        font-size: 12px; 
+        text-align: left; 
+        color: #FFF; 
+        opacity: 0.7; 
+        box-sizing: border-box; 
+        text-indent: 12px;
+    } 
+    .drop-down .select-list li span:hover, 
+    .drop-down .select-list li span:focus { opacity: 1; }
 </style>
 
 @livewireStyles

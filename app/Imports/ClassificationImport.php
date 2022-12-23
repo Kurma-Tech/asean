@@ -14,22 +14,45 @@ class ClassificationImport implements ToModel, WithHeadingRow, WithChunkReading,
 {
     public function model(array $row)
     {
+        $classification = null;
+        $section_id     = null;
+        $division_id    = null;
+        $group_id       = null;
+        $class_id       = null;
 
-        if (isset($row['parent_name'])) {
+        if (isset($row['parent_code'])) {
+            $classification = IndustryClassification::where('code', $row['parent_code'])
+            ->select('id','parent_id','section_id','division_id','group_id')
+            ->first();
 
-            $industryClassification = DB::table('industry_classifications')
-                ->select('id')
-                ->where('parent_id', null)
-                ->where('classifications', $row['parent_name'])
-                ->first();
-        } else {
-            $industryClassification = null;
+            if (is_null($classification->parent_id)) {
+                $section_id  = $classification->id;
+            }
+            if (!is_null($classification->section_id)) {
+                $section_id  = $classification->section_id;
+                $division_id = $classification->id;
+            }
+            if (!is_null($classification->division_id)) {
+                $section_id  = $classification->section_id;
+                $division_id = $classification->division_id;
+                $group_id    = $classification->id;
+            }
+            if (!is_null($classification->group_id)) {
+                $section_id  = $classification->section_id;
+                $division_id = $classification->division_id;
+                $group_id    = $classification->group_id;
+                // $class_id    = $classification->id;
+            }
         }
         
         return new IndustryClassification([
-            "parent_id"       => ($industryClassification != null) ? $industryClassification->id : null,
+            "parent_id"       => ($classification != null) ? $classification->id : null,
+            "section_id"      => ($section_id != null) ? $section_id : null,
+            "division_id"     => ($division_id != null) ? $division_id : null,
+            "group_id"        => ($group_id != null) ? $group_id : null,
+            "class_id"        => ($class_id != null) ? $class_id : null,
             "classifications" => $row['classifications'] ?? null,
-            "psic_code"       => $row['psic_code'] ?? null,
+            "code"            => $row['code'] ?? null,
         ]);
     }
 

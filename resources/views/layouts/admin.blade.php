@@ -3,7 +3,7 @@
 <head>
     @include('admin.includes._head')
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
     <div class="wrapper">
         <!-- Navbar -->
         @include('admin.includes._navigation')

@@ -34,8 +34,8 @@ class PatentListComponent extends Component
     protected function rules()
     {
         return [
-            'kind' => 'required|min:3',
-            'slug' => 'required|min:3|unique:patent_kinds,slug',
+            'kind' => 'required',
+            'slug' => 'required|unique:patent_kinds,slug',
         ];
     }
 
@@ -43,7 +43,6 @@ class PatentListComponent extends Component
     {
         return view('livewire.admin.patent-kind.patent-list-component', [
             'patentKinds' => PatentKind::search($this->search)
-                ->withTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
                 ->paginate($this->perPage),
         ])->layout('layouts.admin');
@@ -72,7 +71,7 @@ class PatentListComponent extends Component
 
             DB::commit();
 
-            $this->dispatchBrowserEvent('success-message',['message' => 'Patent Kind has been ' . $this->btnType . '.']);
+            $this->dispatchBrowserEvent('success-message',['message' => 'Intellectual Property Kind has been ' . $this->btnType . '.']);
 
             $this->reset('kind', 'slug', 'hiddenId', 'btnType');
             
@@ -101,7 +100,7 @@ class PatentListComponent extends Component
             $data = PatentKind::find($id);
             if ($data != null) {
                 $data->delete();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Patent Kind deleted successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Intellectual Property Kind Deleted Successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -121,7 +120,7 @@ class PatentListComponent extends Component
             $data = PatentKind::onlyTrashed()->find($id);
             if ($data != null) {
                 $data->restore();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Patent Kind restored successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Intellectual Property Kind Restored Successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);

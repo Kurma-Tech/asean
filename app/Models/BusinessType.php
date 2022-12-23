@@ -14,7 +14,6 @@ class BusinessType extends Model
 
     protected $table = "business_types";
     protected $guarded = ['id'];
-    protected $dates = ['deleted_at'];
 
     public function sluggable(): array
     {

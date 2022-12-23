@@ -1,4 +1,4 @@
-@section('title', 'Patent List')
+@section('title', 'Intellectual Property List')
 
 <div>
     <!-- Main content -->
@@ -33,8 +33,15 @@
                                         <select class="form-control" style="width: 100%;" wire:model="orderBy">
                                             <option hidden>Choose Order By</option>
                                             <option value="id">By ID</option>
-                                            <option value="name">name</option>
-                                            <option value="isDeactivated">Activated</option>
+                                            <option value="title">Title</option>
+                                            <option value="filing_no
+                                            ">Filing Number</option>
+                                            <option value="registration_date
+                                            ">Registration Date</option>
+                                            <option value="publication_date
+                                            ">Publication Date</option>
+                                            <option value="filing_date
+                                            ">Filing Date</option>
                                         </select>
                                     </div>
                                 </div>
@@ -59,7 +66,7 @@
                 <div class="col-4 col-md-4 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">{{ $btnType }} Patent</h3>
+                            <h3 class="card-title">{{ $btnType }} Intellectual Property</h3>
                             <button type="button" class="btn btn-xs btn-info pull-right" data-toggle="modal" data-target="#modal-default">
                                 <i class="fa fa-file-import"></i> Import CSV
                             </button>
@@ -71,8 +78,8 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="title">Title*</label>
-                                            <input type="text" class="form-control" id="title" placeholder="Enter Patent Title" wire:model='title'>
+                                            <label for="title">Title<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="title" placeholder="Enter Intellectual Property Title" wire:model='title'>
                                             @error('title')
                                             <div class="error">{{ $message }}</div>
                                             @enderror
@@ -81,54 +88,107 @@
 
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="patent_id">Patent ID*</label>
-                                            <input type="text" class="form-control" id="patent_id" placeholder="Enter Patent ID" wire:model='patent_id'>
-                                            @error('patent_id')
+                                            <label for="filing_no">Filing Number<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="filing_no" placeholder="Enter Filing Number" wire:model='filing_no'>
+                                            @error('filing_no')
                                             <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
-                                    
-                                    <div class="col-md-6 col-sm-12" wire:ignore>
+
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="country_name">Country*</label>
-                                            <select class="form-control select2 select2bs4" id="country_name" wire:model="country_id" style="width: 100%;">
-                                                <option hidden>Choose Country</option>
-                                                @foreach($countries as $country)
-                                                <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('country_id')
+                                            <label for="registration_no">Registration Number<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="registration_no" placeholder="Enter Registration Number" wire:model="registration_no"/>
+                                            @error('registration_no')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12" wire:ignore>
+                                    <div class="col-md-12 col-sm-12">
                                         <div class="form-group">
-                                            <label for="kind_name">Kind*</label>
-                                            <select class="form-control select2 select2bs4" id="kind_name" wire:model="kind_id" style="width: 100%;">
-                                                <option hidden>Choose Patent Kind</option>
-                                                @foreach($patentKinds as $pKind)
-                                                <option value="{{ $pKind->id }}">{{ $pKind->kind }}</option>
-                                                @endforeach
-                                            </select>
+                                            <label for="inventor_name">Inventor Name<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="inventor_name" placeholder="Enter Inventor Number" wire:model='inventor_name'>
+                                            <small class="form-text text-muted">If multiple names separate name with a semi-colon (;)</small>
+                                            @error('inventor_name')
+                                            <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="applicant_company">Applicant Company<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="applicant_company" placeholder="Enter Applicant Company" wire:model='applicant_company'>
+                                            @error('applicant_company')
+                                            <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12" >
+                                        <div class="form-group">
+                                            <label for="type_name">Intellectual Property Type<span class="text-danger">*</span></label>
+                                            <div wire:ignore>
+                                                <select class="form-control select2 select2bs4" id="type_name" wire:model="type_id" style="width: 100%;">
+                                                    <option hidden>Choose Type Option</option>
+                                                    @foreach($patentTypes as $pType)
+                                                    <option value="{{ $pType->id }}">{{ $pType->type }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            @error('type_id')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="kind_name">Intellectual Property Kind<span class="text-danger">*</span></label>
+                                            <div wire:ignore>
+                                                <select class="form-control select2 select2bs4" id="kind_name" wire:model="kind_id" style="width: 100%;">
+                                                    <option hidden>Choose Kind Option</option>
+                                                    @foreach($patentKinds as $pKind)
+                                                    <option value="{{ $pKind->id }}">{{ $pKind->kind }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                             @error('kind_id')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-sm-12" wire:ignore>
+                                    <div class="col-md-12 col-sm-12">
                                         <div class="form-group">
-                                            <label for="type_name">Type*</label>
-                                            <select class="form-control select2 select2bs4" id="type_name" wire:model="type_id" style="width: 100%;">
-                                                <option hidden>Choose Patent Type</option>
-                                                @foreach($patentTypes as $pType)
-                                                <option value="{{ $pType->id }}">{{ $pType->type }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('type_id')
+                                            <label for="category-dropdown">Patent Category<span class="text-danger">*</span></label>
+                                            <div class="select2-purple" wire:ignore>
+                                                <select class="form-control select2" multiple="multiple" data-placeholder="Choose Categories" data-dropdown-css-class="select2-purple" id="category-dropdown" wire:model="categories">
+                                                    @foreach($patentCategories as $category)
+                                                    <option value="{{ $category->ipc_code }}">{{ $category->ipc_code }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            @error('categories')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="country_name">Country<span class="text-danger">*</span></label>
+                                            <div wire:ignore>
+                                                <select class="form-control select2 select2bs4" id="country_name" wire:model="country_id" style="width: 100%;">
+                                                    <option hidden>Choose Country</option>
+                                                    @foreach($countries as $country)
+                                                    <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            @error('country_id')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -136,9 +196,29 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="date">Date Registred*</label>
-                                            <input type="text" class="form-control" name="date" id="patent_date_registered" wire:model="date" onchange="this.dispatchEvent(new InputEvent('input'))"/>
-                                            @error('date')
+                                            <label for="registration_date">Registration Date<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="registration_date" id="registration_date" wire:model="registration_date" onchange="this.dispatchEvent(new InputEvent('input'))"/>
+                                            @error('registration_date')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="publication_date">Publication Date<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="publication_date" id="publication_date" wire:model="publication_date" onchange="this.dispatchEvent(new InputEvent('input'))"/>
+                                            @error('publication_date')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="filing_date">Filing Date<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="filing_date" id="filing_date" wire:model="filing_date" onchange="this.dispatchEvent(new InputEvent('input'))"/>
+                                            @error('filing_date')
                                                 <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -147,7 +227,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="long">Longitude*</label>
+                                            <label for="long">Longitude</label>
                                             <input type="text" class="form-control" id="long" placeholder="Enter Longitude" wire:model='long'>
                                             @error('long')
                                             <div class="error">{{ $message }}</div>
@@ -157,14 +237,30 @@
 
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="lat">Latitude*</label>
+                                            <label for="lat">Latitude</label>
                                             <input type="text" class="form-control" id="lat" placeholder="Enter Latitude" wire:model='lat'>
                                             @error('lat')
                                             <div class="error">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
+
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="abstract">Abstract</label>
+                                            <div wire:ignore>
+                                                <textarea id="abstract" wire:model="abstract"></textarea>
+                                            </div>
+                                            @error('abstract')
+                                                <div class="error">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
+
+                                <blockquote class="blockquote">
+                                    <p class="mb-0"><span class="text-red-400">Note*</span>: Fields with <span class="text-danger">*</span> sign are mendatory.</p>
+                                </blockquote>
                             </div>
                             <!-- /.card-body -->
                         
@@ -179,7 +275,7 @@
                 <div class="col-8 col-md-8 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">All Patent List</h3>
+                            <h3 class="card-title">All Intellectual Property List</h3>
                         </div>
                         <!-- ./card-header -->
                         <div class="card-body">
@@ -187,34 +283,25 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>ID</th>
+                                        <th>FilingNo</th>
                                         <th>Title</th>
-                                        <th>Kind</th>
-                                        <th>Type</th>
-                                        <th>Date</th>
-                                        <th>Lat-Lon</th>
+                                        <th>RegistrationNo.</th>
+                                        <th>I.P.Type</th>
+                                        <th>I.P.Kind</th>
+                                        <th>PublicationDate</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($patents as $patent)
-                                    <tr>
+                                    <tr data-widget="expandable-table" aria-expanded="false">
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $patent->patent_id }}</td>
+                                        <td>{{ $patent->filing_no }}</td>
                                         <td>{{ $patent->title }}</td>
-                                        <td>
-                                            B2
-                                        </td>
-                                        <td>
-                                            utility
-                                        </td>
-                                        <td>
-                                            {{ $patent->date }}
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-info">{{ $patent->lat }}</span>
-                                            <span class="badge badge-primary">{{ $patent->long }}</span>
-                                        </td>
+                                        <td>{{ $patent->registration_no }}</td>
+                                        <td><span class="badge badge-info">{{ $patent->patentType->type ?? 'N/A' }}</span></td>
+                                        <td><span class="badge badge-primary">{{ $patent->patentKind->kind ?? 'N/A' }}</span></td>
+                                        <td>{{ $patent->publication_date }}</td>
                                         <td>
                                             @if($patent->deleted_at)
                                             <a href="#" class="btn btn-xs bg-success" wire:click="restore({{$patent->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
@@ -224,10 +311,136 @@
                                             <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$patent->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <a href="#" class="btn btn-xs bg-danger" wire:click="softDelete({{$patent->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
+                                            <a href="javascript:void(0)" onclick="confirm('Are you sure? Do you want to delete?') || event.stopImmediatePropagation()" class="btn btn-xs bg-danger" wire:click="softDelete({{$patent->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
                                                 <i class="far fa-trash-alt"></i>
                                             </a>
                                             @endif
+                                        </td>
+                                    </tr>
+
+                                    <tr class="expandable-body d-none">
+                                        <td colspan="8">
+                                            <ul class="products-list product-list-in-card pl-2 pr-2">
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Action
+                                                        </div>
+                                                        <a href="javascript:void(0)" class="btn btn-xs bg-warning"
+                                                            wire:click="editForm({{ $patent->id }})"
+                                                            data-toggle="tooltip" data-placement="top" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <a href="javascript:void(0)" onclick="confirm('Are you sure? Do you want to delete?') || event.stopImmediatePropagation()"
+                                                            class="btn btn-xs bg-danger"
+                                                            wire:click="softDelete({{ $patent->id }})"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Registration Date
+                                                        </div>
+                                                        <p class="product-title">{{ $patent->registration_date  ?? 'N/A'}}</p>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Filing Date
+                                                        </div>
+                                                        <p class="product-title">{{ $patent->filing_date  ?? 'N/A'}}</p>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Registration Number
+                                                        </div>
+                                                        <p class="product-title">{{ $patent->registration_no  ?? 'N/A'}}</p>
+                                                    </div>
+                                                </li>
+                                                @if(!is_null($patent->patentCategories))
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Category Name
+                                                        </div>
+                                                        <p class="product-title">
+                                                            @foreach ($patent->patentCategories as $pCategories)
+                                                                <span class="badge badge-secondary" title="{{ $pCategories->classification_category }}">{{ $pCategories->ipc_code }}</span>
+                                                            @endforeach
+                                                        </p>
+                                                    </div>
+                                                </li>
+                                                @endisset
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Inventor Name
+                                                        </div>
+                                                        @if($patent->inventor_name)
+                                                            @php $inventor_name = json_decode($patent->inventor_name) @endphp 
+                                                            @foreach ($inventor_name as $key)
+                                                            <span class="badge badge-secondary">{{$key}}</span>
+                                                            @endforeach
+                                                        @endif
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Applicant Company
+                                                        </div>
+                                                        <p class="product-title">{{$patent->applicant_company ?? 'N/A'}}</p>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Country Name
+                                                        </div>
+                                                        <p class="product-title">{{$patent->country->name ?? 'N/A'}}</p>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Geo Location
+                                                        </div>
+                                                        <a class="product-title" href="https://www.google.com/maps/place/{{$patent->lat ?? 'NULL'}},{{$patent->long ?? 'NULL'}}" target="_blank" title="Google Map View">{{$patent->long ?? 'N/A'}} (long), {{$patent->lat ?? 'N/A'}} (Lat)</a>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Abstract
+                                                        </div>
+                                                        <p class="product-title">{!! $patent->abstract ?? 'N/A' !!}</p>
+                                                    </div>
+                                                </li>
+                                                <li class="item">
+                                                    <div class="product-info">
+                                                        <div class="product-title">
+                                                            Action
+                                                        </div>
+                                                        <a href="javascript:void(0)" class="btn btn-xs bg-warning"
+                                                            wire:click="editForm({{ $patent->id }})"
+                                                            data-toggle="tooltip" data-placement="top" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <a href="javascript:void(0)" onclick="confirm('Are you sure? Do you want to delete?') || event.stopImmediatePropagation()"
+                                                            class="btn btn-xs bg-danger"
+                                                            wire:click="softDelete({{ $patent->id }})"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -250,10 +463,13 @@
 </div>
 
 @push('extra-styles')
-<!-- Select2 -->
-<link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
-<link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css"
+        rel="stylesheet">
+    <!-- summernote -->
+    <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
 @endpush
 
 @push('extra-scripts')
@@ -265,6 +481,17 @@
 <!-- Summernote -->
 <script src="{{ asset('plugins/summernote/summernote-bs4.min.js') }}"></script>
 <script>
+    $(document).ready(function () {
+        $('#category-dropdown').select2();
+        $('#category-dropdown').on('change', function (e) {
+            let data = $(this).val();
+                @this.set('categories', data);
+        });
+        window.livewire.on('categoryEvent', () => {
+            $('#category-dropdown').select2();
+        });
+    });  
+
     $(function () {
         //Initialize Select2 Elements
         $('.select2').select2();
@@ -279,14 +506,14 @@
                 @this.set('country_id', data);
         });
 
-        $('#kind_name').on('change', function (e) {
-            let data = $(this).val();
-                @this.set('kind_id', data);
-        });
-
         $('#type_name').on('change', function (e) {
             let data = $(this).val();
                 @this.set('type_id', data);
+        });
+
+        $('#kind_name').on('change', function (e) {
+            let data = $(this).val();
+                @this.set('kind_id', data);
         });
 
         Livewire.on('countryEvent', (data) => {
@@ -301,10 +528,42 @@
             $('#kind_name').val(data).trigger('change');
         });
 
-        $("#patent_date_registered").datepicker({
+        $("#registration_date").datepicker({
             format: "mm/dd/yyyy",
+            endDate: new Date(),
             autoclose:true //to close picker once year is selected
         });
+
+        $("#publication_date").datepicker({
+            format: "mm/dd/yyyy",
+            endDate: new Date(),
+            autoclose:true //to close picker once year is selected
+        });
+
+        $("#filing_date").datepicker({
+            format: "mm/dd/yyyy",
+            endDate: new Date(),
+            autoclose:true //to close picker once year is selected
+        });
+
+        $('#abstract').summernote({
+            placeholder: 'Place some text here.',
+            tabsize: 2,
+            height: 300,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['view', ['fullscreen', 'codeview']] // 'help'
+            ],
+            callbacks: {
+                onChange: function(e) {
+                    @this.set('abstract', e);
+                }
+            }
+        })
     });
 </script>
 @endpush

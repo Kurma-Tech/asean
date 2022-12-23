@@ -32,8 +32,8 @@ class BusinessListComponent extends Component
     protected function rules()
     {
         return [
-            'type' => 'required|min:3',
-            'slug' => 'required|min:3|unique:patent_kinds,slug',
+            'type' => 'required',
+            'slug' => 'required|unique:patent_kinds,slug',
         ];
     }
 
@@ -41,7 +41,6 @@ class BusinessListComponent extends Component
     {
         return view('livewire.admin.business-type.business-list-component', [
             'businessTypes' => BusinessType::search($this->search)
-                ->withTrashed()
                 ->orderBy($this->orderBy, $this->sortBy ? 'asc':'desc')
                 ->paginate($this->perPage),
         ])->layout('layouts.admin');
@@ -70,14 +69,14 @@ class BusinessListComponent extends Component
 
             DB::commit();
 
-            $this->dispatchBrowserEvent('success-message',['message' => 'Business Type has been ' . $this->btnType . '.']);
+            $this->dispatchBrowserEvent('success-message',['message' => 'Business type has been ' . $this->btnType . '.']);
 
             $this->reset('type', 'slug', 'hiddenId', 'btnType');
             
         } catch (\Throwable $th) {
             DB::rollback();
-            $this->error = $th->getMessage();
-            // $this->error = 'Ops! looks like we had some problem';
+            // $this->error = $th->getMessage();
+            $this->error = 'Ops! looks like we had some problem';
             $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
         }
     }
@@ -99,7 +98,7 @@ class BusinessListComponent extends Component
             $data = BusinessType::find($id);
             if ($data != null) {
                 $data->delete();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Business Type deleted successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Business type deleted successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
@@ -119,7 +118,7 @@ class BusinessListComponent extends Component
             $data = BusinessType::onlyTrashed()->find($id);
             if ($data != null) {
                 $data->restore();
-                $this->dispatchBrowserEvent('success-message',['message' => 'Business Type restored successfully']);
+                $this->dispatchBrowserEvent('success-message',['message' => 'Business type restored successfully']);
             }else{
                 $this->error = 'Ops! looks like we had some problem';
                 $this->dispatchBrowserEvent('error-message',['message' => $this->error]);

@@ -24,7 +24,7 @@
                                             <option hidden>Choose Order By</option>
                                             <option value="id">By ID</option>
                                             <option value="name">Name</option>
-                                            <option value="status">Status</option>
+                                            <option value="short_code">Short Code</option>
                                         </select>
                                     </div>
                                 </div>
@@ -63,24 +63,24 @@
                         <form wire:submit.prevent="storeCountry">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="name">Country Name</label>
+                                    <label for="name">Country Name<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="name" placeholder="Enter Country Name" wire:model='name'>
                                     @error('name')
                                     <div class="error">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="c_code">Country Code</label>
-                                    <input type="text" class="form-control" id="c_code" placeholder="Enter Country Code" wire:model='c_code'>
-                                    @error('c_code')
+                                    <label for="short_code">Short Code<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="short_code" placeholder="Ex. IND for Indonesia"
+                                        wire:model='short_code'>
+                                    @error('short_code')
                                     <div class="error">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="short_code">Short Code</label>
-                                    <input type="text" class="form-control" id="short_code" placeholder="Enter Short Code"
-                                        wire:model='short_code'>
-                                    @error('short_code')
+                                    <label for="c_code">Country Code</label>
+                                    <input type="text" class="form-control" id="c_code" placeholder="Ex. +62 for Indonesia" wire:model='c_code'>
+                                    @error('c_code')
                                     <div class="error">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -93,11 +93,16 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                <blockquote class="blockquote">
+                                    <p class="mb-0"><span class="text-red-400">Note*</span>: Fields with <span class="text-danger">*</span> sign are mendatory.</p>
+                                </blockquote>
                             </div>
                             <!-- /.card-body -->
                         
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-success">{{ $btnType }} Country</button>
+                                <button type="submit" class="btn btn-success btn-sm">{{ $btnType }} Country</button>
+                                <div class="btn btn-sm btn-danger pull-right" data-toggle="tooltip" data-placement="top" title="Reset Form Fields" wire:click="resetFields()"><i class="fas fa-redo-alt"></i> Reset Fields</div>
                             </div>
                         </form>
                     </div>
@@ -118,8 +123,6 @@
                                         <th>Name</th>
                                         <th>Country Code</th>
                                         <th>Short Code</th>
-                                        <th>Status</th>
-                                        <th>Trashed</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -134,24 +137,12 @@
                                             {{ $country->short_code ?? 'NULL' }}
                                         </td>
                                         <td>
-                                            <span class="badge {{($country->status) ? 'badge-success':'badge-danger'}}">{{($country->status) ? 'Active':'De-active'}}</span>
-                                        </td>
-                                        <td>
-                                            <span class="badge {{ ($country->deleted_at) ? 'bg-danger':'bg-success' }}">{{ ($country->deleted_at) ? 'Deleted':'Available' }}</span>
-                                        </td>
-                                        <td>
-                                            @if($country->deleted_at)
-                                            <a href="#" class="btn btn-xs bg-success" wire:click="restore({{$country->id}})" data-toggle="tooltip" data-placement="top" title="Restore">
-                                                <i class="fas fa-trash-restore"></i>
-                                            </a>
-                                            @else
                                             <a href="javascript:void(0)" class="btn btn-xs bg-warning" wire:click="editForm({{$country->id}})"  data-toggle="tooltip" data-placement="top" title="Edit">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <a href="#" class="btn btn-xs bg-danger" wire:click="softDelete({{$country->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
+                                            <a href="javascript:void(0)" onclick="confirm('Are you sure? Do you want to delete?') || event.stopImmediatePropagation()" class="btn btn-xs bg-danger" wire:click="softDelete({{$country->id}})" data-toggle="tooltip" data-placement="top" title="Delete">
                                                 <i class="far fa-trash-alt"></i>
                                             </a>
-                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach

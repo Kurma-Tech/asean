@@ -17,11 +17,11 @@ class ImportComponent extends Component
     public $error;
     public $success;
 
-    protected function rules()
+    public function updated($fields)
     {
-        return [
-            'file' => 'required|mimes:xlsx,xls,csv,txt'
-        ];
+        $this->validateOnly($fields, [
+            'file' => 'required'
+        ]);
     }
 
     public function render()
@@ -29,9 +29,11 @@ class ImportComponent extends Component
         return view('livewire.admin.patent.import-component');
     }
 
-    public function patentKindImport()
+    public function patentImport()
     {
-        $this->validate();
+        $this->validate([ 
+            'file' => 'required'
+        ]);
 
         DB::beginTransaction();
 
@@ -42,14 +44,14 @@ class ImportComponent extends Component
             DB::commit();
             
             $this->reset();
-            $this->success = 'Patent Imported Successfully';
+            $this->success = 'Intellectual Property Imported Successfully';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
-            $this->emit('refreshPatentKindListComponent');
+            $this->emit('refreshPatentListComponent');
 
         } catch (\Throwable $th) {
             DB::rollback();
             $this->error = 'Ops! looks like we had some problem';
-            // $this->error = $th->getMessage();
+            $this->error = $th->getMessage();
             $this->dispatchBrowserEvent('error-message',['message' => $this->error]);
         }
     }
@@ -57,7 +59,7 @@ class ImportComponent extends Component
     public function downloadSample()
     {
         try{
-            return response()->download(storage_path("app\public\patent-kind-import-sample.csv"));
+            return response()->download(storage_path("app\public\patent-import-sample.csv"));
             $this->success = 'Patent Kind Sample Downloaded';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
         } catch (\Throwable $th) {

@@ -17,11 +17,11 @@ class ImportComponent extends Component
     public $error;
     public $success;
 
-    protected function rules()
+    public function updated($fields)
     {
-        return [
-            'file' => 'required|mimes:xlsx,xls,csv,txt'
-        ];
+        $this->validateOnly($fields, [
+            'file' => 'required'
+        ]);
     }
 
     public function render()
@@ -31,7 +31,9 @@ class ImportComponent extends Component
 
     public function patentTypeImport()
     {
-        $this->validate();
+        $this->validate([ 
+            'file' => 'required'
+        ]);
 
         DB::beginTransaction();
 
@@ -42,7 +44,7 @@ class ImportComponent extends Component
             DB::commit();
             
             $this->reset();
-            $this->success = 'Patent Type Imported Successfully';
+            $this->success = 'Intellectual Property Type Imported Successfully';
             $this->dispatchBrowserEvent('success-message',['message' => $this->success]);
             $this->emit('refreshPatentTypeListComponent');
 

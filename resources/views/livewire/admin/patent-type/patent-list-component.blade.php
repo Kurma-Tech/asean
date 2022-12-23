@@ -1,4 +1,4 @@
-@section('title', 'Patent Type List')
+@section('title', 'Intellectual Property Type List')
 
 <div>
     <!-- Main content -->
@@ -33,8 +33,7 @@
                                         <select class="form-control" style="width: 100%;" wire:model="orderBy">
                                             <option hidden>Choose Order By</option>
                                             <option value="id">By ID</option>
-                                            <option value="name">name</option>
-                                            <option value="isDeactivated">Activated</option>
+                                            <option value="type">Type</option>
                                         </select>
                                     </div>
                                 </div>
@@ -59,7 +58,7 @@
                 <div class="col-4 col-md-4 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">{{ $btnType }} Patent Type</h3>
+                            <h3 class="card-title">{{ $btnType }} I.P. Type</h3>
                             <button type="button" class="btn btn-xs btn-info pull-right" data-toggle="modal" data-target="#modal-default">
                                 <i class="fa fa-file-import"></i> Import CSV
                             </button>
@@ -68,8 +67,8 @@
                         <form wire:submit.prevent="storePatentType">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="type">Patent Type</label>
-                                    <input type="text" class="form-control" id="type" placeholder="Enter Patent type" wire:model='type' wire:keyup.debounce.300ms="generateslug">
+                                    <label for="type">Type<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="type" placeholder="Enter type" wire:model='type' wire:keyup.debounce.300ms="generateslug">
                                     @error('type')
                                     <div class="error">{{ $message }}</div>
                                     @enderror
@@ -81,6 +80,10 @@
                                     <div class="error">{{ $message }}</div>
                                     @enderror
                                 </div>
+
+                                <blockquote class="blockquote">
+                                    <p class="mb-0"><span class="text-red-400">Note*</span>: Fields with <span class="text-danger">*</span> sign are mendatory.</p>
+                                </blockquote>
                             </div>
                             <!-- /.card-body -->
                         
@@ -95,7 +98,7 @@
                 <div class="col-8 col-md-8 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">All Patent Type List</h3>
+                            <h3 class="card-title">All Intellectual Property Type List</h3>
                         </div>
                         <!-- ./card-header -->
                         <div class="card-body">
