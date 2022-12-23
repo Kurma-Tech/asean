@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\FilterFormData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'filter',
+    'as' => 'filter.'
+    ], 
+    function () {
+        Route::post('/default', [FilterFormData::class, 'getFilterFormData'])->name('default');
+    }
+);
