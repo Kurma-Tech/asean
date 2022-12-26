@@ -446,9 +446,9 @@ class MapComponent extends Component
 
  
         return view('livewire.client.map.map-component', [
-            'classifications'  => $categories,
-            'business_groups'  => $business_groups,
-            'business_types'   => $business_types,
+            'classifications' => $categories,
+            'business_groups' => $business_groups,
+            'business_types'  => $business_types,
             'patent_kinds'    => $patent_kinds,
             'patent_types'    => $patent_types,
             'years'           => $years
