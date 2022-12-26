@@ -27,7 +27,7 @@ class MapDataController extends Controller
 
         $searchValues = explode(" ", $validatedData["searchText"]); // List of search keywords
 
-        if($validatedData["dataType"] == "business"){
+        if($validatedData["dataType"] == "business" || $validatedData["dataType"] == "all"){
             $businessQuery =  DB::table('businesses')->select('id', 'lat', 'long', 'year', 'company_name', "region_id", 'group_id', 'business_type_id');
 
             $tempOperation = "AND";
@@ -69,7 +69,7 @@ class MapDataController extends Controller
             $businesses = $businessQuery->get();
         }
         
-        if($validatedData["dataType"] == "patent"){
+        if($validatedData["dataType"] == "patent" || $validatedData["dataType"] == "all"){
             $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'year', 'title', 'kind_id', 'type_id');
 
             $tempOperation = "AND";
@@ -113,7 +113,7 @@ class MapDataController extends Controller
             $patents = $patentQuery->get();
         }
 
-        if($validatedData["dataType"] == "journal"){
+        if($validatedData["dataType"] == "journal" || $validatedData["dataType"] == "all"){
             $journalQuery =  DB::table('journals')->select('id', 'lat', 'long', 'title', 'year');
 
             $tempOperation = "AND";
