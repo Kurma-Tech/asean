@@ -10,8 +10,11 @@ use Illuminate\Support\Facades\DB;
 class MapDataController extends Controller
 {
     public function getMapData(Request $request){
+
+        ini_set('memory_limit', '-1');
+        
         $validator = Validator::make($request->all(), [
-            'searchText' => 'required|string',
+            // 'searchText' => 'string',
             'dataType' => 'required|string',
         ]);
 
@@ -28,7 +31,8 @@ class MapDataController extends Controller
         $searchValues = explode(" ", $validatedData["searchText"]); // List of search keywords
 
         if($validatedData["dataType"] == "business" || $validatedData["dataType"] == "all"){
-            $businessQuery =  DB::table('businesses')->select('id', 'lat', 'long', 'year', 'company_name', "region_id", 'group_id', 'business_type_id');
+            // $businessQuery =  DB::table('businesses')->select('id', 'lat', 'long', 'year', 'company_name', "region_id", 'group_id', 'business_type_id');
+            $businessQuery =  DB::table('businesses')->select('id as i', 'lat as x', 'long as y');
 
             $tempOperation = "AND";
             if (isset($validatedData["searchText"])) {
@@ -70,7 +74,8 @@ class MapDataController extends Controller
         }
         
         if($validatedData["dataType"] == "patent" || $validatedData["dataType"] == "all"){
-            $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'year', 'title', 'kind_id', 'type_id');
+            // $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'year', 'title', 'kind_id', 'type_id');
+            $patentQuery =  DB::table('patents')->select('id as i', 'lat as x', 'long as y');
 
             $tempOperation = "AND";
             if (isset($validatedData["searchText"])) {
@@ -114,7 +119,8 @@ class MapDataController extends Controller
         }
 
         if($validatedData["dataType"] == "journal" || $validatedData["dataType"] == "all"){
-            $journalQuery =  DB::table('journals')->select('id', 'lat', 'long', 'title', 'year');
+            // $journalQuery =  DB::table('journals')->select('id', 'lat', 'long', 'title', 'year');
+            $journalQuery =  DB::table('journals')->select('id as i', 'lat as x', 'long as y');
 
             $tempOperation = "AND";
             if (isset($validatedData["searchText"])) {
