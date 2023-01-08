@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\DB;
 
 class MapDataController extends Controller
 {
-    public function getMapData(Request $request){
-
+    public function getMapData(Request $request)
+    {
         ini_set('memory_limit', '-1');
-        
+
         $validator = Validator::make($request->all(), [
             // 'searchText' => 'string',
             'dataType' => 'required|string',
+            'paginationLimit' => "required|integer"
         ]);
 
         if ($validator->fails()) {
@@ -30,25 +31,23 @@ class MapDataController extends Controller
 
         $searchValues = explode(" ", $validatedData["searchText"]); // List of search keywords
 
-        if($validatedData["dataType"] == "business" || $validatedData["dataType"] == "all"){
+        if ($validatedData["dataType"] == "business" || $validatedData["dataType"] == "all") {
             // $businessQuery =  DB::table('businesses')->select('id', 'lat', 'long', 'year', 'company_name', "region_id", 'group_id', 'business_type_id');
-            $businessQuery =  DB::table('businesses')->select('id as i', 'lat as x', 'long as y');
+            $businessQuery =  DB::table('businesses')->select('lat as x', 'long as y');
 
             $tempOperation = "AND";
             if (isset($validatedData["searchText"])) {
-                
-                foreach ($searchValues as $searchValue){
+
+                foreach ($searchValues as $searchValue) {
                     // $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%')->orWhere('ngc_code', 'LIKE', '%' . $searchValue . '%');
-                    if($searchValue == "AND"){
-    
-                    }else if($searchValue == "OR"){
+                    if ($searchValue == "AND") {
+                    } else if ($searchValue == "OR") {
                         $tempOperation = "OR";
-                    }else{
-                        if($tempOperation == "OR"){
+                    } else {
+                        if ($tempOperation == "OR") {
                             $businessQuery = $businessQuery->orWhere('company_name', 'LIKE', '%' . $searchValue . '%');
-                        }else{
+                        } else {
                             $businessQuery = $businessQuery->where('company_name', 'LIKE', '%' . $searchValue . '%');
-                            
                         }
                         $tempOperation = "AND";
                     }
@@ -70,24 +69,23 @@ class MapDataController extends Controller
             if (isset($validatedData["classification"]) && $validatedData["classification"] != null) {
                 $businessQuery = $businessQuery->where('industry_classification_id', $validatedData["classification"]);
             }
-            $businesses = $businessQuery->get();
+            $businesses = $businessQuery->paginate($validatedData["paginationLimit"])->toArray();
         }
-        
-        if($validatedData["dataType"] == "patent" || $validatedData["dataType"] == "all"){
+
+        if ($validatedData["dataType"] == "patent" || $validatedData["dataType"] == "all") {
             // $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'year', 'title', 'kind_id', 'type_id');
             $patentQuery =  DB::table('patents')->select('id as i', 'lat as x', 'long as y');
 
             $tempOperation = "AND";
             if (isset($validatedData["searchText"])) {
-                foreach ($searchValues as $searchValue){
-                    if($searchValue == "AND"){
-    
-                    }else if($searchValue == "OR"){
+                foreach ($searchValues as $searchValue) {
+                    if ($searchValue == "AND") {
+                    } else if ($searchValue == "OR") {
                         $tempOperation = "OR";
-                    }else{
-                        if($tempOperation == "OR"){
+                    } else {
+                        if ($tempOperation == "OR") {
                             $patentQuery = $patentQuery->orWhere('title', 'LIKE', '%' . $searchValue . '%');
-                        }else{
+                        } else {
                             $patentQuery = $patentQuery->where('title', 'LIKE', '%' . $searchValue . '%');
                         }
                         $tempOperation = "AND";
@@ -111,28 +109,27 @@ class MapDataController extends Controller
                 $listOfCategories = $validatedData["classification"];
                 $patentQuery = $patentQuery->whereExists(function ($query) use ($listOfCategories) {
                     $query->select(DB::raw(1))
-                          ->from('patent_pivot_patent_category')
-                          ->where('parent_classification_id', $listOfCategories);
+                        ->from('patent_pivot_patent_category')
+                        ->where('parent_classification_id', $listOfCategories);
                 });
             }
-            $patents = $patentQuery->get();
+            $patents = $patentQuery->paginate($validatedData["paginationLimit"])->toArray();
         }
 
-        if($validatedData["dataType"] == "journal" || $validatedData["dataType"] == "all"){
+        if ($validatedData["dataType"] == "journal" || $validatedData["dataType"] == "all") {
             // $journalQuery =  DB::table('journals')->select('id', 'lat', 'long', 'title', 'year');
             $journalQuery =  DB::table('journals')->select('id as i', 'lat as x', 'long as y');
 
             $tempOperation = "AND";
             if (isset($validatedData["searchText"])) {
-                foreach ($searchValues as $searchValue){
-                    if($searchValue == "AND"){
-    
-                    }else if($searchValue == "OR"){
+                foreach ($searchValues as $searchValue) {
+                    if ($searchValue == "AND") {
+                    } else if ($searchValue == "OR") {
                         $tempOperation = "OR";
-                    }else{
-                        if($tempOperation == "OR"){
+                    } else {
+                        if ($tempOperation == "OR") {
                             $journalQuery = $journalQuery->orWhere('title', 'LIKE', '%' . $searchValue . '%');
-                        }else{
+                        } else {
                             $journalQuery = $journalQuery->where('title', 'LIKE', '%' . $searchValue . '%');
                         }
                         $tempOperation = "AND";
@@ -150,12 +147,25 @@ class MapDataController extends Controller
                 $listOfCategories = $validatedData["classification"];
                 $journalQuery = $journalQuery->whereExists(function ($query) use ($listOfCategories) {
                     $query->select(DB::raw(1))
-                          ->from('journal_pivot_journal_category')
-                          ->where('parent_classification_id', $listOfCategories);
+                        ->from('journal_pivot_journal_category')
+                        ->where('parent_classification_id', $listOfCategories);
                 });
             }
-            $journals = $journalQuery->get();
+            $journals = $journalQuery->paginate($validatedData["paginationLimit"])->toArray();
         }
-        return response(["businesses"=>$businesses, "patents" => $patents, "journals" => $journals]);
+        return response(
+            ["businesses" => [
+                "next_page_link" => $businesses["next_page_url"] ?? null,
+                "data" => $businesses["data"] ?? null
+            ], "patents" =>
+            [
+                "next_page_link" => $patents["next_page_url"] ?? null,
+                "data" => $patents["data"] ?? null,
+            ], "journals" => [
+                "next_page_link" => $journals["next_page_url"] ?? null,
+                "data" => $journals["data"] ?? null,
+            ]]
+        );
     }
+
 }
