@@ -210,7 +210,7 @@ class ReportController extends Controller
                 $businessQuery = $businessQuery->where('year', $requestedData["year"]);
             }
 
-            $businesses = $businessQuery->groupBy('key')->take($requestedData["limit"])->get();
+            $businesses = $businessQuery->groupBy('key')->orderBy('value', 'DESC')->take($requestedData["limit"])->get();
             return response(["data" => $businesses], 200);
         }
 
@@ -245,7 +245,7 @@ class ReportController extends Controller
             if (isset($requestedData["year"]) && $requestedData["year"] != null) {
                 $patentQuery = $patentQuery->where('year', $requestedData["year"]);
             }
-            $patents = $patentQuery->groupBy('key')->take($requestedData["limit"])->get();
+            $patents = $patentQuery->groupBy('key')->orderBy('value', 'DESC')->take($requestedData["limit"])->get();
             return response(["data" => $patents], 200);
         }
 
@@ -281,7 +281,7 @@ class ReportController extends Controller
                 $journalQuery = $journalQuery->where('year', $requestedData["year"]);
             }
 
-            $journals = $journalQuery->groupBy('key')->take($requestedData["limit"])->get();
+            $journals = $journalQuery->groupBy('key')->orderBy('value', 'DESC')->take($requestedData["limit"])->get();
             return response(["data" => $journals], 200);
         }
 
