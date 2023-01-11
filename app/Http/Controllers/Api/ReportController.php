@@ -216,7 +216,7 @@ class ReportController extends Controller
 
         if ($requestedData["dataType"] == "patent") {
             $patentQuery =  DB::table('patent_pivot_patent_category')
-            ->select('patent_categories.classification_category as key')
+            ->select('patent_categories.classification_category as key', DB::raw('COUNT(parent_classification_id) as value'))
             ->join('patent_categories', 'patent_categories.id', '=', 'patent_pivot_patent_category.parent_classification_id')
             ->where('parent_classification_id', '!=', '')
             ->where('parent_classification_id', '!=', null)
@@ -251,7 +251,7 @@ class ReportController extends Controller
 
         if ($requestedData["dataType"] == "journal") {
             $journalQuery =  DB::table('journal_pivot_journal_category')
-            ->select('journal_categories.category as key')
+            ->select('journal_categories.category as key', DB::raw('COUNT(parent_classification_id) as value'))
             ->join('journal_categories', 'journal_categories.id', '=', 'journal_pivot_journal_category.parent_classification_id')
             ->where('parent_classification_id', '!=', '')
             ->where('parent_classification_id', '!=', null)
