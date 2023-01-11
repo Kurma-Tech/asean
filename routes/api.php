@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\FilterFormData;
 use App\Http\Controllers\Api\MapDataController;
+use App\Http\Controllers\Api\ReportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,17 @@ Route::group([
     function () {
         Route::post('/default', [FilterFormData::class, 'getFilterFormData'])->name('default');
         Route::post('/mapdata', [MapDataController::class, 'getMapData'])->name('mapdata');
+    }
+);
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'report',
+    'as' => 'report.'
+    ], 
+    function () {
+        Route::post('/totalChart', [ReportController::class, 'getTotalChartData'])->name('totalChartData');
+        Route::post('/popular', [ReportController::class, 'getPopularCategoryData'])->name('popularCategoryData');
     }
 );
 
