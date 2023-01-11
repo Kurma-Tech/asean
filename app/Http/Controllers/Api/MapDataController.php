@@ -70,8 +70,7 @@ class MapDataController extends Controller
                 $businessQuery = $businessQuery->where('industry_classification_id', $validatedData["category"]);
             }
             
-            $businesses = $businessQuery->paginate($validatedData["paginationLimit"])->toArray();
-            $businesses = array_values(array_unique($businesses));
+            $businesses = $businessQuery->distinct()->paginate($validatedData["paginationLimit"])->toArray();
         }
 
         if ($validatedData["dataType"] == "patent" || $validatedData["dataType"] == "all") {
@@ -115,8 +114,7 @@ class MapDataController extends Controller
                         ->where('parent_classification_id', $listOfCategories);
                 });
             }
-            $patents = $patentQuery->paginate($validatedData["paginationLimit"])->toArray();
-            $patents = array_values(array_unique($patents));
+            $patents = $patentQuery->distinct()->paginate($validatedData["paginationLimit"])->toArray();
         }
 
         if ($validatedData["dataType"] == "journal" || $validatedData["dataType"] == "all") {
@@ -154,8 +152,7 @@ class MapDataController extends Controller
                         ->where('parent_classification_id', $listOfCategories);
                 });
             }
-            $journals = $journalQuery->paginate($validatedData["paginationLimit"])->toArray();
-            $journals = array_values(array_unique($journals));
+            $journals = $journalQuery->distinct()->paginate($validatedData["paginationLimit"])->toArray();
         }
         return response(
             ["businesses" => [
