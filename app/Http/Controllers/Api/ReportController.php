@@ -179,7 +179,11 @@ class ReportController extends Controller
         }
 
         if ($requestedData["dataType"] == "business") {
-            $businessQuery =  DB::table('businesses')->select('id', 'year', 'industry_classification_id')->where('year', '!=', '')->where('industry_classification_id', '!=', '')->where('industry_classification_id', '!=', null);
+            $businessQuery =  DB::table('businesses')
+            ->select('industry_classifications.classifications as key', DB::raw('COUNT(industry_classification_id) as value'))
+            ->join('industry_classifications', 'industry_classifications.id', '=', 'businesses.industry_classification_id')
+            ->where('industry_classification_id', '!=', '')
+            ->where('industry_classification_id', '!=', null);
 
             $tempOperation = "AND";
             if (isset($requestedData["searchText"])) {
@@ -206,25 +210,17 @@ class ReportController extends Controller
                 $businessQuery = $businessQuery->where('year', $requestedData["year"]);
             }
 
-            $businesses = $businessQuery->get();
-
-            $emergingBusinessData = [];
-
-            $emergingBusiness = collect($businesses)->pluck('industry_classification_id')->countBy()->sortByDesc(null)->take($requestedData["limit"]);
-
-            foreach ($emergingBusiness as $key => $value) {
-                if (IndustryClassification::find($key) != null) {
-                    array_push($emergingBusinessData, [
-                        "key" => IndustryClassification::find($key)->classifications,
-                        "value" => $value
-                    ]);
-                }
-            }
-            return response(["data" => $emergingBusinessData], 200);
+            $businesses = $businessQuery->groupBy('key')->take($requestedData["limit"])->get();
+            return response(["data" => $businesses], 200);
         }
 
         if ($requestedData["dataType"] == "patent") {
-            $patentQuery =  DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->where('year', '!=', '')->where('parent_classification_id', '!=', '')->where('parent_classification_id', '!=', null)->distinct('patent_id', 'category_id');
+            $patentQuery =  DB::table('patent_pivot_patent_category')
+            ->select('patent_categories.classification_category as key')
+            ->join('patent_categories', 'patent_categories.id', '=', 'patent_pivot_patent_category.parent_classification_id')
+            ->where('parent_classification_id', '!=', '')
+            ->where('parent_classification_id', '!=', null)
+            ->distinct('patent_id', 'category_id');
 
             $tempOperation = "AND";
             if (isset($requestedData["searchText"])) {
@@ -249,26 +245,17 @@ class ReportController extends Controller
             if (isset($requestedData["year"]) && $requestedData["year"] != null) {
                 $patentQuery = $patentQuery->where('year', $requestedData["year"]);
             }
-            $patents = $patentQuery->get();
-            $emergingPatentData = [];
-
-            $emergingPatents = collect($patents)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take($requestedData["limit"]);
-
-            foreach ($emergingPatents as $key => $value) {
-                if ($key != null) {
-                    array_push($emergingPatentData, [
-                        "key" => PatentCategory::find($key)->classification_category,
-                        "value" => $value
-                    ]);
-                } else {
-                    continue;
-                }
-            }
-            return response(["data" => $emergingPatentData], 200);
+            $patents = $patentQuery->groupBy('key')->take($requestedData["limit"])->get();
+            return response(["data" => $patents], 200);
         }
 
         if ($requestedData["dataType"] == "journal") {
-            $journalQuery =  DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('year', '!=', '')->where('parent_classification_id', '!=', '')->where('parent_classification_id', '!=', null)->distinct('journal_id', 'category_id');
+            $journalQuery =  DB::table('journal_pivot_journal_category')
+            ->select('journal_categories.category as key')
+            ->join('journal_categories', 'journal_categories.id', '=', 'journal_pivot_journal_category.parent_classification_id')
+            ->where('parent_classification_id', '!=', '')
+            ->where('parent_classification_id', '!=', null)
+            ->distinct('journal_id', 'category_id');
 
             $tempOperation = "AND";
             if (isset($requestedData["searchText"])) {
@@ -294,22 +281,8 @@ class ReportController extends Controller
                 $journalQuery = $journalQuery->where('year', $requestedData["year"]);
             }
 
-            $journals = $journalQuery->get();
-            $emergingJournalData = [];
-
-            $emergingJournals = collect($journals)->pluck('parent_classification_id')->countBy()->sortByDesc(null)->take($requestedData["limit"]);
-
-            foreach ($emergingJournals as $key => $value) {
-                if ($key != null) {
-                    array_push($emergingJournalData, [
-                        "key" => JournalCategory::find($key)->category,
-                        "value" => $value
-                    ]);
-                } else {
-                    continue;
-                }
-            }
-            return response(["data" => $emergingJournalData], 200);
+            $journals = $journalQuery->groupBy('key')->take($requestedData["limit"])->get();
+            return response(["data" => $journals], 200);
         }
 
         return response("Unkown Data Type", 406);
