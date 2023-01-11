@@ -74,7 +74,7 @@ class MapDataController extends Controller
 
         if ($validatedData["dataType"] == "patent" || $validatedData["dataType"] == "all") {
             // $patentQuery =  DB::table('patents')->select('id', 'lat', 'long', 'year', 'title', 'kind_id', 'type_id');
-            $patentQuery =  DB::table('patents')->select('id as i', 'lat as x', 'long as y');
+            $patentQuery =  DB::table('patents')->select('lat as x', 'long as y');
 
             $tempOperation = "AND";
             if (isset($validatedData["searchText"])) {
@@ -118,7 +118,7 @@ class MapDataController extends Controller
 
         if ($validatedData["dataType"] == "journal" || $validatedData["dataType"] == "all") {
             // $journalQuery =  DB::table('journals')->select('id', 'lat', 'long', 'title', 'year');
-            $journalQuery =  DB::table('journals')->select('id as i', 'lat as x', 'long as y');
+            $journalQuery =  DB::table('journals')->select('lat as x', 'long as y');
 
             $tempOperation = "AND";
             if (isset($validatedData["searchText"])) {
