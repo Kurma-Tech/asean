@@ -60,14 +60,14 @@ class MapDataController extends Controller
             if (isset($validatedData["year"]) && $validatedData["year"] != null) {
                 $businessQuery = $businessQuery->where('year', $validatedData["year"]);
             }
-            if (isset($validatedData["business_group"]) && $validatedData["business_group"] != null) {
-                $businessQuery = $businessQuery->where('group_id', $validatedData["business_group"]);
+            if (isset($validatedData["group"]) && $validatedData["group"] != null) {
+                $businessQuery = $businessQuery->where('group_id', $validatedData["group"]);
             }
-            if (isset($validatedData["business_type"]) && $validatedData["business_type"] != null) {
-                $businessQuery = $businessQuery->where('business_type_id', $validatedData["business_type"]);
+            if (isset($validatedData["type"]) && $validatedData["type"] != null) {
+                $businessQuery = $businessQuery->where('business_type_id', $validatedData["type"]);
             }
-            if (isset($validatedData["classification"]) && $validatedData["classification"] != null) {
-                $businessQuery = $businessQuery->where('industry_classification_id', $validatedData["classification"]);
+            if (isset($validatedData["category"]) && $validatedData["category"] != null) {
+                $businessQuery = $businessQuery->where('industry_classification_id', $validatedData["category"]);
             }
             $businesses = $businessQuery->paginate($validatedData["paginationLimit"])->toArray();
         }
@@ -99,14 +99,14 @@ class MapDataController extends Controller
             if (isset($validatedData["year"]) && $validatedData["year"] != null) {
                 $patentQuery = $patentQuery->where('year', $validatedData["year"]);
             }
-            if (isset($validatedData["patent_kind"]) && $validatedData["patent_kind"] != null) {
-                $patentQuery = $patentQuery->where('kind_id', $validatedData["patent_kind"]);
+            if (isset($validatedData["kind"]) && $validatedData["kind"] != null) {
+                $patentQuery = $patentQuery->where('kind_id', $validatedData["kind"]);
             }
-            if (isset($validatedData["patent_type"]) && $validatedData["patent_type"] != null) {
-                $patentQuery = $patentQuery->where('type_id', $validatedData["patent_type"]);
+            if (isset($validatedData["type"]) && $validatedData["type"] != null) {
+                $patentQuery = $patentQuery->where('type_id', $validatedData["type"]);
             }
-            if (isset($validatedData["classification"]) && $validatedData["classification"] != null) {
-                $listOfCategories = $validatedData["classification"];
+            if (isset($validatedData["category"]) && $validatedData["category"] != null) {
+                $listOfCategories = $validatedData["category"];
                 $patentQuery = $patentQuery->whereExists(function ($query) use ($listOfCategories) {
                     $query->select(DB::raw(1))
                         ->from('patent_pivot_patent_category')
@@ -143,8 +143,8 @@ class MapDataController extends Controller
             if (isset($validatedData["year"]) && $validatedData["year"] != null) {
                 $journalQuery = $journalQuery->where('year', $validatedData["year"]);
             }
-            if (isset($validatedData["classification"]) && $validatedData["classification"] != null) {
-                $listOfCategories = $validatedData["classification"];
+            if (isset($validatedData["category"]) && $validatedData["category"] != null) {
+                $listOfCategories = $validatedData["category"];
                 $journalQuery = $journalQuery->whereExists(function ($query) use ($listOfCategories) {
                     $query->select(DB::raw(1))
                         ->from('journal_pivot_journal_category')
