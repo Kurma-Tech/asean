@@ -352,8 +352,8 @@ class ReportController extends Controller
                     }
                 }
             }
-            rsort($final);
-            return response(["data" => $final], 200);
+            $final = collect($final)->sortByDesc('value')->all();
+            return response(["data" => array_values($final)], 200);
         }
 
         if ($requestedData["dataType"] == "patent") {
@@ -416,7 +416,7 @@ class ReportController extends Controller
                     }
                 }
             }
-            rsort($patentClassificationRates);
+            $patentClassificationRates = collect($patentClassificationRates)->sortByDesc('value')->all();
             return response(["data" => $patentClassificationRates], 200);
         }
 
@@ -480,7 +480,7 @@ class ReportController extends Controller
                     }
                 }
             }
-            rsort($journalClassificationRates);
+            $journalClassificationRates = collect($journalClassificationRates)->sortByDesc('value')->all();
             return response(["data" => $journalClassificationRates], 200);
         }
 
