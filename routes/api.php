@@ -41,6 +41,7 @@ Route::group([
         Route::post('/totalChart', [ReportController::class, 'getTotalChartData'])->name('totalChartData');
         Route::post('/popular', [ReportController::class, 'getPopularCategoryData'])->name('popularCategoryData');
         Route::post('/emerging', [ReportController::class, 'getEmergingCategoryData'])->name('emergingCategoryData');
+        Route::post('/predict', [ReportController::class, 'getPredictedData'])->name('predictData');
     }
 );
 
