@@ -462,13 +462,13 @@ class ReportController extends Controller
                         })->pluck('year')->countBy();
                     }
                     $arrayYears = $years->toArray();
-                    if (count($arrayYears) >= 2){
+                    if (count($arrayYears) >= 2) {
                         $listOfYears = array_keys($arrayYears);
                         $listOfYears = array_map('intval', $listOfYears);
                         $highestYear = (int) max($listOfYears);
                         $lowYear = min($listOfYears);
-                        $rate = (pow(($arrayYears[$highestYear] / $arrayYears[$lowYear]),(1 / ($highestYear - $lowYear))) - 1) * 100;
-                    }else{
+                        $rate = (pow(($arrayYears[$highestYear] / $arrayYears[$lowYear]), (1 / ($highestYear - $lowYear))) - 1) * 100;
+                    } else {
                         $rate = 0;
                     }
                     $journalClassification = JournalCategory::find($classKey);
@@ -485,5 +485,94 @@ class ReportController extends Controller
         }
 
         return response("Unkown Data Type", 406);
+    }
+
+    public function getPredictedData(Request $request)
+    {
+        ini_set('memory_limit', '-1');
+
+        $validator = Validator::make($request->all(), [
+            'dataType' => 'required|string'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $requestedData = $request->all();
+
+        if ($requestedData["dataType"] == "business") {
+            $businessQuery =  DB::table('businesses')->select('year', DB::raw('COUNT(*) as value'))->where('year', '!=', '');
+
+            if (isset($requestedData["country"]) && $requestedData["country"] != null) {
+                $businessQuery = $businessQuery->where('country_id', $requestedData["country"]);
+            }
+            if (isset($requestedData["category"]) && $requestedData["category"] != null) {
+                $businessQuery = $businessQuery->where('industry_classification_id', $requestedData["category"]);
+            }
+            $queryedData = $businessQuery->groupBy('year')->orderBy('year')->get();
+        }
+
+        if ($requestedData["dataType"] == "patent") {
+            $patentQuery =  DB::table('patents')->select('year', DB::raw('COUNT(*) as value'))->where('year', '!=', '');
+
+            if (isset($requestedData["country"]) && $requestedData["country"] != null) {
+                $patentQuery = $patentQuery->where('country_id', $requestedData["country"]);
+            }
+            if (isset($requestedData["category"]) && $requestedData["category"] != null) {
+                if (isset($requestedData["category"]) && $requestedData["category"] != null) {
+                    $listOfCategories = $requestedData["category"];
+                    $patentQuery = $patentQuery->whereExists(function ($query) use ($listOfCategories) {
+                        $query->select(DB::raw(1))
+                            ->from('patent_pivot_patent_category')
+                            ->where('parent_classification_id', $listOfCategories);
+                    });
+                }
+            }
+            $queryedData = $patentQuery->groupBy('year')->orderBy('year')->get();
+        }
+
+        if ($requestedData["dataType"] == "journal") {
+            $journalQuery =  DB::table('journals')->select('year', DB::raw('COUNT(*) as value'))->where('year', '!=', '');
+
+            if (isset($requestedData["country"]) && $requestedData["country"] != null) {
+                $journalQuery = $journalQuery->where('country_id', $requestedData["country"]);
+            }
+            if (isset($requestedData["category"]) && $requestedData["category"] != null) {
+                if (isset($requestedData["category"]) && $requestedData["category"] != null) {
+                    $listOfCategories = $requestedData["category"];
+                    $journalQuery = $journalQuery->whereExists(function ($query) use ($listOfCategories) {
+                        $query->select(DB::raw(1))
+                            ->from('journal_pivot_journal_category')
+                            ->where('parent_classification_id', $listOfCategories);
+                    });
+                }
+            }
+            $queryedData = $journalQuery->groupBy('year')->orderBy('year')->get();
+        }
+
+        $dataCount = count($queryedData);
+        $keys = [];
+        $values = [];
+        if ($dataCount >= 3) {
+            for ($i = 0; $i < 10; $i++) {
+                $new_year = ((int) ((array) $queryedData[$i])['year']) + 1;
+                $new_value = (int) ((((array) $queryedData[$dataCount - 1])['value'] + ((array) $queryedData[$dataCount - 2])['value'] + ((array) $queryedData[$dataCount - 3])['value']) / 3);
+                array_push($keys, $new_year);
+                array_push($values, $new_value);
+            }
+            return response([
+                "success" => true,
+                "data" => [
+                    "keys" => $keys,
+                    "values" => $values
+                ]
+            ], 200);
+        } else {
+            return response([
+                "success" => false,
+                "message" => "Not enough data to forecast."
+            ], 200);
+        }
     }
 }
