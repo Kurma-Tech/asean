@@ -492,7 +492,7 @@ class ReportController extends Controller
         ini_set('memory_limit', '-1');
 
         $validator = Validator::make($request->all(), [
-            'dataType' => 'required|string'
+            'type' => 'required|string'
         ]);
 
         if ($validator->fails()) {
@@ -501,7 +501,7 @@ class ReportController extends Controller
 
         $requestedData = $request->all();
 
-        if ($requestedData["dataType"] == "business") {
+        if ($requestedData["type"] == "business") {
             $businessQuery =  DB::table('businesses')->select('year', DB::raw('COUNT(*) as value'))->where('year', '!=', '');
 
             if (isset($requestedData["country"]) && $requestedData["country"] != null) {
@@ -513,7 +513,7 @@ class ReportController extends Controller
             $queryedData = $businessQuery->groupBy('year')->orderBy('year')->get();
         }
 
-        if ($requestedData["dataType"] == "patent") {
+        if ($requestedData["type"] == "patent") {
             $patentQuery =  DB::table('patents')->select('year', DB::raw('COUNT(*) as value'))->where('year', '!=', '');
 
             if (isset($requestedData["country"]) && $requestedData["country"] != null) {
@@ -532,7 +532,7 @@ class ReportController extends Controller
             $queryedData = $patentQuery->groupBy('year')->orderBy('year')->get();
         }
 
-        if ($requestedData["dataType"] == "journal") {
+        if ($requestedData["type"] == "journal") {
             $journalQuery =  DB::table('journals')->select('year', DB::raw('COUNT(*) as value'))->where('year', '!=', '');
 
             if (isset($requestedData["country"]) && $requestedData["country"] != null) {
