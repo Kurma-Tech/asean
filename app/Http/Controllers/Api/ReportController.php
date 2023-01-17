@@ -556,7 +556,7 @@ class ReportController extends Controller
         $values = [];
         if ($dataCount >= 3) {
             for ($i = 0; $i < 10; $i++) {
-                $new_year = ((int) ((array) $queryedData[$i])['year']) + 1;
+                $new_year = ((int) ((array) $queryedData[$dataCount - 1])['year']) + 1;
                 $new_value = (int) ((((array) $queryedData[$dataCount - 1])['value'] + ((array) $queryedData[$dataCount - 2])['value'] + ((array) $queryedData[$dataCount - 3])['value']) / 3);
                 array_push($keys, $new_year);
                 array_push($values, $new_value);
