@@ -560,8 +560,8 @@ class ReportController extends Controller
                 array_push($values, ((array) $queryedData[$i])["value"]);
             }
             for ($i = 0; $i < 10; $i++) {
-                $new_year = ((int) ($keys[$dataCount - 1])) + 1;
-                $new_value = (int) ((($values[$dataCount - 1]) + ($values[$dataCount - 2]) + ($values[$dataCount - 3])) / 3);
+                $new_year = ((int) ($keys[count($keys) - 1])) + 1;
+                $new_value = (int) ((($values[count($values) - 1]) + ($values[count($values) - 2]) + ($values[count($values) - 3])) / 3);
                 array_push($keys, $new_year);
                 array_push($values, $new_value);
             }
