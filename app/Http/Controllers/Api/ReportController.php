@@ -304,7 +304,7 @@ class ReportController extends Controller
         $requestedData = $request->all();
 
         if ($requestedData["dataType"] == "business") {
-            $data = Cache::remember('business'.$requestedData["country"].$requestedData["young"], 2592000  , function () use ($requestedData){
+            $data = Cache::remember('business'.$requestedData["country"] ?? "".$requestedData["young"] ?? "" , 2592000  , function () use ($requestedData){
                 if (isset($requestedData["country"]) && $requestedData["country"] != null) {
                     $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', '!=', date('Y'))->get())->where('country_id', $requestedData["country"])->filter(function ($value, $key) use ($requestedData) {
                         if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
@@ -362,7 +362,7 @@ class ReportController extends Controller
         }
 
         if ($requestedData["dataType"] == "patent") {
-            $data = Cache::remember('patent'.$requestedData["country"].$requestedData["young"], 2592000, function () use ($requestedData) {
+            $data = Cache::remember('patent'.$requestedData["country"] ?? "".$requestedData["young"] ?? "", 2592000, function () use ($requestedData) {
                 if (isset($requestedData["country"]) && $requestedData["country"] != null) {
                     $patentClassificationForEmerging = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('year', '!=', date('Y'))->get())->where('country_id', $requestedData["country"])->filter(function ($value, $key) use ($requestedData) {
                         if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
@@ -430,7 +430,7 @@ class ReportController extends Controller
         }
 
         if ($requestedData["dataType"] == "journal") {
-            $data = Cache::remember('journal'.$requestedData["country"].$requestedData["young"], 2592000  , function () use ($requestedData) {
+            $data = Cache::remember('journal'.$requestedData["country"] ?? "".$requestedData["young"] ?? "", 2592000  , function () use ($requestedData) {
                 if (isset($requestedData["country"]) && $requestedData["country"] != null) {
                     $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('year', '!=', date('Y'))->get())->where('country_id', $requestedData["country"])->filter(function ($value, $key) use ($requestedData) {
                         if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
