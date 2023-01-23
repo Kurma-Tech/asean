@@ -355,7 +355,7 @@ class ReportController extends Controller
                     }
                 }
                 $final = collect($final)->sortByDesc('value')->all();
-                return $final;
+                return array_values($final);
             });
 
             return response(["data" => $data], 200);
@@ -423,7 +423,7 @@ class ReportController extends Controller
                     }
                 }
                 $patentClassificationRates = collect($patentClassificationRates)->sortByDesc('value')->all();
-                return $patentClassificationRates;
+                return array_values($patentClassificationRates);
             });
 
             return response(["data" => $data], 200);
@@ -491,7 +491,7 @@ class ReportController extends Controller
                     }
                 }
                 $journalClassificationRates = collect($journalClassificationRates)->sortByDesc('value')->all();
-                return $journalClassificationRates;
+                return array_values($journalClassificationRates);
             });
 
             return response(["data" => $data], 200);
