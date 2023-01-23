@@ -43,6 +43,7 @@ Route::group(
     function () {
         Route::post('/default', [FilterFormData::class, 'getFilterFormData'])->name('default');
         Route::post('/mapdata', [MapDataController::class, 'getMapData'])->name('mapdata');
+        Route::post('/densityMapData', [MapDataController::class, 'getDensityMapData'])->name('densityMapData');
     }
 );
 

@@ -169,4 +169,56 @@ class MapDataController extends Controller
         );
     }
 
+    public function getDensityMapData(Request $request)
+    {
+        ini_set('memory_limit', '-1');
+
+        $validator = Validator::make($request->all(), [
+            'dataType' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $validatedData = $request->all();
+        $data = [];
+
+        if ($validatedData["dataType"] == "business" || $validatedData["dataType"] == "all") {
+            $businessQuery =  DB::table('businesses')
+                ->select('regions.name as key', DB::raw('COUNT(region_id) as value'))
+                ->join('regions', 'regions.id', '=', 'businesses.region_id')
+                ->where('region_id', '!=', '')
+                ->where('region_id', '!=', null);
+
+            if (isset($validatedData["country"]) && $validatedData["country"] != null) {
+                $businessQuery = $businessQuery->where('country_id', $validatedData["country"]);
+            }
+            if (isset($validatedData["year"]) && $validatedData["year"] != null) {
+                $businessQuery = $businessQuery->where('year', $validatedData["year"]);
+            }
+            if (isset($validatedData["group"]) && $validatedData["group"] != null) {
+                $businessQuery = $businessQuery->where('group_id', $validatedData["group"]);
+            }
+            if (isset($validatedData["type"]) && $validatedData["type"] != null) {
+                $businessQuery = $businessQuery->where('business_type_id', $validatedData["type"]);
+            }
+            if (isset($validatedData["category"]) && $validatedData["category"] != null) {
+                $businessQuery = $businessQuery->where('industry_classification_id', $validatedData["category"]);
+            }
+            $data = $businessQuery->groupBy('key')->distinct()->get();
+        }
+
+        if ($validatedData["dataType"] == "patent" || $validatedData["dataType"] == "all") {
+            
+        }
+
+        if ($validatedData["dataType"] == "journal" || $validatedData["dataType"] == "all") {
+           
+        }
+        return response(
+            ["data" => $data]
+        );
+    }
+
 }
