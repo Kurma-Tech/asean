@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\IndustryClassification;
 use App\Models\PatentCategory;
+use Illuminate\Support\Facades\Cache;
 use App\Models\JournalCategory;
 
 class ReportController extends Controller
@@ -303,185 +304,197 @@ class ReportController extends Controller
         $requestedData = $request->all();
 
         if ($requestedData["dataType"] == "business") {
-            if (isset($requestedData["country"]) && $requestedData["country"] != null) {
-                $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', '!=', date('Y'))->get())->where('country_id', $requestedData["country"])->filter(function ($value, $key) use ($requestedData) {
-                    if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
-                        return (date('Y') - (int)$value->year) <= $requestedData["young"];
-                    } else {
-                        return true;
-                    }
-                })->pluck('parent_classification_id')->countBy();
-            } else {
-                $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', '!=', date('Y'))->get())->filter(function ($value, $key) use ($requestedData) {
-                    if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
-                        return (date('Y') - (int)$value->year) <= $requestedData["young"];
-                    } else {
-                        return true;
-                    }
-                })->pluck('parent_classification_id')->countBy();
-            }
-
-            $final = [];
-            foreach ($test2 as $classKey => $value) {
-                if ($classKey == null) {
-                    continue;
-                } else {
-                    $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->where('year', '!=', date('Y'))->get())->filter(function ($value, $key) use ($requestedData) {
+            $data = Cache::remember('business'.$requestedData["country"].$requestedData["young"], 2592000  , function () use ($requestedData){
+                if (isset($requestedData["country"]) && $requestedData["country"] != null) {
+                    $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', '!=', date('Y'))->get())->where('country_id', $requestedData["country"])->filter(function ($value, $key) use ($requestedData) {
                         if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
                             return (date('Y') - (int)$value->year) <= $requestedData["young"];
                         } else {
                             return true;
                         }
-                    })->pluck('year')->countBy();
-                    $arrayYears = $years->toArray();
-                    if (count($arrayYears) >= 2) {
-                        $listOfYears = array_keys($arrayYears);
-                        $listOfYears = array_map('intval', $listOfYears);
-                        $highestYear = (int) max($listOfYears);
-                        $lowYear = min($listOfYears);
-                        $rate = (pow(($arrayYears[$highestYear] / $arrayYears[$lowYear]), (1 / ($highestYear - $lowYear))) - 1) * 100;
+                    })->pluck('parent_classification_id')->countBy();
+                } else {
+                    $test2 = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('year', '!=', date('Y'))->get())->filter(function ($value, $key) use ($requestedData) {
+                        if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
+                            return (date('Y') - (int)$value->year) <= $requestedData["young"];
+                        } else {
+                            return true;
+                        }
+                    })->pluck('parent_classification_id')->countBy();
+                }
+    
+                $final = [];
+                foreach ($test2 as $classKey => $value) {
+                    if ($classKey == null) {
+                        continue;
                     } else {
-                        $rate = 0;
-                    }
-                    $industryClassification = IndustryClassification::find($classKey);
-                    if ($industryClassification != null) {
-                        array_push($final, [
-                            "key" => $industryClassification->classifications,
-                            "value" => round($rate, 2)
-                        ]);
+                        $years = collect(DB::table('businesses')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->where('year', '!=', date('Y'))->get())->filter(function ($value, $key) use ($requestedData) {
+                            if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
+                                return (date('Y') - (int)$value->year) <= $requestedData["young"];
+                            } else {
+                                return true;
+                            }
+                        })->pluck('year')->countBy();
+                        $arrayYears = $years->toArray();
+                        if (count($arrayYears) >= 2) {
+                            $listOfYears = array_keys($arrayYears);
+                            $listOfYears = array_map('intval', $listOfYears);
+                            $highestYear = (int) max($listOfYears);
+                            $lowYear = min($listOfYears);
+                            $rate = (pow(($arrayYears[$highestYear] / $arrayYears[$lowYear]), (1 / ($highestYear - $lowYear))) - 1) * 100;
+                        } else {
+                            $rate = 0;
+                        }
+                        $industryClassification = IndustryClassification::find($classKey);
+                        if ($industryClassification != null) {
+                            array_push($final, [
+                                "key" => $industryClassification->classifications,
+                                "value" => round($rate, 2)
+                            ]);
+                        }
                     }
                 }
-            }
-            $final = collect($final)->sortByDesc('value')->all();
-            return response(["data" => array_values($final)], 200);
+                $final = collect($final)->sortByDesc('value')->all();
+                return $final;
+            });
+
+            return response(["data" => $data], 200);
         }
 
         if ($requestedData["dataType"] == "patent") {
-            if (isset($requestedData["country"]) && $requestedData["country"] != null) {
-                $patentClassificationForEmerging = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('year', '!=', date('Y'))->get())->where('country_id', $requestedData["country"])->filter(function ($value, $key) use ($requestedData) {
-                    if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
-                        return (date('Y') - (int)$value->year) <= $requestedData["young"];
-                    } else {
-                        return true;
-                    }
-                })->pluck('parent_classification_id')->countBy();
-            } else {
-                $patentClassificationForEmerging = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->where('year', '!=', date('Y'))->get())->filter(function ($value, $key)  use ($requestedData) {
-                    if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
-                        return (date('Y') - (int)$value->year) <= $requestedData["young"];
-                    } else {
-                        return true;
-                    }
-                })->pluck('parent_classification_id')->countBy();
-            }
-
-            $patentClassificationRates = [];
-            foreach ($patentClassificationForEmerging as $classKey => $value) {
-                if ($classKey == null) {
-                    continue;
+            $data = Cache::remember('patent'.$requestedData["country"].$requestedData["young"], 2592000, function () use ($requestedData) {
+                if (isset($requestedData["country"]) && $requestedData["country"] != null) {
+                    $patentClassificationForEmerging = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('year', '!=', date('Y'))->get())->where('country_id', $requestedData["country"])->filter(function ($value, $key) use ($requestedData) {
+                        if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
+                            return (date('Y') - (int)$value->year) <= $requestedData["young"];
+                        } else {
+                            return true;
+                        }
+                    })->pluck('parent_classification_id')->countBy();
                 } else {
-                    if (isset($requestedData["country"]) && $requestedData["country"] != null) {
-                        $years = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('parent_classification_id', $classKey)->where('year', '!=', date('Y'))->get())->where('country_id', $requestedData["country"])->filter(function ($value, $key) use ($requestedData) {
-                            if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
-                                return (date('Y') - (int)$value->year) <= $requestedData["young"];
-                            } else {
-                                return true;
-                            }
-                        })->pluck('year')->countBy();
+                    $patentClassificationForEmerging = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->where('year', '!=', date('Y'))->get())->filter(function ($value, $key)  use ($requestedData) {
+                        if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
+                            return (date('Y') - (int)$value->year) <= $requestedData["young"];
+                        } else {
+                            return true;
+                        }
+                    })->pluck('parent_classification_id')->countBy();
+                }
+    
+                $patentClassificationRates = [];
+                foreach ($patentClassificationForEmerging as $classKey => $value) {
+                    if ($classKey == null) {
+                        continue;
                     } else {
-                        $years = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->where('year', '!=', date('Y'))->get())->filter(function ($value, $key) use ($requestedData) {
-                            if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
-                                return (date('Y') - (int)$value->year) <= $requestedData["young"];
-                            } else {
-                                return true;
-                            }
-                        })->pluck('year')->countBy();
-                    }
-                    $arrayYears = $years->toArray();
-                    if (count($arrayYears) >= 2) {
-                        $listOfYears = array_keys($arrayYears);
-                        $listOfYears = array_map('intval', $listOfYears);
-                        $highestYear = (int) max($listOfYears);
-                        $lowYear = min($listOfYears);
-                        $rate = (pow(($arrayYears[$highestYear] / $arrayYears[$lowYear]), (1 / ($highestYear - $lowYear))) - 1) * 100;
-                    } else {
-                        $rate = 0;
-                    }
-                    $patentClassification = PatentCategory::find($classKey);
-                    if ($patentClassification != null) {
-                        array_push($patentClassificationRates, [
-                            "key" => $patentClassification->classification_category,
-                            "value" => round($rate, 2)
-                        ]);
+                        if (isset($requestedData["country"]) && $requestedData["country"] != null) {
+                            $years = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('parent_classification_id', $classKey)->where('year', '!=', date('Y'))->get())->where('country_id', $requestedData["country"])->filter(function ($value, $key) use ($requestedData) {
+                                if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
+                                    return (date('Y') - (int)$value->year) <= $requestedData["young"];
+                                } else {
+                                    return true;
+                                }
+                            })->pluck('year')->countBy();
+                        } else {
+                            $years = collect(DB::table('patent_pivot_patent_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->where('year', '!=', date('Y'))->get())->filter(function ($value, $key) use ($requestedData) {
+                                if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
+                                    return (date('Y') - (int)$value->year) <= $requestedData["young"];
+                                } else {
+                                    return true;
+                                }
+                            })->pluck('year')->countBy();
+                        }
+                        $arrayYears = $years->toArray();
+                        if (count($arrayYears) >= 2) {
+                            $listOfYears = array_keys($arrayYears);
+                            $listOfYears = array_map('intval', $listOfYears);
+                            $highestYear = (int) max($listOfYears);
+                            $lowYear = min($listOfYears);
+                            $rate = (pow(($arrayYears[$highestYear] / $arrayYears[$lowYear]), (1 / ($highestYear - $lowYear))) - 1) * 100;
+                        } else {
+                            $rate = 0;
+                        }
+                        $patentClassification = PatentCategory::find($classKey);
+                        if ($patentClassification != null) {
+                            array_push($patentClassificationRates, [
+                                "key" => $patentClassification->classification_category,
+                                "value" => round($rate, 2)
+                            ]);
+                        }
                     }
                 }
-            }
-            $patentClassificationRates = collect($patentClassificationRates)->sortByDesc('value')->all();
-            return response(["data" => $patentClassificationRates], 200);
+                $patentClassificationRates = collect($patentClassificationRates)->sortByDesc('value')->all();
+                return $patentClassificationRates;
+            });
+
+            return response(["data" => $data], 200);
         }
 
         if ($requestedData["dataType"] == "journal") {
-            if (isset($requestedData["country"]) && $requestedData["country"] != null) {
-                $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('year', '!=', date('Y'))->get())->where('country_id', $requestedData["country"])->filter(function ($value, $key) use ($requestedData) {
-                    if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
-                        return (date('Y') - (int)$value->year) <= $requestedData["young"];
-                    } else {
-                        return true;
-                    }
-                })->pluck('parent_classification_id')->countBy();
-            } else {
-                $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('year', '!=', date('Y'))->get())->filter(function ($value, $key) use ($requestedData) {
-                    if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
-                        return (date('Y') - (int)$value->year) <= $requestedData["young"];
-                    } else {
-                        return true;
-                    }
-                })->pluck('parent_classification_id')->countBy();
-            }
-
-            $journalClassificationRates = [];
-            foreach ($journalClassificationForEmerging as $classKey => $value) {
-                if ($classKey == null) {
-                    continue;
+            $data = Cache::remember('journal'.$requestedData["country"].$requestedData["young"], 2592000  , function () use ($requestedData) {
+                if (isset($requestedData["country"]) && $requestedData["country"] != null) {
+                    $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('year', '!=', date('Y'))->get())->where('country_id', $requestedData["country"])->filter(function ($value, $key) use ($requestedData) {
+                        if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
+                            return (date('Y') - (int)$value->year) <= $requestedData["young"];
+                        } else {
+                            return true;
+                        }
+                    })->pluck('parent_classification_id')->countBy();
                 } else {
-                    if (isset($requestedData["country"]) && $requestedData["country"] != null) {
-                        $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('parent_classification_id', $classKey)->where('year', '!=', date('Y'))->get())->where('country_id', $requestedData["country"])->filter(function ($value, $key) use ($requestedData) {
-                            if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
-                                return (date('Y') - (int)$value->year) <= $requestedData["young"];
-                            } else {
-                                return true;
-                            }
-                        })->pluck('year')->countBy();
+                    $journalClassificationForEmerging = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('year', '!=', date('Y'))->get())->filter(function ($value, $key) use ($requestedData) {
+                        if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
+                            return (date('Y') - (int)$value->year) <= $requestedData["young"];
+                        } else {
+                            return true;
+                        }
+                    })->pluck('parent_classification_id')->countBy();
+                }
+    
+                $journalClassificationRates = [];
+                foreach ($journalClassificationForEmerging as $classKey => $value) {
+                    if ($classKey == null) {
+                        continue;
                     } else {
-                        $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->where('year', '!=', date('Y'))->get())->filter(function ($value, $key) use ($requestedData) {
-                            if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
-                                return (date('Y') - (int)$value->year) <= $requestedData["young"];
-                            } else {
-                                return true;
-                            }
-                        })->pluck('year')->countBy();
-                    }
-                    $arrayYears = $years->toArray();
-                    if (count($arrayYears) >= 2) {
-                        $listOfYears = array_keys($arrayYears);
-                        $listOfYears = array_map('intval', $listOfYears);
-                        $highestYear = (int) max($listOfYears);
-                        $lowYear = min($listOfYears);
-                        $rate = (pow(($arrayYears[$highestYear] / $arrayYears[$lowYear]), (1 / ($highestYear - $lowYear))) - 1) * 100;
-                    } else {
-                        $rate = 0;
-                    }
-                    $journalClassification = JournalCategory::find($classKey);
-                    if ($journalClassification != null) {
-                        array_push($journalClassificationRates, [
-                            "key" => $journalClassification->category,
-                            "value" => round($rate, 2)
-                        ]);
+                        if (isset($requestedData["country"]) && $requestedData["country"] != null) {
+                            $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id', 'country_id')->where('parent_classification_id', $classKey)->where('year', '!=', date('Y'))->get())->where('country_id', $requestedData["country"])->filter(function ($value, $key) use ($requestedData) {
+                                if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
+                                    return (date('Y') - (int)$value->year) <= $requestedData["young"];
+                                } else {
+                                    return true;
+                                }
+                            })->pluck('year')->countBy();
+                        } else {
+                            $years = collect(DB::table('journal_pivot_journal_category')->select('id', 'year', 'parent_classification_id')->where('parent_classification_id', $classKey)->where('year', '!=', date('Y'))->get())->filter(function ($value, $key) use ($requestedData) {
+                                if ($value->year != null  && isset($requestedData["young"]) && $requestedData["young"] != null) {
+                                    return (date('Y') - (int)$value->year) <= $requestedData["young"];
+                                } else {
+                                    return true;
+                                }
+                            })->pluck('year')->countBy();
+                        }
+                        $arrayYears = $years->toArray();
+                        if (count($arrayYears) >= 2) {
+                            $listOfYears = array_keys($arrayYears);
+                            $listOfYears = array_map('intval', $listOfYears);
+                            $highestYear = (int) max($listOfYears);
+                            $lowYear = min($listOfYears);
+                            $rate = (pow(($arrayYears[$highestYear] / $arrayYears[$lowYear]), (1 / ($highestYear - $lowYear))) - 1) * 100;
+                        } else {
+                            $rate = 0;
+                        }
+                        $journalClassification = JournalCategory::find($classKey);
+                        if ($journalClassification != null) {
+                            array_push($journalClassificationRates, [
+                                "key" => $journalClassification->category,
+                                "value" => round($rate, 2)
+                            ]);
+                        }
                     }
                 }
-            }
-            $journalClassificationRates = collect($journalClassificationRates)->sortByDesc('value')->all();
-            return response(["data" => $journalClassificationRates], 200);
+                $journalClassificationRates = collect($journalClassificationRates)->sortByDesc('value')->all();
+                return $journalClassificationRates;
+            });
+
+            return response(["data" => $data], 200);
         }
 
         return response("Unkown Data Type", 406);
