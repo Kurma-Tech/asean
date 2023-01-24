@@ -52,7 +52,7 @@ class FilterFormData extends Controller
             
         }elseif($data["dataType"] == 'patent') {
             $categories = Cache::rememberForever('patent_classifications_with_ids', function () {
-                return PatentCategory::select('id', 'classification_category')->where('class_id', null)->where('division_id', '!=', Null)->get();
+                return PatentCategory::select('id', 'classification_category as classifications')->where('class_id', null)->where('division_id', '!=', Null)->get();
             });
             $patent_kinds = Cache::rememberForever('patents_kinds', function () {
                 return PatentKind::select('id', 'kind')->where('kind', '!=', null)->get();
@@ -65,7 +65,7 @@ class FilterFormData extends Controller
             });
         }elseif($data["dataType"] == 'journal') {
             $categories = Cache::rememberForever('journal_classifications_with_ids', function () {
-                return JournalCategory::select('id', 'category')->where('division_id', null)->where('section_id', '!=', Null)->get();
+                return JournalCategory::select('id', 'category as classifications')->where('division_id', null)->where('section_id', '!=', Null)->get();
             });
             $years = Cache::remember('journal_year', 2592000  , function () {
                 return DB::select(DB::raw("SELECT DISTINCT year FROM journals ORDER BY year DESC"));
